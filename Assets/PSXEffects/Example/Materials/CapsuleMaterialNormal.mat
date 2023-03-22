@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CapsuleMaterialLOD
+  m_Name: CapsuleMaterialNormal
   m_Shader: {fileID: 4800000, guid: 94cb0d6305cd4a743b1d2ec684e277de, type: 3}
-  m_ShaderKeywords: DIFF_VERTEX OPAQUE SPEC_GOURAUD _DRAWDIST_ON _EMISSION _LOD_TEX
+  m_ShaderKeywords: DIFF_FRAGMENT OPAQUE SPEC_GOURAUD _DRAWDIST_ON _EMISSION _NORMAL_MAP
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -49,12 +49,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _LODTex:
-        m_Texture: {fileID: 2800000, guid: 9cf3d13146eac7f488bd96a0e27fc9d7, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 2f06bb9feceecc54d9157a8be0ba6979, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 0bd79f5a34f7dfc41957ff2c934f825b, type: 3}
+        m_Scale: {x: 5, y: 5}
         m_Offset: {x: 0, y: 0}
     - _MetalMap:
         m_Texture: {fileID: 0}
@@ -65,7 +65,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: e275a95de56ac134cbecbfe9dfb96500, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -88,14 +88,14 @@ Material:
     - _Cutoff: 0.5
     - _CutoutThreshold: 0.5
     - _DetailNormalMapScale: 1
-    - _DiffModel: 0
+    - _DiffModel: 1
     - _DrawDist: 1
     - _DstBlend: 0
     - _EmissionAmt: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _LODAmt: 3
+    - _LODAmt: 15
     - _Metallic: 0
     - _Mode: 0
     - _NormalMapDepth: 1
