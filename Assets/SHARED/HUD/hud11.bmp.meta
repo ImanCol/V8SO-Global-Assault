@@ -207,7 +207,7 @@ TextureImporter:
       213: 4743573144347903447
     second: hud11_67
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -224,10 +224,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -237,11 +239,11 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -266,6 +268,8 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -281,6 +285,30 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Nintendo Switch
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -1732,9 +1760,77 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-  spritePackingTag: 
+    nameFileIdTable:
+      hud11_56: -276979485933933018
+      hud11_6: -6272460942231274008
+      hud11_20: 4299323030949301712
+      hud11_17: 2950616383796607115
+      hud11_0: 4791754673399675477
+      hud11_63: 5990034175604506266
+      hud11_32: -3686214725382160692
+      hud11_61: 8477731538616133821
+      hud11_57: 789799595385142437
+      hud11_29: -1872891430426875767
+      hud11_44: 6340700579951875279
+      hud11_39: 3268155238544031326
+      hud11_38: 8766258898231207778
+      hud11_40: -2944222573065252093
+      hud11_66: -8828862229239741257
+      hud11_65: 9008912476154786585
+      hud11_42: 6462530618576137723
+      hud11_16: 3085986940915226873
+      hud11_15: 2276535981724485430
+      hud11_54: -3847243569449055275
+      hud11_31: -3884414964578777590
+      hud11_37: -2176681287725869272
+      hud11_55: -5628365154619398979
+      hud11_7: 2566412181673972310
+      hud11_1: 993030621222234047
+      hud11_18: -1687073971168648648
+      hud11_62: 6598258045593494393
+      hud11_11: 7115964992949683364
+      hud11_59: -1216468801164641359
+      hud11_2: 6145417675724432527
+      hud11_10: -943302781345058524
+      hud11_36: 4558468460578736298
+      hud11_52: -262075607747714442
+      hud11_21: -3514927048519833892
+      hud11_67: 4743573144347903447
+      hud11_46: -7401050188571218842
+      hud11_51: 8209378096888774164
+      hud11_12: -3038956513491862256
+      hud11_48: -166583524176648387
+      hud11_53: 1055517028157398271
+      hud11_47: 189340842174544119
+      hud11_8: 5080361499381214299
+      hud11_25: -5920476670261349271
+      hud11_33: -1053124116321258473
+      hud11_19: -5846417070900447451
+      hud11_34: 5962016943985097649
+      hud11_5: -4013292750272259681
+      hud11_50: -3202903317425261484
+      hud11_24: -1247633208586765763
+      hud11_64: -7237635103496629584
+      hud11_27: -8956589787569215641
+      hud11_14: 3530079512061335198
+      hud11_3: 3077375424539749138
+      hud11_58: -7045614756747448042
+      hud11_4: -6850290160884851993
+      hud11_22: -8356387524877636964
+      hud11_43: -7699854635780271944
+      hud11_23: 3173257548386407049
+      hud11_9: 2448719772265899154
+      hud11_49: 5510608714528542176
+      hud11_41: -4534919295402026884
+      hud11_13: -2177293537554056892
+      hud11_35: 4558416928521088197
+      hud11_45: 6461453566180270617
+      hud11_26: -104808823871796275
+      hud11_30: -8709242201683321800
+      hud11_60: -1905979645232253566
+      hud11_28: 3207821575843297637
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
