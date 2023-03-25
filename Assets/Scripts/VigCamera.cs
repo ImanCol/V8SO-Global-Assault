@@ -87,7 +87,7 @@ public class VigCamera : VigObject
                     print("x:" + screen.x + "- y:" + screen.y + "- z:" + screen.z);
                     print("x:" + DAT_84.x + "- y:" + DAT_84.y + "- z:" + DAT_84.z);
                     screen.x += DAT_84.x;
-                    screen.y += DAT_84.y + 1864096;
+                    screen.y += DAT_84.y - 4096;
                     screen.z += DAT_84.z;
                     //screen.x += DAT_84.x;
                     //screen.y += DAT_84.y;
@@ -286,6 +286,7 @@ public class VigCamera : VigObject
 
                         if (iVar9 < iVar10 - 0x8000)
                             iVar6 = iVar9;
+                            print("Move Screen: " + screen.y);
 
                         screen.y = iVar6;
                         //print("SCREEN: " + screen.y);
