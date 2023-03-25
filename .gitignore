@@ -11,6 +11,8 @@
 /[Mm]emoryCaptures/
 /[Ss]witchIL2CPPStats/
 /[Ss]witchIL2CPPCache/
+/[Pp]ackages/com.unity.xr.switchvrkit*/
+/[Pp]ackages/com.unity.inputsystem.switch*/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
