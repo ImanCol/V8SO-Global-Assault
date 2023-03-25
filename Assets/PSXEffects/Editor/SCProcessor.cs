@@ -52,32 +52,21 @@ public class SCProcessor
 	public static Texture2D CreateCopyOfTexture(Texture2D tex, string newName) {
 		string path = AssetDatabase.GetAssetPath(tex);
 		string newPath = newName;
-
-		TextureImporter ti2 = AssetImporter.GetAtPath(path) as TextureImporter;
-		bool readable = ti2.isReadable;
-		ti2.isReadable = true;
-		AssetDatabase.ImportAsset(path);
-		AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
-
-		Texture2D newTex = new Texture2D(tex.width, tex.height, TextureFormat.ARGB32, false);
-
-		newTex.SetPixels32(tex.GetPixels32());
-		newTex.Apply();
-		File.WriteAllBytes(newPath, newTex.EncodeToPNG());
-		AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
-
-		TextureImporter ti = AssetImporter.GetAtPath(newPath) as TextureImporter;
-		if (ti != null) {
-			ti.isReadable = true;
-			ti.textureCompression = TextureImporterCompression.Uncompressed;
-			ti.filterMode = FilterMode.Point;
-			AssetDatabase.ImportAsset(newPath);
-			AssetDatabase.Refresh();
-		} else {
-			Debug.LogError("Failed to set texture import settings for \"" + newPath + "\".");
+		if (AssetDatabase.CopyAsset(path, newPath)) {
+			TextureImporter ti = AssetImporter.GetAtPath(newPath) as TextureImporter;
+			if (ti != null) {
+				ti.isReadable = true;
+				ti.textureCompression = TextureImporterCompression.Uncompressed;
+				ti.filterMode = FilterMode.Point;
+				AssetDatabase.ImportAsset(newPath);
+				AssetDatabase.Refresh();
+			} else { 
+				Debug.LogError("Failed to set texture import settings for \"" + newPath + "\".");
+			}
+			return AssetDatabase.LoadAssetAtPath<Texture2D>(newPath);
 		}
-		ti2.isReadable = readable;
-		return AssetDatabase.LoadAssetAtPath<Texture2D>(newPath);
+		Debug.LogError("Failed to create a copy of \"" + path + "\".");
+		return null;
 	}
 
 	public static Texture2D Posterize(Texture2D tex, int depth) {
@@ -147,7 +136,6 @@ public class SCProcessor
 		tex = Dither(tex, info.ditherIntensity, info.pixelate);
 		tex = Posterize(tex, info.depth);
 		tex.Apply();
-		File.WriteAllBytes(info.texUrl, tex.EncodeToPNG());
 		return tex;
 	}
 }

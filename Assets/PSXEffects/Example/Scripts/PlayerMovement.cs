@@ -6,7 +6,6 @@ public class PlayerMovement : MonoBehaviour {
 
 	public float moveSpeed = 10f;
 	public Light dirLight;
-	public GameObject museumText;
 
 	private CharacterController cc;
 	private PSXEffects psx;
@@ -15,8 +14,6 @@ public class PlayerMovement : MonoBehaviour {
 	void Start () {
 		cc = GetComponent<CharacterController>();
 		psx = FindObjectOfType<PSXEffects>();
-		dirLight.gameObject.SetActive(false);
-		museumText.SetActive(false);
 	}
 	
 	// Update is called once per frame
@@ -46,22 +43,14 @@ public class PlayerMovement : MonoBehaviour {
 			psx.maxDarkness = 0;
 			psx.resolutionFactor = 1;
 			psx.polygonalDrawDistance = -1;
-			psx.dithering = false;
-			psx.colorDepth = 24;
 			dirLight.gameObject.SetActive(true);
-			museumText.SetActive(true);
-			psx.UpdateProperties();
 		} else {
 			RenderSettings.fog = true;
 			psx.favorRed = 1;
 			psx.maxDarkness = 10;
 			psx.resolutionFactor = 2;
 			psx.polygonalDrawDistance = 30.61f;
-			psx.dithering = false;
-			psx.colorDepth = 24;
 			dirLight.gameObject.SetActive(false);
-			museumText.SetActive(false);
-			psx.UpdateProperties();
 		}
 	}
 }

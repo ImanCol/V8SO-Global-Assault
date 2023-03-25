@@ -336,7 +336,7 @@ public class LevelManager : MonoBehaviour
                 }
             }
         }
-
+        
         if (0 < DAT_1180)
         {
             for (int i = 0; i < DAT_1180; i++)
@@ -482,7 +482,7 @@ public class LevelManager : MonoBehaviour
 
             if (param1.shield == 0)
             {
-                GameObject obj = new GameObject(nameof(Fire1));
+                GameObject obj = new GameObject();
                 ppcVar1 = obj.AddComponent<Fire1>();
                 ppcVar1.DAT_58 = 0x10000;
                 ppcVar1.physics1.M1 = 4;
@@ -537,12 +537,12 @@ public class LevelManager : MonoBehaviour
 
         if (param3 << 16 < 0)
         {
-            GameObject obj = new GameObject(param4.Name);
+            GameObject obj = new GameObject();
             oVar3 = obj.AddComponent(param4) as VigObject;
         }
         else
             oVar3 = param2.vData.ini.FUN_2C17C(param3, param4, 8);
-
+        
         oVar3.DAT_80 = param1;
         oVar3.flags = 0x20000000;
         uVar1 = (ushort)param1.id;
@@ -644,7 +644,7 @@ public class LevelManager : MonoBehaviour
     {
         VigCamera ppcVar2;
 
-        GameObject obj = new GameObject(nameof(VigCamera));
+        GameObject obj = new GameObject();
         ppcVar2 = obj.AddComponent<VigCamera>();
         ppcVar2.DAT_80 = param1;
         ppcVar2.id = param2.id;
@@ -684,7 +684,7 @@ public class LevelManager : MonoBehaviour
         ppcVar1.screen = param1;
         pcVar2 = ppcVar1.child2;
 
-        while (pcVar2 != null)
+        while(pcVar2 != null)
         {
             pcVar2.flags = 0x10;
             pcVar2 = pcVar2.child;
@@ -728,7 +728,7 @@ public class LevelManager : MonoBehaviour
                 {
                     if (uVar8 - 0x8400 < 61)
                     {
-                        if (GameManager.DAT_63FE4[uVar8 - 0x8400] != -1)
+                        if (GameManager.DAT_63FE4[uVar8-0x8400] != -1)
                         {
                             if (puVar9.colliderID < 0)
                                 uVar4 = null;
@@ -800,7 +800,7 @@ public class LevelManager : MonoBehaviour
         ppcVar1.vTransform.position = param2;
         pcVar2 = ppcVar1.child2;
 
-        while (pcVar2 != null)
+        while(pcVar2 != null)
         {
             pcVar2.flags = 0x10;
             pcVar2 = pcVar2.child;
@@ -878,7 +878,7 @@ public class LevelManager : MonoBehaviour
         int iVar6;
         Vector3Int v0;
 
-        GameObject obj = new GameObject(nameof(Particle3));
+        GameObject obj = new GameObject();
         ppcVar3 = obj.AddComponent<Particle3>();
         cVar5 = xobfList[19].ini;
         ppcVar3.flags |= 0xA0;
@@ -889,7 +889,7 @@ public class LevelManager : MonoBehaviour
         uVar2 = cVar5.configContainers[param2].next;
         uVar1 = uVar2;
 
-        while (uVar1 != 0xffff)
+        while(uVar1 != 0xffff)
         {
             oVar5 = xobfList[19].ini.FUN_2C17C((ushort)uVar1, typeof(VigObject), 0);
             v0 = Utilities.FUN_23F7C(oVar5.screen);
@@ -938,7 +938,7 @@ public class LevelManager : MonoBehaviour
     {
         Particle4 ppcVar1;
 
-        GameObject obj = new GameObject(nameof(Particle4));
+        GameObject obj = new GameObject();
         ppcVar1 = obj.AddComponent<Particle4>();
         ppcVar1.flags = 0xA4;
         ppcVar1.DAT_1A = param2;
@@ -951,7 +951,7 @@ public class LevelManager : MonoBehaviour
     {
         Particle9 ppcVar1;
 
-        GameObject obj = new GameObject(nameof(Particle9));
+        GameObject obj = new GameObject();
         ppcVar1 = obj.AddComponent<Particle9>();
         ppcVar1.type = 8;
         ppcVar1.flags = 0xA4;
@@ -1104,7 +1104,7 @@ public class LevelManager : MonoBehaviour
         }
 
         cVar3 = param1.DAT_0C;
-    LAB_2834:
+        LAB_2834:
         FUN_278C(cVar3, param2);
     }
 
@@ -1368,7 +1368,7 @@ public class LevelManager : MonoBehaviour
         param1.vCamera.FUN_4BC0C();
         param1.FUN_38408();
         param1.FUN_3C9C4(~param1.id);
-
+        
         if (GameManager.instance.DAT_C6E < 2)
         {
             if (GameManager.instance.DAT_C6E == 0)
@@ -1379,7 +1379,7 @@ public class LevelManager : MonoBehaviour
             param1.FUN_3C404((ushort)iVar2);
         }
 
-        GameObject obj = new GameObject(nameof(VigObject));
+        GameObject obj = new GameObject();
         oVar3 = obj.AddComponent<VigObject>();
         obj.transform.parent = param1.transform;
         param1.closeViewer = oVar3;
@@ -1506,7 +1506,7 @@ public class LevelManager : MonoBehaviour
                 iVar12 = GameManager.DAT_65C90[iVar5];
                 iVar5 = local_30;
 
-                while (uVar2 != 0xffff)
+                while(uVar2 != 0xffff)
                 {
                     cVar10 = iVar14.configContainers[uVar2];
                     local_80 = new int[,]
@@ -2015,9 +2015,9 @@ public class LevelManager : MonoBehaviour
         {
             //if (param2.DAT_28 != 0) //tmp
             //{
-            jVar4 = FUN_5850(param1, param2, param3);
-            counter++;
-            roadList.Add(jVar4);
+                jVar4 = FUN_5850(param1, param2, param3);
+                counter++;
+                roadList.Add(jVar4);
             //}
             /*else
             {
@@ -2048,7 +2048,7 @@ public class LevelManager : MonoBehaviour
                                     param2, param3);
             FUN_630C(new int[,] { { local_40.x, local_40.y, local_40.z, local_34.x },
                                   { local_34.y, local_34.z, local_28.x, local_28.y },
-                                  { local_28.z, local_1c.x, local_1c.y, local_1c.z } },
+                                  { local_28.z, local_1c.x, local_1c.y, local_1c.z } }, 
                                     param2, param3);
         }
     }

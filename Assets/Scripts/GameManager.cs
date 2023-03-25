@@ -1884,9 +1884,7 @@ public class GameManager : MonoBehaviour
         inDebug = true;
         Destroy(this.gameObject);
         SceneManager.LoadScene(0, LoadSceneMode.Single);
-		//        SceneManager.LoadScene(9, LoadSceneMode.Single);
-
-	}
+}
     #endregion
 
     public void FUN_17F34(int param1, int param2)
