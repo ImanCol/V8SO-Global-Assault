@@ -1,45 +1,36 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0"?>
 <NintendoSdkMeta>
   <Core>
     <Name>Application</Name>
-    <Is64BitInstruction>True</Is64BitInstruction>
     <ApplicationId>0x01004b9000490000</ApplicationId>
-    <ProgramIndex>0</ProgramIndex>
-    <MainThreadStackSize>0x00100000</MainThreadStackSize>
+    <Is64BitInstruction>True</Is64BitInstruction>
     <ProcessAddressSpace>AddressSpace64Bit</ProcessAddressSpace>
-    <SystemResourceSize>0x01000000</SystemResourceSize>
+    <SystemResourceSize>0x1000000</SystemResourceSize>
   </Core>
+  <!-- この nmeta ファイルは AuthoringEditor で GUI を用いて生成、編集出来ます -->
+  <!-- This nmeta file can be created and edited by GUI AuthoringEditor provides. -->
   <Application>
     <Title>
       <Language>AmericanEnglish</Language>
-      <Name>Vigilante2Unity</Name>
+      <Name>Vigilante2Unity-2022</Name>
       <Publisher>DefaultCompany</Publisher>
     </Title>
-    <Icon>
-      <Language>AmericanEnglish</Language>
-      <IconPath>Assets\Icon.bmp</IconPath>
-    </Icon>
-    <ReleaseVersion>0</ReleaseVersion>
     <DisplayVersion>0.82</DisplayVersion>
-    <StartupUserAccount>None</StartupUserAccount>
-    <UserAccountSwitchLock>Disable</UserAccountSwitchLock>
     <SupportedLanguage>AmericanEnglish</SupportedLanguage>
-    <Screenshot>Allow</Screenshot>
-    <DataLossConfirmation>None</DataLossConfirmation>
-    <UserAccountSaveDataSize>0x0000000000000000</UserAccountSaveDataSize>
-    <UserAccountSaveDataJournalSize>0x0000000000000000</UserAccountSaveDataJournalSize>
-    <LogoType>LicensedByNintendo</LogoType>
-    <LogoHandling>Auto</LogoHandling>
     <Rating>
       <Organization>ESRB</Organization>
       <Age>0</Age>
     </Rating>
+    <LogoType>LicensedByNintendo</LogoType>
+    <ReleaseVersion>0</ReleaseVersion>
+    <Icon>
+      <Language>AmericanEnglish</Language>
+      <IconPath>C:\NintendoSwitch\NX_SDK_15.3.2\NintendoSDK\Resources\SpecFiles\NintendoSDK_Application.bmp</IconPath>
+    </Icon>
+    <StartupUserAccount>None</StartupUserAccount>
+    <Screenshot>Allow</Screenshot>
     <VideoCapture>Enable</VideoCapture>
+    <DataLossConfirmation>None</DataLossConfirmation>
     <RuntimeAddOnContentInstall>Deny</RuntimeAddOnContentInstall>
-    <CrashReport>Allow</CrashReport>
-    <CrashScreenshotForProd>Deny</CrashScreenshotForProd>
-    <CrashScreenshotForDev>Deny</CrashScreenshotForDev>
-    <PlayLogQueryCapability>None</PlayLogQueryCapability>
-    <PlayLogPolicy>Open</PlayLogPolicy>
   </Application>
 </NintendoSdkMeta>
