@@ -1353,8 +1353,10 @@ public class LevelManager : MonoBehaviour
         VigObject oVar3;
         ConfigContainer ccVar4;
 
-        param1.FUN_3CCD4(true);
-        cVar1 = GameManager.instance.FUN_4B914(param1, 256, defaultCamera);
+        param1.FUN_3CCD4(true);        
+        // The second parameter is originally 256, but changing it to 192 supports 16:9 widescreen
+        cVar1 = GameManager.instance.FUN_4B914(param1, 192, defaultCamera);
+        //        cVar1 = GameManager.instance.FUN_4B914(param1, 256, defaultCamera);
         param1.vCamera = cVar1;
         GameManager.instance.cameraObjects[~param1.id] = cVar1;
 

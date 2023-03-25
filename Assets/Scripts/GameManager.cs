@@ -2960,6 +2960,7 @@ public class GameManager : MonoBehaviour
             if (DAT_1088[i].vObject != null)
                 if (DAT_1088[i].vObject.GetType().IsSubclassOf(typeof(VigObject)))
                     DAT_1088[i].vObject.UpdateW(0, param1);
+                        Debug.Log("Test" + param1 + "-" + DAT_1088);
     }
 
     public void FUN_31440(uint param1)

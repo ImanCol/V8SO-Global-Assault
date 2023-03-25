@@ -101,6 +101,7 @@ public class Vehicle : VigObject
             int iVar2;
 
             aVar1 = GameManager.instance.FUN_51ED4(param1, param2, param3, param4);
+            //print("Target..." + param1 + "&" + param2 + "&" + param3 + "&" + param4);
             iVar2 = FUN_51BDC(aVar1);
 
             if (iVar2 == 0)
@@ -252,13 +253,18 @@ public class Vehicle : VigObject
 
     public ushort GetPowerup(int index)
     {
+        print("Potenciador: " + index);
         switch (index)
         {
             case 0:
+                print("Potenciador: " + doubleDamage);
                 return doubleDamage;
             case 1:
+                print("Potenciador: " + shield);
+
                 return shield;
             default:
+                print("Potenciador: " + jammer);
                 return jammer;
         }
     }
@@ -303,11 +309,13 @@ public class Vehicle : VigObject
         int iVar4;
         uint uVar6;
         VigObject ppcVar8;
+        
 
         switch (state)
         {
             case _VEHICLE_TYPE.Vehicle:
                 ppcVar8 = hit.object1;
+                //print("Hit: " + ppcVar8);
                 uVar6 = 0;
 
                 if (ppcVar8 != this && ppcVar8.GetType().IsSubclassOf(typeof(VigObject)))
@@ -362,6 +370,10 @@ public class Vehicle : VigObject
             case _VEHICLE_TYPE.LoadLivingston:
                 return Trailer.LoadTrailer(this, arg1, arg2);
             case _VEHICLE_TYPE.LoadWonderwagon:
+                print(arg1);
+                print(arg2);
+                print(this);
+                return Trailer.LoadTrailer(this, arg1, arg2);
             case _VEHICLE_TYPE.LoadThunderbolt:
             case _VEHICLE_TYPE.LoadSamson:
             case _VEHICLE_TYPE.LoadXanadu:
@@ -383,6 +395,7 @@ public class Vehicle : VigObject
                 return FUN_3C118(arg1, arg2);
 
             case _VEHICLE_TYPE.Chasis:
+            
                 if (arg1 == 2)
                 {
                     cVar2 = vCollider;
@@ -442,6 +455,7 @@ public class Vehicle : VigObject
                     sVar1.flags |= 0x2000000;
                     Utilities.FUN_2CC9C(this, sVar1);
                     sVar1.transform.parent = transform;
+                    print(sVar1);
                     sVar1.FUN_30B78();
                     sVar1.FUN_30BF0();
                     GameManager.instance.FUN_30CB0(sVar1, 480);
@@ -920,6 +934,7 @@ public class Vehicle : VigObject
                 physics1.Z = 0;
                 iVar4 = GameManager.instance.FUN_1DD9C();
                 GameManager.instance.FUN_1E580(iVar4, GameManager.instance.DAT_C2C, 37, vTransform.position);
+                print(iVar4);
                 FUN_30B78();
                 GameManager.instance.FUN_30CB0(this, 31);
             }
@@ -949,6 +964,7 @@ public class Vehicle : VigObject
                                 cVar4 = LevelManager.instance.FUN_4B984(this, oVar2);
                                 vCamera = cVar4;
                                 LevelManager.instance.defaultCamera.transform.SetParent(cVar4.transform, false);
+                                print(cVar4);
                                 cVar4.FUN_30B78();
                             }
                         }
@@ -1071,6 +1087,7 @@ public class Vehicle : VigObject
                                 cVar4 = LevelManager.instance.FUN_4B984(this, oVar2);
                                 vCamera = cVar4;
                                 LevelManager.instance.defaultCamera.transform.SetParent(cVar4.transform, false);
+                                print(cVar4);
                                 cVar4.FUN_30B78();
                             }
                         }
@@ -1313,6 +1330,7 @@ public class Vehicle : VigObject
                 cVar2 = LevelManager.instance.FUN_4B984(this, oVar3);
                 vCamera = cVar2;
                 LevelManager.instance.defaultCamera.transform.SetParent(cVar2.transform, false);
+                print(cVar2);
                 cVar2.FUN_30B78();
             }
 
@@ -1422,6 +1440,7 @@ public class Vehicle : VigObject
                             physics1.Z = iVar6 >> 5;
                             iVar4 = GameManager.instance.FUN_1DD9C();
                             GameManager.instance.FUN_1E580(iVar4, GameManager.instance.DAT_C2C, 37, vTransform.position);
+                            print(iVar4);
                             FUN_30B78();
                             tags = 0;
                             flags &= 0xffffffdf;
@@ -1672,6 +1691,7 @@ public class Vehicle : VigObject
                     flags &= 0xfffffffd;
                     physics1.Y = -0x55555;
                     physics1.Z = 0;
+                    print(oVar6);
                     FUN_30B78();
                     GameManager.instance.FUN_30CB0(this, 120);
                     break;
@@ -6953,6 +6973,8 @@ public class Vehicle : VigObject
         if (sVar1 != 0)
         {
             ai.FUN_51C54(vTransform.position, target.vTransform.position, 0x22740, 0);
+            print(ai);
+
             tags = 3;
             flags &= 0xffffffdf;
         }
@@ -7567,6 +7589,7 @@ public class Vehicle : VigObject
 
     private void FUN_34728()
     {
+        //print("Case..." + tags);
         switch (tags)
         {
             case 1:

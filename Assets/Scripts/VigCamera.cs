@@ -39,6 +39,7 @@ public class VigCamera : VigObject
     
     public override uint UpdateW(int arg1, int arg2)
     {
+        //print("Hit: " + this + "-" + state + "-" + arg1 + "-" + arg2);
         switch (state)
         {
             case _CAMERA_TYPE.Default:
@@ -83,9 +84,15 @@ public class VigCamera : VigObject
 
                 if ((uVar5 & 0x4000000) != 0)
                 {
+                    print("x:" + screen.x + "- y:" + screen.y + "- z:" + screen.z);
+                    print("x:" + DAT_84.x + "- y:" + DAT_84.y + "- z:" + DAT_84.z);
                     screen.x += DAT_84.x;
-                    screen.y += DAT_84.y;
+                    screen.y += DAT_84.y + 1864096;
                     screen.z += DAT_84.z;
+                    //screen.x += DAT_84.x;
+                    //screen.y += DAT_84.y;
+                    //screen.z += DAT_84.z;
+                    
                     goto LAB_4B694;
                 }
 
@@ -281,6 +288,7 @@ public class VigCamera : VigObject
                             iVar6 = iVar9;
 
                         screen.y = iVar6;
+                        //print("SCREEN: " + screen.y);
                     }
                 }
 

@@ -60,6 +60,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -69,11 +70,11 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -388,6 +389,19 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      hud10_10: -8333222840274575381
+      hud10_9: 5207585919156268004
+      hud10_2: 3514241162262222349
+      hud10_8: 2526838297943842565
+      hud10_3: -7735758061769005216
+      hud10_7: 7195268696674580477
+      hud10_4: 6330730127668564450
+      hud10_6: -7200126172617708874
+      hud10_1: -1331345887176717936
+      hud10_0: 4984716967237729867
+      hud10_11: -6254222556233546814
+      hud10_5: 2814300213277903022
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
