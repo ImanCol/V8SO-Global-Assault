@@ -286,7 +286,7 @@ public class VigCamera : VigObject
 
                         if (iVar9 < iVar10 - 0x8000)
                             iVar6 = iVar9;
-                            print("Move Screen: " + screen.y);
+                            //print("Move Screen: " + screen.y);
 
                         screen.y = iVar6;
                         //print("SCREEN: " + screen.y);
