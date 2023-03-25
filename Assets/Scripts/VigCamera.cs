@@ -86,12 +86,12 @@ public class VigCamera : VigObject
                 {
                     print("x:" + screen.x + "- y:" + screen.y + "- z:" + screen.z);
                     print("x:" + DAT_84.x + "- y:" + DAT_84.y + "- z:" + DAT_84.z);
-                    screen.x += DAT_84.x;
-                    screen.y += DAT_84.y - 4096;
-                    screen.z += DAT_84.z;
                     //screen.x += DAT_84.x;
-                    //screen.y += DAT_84.y;
+                    //screen.y += DAT_84.y - 4096;
                     //screen.z += DAT_84.z;
+                    screen.x += DAT_84.x;
+                    screen.y += DAT_84.y;
+                    screen.z += DAT_84.z;
                     
                     goto LAB_4B694;
                 }
