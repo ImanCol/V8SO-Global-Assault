@@ -6,7 +6,7 @@ PluginImporter:
   iconMap: {}
   executionOrder: {}
   defineConstraints: []
-  isPreloaded: 1
+  isPreloaded: 0
   isOverridable: 1
   isExplicitlyReferenced: 0
   validateReferences: 1
@@ -25,7 +25,7 @@ PluginImporter:
   - first:
       Nintendo Switch: Switch
     second:
-      enabled: 1
+      enabled: 0
       settings: {}
   userData: 
   assetBundleName: 
