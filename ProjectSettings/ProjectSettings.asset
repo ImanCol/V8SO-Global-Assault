@@ -134,7 +134,8 @@ PlayerSettings:
   vulkanEnableCommandBufferRecycling: 1
   loadStoreDebugModeEnabled: 0
   bundleVersion: 0.82
-  preloadedAssets: []
+  preloadedAssets:
+  - {fileID: 11400000, guid: 90f02787b6e79944497b831afe7edee8, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -622,22 +623,8 @@ PlayerSettings:
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Android: REWIRED_USE_USER_DEFINED_CONTROLLER_TEMPLATES
-    EmbeddedLinux: REWIRED_USE_USER_DEFINED_CONTROLLER_TEMPLATES
-    GameCoreScarlett: REWIRED_USE_USER_DEFINED_CONTROLLER_TEMPLATES
-    GameCoreXboxOne: REWIRED_USE_USER_DEFINED_CONTROLLER_TEMPLATES
-    LinuxHeadlessSimulation: REWIRED_USE_USER_DEFINED_CONTROLLER_TEMPLATES
     Nintendo Switch: 
-    PS4: REWIRED_USE_USER_DEFINED_CONTROLLER_TEMPLATES
-    PS5: REWIRED_USE_USER_DEFINED_CONTROLLER_TEMPLATES
-    QNX: REWIRED_USE_USER_DEFINED_CONTROLLER_TEMPLATES
-    Stadia: REWIRED_USE_USER_DEFINED_CONTROLLER_TEMPLATES
-    Standalone: REWIRED_USE_USER_DEFINED_CONTROLLER_TEMPLATES
-    WebGL: REWIRED_USE_USER_DEFINED_CONTROLLER_TEMPLATES
-    Windows Store Apps: REWIRED_USE_USER_DEFINED_CONTROLLER_TEMPLATES
-    XboxOne: REWIRED_USE_USER_DEFINED_CONTROLLER_TEMPLATES
-    iPhone: REWIRED_USE_USER_DEFINED_CONTROLLER_TEMPLATES
-    tvOS: REWIRED_USE_USER_DEFINED_CONTROLLER_TEMPLATES
+    Standalone: UNITY_EDITOR;DISABLE_EXCEPTION_DIALOGS
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}
