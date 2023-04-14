@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Profiling;
 using Unity.Jobs;
 using Unity.Collections;
+using Unity.Burst;
 
 public delegate VigObject _VEHICLE_INIT(XOBF_DB param1, int param2, uint param3); //needs parameters
 public delegate VigObject _SPECIAL_INIT(XOBF_DB param1, int param2);
@@ -10986,70 +10988,135 @@ public class GameManager : MonoBehaviour
     private TerrainJob terrainJob;
 
     private JobHandle terrainHandle;
+
     public Queue<ScreenPoly> DAT_610;
+
     public bool DAT_83B;
+
     public byte DAT_C6E;
+
     public sbyte[] DAT_C80;
+
     public Color32[] DAT_CE0;
+
     public ushort[] DAT_CF0;
+
     public byte[,] DAT_CF4;
+
     public byte DAT_CF8;
+
     public byte[] DAT_CFC;
+
     public byte DAT_D08;
+
     public int DAT_D0C;
+
     public byte[] DAT_D18;
+
     public byte[] DAT_D19;
+
     public byte[] DAT_D1A;
+
     public byte[] DAT_D1B;
+
     public byte[,] DAT_D28;
+
     public int DAT_DA0;
+
     public ushort DAT_DA8;
+
     public int DAT_DB0;
+
     public short DAT_DB4;
+
     public short DAT_DB6;
+
     public short DAT_DB8;
+
     public VigTransform DAT_F00;
+
     public int DAT_F20;
+
     public VigTransform DAT_F28;
+
     public Matrix3x3 DAT_F48;
+
     public Matrix3x3 DAT_F68;
+
     public VigTransform DAT_F88;
+
     public Matrix3x3 DAT_FA8;
+
     public Vector2Int DAT_FC8;
+
     public Matrix3x3 DAT_FD8;
+
     public short DAT_E1C;
+
     public VigTransform DAT_EA8;
+
     public Vector3Int DAT_EC8;
+
     public int DAT_ED8;
+
     public int DAT_EDC;
+
     public VigTransform DAT_EE0;
+
     public byte DAT_1000;
+
     public byte DAT_1002;
+
     public byte DAT_1004;
+
     public int DAT_101C;
+
     public int DAT_1028;
+
     public sbyte[] DAT_1030;
+
     public sbyte playerSpawns;
+
     public int DAT_1038;
+
     public List<VigTuple> DAT_1068;
+
     public List<VigTuple> DAT_1078;
+
     public int DAT_1084;
+
     public List<VigTuple> DAT_1088;
+
     public List<VigTuple> DAT_1098;
+
     public List<VigTuple> DAT_10A8;
+
     public List<VigTuple> DAT_10C8;
+
     public List<VigTuple2> DAT_10D8;
+
     public List<VigTuple> DAT_1088_tmp;
+
     public List<VigTuple> DAT_1110_tmp;
+
     public List<VigTuple> worldObjs_tmp;
+
     public int DAT_10F0;
+
     public List<VigTuple> DAT_1110;
+
     public sbyte DAT_111C;
+
     public SunLensFlare DAT_1124;
+
     public sbyte[] DAT_1128;
+
     public int DAT_1130;
+
     public Navigation DAT_1138;
+
     public VigMesh[] DAT_1150;
+
     public struct VehicleStats
     {
         // Token: 0x04000428 RID: 1064
@@ -11065,31 +11132,57 @@ public class GameManager : MonoBehaviour
         public byte avoidance;
     }
     public VehicleStats[] vehicleStats;
+
     public uint DAT_E44;
+
     public int DAT_C74;
+
     public int DAT_CC4;
+
     public byte DAT_898;
+
     public List<AudioClip> DAT_C2C;
+
     public ushort timer;
+
     public ushort[,] DAT_08;
+
     public int DAT_20;
+
     public int DAT_24;
+
     public int DAT_28;
+
     public _SCREEN_MODE screenMode;
+
     public _GAME_MODE gameMode;
+
     public bool gameEnded;
+
     public bool DAT_36;
+
     public int gravityFactor;
+
     public int DAT_40;
+
     public int map;
+
     public Material targetHUD;
+
     public _DITHERING ditheringMethod;
+
     public bool drawPlayer;
+
     public bool drawObjects;
+
     public bool drawTerrain;
+
     public bool drawRoads;
+
     public bool playMusic;
+
     public bool inDebug;
+
     public bool autoTarget;
     public float max;
     public float terrainHeight;
@@ -11117,28 +11210,66 @@ public class GameManager : MonoBehaviour
     public int wrenchCount;
     public int totalSpawns;
     public int aiMin, aiMax;
+
+
+
+
+
+
+
+
     public bool inMenu;
+
+
     public bool ready;
+
+
+
     public float aspectRatioScale;
+
+
+
     public Dropdown mpModeDropdown;
+
+
     public Dropdown onlineDmgDropdown;
+
     public Dropdown livesDropdown;
+
+
     public Toggle enableExperimentalDakota;
+
     public bool lowHealth;
+
+
     public int spawns;
+
     public bool paused;
+
     public bool noAI;
+
     public bool noPhysics;
+
     public bool noHUD;
+
     public bool experimentalDakota;
+
     public bool enableReticle;
+
     public Dictionary<long, Vehicle> networkMembers;
+
     public List<VigObject> networkObjs;
+
     public Dictionary<long, short> networkIds;
+
     public List<Vehicle> networkEnemies;
+
     public Dictionary<short, Vehicle> enemiesDictionary;
+
     public int leash;
+
     private bool atStart;
+
 
     public void SetDriver()
     {
@@ -14477,6 +14608,199 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (inDebug || inMenu)
+        {
+            return;
+        }
+        Color32 color = UIManager.instance.flash.color;
+        if (color.r != 0 || color.g != 0 || color.b != 0 || color.a != 0)
+        {
+            UIManager.instance.flash.color = new Color32(0, 0, 0, 0);
+        }
+        if (gameMode >= _GAME_MODE.Versus2)
+        {
+            for (int i = 0; i < networkMembers.Count; i++)
+            {
+                if (networkMembers.ContainsValue(null))
+                {
+                    return;
+                }
+            }
+        }
+        if (!paused)
+        {
+            uint num = 1u;
+            for (int j = 0; j < num; j++)
+            {
+                DAT_28++;
+                timer = (ushort)DAT_28;
+                uint param = 0u;
+                if (j == num - 1)
+                {
+                    param = num;
+                }
+                FUN_313C8((int)param);
+                FUN_31440((uint)DAT_28);
+                FUN_31728();
+                for (int k = 0; k < worldObjs_tmp.Count; k++)
+                {
+                    worldObjs.Remove(worldObjs_tmp[k]);
+                }
+                worldObjs_tmp.Clear();
+                if (playerObjects[0] != null && (InputManager.controllers[0].DAT_A & 0x80) != 0)
+                {
+                    playerObjects[0].view = 3 - playerObjects[0].view;
+                }
+            }
+        }
+        else
+        {
+            cameraObjects[0].vTransform.rotation = Utilities.RotMatrixYXZ_gte(cameraObjects[0].vr);
+        }
+        FUN_31360((ushort)(DAT_28 & 0xFFFF));
+        DAT_24 = 1 - DAT_24;
+        if (screenMode == _SCREEN_MODE.Horizontal)
+        {
+            int param2 = 320;
+            int param3 = 160;
+            int param4 = 120;
+            int param5 = 60;
+            FUN_2DF30(param2, param4, param3, param5);
+        }
+        else if (screenMode < _SCREEN_MODE.Vertical)
+        {
+            int param2 = 512;
+            if (screenMode == _SCREEN_MODE.Whole)
+            {
+                int param4 = 240;
+                int param3 = 160;
+                int param5 = 120;
+                FUN_2DF30(param2, param4, param3, param5);
+            }
+        }
+        else
+        {
+            int param2;
+            if (screenMode == _SCREEN_MODE.Vertical)
+            {
+                param2 = 160;
+                int param4 = 240;
+                int param3 = 80;
+                int param5 = 120;
+                FUN_2DF30(param2, param4, param3, param5);
+            }
+            param2 = 160;
+            if (screenMode == _SCREEN_MODE.Unknown)
+            {
+                int param3 = 80;
+                int param4 = 120;
+                int param5 = 60;
+                FUN_2DF30(param2, param4, param3, param5);
+            }
+        }
+        if (screenMode == _SCREEN_MODE.Whole)
+        {
+            Vehicle vehicle;
+            VigObject vigObject;
+            if (gameMode < _GAME_MODE.Versus || playerObjects[0].maxHalfHealth != 0 || gameMode >= _GAME_MODE.Versus2)
+            {
+                vehicle = playerObjects[0];
+                if (playerObjects[1] != null)
+                {
+                    uint flags = playerObjects[1].flags;
+                    vigObject = playerObjects[1];
+                    if ((flags & 0x2000000) == 0)
+                    {
+                        vigObject.flags = (uint)((int)flags & -3);
+                    }
+                }
+            }
+            else
+            {
+                uint flags = playerObjects[0].flags;
+                vigObject = playerObjects[0];
+                vehicle = playerObjects[1];
+                if ((flags & 0x2000000) == 0)
+                {
+                    vigObject.flags = (uint)((int)flags & -3);
+                }
+            }
+            short fieldOfView;
+            if (vehicle.view == _CAR_VIEW.Close)
+            {
+                if ((vehicle.flags & 0x2000000) != 0)
+                {
+                    VigCamera vCamera = vehicle.vCamera;
+                    fieldOfView = vCamera.fieldOfView;
+                    vigObject = vCamera;
+                }
+                else
+                {
+                    vigObject = vehicle.closeViewer;
+                    vehicle.flags |= 2u;
+                    fieldOfView = vehicle.vCamera.fieldOfView;
+                }
+            }
+            else
+            {
+                if ((vehicle.flags & 0x2000000) == 0)
+                {
+                    vehicle.flags &= 4294967293u;
+                }
+                VigCamera vCamera2 = vehicle.vCamera;
+                fieldOfView = vCamera2.fieldOfView;
+                vigObject = vCamera2;
+            }
+            LevelManager.instance.defaultCamera.transform.SetParent(vigObject.transform, worldPositionStays: false);
+            FUN_2D278(vigObject, fieldOfView);
+            terrain.DAT_BDFF0[0] = DAT_F00;
+            FUN_31678();
+            atStart = true;
+            if (DAT_1084 < 0)
+            {
+                DAT_1084 = 0;
+            }
+            if (vehicle.view != 0)
+            {
+                UIManager.instance.UpdateHUD(playerObjects[0], DAT_28);
+            }
+            UIManager.instance.RefreshFlares(DAT_28);
+            UIManager.instance.RefreshCameras();
+            UIManager.instance.RefreshDestroyed(DAT_CC4);
+        }
+        for (int l = 0; l < DAT_1088_tmp.Count; l++)
+        {
+            DAT_1088.Remove(DAT_1088_tmp[l]);
+        }
+        DAT_1088_tmp.Clear();
+        for (int m = 0; m < DAT_1110_tmp.Count; m++)
+        {
+            DAT_1110.Remove(DAT_1110_tmp[m]);
+        }
+        DAT_1110_tmp.Clear();
+        if (gameMode < _GAME_MODE.Versus2)
+        {
+            return;
+        }
+        //ClientSend.Transform(ref playerObjects[0].vTransform);
+        //ClientSend.Physics(ref playerObjects[0].physics1, ref playerObjects[0].physics2);
+        //ClientSend.Control(playerObjects[0]);
+        //ClientSend.Status(playerObjects[0]);
+        //ClientSend.RandomNumber(DAT_63A64, DAT_63A68);
+        //if (gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner())
+        if (gameMode > _GAME_MODE.Versus2)
+        {
+            for (int n = 0; n < networkEnemies.Count; n++)
+            {
+                //ClientSend.TransformAI(networkEnemies[n].id, ref networkEnemies[n].vTransform);
+                //ClientSend.PhysicsAI(networkEnemies[n].id, ref networkEnemies[n].physics1, ref networkEnemies[n].physics2);
+                //ClientSend.ControlAI(networkEnemies[n]);
+                //ClientSend.StatusAI(networkEnemies[n]);
+            }
+        }
+    }
 
     private void FUN_1C158()
     {
