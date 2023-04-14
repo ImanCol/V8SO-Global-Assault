@@ -61,4 +61,10 @@ sysinfo.txt
 *.unitypackage
 
 # Crashlytics generated file
+
+# General
 crashlytics-build.properties
+Assets/LEVELS/ROUTE66/ROUTE66 1.unity
+Assets/LEVELS/ROUTE66/ROUTE66 1.unity.meta
+Assets/LEVELS/ROUTE66/ROUTE66 1Settings.lighting
+Assets/LEVELS/ROUTE66/ROUTE66 1Settings.lighting.meta
