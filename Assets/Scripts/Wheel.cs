@@ -5,12 +5,14 @@ using UnityEngine;
 
 public enum _WHEEL_TYPE
 {
-    Unflatten, 
+    Unflatten,
     Flatten //FUN_395E0
 }
 
 public class Wheel : VigObject
 {
+    public _WHEEL_TYPE state;
+
     protected override void Start()
     {
         base.Start();
@@ -21,108 +23,94 @@ public class Wheel : VigObject
         base.Update();
     }
 
-    public _WHEEL_TYPE state;
-
     public override uint UpdateW(int arg1, int arg2)
     {
-        Vehicle vVar1;
-        int iVar3;
-
-        switch (state)
+        if (state == _WHEEL_TYPE.Flatten)
         {
-            case _WHEEL_TYPE.Flatten:
-                if (arg1 == 2)
+            if (arg1 == 2)
+            {
+                Vehicle vehicle = Utilities.FUN_2CDB0(this) as Vehicle;
+                int num = 0;
+                flags &= 3221225471u;
+                physics2.X += 3072;
+                do
                 {
-                    vVar1 = Utilities.FUN_2CDB0(this) as Vehicle;
-                    iVar3 = 0;
-                    flags &= 0xbfffffff;
-                    physics2.X += 0xc00;
-
-                    do
+                    if (vehicle.wheels[num] != null && (vehicle.wheels[num].flags & 0x40000000) != 0)
                     {
-                        if (vVar1.wheels[iVar3] != null &&
-                            (vVar1.wheels[iVar3].flags & 0x40000000) != 0)
-                            return 0;
-
-                        iVar3++;
-                    } while (iVar3 < 6);
-
-                    vVar1.flags &= 0xfffdffff;
-                    state = _WHEEL_TYPE.Unflatten;
+                        return 0u;
+                    }
+                    num++;
                 }
-
-                return 0;
+                while (num < 6);
+                vehicle.flags &= 4294836223u;
+                state = _WHEEL_TYPE.Unflatten;
+            }
+            return 0u;
         }
-
-        return 0;
+        return 0u;
     }
 
     public new VigObject FUN_2C344(XOBF_DB param1, ushort param2, uint param3)
     {
-        VigMesh mVar1;
-        int iVar2;
-        VigObject oVar3;
-        BufferedBinaryReader brVar4;
-        ConfigContainer puVar5;
-
-        puVar5 = param1.ini.configContainers[param2];
-
-        if ((puVar5.flag & 0x7ff) == 0x7ff)
+        ConfigContainer configContainer = param1.ini.configContainers[param2];
+        if ((configContainer.flag & 0x7FF) != 2047)
+        {
+            VigMesh vigMesh = vMesh = param1.FUN_1FD18(base.gameObject, (uint)(configContainer.flag & 0x7FF), init: true);
+        }
+        else
+        {
             vMesh = null;
-        else
-        {
-            mVar1 = param1.FUN_1FD18(gameObject, puVar5.flag & 0x7ffU, true);
-            vMesh = mVar1;
         }
-
-        if (puVar5.colliderID < 0)
+        if (configContainer.colliderID < 0)
+        {
             vCollider = null;
+        }
         else
         {
-            VigCollider collider = param1.cbbList[puVar5.colliderID];
-            vCollider = new VigCollider(collider.buffer);
+            VigCollider vigCollider = param1.cbbList[configContainer.colliderID];
+            vCollider = new VigCollider(vigCollider.buffer);
         }
-
         vData = param1;
         DAT_1A = (short)param2;
-
         if ((param3 & 8) == 0)
+        {
             vAnim = null;
+        }
         else
         {
-            brVar4 = new BufferedBinaryReader(param1.animations);
-
-            if (brVar4.GetBuffer() != null)
+            BufferedBinaryReader bufferedBinaryReader = new BufferedBinaryReader(param1.animations);
+            if (bufferedBinaryReader.GetBuffer() != null)
             {
-                iVar2 = brVar4.ReadInt32(param2 * 4 + 4);
-
-                if (iVar2 != 0)
-                    brVar4.Seek(iVar2, SeekOrigin.Begin);
+                int num = bufferedBinaryReader.ReadInt32(param2 * 4 + 4);
+                if (num != 0)
+                {
+                    bufferedBinaryReader.Seek(num, SeekOrigin.Begin);
+                }
                 else
-                    brVar4 = null;
+                {
+                    bufferedBinaryReader = null;
+                }
             }
             else
-                brVar4 = null;
-
-            vAnim = brVar4;
-        }
-
-        DAT_4A = GameManager.instance.timer;
-
-        if ((param3 & 2) == 0 && puVar5.next != 0xffff)
-        {
-            oVar3 = param1.ini.FUN_2C17C_3(puVar5.next, typeof(WheelChild), param3 | 0x21);
-            child2 = oVar3;
-
-            if (oVar3 != null)
             {
-                oVar3.ApplyTransformation();
+                bufferedBinaryReader = null;
+            }
+            vAnim = bufferedBinaryReader;
+        }
+        DAT_4A = GameManager.instance.timer;
+        if ((param3 & 2) == 0 && configContainer.next != ushort.MaxValue)
+        {
+            VigObject vigObject = child2 = param1.ini.FUN_2C17C_3(configContainer.next, typeof(WheelChild), param3 | 0x21);
+            if (vigObject != null)
+            {
+                vigObject.ApplyTransformation();
                 child2.parent = this;
             }
         }
         else
+        {
             child2 = null;
-
+        }
         return this;
     }
 }

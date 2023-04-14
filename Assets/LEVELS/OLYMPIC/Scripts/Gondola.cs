@@ -1,71 +1,55 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Gondola : Destructible
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-    public override uint OnCollision(HitDetection hit)
-    {
-        uint uVar2;
-        VigObject ppcVar3;
+	public override uint OnCollision(HitDetection hit)
+	{
+		VigObject self = hit.self;
+		if (self.type == 3 && DAT_80 != null)
+		{
+			hit.self = DAT_80;
+			if (self.GetType().IsSubclassOf(typeof(VigObject)))
+			{
+				self.OnCollision(hit);
+			}
+			return 1u;
+		}
+		FUN_32CF0(hit);
+		return 0u;
+	}
 
-        ppcVar3 = hit.self;
-
-        if (ppcVar3.type == 3 && DAT_80 != null)
-        {
-            hit.self = DAT_80;
-
-            if (ppcVar3.GetType().IsSubclassOf(typeof(VigObject)))
-                ppcVar3.OnCollision(hit);
-
-            uVar2 = 1;
-        }
-        else
-        {
-            FUN_32CF0(hit);
-            uVar2 = 0;
-        }
-
-        return uVar2;
-    }
-
-    //FUN_106C (OLYMPIC.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        uint uVar1;
-        uint uVar2;
-
-        switch (arg1)
-        {
-            case 1:
-                maxHalfHealth = 24;
-                uVar1 = flags | 0x108;
-                goto LAB_1140;
-            case 2:
-                uVar1 = flags & 0xffffffdf;
-                LAB_1140:
-                flags = uVar1;
-                CASE_4:
-                uVar2 = 0;
-                break;
-            default:
-                goto CASE_4;
-            case 8:
-                FUN_32B90((uint)arg2);
-                uVar2 = 0;
-                break;
-        }
-
-        return uVar2;
-    }
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		uint flags;
+		if (arg1 != 1)
+		{
+			if (arg1 != 2)
+			{
+				if (arg1 != 8)
+				{
+					goto IL_0036;
+				}
+				FUN_32B90((uint)arg2);
+				return 0u;
+			}
+			flags = (uint)((int)base.flags & -33);
+		}
+		else
+		{
+			maxHalfHealth = 24;
+			flags = (base.flags | 0x108);
+		}
+		base.flags = flags;
+		goto IL_0036;
+		IL_0036:
+		return 0u;
+	}
 }

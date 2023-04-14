@@ -1,430 +1,371 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Cauldron : Destructible
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
-
-    protected override void Update()
-    {
-        base.Update();
-    }
-
-    public override uint OnCollision(HitDetection hit)
-    {
-        bool bVar7;
-
-        bVar7 = FUN_32CF0(hit);
-
-        if (!bVar7)
-            return 0;
-
-        FUN_30C68();
-        return 0;
-    }
-
-    public VigTuple2 DAT_80_2; //0x80
-
-    //FUN_25B4 (STEELMIL.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        VigTuple ppiVar2;
-        List<VigTuple> ppiVar3;
-        sbyte sVar4;
-        int iVar4;
-        short sVar5;
-        short sVar6;
-        bool bVar7;
-        int iVar7;
-        VigObject oVar7;
-        Furnace3 fVar7;
-        VigTuple2 tVar7;
-        int iVar8;
-        int iVar9;
-        VigObject oVar9;
-        VigTuple2 tVar10;
-        VigObject oVar11;
-        uint uVar12;
-        uint uVar13;
-        Vector3Int local_18;
-        Vector3Int local_28;
-
-        switch (arg1)
-        {
-            case 0:
-                switch(((byte)tags - 1) * 0x1000000 >> 0x18)
-                {
-                    case 0:
-                        tVar10 = DAT_80_2;
-                        oVar9 = DAT_84;
-                        local_18 = new Vector3Int(0, 0, 0);
-                        local_28 = new Vector3Int();
-                        local_28.x = oVar9.vTransform.position.x - vTransform.position.x;
-                        local_28.z = oVar9.vTransform.position.z - vTransform.position.z;
-                        local_28.y = local_18.y;
-                        iVar7 = local_28.x;
-
-                        if (local_28.x < 0)
-                            iVar7 = -local_28.x;
-
-                        if (0x5000 < iVar7)
-                        {
-                            iVar7 = tVar10.array[0] << 16;
-
-                            if (iVar7 < oVar9.vTransform.position.x)
-                                iVar7 = oVar9.vTransform.position.x;
-
-                            iVar8 = (tVar10.array[0] + tVar10.array[2]) * 0x10000;
-
-                            if (iVar7 < iVar8)
-                                iVar8 = iVar7;
-
-                            iVar7 = tVar10.array[1] << 16;
-                            iVar8 -= vTransform.position.x;
-
-                            if (iVar7 < oVar9.vTransform.position.z)
-                                iVar7 = oVar9.vTransform.position.z;
-
-                            iVar9 = (tVar10.array[1] + tVar10.array[3]) * 0x10000;
-
-                            if (iVar7 < iVar9)
-                                iVar9 = iVar7;
-
-                            iVar9 -= vTransform.position.z;
-                            iVar7 = -3051;
-
-                            if (-3052 < iVar8)
-                            {
-                                iVar7 = 3051;
-
-                                if (iVar8 < 3052)
-                                    iVar7 = iVar8;
-                            }
-
-                            vTransform.position.x += iVar7;
-                            iVar7 = -3051;
-
-                            if (-3052 < iVar9)
-                            {
-                                iVar7 = 3051;
-
-                                if (iVar9 < 3052)
-                                    iVar7 = iVar9;
-                            }
-
-                            vTransform.position.z += iVar7;
-                            local_18.x = local_28.x;
-                            local_18.z = local_28.z;
-                            Utilities.FUN_2A098(local_28, out local_28);
-                            iVar7 = local_28.z * vTransform.rotation.V02 - local_28.x * vTransform.rotation.V22;
-
-                            if (iVar7 < 0)
-                                iVar7 += 4095;
-
-                            iVar7 >>= 12;
-                            iVar9 = iVar7;
-
-                            if (iVar7 < 0)
-                                iVar9 = -iVar7;
-
-                            if (20 < iVar9)
-                            {
-                                iVar9 = -iVar7;
-
-                                if (0 < iVar7)
-                                    iVar9 += 15;
-
-                                FUN_24700(0, (short)(iVar9 >> 4), 0);
-                            }
-
-                            if ((GameManager.instance.DAT_28 - DAT_19 & 15) == 0)
-                            {
-                                vTransform.rotation = Utilities.MatrixNormal(vTransform.rotation);
-                                return 0;
-                            }
-
-                            return 0;
-                        }
-
-                        iVar7 = local_28.z;
-
-                        if (local_28.z < 0)
-                            iVar7 = -local_28.z;
-
-                        if (0x5000 < iVar7)
-                        {
-                            iVar7 = tVar10.array[0] << 16;
-
-                            if (iVar7 < oVar9.vTransform.position.x)
-                                iVar7 = oVar9.vTransform.position.x;
-
-                            iVar8 = (tVar10.array[0] + tVar10.array[2]) * 0x10000;
-
-                            if (iVar7 < iVar8)
-                                iVar8 = iVar7;
-
-                            iVar7 = tVar10.array[1] << 16;
-                            iVar8 -= vTransform.position.x;
-
-                            if (iVar7 < oVar9.vTransform.position.z)
-                                iVar7 = oVar9.vTransform.position.z;
-
-                            iVar9 = (tVar10.array[1] + tVar10.array[3]) * 0x10000;
-
-                            if (iVar7 < iVar9)
-                                iVar9 = iVar7;
-
-                            iVar9 -= vTransform.position.z;
-                            iVar7 = -3051;
-
-                            if (-3052 < iVar8)
-                            {
-                                iVar7 = 3051;
-
-                                if (iVar8 < 3052)
-                                    iVar7 = iVar8;
-                            }
-
-                            vTransform.position.x += iVar7;
-                            iVar7 = -3051;
-
-                            if (-3052 < iVar9)
-                            {
-                                iVar7 = 3051;
-
-                                if (iVar9 < 3052)
-                                    iVar7 = iVar9;
-                            }
-
-                            vTransform.position.z += iVar7;
-                            local_18.x = local_28.x;
-                            local_18.z = local_28.z;
-                            Utilities.FUN_2A098(local_28, out local_28);
-                            iVar7 = local_28.z * vTransform.rotation.V02 - local_28.x * vTransform.rotation.V22;
-
-                            if (iVar7 < 0)
-                                iVar7 += 4095;
-
-                            iVar7 >>= 12;
-                            iVar9 = iVar7;
-
-                            if (iVar7 < 0)
-                                iVar9 = -iVar7;
-
-                            if (20 < iVar9)
-                            {
-                                iVar9 = -iVar7;
-
-                                if (0 < iVar7)
-                                    iVar9 += 15;
-
-                                FUN_24700(0, (short)(iVar9 >> 4), 0);
-                            }
-
-                            if ((GameManager.instance.DAT_28 - DAT_19 & 15) == 0)
-                            {
-                                vTransform.rotation = Utilities.MatrixNormal(vTransform.rotation);
-                                return 0;
-                            }
-
-                            return 0;
-                        }
-
-                        break;
-                    case 1:
-                        oVar7 = child2;
-                        sVar5 = (short)(oVar7.vr.x - 17);
-                        oVar7.vr.x = sVar5;
-
-                        if (sVar5 < -511)
-                            tags++;
-
-                        goto LAB_2944;
-                    case 2:
-                        fVar7 = FUN_2458();
-                        iVar4 = GameManager.instance.FUN_1DD9C();
-                        GameManager.instance.FUN_1E628(iVar4, GameManager.instance.DAT_C2C, 67, fVar7.vTransform.position);
-
-                        if (fVar7 != null)
-                            GameManager.instance.FUN_30CB0(fVar7, 60);
-
-                        FUN_30BA8();
-                        GameManager.instance.FUN_30CB0(this, 120);
-                        break;
-                    default:
-                        return 0;
-                    case 4:
-                        oVar7 = child2;
-                        sVar6 = (short)(oVar7.vr.x + 17);
-                        oVar7.vr.x = sVar6;
-
-                        if (0 < sVar6 << 16)
-                        {
-                            tags = 0;
-                            iVar9 = (int)GameManager.FUN_2AC5C();
-                            GameManager.instance.FUN_30CB0(this, (iVar9 * 120 >> 15) + 180);
-                            FUN_30BA8();
-                        }
-
-                        LAB_2944:
-                        oVar7.ApplyTransformation();
-                        return 0;
-                }
-
-                LAB_2B28:
-                tags++;
-                break;
-            case 1:
-                flags |= 0x100;
-                tVar7 = GameManager.instance.FUN_2FFD0(1);
-                DAT_80_2 = tVar7;
-
-                if (tVar7 != null)
-                {
-                    iVar7 = (int)GameManager.FUN_2AC5C();
-                    GameManager.instance.FUN_30CB0(this, iVar7 * 60 >> 15);
-                }
-
-                vTransform.position.y = 0x2af800;
-                break;
-            case 2:
-                sVar4 = tags;
-
-                if (sVar4 == 1)
-                {
-                    tVar7 = DAT_80_2;
-                    oVar9 = DAT_84;
-
-                    if ((oVar9.maxHalfHealth == 0 || oVar9.vTransform.position.x <= tVar7.array[0] << 16) || 
-                        (tVar7.array[0] + tVar7.array[2]) * 0x10000 <= oVar9.vTransform.position.x || 
-                        (oVar9.vTransform.position.z <= tVar7.array[1] << 16 || 
-                        (tVar7.array[1] + tVar7.array[3]) * 0x10000 <= oVar9.vTransform.position.z))
-                    {
-                        FUN_30BA8();
-                        sVar4 = 5;
-                        tags = sVar4;
-                    }
-
-                    iVar7 = (int)GameManager.FUN_2AC5C();
-                    GameManager.instance.FUN_30CB0(this, iVar7 * 60 >> 15);
-                    return 0;
-                }
-
-                if (sVar4 < 2)
-                {
-                    if (sVar4 != 0)
-                        return 0;
-
-                    oVar11 = null;
-                    uVar12 = 0xffffffff;
-                    tVar7 = DAT_80_2;
-                    ppiVar3 = GameManager.instance.worldObjs;
-                    
-                    for (int i = 0; i < ppiVar3.Count; i++)
-                    {
-                        ppiVar2 = ppiVar3[i];
-                        oVar9 = ppiVar2.vObject;
-
-                        if (oVar9.type == 2 && oVar9.maxHalfHealth != 0 && 
-                            tVar7.array[0] << 16 < oVar9.vTransform.position.x && 
-                            oVar9.vTransform.position.x < (tVar7.array[0] + tVar7.array[2]) * 0x10000 && 
-                            tVar7.array[1] << 16 < oVar9.vTransform.position.z && 
-                            oVar9.vTransform.position.z < (tVar7.array[1] + tVar7.array[3]) * 0x10000)
-                        {
-                            
-                            uVar13 = (uint)Utilities.FUN_29F6C(vTransform.position, oVar9.screen);
-
-                            if (uVar13 < uVar12)
-                            {
-                                oVar11 = oVar9;
-                                uVar12 = uVar13;
-                            }
-                        }
-                    }
-
-                    if (oVar11 != null)
-                    {
-                        DAT_84 = oVar11;
-                        FUN_30B78();
-                        sVar4 = (sbyte)(tags + 1);
-                        tags = sVar4;
-                        iVar7 = (int)GameManager.FUN_2AC5C();
-                        GameManager.instance.FUN_30CB0(this, iVar7 * 60 >> 15);
-                        return 0;
-                    }
-                    else
-                    {
-                        iVar7 = (int)GameManager.FUN_2AC5C();
-                        GameManager.instance.FUN_30CB0(this, iVar7 * 60 >> 15);
-                        return 0;
-                    }
-                }
-
-                if (sVar4 != 4)
-                {
-                    if (sVar4 == 5)
-                    {
-                        iVar7 = (int)GameManager.FUN_2AC5C();
-                        GameManager.instance.FUN_30CB0(this, iVar7 * 60 >> 15);
-                        tags = 0;
-                        return 0;
-                    }
-
-                    return 0;
-                }
-
-                FUN_30B78();
-                goto LAB_2B28;
-            case 8:
-                bVar7 = FUN_32B90((uint)arg2);
-
-                if (!bVar7)
-                    return 0;
-
-                FUN_30C68();
-                break;
-        }
-
-        return 0;
-    }
-
-    //FUN_2458 (STEELMIL.DLL)
-    private Furnace3 FUN_2458()
-    {
-        Furnace3 ppcVar1;
-        ConfigContainer ccVar2;
-        int iVar3;
-        XOBF_DB pcVar4;
-        VigTransform auStack48;
-        Vector3Int local_10;
-
-        GameObject obj = new GameObject();
-        ppcVar1 = obj.AddComponent<Furnace3>();
-        ccVar2 = child2.FUN_2C5F4(0x8000);
-        auStack48 = GameManager.instance.FUN_2CEAC(child2, ccVar2);
-        ppcVar1.vTransform = vTransform;
-        ppcVar1.vTransform.position = auStack48.position;
-        ppcVar1.type = 8;
-        ppcVar1.maxHalfHealth = 5;
-        ppcVar1.vCollider = new VigCollider(Furnace.DAT_144);
-        ppcVar1.flags |= 0x184;
-        pcVar4 = LevelManager.instance.xobfList[19];
-        ppcVar1.physics2.M3 = 21;
-        ppcVar1.physics1.M1 = 4;
-        ppcVar1.DAT_98 = pcVar4;
-        iVar3 = GameManager.instance.terrain.FUN_1B750((uint)ppcVar1.vTransform.position.x, (uint)ppcVar1.vTransform.position.z);
-        ppcVar1.screen.y = iVar3 - ppcVar1.vTransform.position.y;
-        local_10 = new Vector3Int(0, 0, 0x100);
-        local_10 = Utilities.FUN_24094(ppcVar1.vTransform.rotation, local_10);
-        ppcVar1.physics1.Y = local_10.x;
-        ppcVar1.physics1.Z = local_10.y;
-        ppcVar1.physics1.W = local_10.z;
-        ppcVar1.FUN_305FC();
-        ppcVar1.DAT_58 = 0x40000;
-        return ppcVar1;
-    }
+	public VigTuple2 DAT_80_2;
+
+	protected override void Start()
+	{
+		base.Start();
+	}
+
+	protected override void Update()
+	{
+		base.Update();
+	}
+
+	public override uint OnCollision(HitDetection hit)
+	{
+		if (!FUN_32CF0(hit))
+		{
+			return 0u;
+		}
+		FUN_30C68();
+		return 0u;
+	}
+
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		switch (arg1)
+		{
+		case 0:
+		{
+			VigObject child;
+			switch (((byte)base.tags - 1) * 16777216 >> 24)
+			{
+			case 0:
+			{
+				VigTuple2 dAT_80_ = DAT_80_2;
+				VigObject dAT_ = DAT_84;
+				Vector3Int vector3Int = new Vector3Int(0, 0, 0);
+				Vector3Int vout = default(Vector3Int);
+				vout.x = dAT_.vTransform.position.x - vTransform.position.x;
+				vout.z = dAT_.vTransform.position.z - vTransform.position.z;
+				vout.y = vector3Int.y;
+				int num4 = vout.x;
+				if (vout.x < 0)
+				{
+					num4 = -vout.x;
+				}
+				int num5;
+				int num2;
+				if (20480 < num4)
+				{
+					num4 = dAT_80_.array[0] << 16;
+					if (num4 < dAT_.vTransform.position.x)
+					{
+						num4 = dAT_.vTransform.position.x;
+					}
+					num5 = (dAT_80_.array[0] + dAT_80_.array[2]) * 65536;
+					if (num4 < num5)
+					{
+						num5 = num4;
+					}
+					num4 = dAT_80_.array[1] << 16;
+					num5 -= vTransform.position.x;
+					if (num4 < dAT_.vTransform.position.z)
+					{
+						num4 = dAT_.vTransform.position.z;
+					}
+					num2 = (dAT_80_.array[1] + dAT_80_.array[3]) * 65536;
+					if (num4 < num2)
+					{
+						num2 = num4;
+					}
+					num2 -= vTransform.position.z;
+					num4 = -3051;
+					if (-3052 < num5)
+					{
+						num4 = 3051;
+						if (num5 < 3052)
+						{
+							num4 = num5;
+						}
+					}
+					vTransform.position.x += num4;
+					num4 = -3051;
+					if (-3052 < num2)
+					{
+						num4 = 3051;
+						if (num2 < 3052)
+						{
+							num4 = num2;
+						}
+					}
+					vTransform.position.z += num4;
+					vector3Int.x = vout.x;
+					vector3Int.z = vout.z;
+					Utilities.FUN_2A098(vout, out vout);
+					num4 = vout.z * vTransform.rotation.V02 - vout.x * vTransform.rotation.V22;
+					if (num4 < 0)
+					{
+						num4 += 4095;
+					}
+					num4 >>= 12;
+					num2 = num4;
+					if (num4 < 0)
+					{
+						num2 = -num4;
+					}
+					if (20 < num2)
+					{
+						num2 = -num4;
+						if (0 < num4)
+						{
+							num2 += 15;
+						}
+						FUN_24700(0, (short)(num2 >> 4), 0);
+					}
+					if (((GameManager.instance.DAT_28 - DAT_19) & 0xF) == 0)
+					{
+						vTransform.rotation = Utilities.MatrixNormal(vTransform.rotation);
+						return 0u;
+					}
+					return 0u;
+				}
+				num4 = vout.z;
+				if (vout.z < 0)
+				{
+					num4 = -vout.z;
+				}
+				if (20480 >= num4)
+				{
+					break;
+				}
+				num4 = dAT_80_.array[0] << 16;
+				if (num4 < dAT_.vTransform.position.x)
+				{
+					num4 = dAT_.vTransform.position.x;
+				}
+				num5 = (dAT_80_.array[0] + dAT_80_.array[2]) * 65536;
+				if (num4 < num5)
+				{
+					num5 = num4;
+				}
+				num4 = dAT_80_.array[1] << 16;
+				num5 -= vTransform.position.x;
+				if (num4 < dAT_.vTransform.position.z)
+				{
+					num4 = dAT_.vTransform.position.z;
+				}
+				num2 = (dAT_80_.array[1] + dAT_80_.array[3]) * 65536;
+				if (num4 < num2)
+				{
+					num2 = num4;
+				}
+				num2 -= vTransform.position.z;
+				num4 = -3051;
+				if (-3052 < num5)
+				{
+					num4 = 3051;
+					if (num5 < 3052)
+					{
+						num4 = num5;
+					}
+				}
+				vTransform.position.x += num4;
+				num4 = -3051;
+				if (-3052 < num2)
+				{
+					num4 = 3051;
+					if (num2 < 3052)
+					{
+						num4 = num2;
+					}
+				}
+				vTransform.position.z += num4;
+				vector3Int.x = vout.x;
+				vector3Int.z = vout.z;
+				Utilities.FUN_2A098(vout, out vout);
+				num4 = vout.z * vTransform.rotation.V02 - vout.x * vTransform.rotation.V22;
+				if (num4 < 0)
+				{
+					num4 += 4095;
+				}
+				num4 >>= 12;
+				num2 = num4;
+				if (num4 < 0)
+				{
+					num2 = -num4;
+				}
+				if (20 < num2)
+				{
+					num2 = -num4;
+					if (0 < num4)
+					{
+						num2 += 15;
+					}
+					FUN_24700(0, (short)(num2 >> 4), 0);
+				}
+				if (((GameManager.instance.DAT_28 - DAT_19) & 0xF) == 0)
+				{
+					vTransform.rotation = Utilities.MatrixNormal(vTransform.rotation);
+					return 0u;
+				}
+				return 0u;
+			}
+			case 1:
+			{
+				child = child2;
+				short num3 = (short)(child.vr.x - 17);
+				child.vr.x = num3;
+				if (num3 < -511)
+				{
+					base.tags++;
+				}
+				goto IL_0690;
+			}
+			case 2:
+			{
+				Furnace3 furnace = FUN_2458();
+				int param = GameManager.instance.FUN_1DD9C();
+				GameManager.instance.FUN_1E628(param, GameManager.instance.DAT_C2C, 67, furnace.vTransform.position);
+				if (furnace != null)
+				{
+					GameManager.instance.FUN_30CB0(furnace, 60);
+				}
+				FUN_30BA8();
+				GameManager.instance.FUN_30CB0(this, 120);
+				break;
+			}
+			default:
+				return 0u;
+			case 4:
+				{
+					child = child2;
+					short num = (short)(child.vr.x + 17);
+					child.vr.x = num;
+					if (0 < num << 16)
+					{
+						base.tags = 0;
+						int num2 = (int)GameManager.FUN_2AC5C();
+						GameManager.instance.FUN_30CB0(this, (num2 * 120 >> 15) + 180);
+						FUN_30BA8();
+					}
+					goto IL_0690;
+				}
+				IL_0690:
+				child.ApplyTransformation();
+				return 0u;
+			}
+			goto IL_0699;
+		}
+		case 1:
+			flags |= 256u;
+			if ((DAT_80_2 = GameManager.instance.FUN_2FFD0(1)) != null)
+			{
+				int num4 = (int)GameManager.FUN_2AC5C();
+				GameManager.instance.FUN_30CB0(this, num4 * 60 >> 15);
+			}
+			vTransform.position.y = 2816000;
+			break;
+		case 2:
+		{
+			sbyte tags = base.tags;
+			if (tags == 1)
+			{
+				VigTuple2 dAT_80_2 = DAT_80_2;
+				VigObject dAT_ = DAT_84;
+				if (dAT_.maxHalfHealth == 0 || dAT_.vTransform.position.x <= dAT_80_2.array[0] << 16 || (dAT_80_2.array[0] + dAT_80_2.array[2]) * 65536 <= dAT_.vTransform.position.x || dAT_.vTransform.position.z <= dAT_80_2.array[1] << 16 || (dAT_80_2.array[1] + dAT_80_2.array[3]) * 65536 <= dAT_.vTransform.position.z)
+				{
+					FUN_30BA8();
+					tags = (base.tags = 5);
+				}
+				int num4 = (int)GameManager.FUN_2AC5C();
+				GameManager.instance.FUN_30CB0(this, num4 * 60 >> 15);
+				return 0u;
+			}
+			if (tags < 2)
+			{
+				if (tags != 0)
+				{
+					return 0u;
+				}
+				VigObject vigObject = null;
+				uint num6 = uint.MaxValue;
+				VigTuple2 dAT_80_2 = DAT_80_2;
+				List<VigTuple> worldObjs = GameManager.instance.worldObjs;
+				for (int i = 0; i < worldObjs.Count; i++)
+				{
+					VigObject dAT_ = worldObjs[i].vObject;
+					if (dAT_.type == 2 && dAT_.maxHalfHealth != 0 && dAT_80_2.array[0] << 16 < dAT_.vTransform.position.x && dAT_.vTransform.position.x < (dAT_80_2.array[0] + dAT_80_2.array[2]) * 65536 && dAT_80_2.array[1] << 16 < dAT_.vTransform.position.z && dAT_.vTransform.position.z < (dAT_80_2.array[1] + dAT_80_2.array[3]) * 65536)
+					{
+						uint num7 = (uint)Utilities.FUN_29F6C(vTransform.position, dAT_.screen);
+						if (num7 < num6)
+						{
+							vigObject = dAT_;
+							num6 = num7;
+						}
+					}
+				}
+				int num4;
+				if (vigObject != null)
+				{
+					DAT_84 = vigObject;
+					FUN_30B78();
+					tags = ++base.tags;
+					num4 = (int)GameManager.FUN_2AC5C();
+					GameManager.instance.FUN_30CB0(this, num4 * 60 >> 15);
+					return 0u;
+				}
+				num4 = (int)GameManager.FUN_2AC5C();
+				GameManager.instance.FUN_30CB0(this, num4 * 60 >> 15);
+				return 0u;
+			}
+			if (tags != 4)
+			{
+				if (tags == 5)
+				{
+					int num4 = (int)GameManager.FUN_2AC5C();
+					GameManager.instance.FUN_30CB0(this, num4 * 60 >> 15);
+					base.tags = 0;
+					return 0u;
+				}
+				return 0u;
+			}
+			FUN_30B78();
+			goto IL_0699;
+		}
+		case 8:
+			{
+				if (!FUN_32B90((uint)arg2))
+				{
+					return 0u;
+				}
+				FUN_30C68();
+				break;
+			}
+			IL_0699:
+			base.tags++;
+			break;
+		}
+		return 0u;
+	}
+
+	private Furnace3 FUN_2458()
+	{
+		Furnace3 furnace = new GameObject().AddComponent<Furnace3>();
+		ConfigContainer param = child2.FUN_2C5F4(32768);
+		VigTransform vigTransform = GameManager.instance.FUN_2CEAC(child2, param);
+		furnace.vTransform = vTransform;
+		furnace.vTransform.position = vigTransform.position;
+		furnace.type = 8;
+		furnace.maxHalfHealth = 5;
+		furnace.vCollider = new VigCollider(Furnace.DAT_144);
+		furnace.flags |= 388u;
+		XOBF_DB dAT_ = LevelManager.instance.xobfList[19];
+		furnace.physics2.M3 = 21;
+		furnace.physics1.M1 = 4;
+		furnace.DAT_98 = dAT_;
+		int num = GameManager.instance.terrain.FUN_1B750((uint)furnace.vTransform.position.x, (uint)furnace.vTransform.position.z);
+		furnace.screen.y = num - furnace.vTransform.position.y;
+		Vector3Int vector3Int = Utilities.FUN_24094(v: new Vector3Int(0, 0, 256), rot: furnace.vTransform.rotation);
+		furnace.physics1.Y = vector3Int.x;
+		furnace.physics1.Z = vector3Int.y;
+		furnace.physics1.W = vector3Int.z;
+		furnace.FUN_305FC();
+		furnace.DAT_58 = 262144;
+		return furnace;
+	}
 }

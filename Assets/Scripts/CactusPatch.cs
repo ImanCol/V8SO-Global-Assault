@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CactusPatch : Mine
@@ -16,102 +14,93 @@ public class CactusPatch : Mine
 
     public override uint OnCollision(HitDetection hit)
     {
-        int iVar2;
-        int iVar3;
-        Mine ppcVar4;
-        int iVar5;
-        uint uVar6;
-
         if (hit.self.type == 2)
         {
             if (tags == 0)
-                return 0;
-
+            {
+                return 0u;
+            }
             LevelManager.instance.FUN_4DF20(vTransform.position, 13, 2048);
-            UIManager.instance.FUN_4E414(vTransform.position, new Color32(0xff, 0xff, 0xff, 8));
-            iVar2 = 0;
-            iVar3 = GameManager.instance.FUN_1DD9C();
-            GameManager.instance.FUN_1E14C(iVar3, GameManager.instance.DAT_C2C, 0);
-
+            UIManager.instance.FUN_4E414(vTransform.position, new Color32(byte.MaxValue, byte.MaxValue, byte.MaxValue, 8));
+            int num = 0;
+            int param = GameManager.instance.FUN_1DD9C();
+            GameManager.instance.FUN_1E14C(param, GameManager.instance.DAT_C2C, 0);
             if (maxHalfHealth != 0)
             {
                 do
                 {
-                    ppcVar4 = vData.ini.FUN_2C17C(182, typeof(Mine), 0) as Mine;
-                    ppcVar4.type = 8;
-                    ppcVar4.id = hit.self.id;
-                    ppcVar4.screen = screen;
-                    uVar6 = flags;
-                    ppcVar4.maxHalfHealth = 150;
-                    ppcVar4.physics2.M2 = 0;
-                    ppcVar4.flags = uVar6 & 0x60000000 | 0x80;
-                    iVar5 = (int)GameManager.FUN_2AC5C();
-                    ppcVar4.physics1.Z = (iVar5 * 7629 >> 15) - 3814;
-                    ppcVar4.physics1.W = -3051;
-                    iVar5 = (int)GameManager.FUN_2AC5C();
-                    ppcVar4.physics2.X = (iVar5 * 7629 >> 15) - 3814;
-                    ppcVar4.DAT_80 = DAT_80;
-                    ppcVar4.FUN_305FC();
-                    iVar2++;
-                } while (iVar2 < maxHalfHealth);
+                    Mine mine = vData.ini.FUN_2C17C(182, typeof(Mine), 0u) as Mine;
+                    mine.type = 8;
+                    mine.id = hit.self.id;
+                    mine.screen = screen;
+                    uint flags = base.flags;
+                    mine.maxHalfHealth = 150;
+                    if (((Vehicle)DAT_80).doubleDamage != 0)
+                    {
+                        mine.maxHalfHealth = 300;
+                    }
+                    mine.physics2.M2 = 0;
+                    mine.flags = ((flags & 0x60000000) | 0x80);
+                    int num2 = (int)GameManager.FUN_2AC5C();
+                    mine.physics1.Z = (num2 * 7629 >> 15) - 3814;
+                    mine.physics1.W = -3051;
+                    num2 = (int)GameManager.FUN_2AC5C();
+                    mine.physics2.X = (num2 * 7629 >> 15) - 3814;
+                    mine.DAT_80 = DAT_80;
+                    mine.FUN_305FC();
+                    num++;
+                }
+                while (num < maxHalfHealth);
             }
-
             GameManager.instance.FUN_309A0(this);
-            return 0xffffffff;
+            return uint.MaxValue;
         }
-
-        return 0;
+        return 0u;
     }
 
-    //FUN_476D0
     public override uint UpdateW(int arg1, int arg2)
     {
-        bool bVar1;
-        int iVar2;
-
-        if (arg1 == 2)
+        switch (arg1)
         {
-            id = 0;
-
-            if (DAT_80.maxHalfHealth == 0)
-            {
-                flags &= 0xdfffffff;
-                return 0;
-            }
+            case 2:
+                id = 0;
+                if (DAT_80.maxHalfHealth == 0)
+                {
+                    flags &= 3758096383u;
+                    return 0u;
+                }
+                break;
+            default:
+                return 0u;
+            case 0:
+                {
+                    if (tags != 0)
+                    {
+                        int num = GameManager.DAT_65C90[(physics2.M2 & 0xFFF) * 2] * 5120;
+                        if (num < 0)
+                        {
+                            num += 4095;
+                        }
+                        vTransform.position.y = GameManager.instance.DAT_DB0 + (num >> 12);
+                        physics2.M2 += 34;
+                        return 0u;
+                    }
+                    if (FUN_46D70() == 0)
+                    {
+                        return 0u;
+                    }
+                    tags = 1;
+                    bool num2 = GameManager.instance.DAT_DA0 <= vTransform.position.z;
+                    physics2.M2 = 0;
+                    if (num2 || vTransform.position.y < GameManager.instance.DAT_DB0)
+                    {
+                        FUN_30BA8();
+                    }
+                    flags |= 256u;
+                    break;
+                }
         }
-        else
-        {
-            if (arg1 != 0)
-                return 0;
-
-            if (tags != 0)
-            {
-                iVar2 = GameManager.DAT_65C90[(physics2.M2 & 0xfff) * 2] * 0x1400;
-
-                if (iVar2 < 0)
-                    iVar2 += 4095;
-
-                vTransform.position.y = GameManager.instance.DAT_DB0 + (iVar2 >> 12);
-                physics2.M2 += 34;
-                return 0;
-            }
-
-            iVar2 = FUN_46D70();
-
-            if (iVar2 == 0)
-                return 0;
-
-            tags = 1;
-            bVar1 = GameManager.instance.DAT_DA0 <= vTransform.position.z;
-            physics2.M2 = 0;
-
-            if (bVar1 || vTransform.position.y < GameManager.instance.DAT_DB0)
-                FUN_30BA8();
-
-            flags |= 0x100;
-        }
-
         GameManager.instance.FUN_30CB0(this, 120);
-        return 0;
+        return 0u;
     }
 }

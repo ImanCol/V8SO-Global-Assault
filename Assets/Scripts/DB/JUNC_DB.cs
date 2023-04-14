@@ -11,214 +11,178 @@ public delegate void DELEGATE_79A0(MemoryStream param1, MemoryStream param2, Mem
 
 public class JUNC_DB : MonoBehaviour
 {
-    public Vector3Int DAT_00; //0x00
-    public XOBF_DB DAT_0C; //0x0C
-    public byte DAT_10; //0x10
-    public byte DAT_11; //0x11
-    public short DAT_12; //0x12
-    public short DAT_14; //0x14
-    public short DAT_16; //0x16
-    public VigMesh DAT_18; //0x18
-    public RSEG_DB[] DAT_1C; //0x1C
+	public Vector3Int DAT_00;
 
-    //FUN_79A0 (LOAD.DLL)
-    public bool LoadDB(string assetPath)
-    {
-        byte bVar1;
-        short sVar2;
-        int iVar3;
-        int iVar4;
-        int iVar5;
-        int iVar7;
-        VigMesh pbVar8;
-        MemoryStream psVar9;
-        short sVar12;
-        MemoryStream psVar13;
-        uint uVar14;
-        short sVar15;
-        short sVar16;
-        short sVar17;
-        byte[] aVar18;
-        DELEGATE_79A0 dVar18;
-        VigTransform auStack72;
+	public XOBF_DB DAT_0C;
 
-        LevelManager levelManager = GameObject.FindObjectOfType<LevelManager>();
+	public byte DAT_10;
 
-        using (BinaryReader reader = new BinaryReader(File.Open(assetPath, FileMode.Open)))
-        {
-            if (reader == null)
-                return false;
+	public byte DAT_11;
 
-            long length = reader.BaseStream.Length;
-            VigTerrain terrain = GameObject.FindObjectOfType<VigTerrain>();
-            iVar3 = reader.ReadInt32BE();
-            iVar4 = reader.ReadInt32BE();
-            bVar1 = reader.ReadByte();
-            iVar5 = reader.ReadByte();
-            DAT_00.x = iVar3;
-            DAT_00.z = iVar4;
-            DAT_10 = bVar1;
-            DAT_11 = (byte)iVar5;
+	public short DAT_12;
 
-            if ((bVar1 & 0x40) == 0)
-                DAT_12 = 0;
-            else
-            {
-                sVar2 = reader.ReadInt16BE();
-                DAT_12 = sVar2;
-                length -= 2;
-            }
+	public short DAT_14;
 
-            if ((bVar1 & 2) == 0)
-            {
-                iVar7 = terrain.FUN_1B750((uint)iVar3, (uint)iVar4);
-                DAT_00.y = iVar7;
-            }
-            else
-            {
-                iVar7 = reader.ReadInt32BE();
-                DAT_00.y = iVar7 - 0x100000;
-                length -= 4;
-            }
+	public short DAT_16;
 
-            iVar7 = 0;
+	public VigMesh DAT_18;
 
-            if (0 < iVar5)
-            {
-                DAT_1C = new RSEG_DB[iVar5];
+	public RSEG_DB[] DAT_1C;
 
-                do
-                {
-                    DAT_1C[iVar7] = null;
-                    iVar7++;
-                } while (iVar7 < iVar5);
-            }
+	public bool LoadDB(string assetPath)
+	{
+		LevelManager levelManager = UnityEngine.Object.FindObjectOfType<LevelManager>();
+		using (BinaryReader binaryReader = new BinaryReader(File.Open(assetPath, FileMode.Open)))
+		{
+			if (binaryReader == null)
+			{
+				return false;
+			}
+			long num = binaryReader.BaseStream.Length;
+			VigTerrain vigTerrain = UnityEngine.Object.FindObjectOfType<VigTerrain>();
+			int num2 = binaryReader.ReadInt32BE();
+			int num3 = binaryReader.ReadInt32BE();
+			byte b = binaryReader.ReadByte();
+			int num4 = binaryReader.ReadByte();
+			DAT_00.x = num2;
+			DAT_00.z = num3;
+			DAT_10 = b;
+			DAT_11 = (byte)num4;
+			if ((b & 0x40) == 0)
+			{
+				DAT_12 = 0;
+			}
+			else
+			{
+				short num5 = DAT_12 = binaryReader.ReadInt16BE();
+				num -= 2;
+			}
+			int y;
+			if ((b & 2) == 0)
+			{
+				y = vigTerrain.FUN_1B750((uint)num2, (uint)num3);
+				DAT_00.y = y;
+			}
+			else
+			{
+				y = binaryReader.ReadInt32BE();
+				DAT_00.y = y - 1048576;
+				num -= 4;
+			}
+			y = 0;
+			if (0 < num4)
+			{
+				DAT_1C = new RSEG_DB[num4];
+				do
+				{
+					DAT_1C[y] = null;
+					y++;
+				}
+				while (y < num4);
+			}
+			if (num < 11)
+			{
+				DAT_18 = null;
+			}
+			else
+			{
+				num4 = binaryReader.ReadInt16BE();
+				DAT_0C = levelManager.xobfList[num4 + 42];
+				short num5 = DAT_14 = binaryReader.ReadInt16BE();
+				num5 = (DAT_16 = binaryReader.ReadInt16BE());
+				VigMesh vigMesh = DAT_0C.FUN_2CB74(base.gameObject, (ushort)DAT_14, init: false);
+				vigMesh.xobf = DAT_0C;
+				vigMesh.initAtStart = true;
+				DAT_18 = vigMesh;
+				vigMesh.DAT_00 = (byte)((vigMesh.DAT_00 & 0xFE) | 4);
+				MemoryStream input = new MemoryStream(DAT_18.vertexStream);
+				byte[] array = new byte[DAT_18.vertices << 3];
+				MemoryStream output = new MemoryStream(array);
+				b = DAT_18.DAT_01;
+				DAT_18.DAT_02 = 16;
+				DAT_18.vertexStream = array;
+				uint num6 = (uint)(16 - b);
+				if (0 < DAT_18.vertices)
+				{
+					using (BinaryReader binaryReader2 = new BinaryReader(input, Encoding.Default, leaveOpen: true))
+					{
+						using (BinaryWriter binaryWriter = new BinaryWriter(output, Encoding.Default, leaveOpen: true))
+						{
+							for (int i = 0; i < DAT_18.vertices; i++)
+							{
+								y = ((ushort)DAT_16 & 0xFFF) * 2;
+								short num7 = binaryReader2.ReadInt16();
+								binaryReader2.BaseStream.Seek(2L, SeekOrigin.Current);
+								short num8 = binaryReader2.ReadInt16();
+								y = GameManager.DAT_65C90[y + 1] * num7 + GameManager.DAT_65C90[y] * num8;
+								if (y < 0)
+								{
+									y += 4095;
+								}
+								short num9 = (short)(y >> 12);
+								binaryWriter.Write(num9);
+								y = ((ushort)DAT_16 & 0xFFF) * 2;
+								y = -GameManager.DAT_65C90[y] * num7 + GameManager.DAT_65C90[y + 1] * num8;
+								if (y < 0)
+								{
+									y += 4095;
+								}
+								short num10 = (short)(y >> 12);
+								y = vigTerrain.FUN_1B750((uint)(DAT_00.x + (num9 << (int)num6)), (uint)(DAT_00.z + (num10 << (int)num6)));
+								binaryReader2.BaseStream.Seek(2L, SeekOrigin.Current);
+								binaryWriter.Write((short)(y - DAT_00.y >> (int)num6));
+								binaryWriter.Write(num10);
+								binaryWriter.Write((short)0);
+							}
+						}
+					}
+				}
+				Utilities.SetRotMatrix(GameManager.FUN_2A39C().rotation);
+				Coprocessor.translationVector._trx = num2;
+				Coprocessor.translationVector._try = DAT_00.y;
+				Coprocessor.translationVector._trz = num3;
+				DELEGATE_79A0 param = FUN_78CC;
+				DAT_18.FUN_39A8(param);
+			}
+		}
+		levelManager.juncList.Add(this);
+		return true;
+	}
 
-            if (length < 11)
-                DAT_18 = null;
-            else
-            {
-                iVar5 = reader.ReadInt16BE();
-                DAT_0C = levelManager.xobfList[iVar5 + 42];
-                sVar2 = reader.ReadInt16BE();
-                DAT_14 = sVar2;
-                sVar2 = reader.ReadInt16BE();
-                DAT_16 = sVar2;
-                pbVar8 = DAT_0C.FUN_2CB74(gameObject, (ushort)DAT_14, false);
-                pbVar8.xobf = DAT_0C;
-                pbVar8.initAtStart = true;
-                DAT_18 = pbVar8;
-                pbVar8.DAT_00 = (byte)(pbVar8.DAT_00 & 0xfe | 4);
-                psVar13 = new MemoryStream(DAT_18.vertexStream);
-                aVar18 = new byte[DAT_18.vertices << 3];
-                psVar9 = new MemoryStream(aVar18);
-                bVar1 = DAT_18.DAT_01;
-                DAT_18.DAT_02 = 16;
-                DAT_18.vertexStream = aVar18;
-                uVar14 = 16 - (uint)bVar1;
+	private void Update()
+	{
+		base.transform.localPosition = new Vector3((float)DAT_00.x / (float)GameManager.instance.translateFactor, (float)(-DAT_00.y) / (float)GameManager.instance.translateFactor, (float)DAT_00.z / (float)GameManager.instance.translateFactor);
+	}
 
-                if (0 < DAT_18.vertices)
-                {
-                    using (BinaryReader reader2 = new BinaryReader(psVar13, Encoding.Default, true))
-                    {
-                        using (BinaryWriter writer = new BinaryWriter(psVar9, Encoding.Default, true))
-                        {
-                            for (int i = 0; i < DAT_18.vertices; i++)
-                            {
-                                iVar7 = ((ushort)DAT_16 & 0xfff) * 2;
-                                sVar15 = reader2.ReadInt16();
-                                reader2.BaseStream.Seek(2, SeekOrigin.Current);
-                                sVar16 = reader2.ReadInt16();
-                                iVar7 = GameManager.DAT_65C90[iVar7 + 1] * sVar15 +
-                                        GameManager.DAT_65C90[iVar7] * sVar16;
-
-                                if (iVar7 < 0)
-                                    iVar7 += 4095;
-
-                                sVar17 = (short)(iVar7 >> 12);
-                                writer.Write(sVar17);
-                                iVar7 = ((ushort)DAT_16 & 0xfff) * 2;
-                                iVar7 = -GameManager.DAT_65C90[iVar7] * sVar15 +
-                                        GameManager.DAT_65C90[iVar7 + 1] * sVar16;
-
-                                if (iVar7 < 0)
-                                    iVar7 += 4095;
-
-                                sVar12 = (short)(iVar7 >> 12);
-                                iVar7 = terrain.FUN_1B750((uint)(DAT_00.x + (sVar17 << (int)(uVar14 & 31))),
-                                                          (uint)(DAT_00.z + (sVar12 << (int)(uVar14 & 31))));
-                                reader2.BaseStream.Seek(2, SeekOrigin.Current);
-                                writer.Write((short)(iVar7 - DAT_00.y >> (int)(uVar14 & 31)));
-                                writer.Write(sVar12);
-                                writer.Write((short)0);
-                            }
-                        }
-                    }
-                }
-
-                auStack72 = GameManager.FUN_2A39C();
-                Utilities.SetRotMatrix(auStack72.rotation);
-                Coprocessor.translationVector._trx = iVar3;
-                Coprocessor.translationVector._try = DAT_00.y;
-                Coprocessor.translationVector._trz = iVar4;
-                dVar18 = new DELEGATE_79A0(FUN_78CC);
-                DAT_18.FUN_39A8(dVar18);
-            }
-        }
-
-        levelManager.juncList.Add(this);
-#if UNITY_EDITOR
-        EditorUtility.SetDirty(gameObject);
-        EditorUtility.SetDirty(levelManager.gameObject);
-        PrefabUtility.RecordPrefabInstancePropertyModifications(gameObject);
-#endif
-        return true;
-    }
-
-    void Update()
-    {
-        transform.localPosition = new Vector3(
-            (float)DAT_00.x / GameManager.instance.translateFactor,
-            (float)-DAT_00.y / GameManager.instance.translateFactor,
-            (float)DAT_00.z / GameManager.instance.translateFactor);
-
-        //transform.localRotation = vTransform.rotation.Matrix2Quaternion;
-        //transform.localEulerAngles = new Vector3(-transform.localEulerAngles.x, transform.localEulerAngles.y, -transform.localEulerAngles.z);
-    }
-
-    //FUN_78CC (LOAD.DLL)
-    private static void FUN_78CC(MemoryStream param1, MemoryStream param2, MemoryStream param3, MemoryStream param4)
-    {
-        int iVar1;
-        Vector3Int local_8;
-        long param1_pos = param1.Position;
-        long param2_pos = param2.Position;
-        long param3_pos = param3.Position;
-        long param4_pos = param4.Position;
-        VigTerrain terrain = GameObject.FindObjectOfType<VigTerrain>();
-
-        using (BinaryReader reader = new BinaryReader(param3, Encoding.Default, true))
-            local_8 = Utilities.FUN_23F58(new Vector3Int(reader.ReadInt16(), reader.ReadInt16(), reader.ReadInt16()));
-
-        if (local_8.x < 0)
-            local_8.x += 0xffff;
-
-        if (local_8.z < 0)
-            local_8.z += 0xffff;
-
-        iVar1 = terrain.vertices[((local_8.z >> 16 & 0x3fU) * 2 + (local_8.x >> 16 & 0x3fU) * 128) / 2 + 4096 *
-                        terrain.chunks[(((uint)(local_8.z >> 16) >> 6) * 4 +
-                                        ((uint)(local_8.x >> 16) >> 6) * 128) / 4]] >> 11;
-
-        using (BinaryWriter writer = new BinaryWriter(param1, Encoding.Default, true))
-        {
-            writer.Write(terrain.DAT_B9370[iVar1].r);
-            writer.Write(terrain.DAT_B9370[iVar1].g);
-            writer.Write(terrain.DAT_B9370[iVar1].b);
-        }
-        
-        param2.Seek(param2_pos, SeekOrigin.Begin);
-        param3.Seek(param3_pos, SeekOrigin.Begin);
-        param4.Seek(param4_pos, SeekOrigin.Begin);
-    }
+	private static void FUN_78CC(MemoryStream param1, MemoryStream param2, MemoryStream param3, MemoryStream param4)
+	{
+		long position4 = param1.Position;
+		long position = param2.Position;
+		long position2 = param3.Position;
+		long position3 = param4.Position;
+		VigTerrain vigTerrain = UnityEngine.Object.FindObjectOfType<VigTerrain>();
+		Vector3Int vector3Int;
+		using (BinaryReader binaryReader = new BinaryReader(param3, Encoding.Default, leaveOpen: true))
+		{
+			vector3Int = Utilities.FUN_23F58(new Vector3Int(binaryReader.ReadInt16(), binaryReader.ReadInt16(), binaryReader.ReadInt16()));
+		}
+		if (vector3Int.x < 0)
+		{
+			vector3Int.x += 65535;
+		}
+		if (vector3Int.z < 0)
+		{
+			vector3Int.z += 65535;
+		}
+		int num = vigTerrain.vertices[(((long)(vector3Int.z >> 16) & 63L) * 2 + ((long)(vector3Int.x >> 16) & 63L) * 128) / 2 + 4096 * vigTerrain.chunks[(((uint)(vector3Int.z >> 16) >> 6) * 4 + ((uint)(vector3Int.x >> 16) >> 6) * 128) / 4u]] >> 11;
+		using (BinaryWriter binaryWriter = new BinaryWriter(param1, Encoding.Default, leaveOpen: true))
+		{
+			binaryWriter.Write(vigTerrain.DAT_B9370[num].r);
+			binaryWriter.Write(vigTerrain.DAT_B9370[num].g);
+			binaryWriter.Write(vigTerrain.DAT_B9370[num].b);
+		}
+		param2.Seek(position, SeekOrigin.Begin);
+		param3.Seek(position2, SeekOrigin.Begin);
+		param4.Seek(position3, SeekOrigin.Begin);
+	}
 }

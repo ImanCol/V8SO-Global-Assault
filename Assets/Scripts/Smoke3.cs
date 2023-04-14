@@ -1,9 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Smoke3 : VigObject
 {
+    public XOBF_DB DAT_98;
+
     protected override void Start()
     {
         base.Start();
@@ -14,100 +14,83 @@ public class Smoke3 : VigObject
         base.Update();
     }
 
-    public XOBF_DB DAT_98;
-
-    //FUN_4F514
     public override uint UpdateW(int arg1, int arg2)
     {
-        short sVar1;
-        uint uVar2;
-        VigObject oVar2;
-        uint uVar3;
-        Smoke2 ppcVar4;
-        int iVar5;
-        int iVar6;
-        VigObject oVar6;
-        VigTransform t0;
-
+        uint result;
         if (arg1 == 0)
         {
             if ((flags & 0x2000000) != 0)
             {
-                oVar2 = Utilities.FUN_2CD78(this);
-                t0 = GameManager.instance.FUN_2CDF4(oVar2);
-                vTransform.rotation = Utilities.TransposeMatrix(t0.rotation);
+                VigObject obj = Utilities.FUN_2CD78(this);
+                VigTransform vigTransform = GameManager.instance.FUN_2CDF4(obj);
+                vTransform.rotation = Utilities.TransposeMatrix(vigTransform.rotation);
             }
-
-            sVar1 = (short)(physics1.M0 - 1);
-            physics1.M0 = sVar1;
-
-            if (sVar1 == -1)
+            short num = (short)(physics1.M0 - 1);
+            physics1.M0 = num;
+            if (num == -1)
             {
-                uVar3 = GameManager.FUN_2AC5C();
-                ppcVar4 = DAT_98.ini.FUN_2C17C((ushort)physics2.M3, typeof(Smoke2), 8) as Smoke2;
-                iVar5 = (int)(uVar3 & 0xfff) * 2;
-                ppcVar4.flags |= 0x410;
-                iVar6 = physics1.Y * GameManager.DAT_65C90[iVar5];
-
-                if (iVar6 < 0)
-                    iVar6 += 4095;
-
-                ppcVar4.physics1.Z = iVar6 >> 12;
-                iVar6 = physics1.Y * GameManager.DAT_65C90[iVar5 + 1];
-
-                if (iVar6 < 0)
-                    iVar6 += 4095;
-
-                ppcVar4.physics2.X = iVar6 >> 12;
-                iVar6 = (int)GameManager.FUN_2AC5C();
-                iVar5 = physics1.Z;
-                ppcVar4.vTransform.position = new Vector3Int(0, 0, 0);
-                ppcVar4.physics1.W = iVar5 + (iVar6 * iVar5 >> 15);
-                ppcVar4.vTransform = GameManager.FUN_2A39C();
-                Utilities.FUN_2CC48(this, ppcVar4);
+                uint num2 = GameManager.FUN_2AC5C();
+                Smoke2 smoke = DAT_98.ini.FUN_2C17C((ushort)physics2.M3, typeof(Smoke2), 8u) as Smoke2;
+                int num3 = (int)((num2 & 0xFFF) * 2);
+                smoke.flags |= 1040u;
+                int num4 = physics1.Y * GameManager.DAT_65C90[num3];
+                if (num4 < 0)
+                {
+                    num4 += 4095;
+                }
+                smoke.physics1.Z = num4 >> 12;
+                num4 = physics1.Y * GameManager.DAT_65C90[num3 + 1];
+                if (num4 < 0)
+                {
+                    num4 += 4095;
+                }
+                smoke.physics2.X = num4 >> 12;
+                num4 = (int)GameManager.FUN_2AC5C();
+                num3 = physics1.Z;
+                smoke.vTransform.position = new Vector3Int(0, 0, 0);
+                smoke.physics1.W = num3 + (num4 * num3 >> 15);
+                smoke.vTransform = GameManager.FUN_2A39C();
+                Utilities.FUN_2CC48(this, smoke);
                 Utilities.ParentChildren(this, this);
                 physics1.M0 = physics1.M1;
             }
-
-            oVar6 = child2;
-
-            if (oVar6 == null)
+            VigObject vigObject = child2;
+            if (vigObject == null)
             {
                 if (parent == null)
                 {
                     GameManager.instance.FUN_309A0(this);
-                    uVar2 = 0xffffffff;
+                    result = uint.MaxValue;
                 }
                 else
                 {
-                    oVar2 = FUN_2CCBC();
-                    GameManager.instance.FUN_307CC(oVar2);
-                    uVar2 = 0xffffffff;
+                    VigObject obj = FUN_2CCBC();
+                    GameManager.instance.FUN_307CC(obj);
+                    result = uint.MaxValue;
                 }
             }
             else
             {
                 do
                 {
-                    oVar6.vTransform.position.x += oVar6.physics1.Z;
-                    oVar6.vTransform.position.y += oVar6.physics1.W;
-                    oVar6.vTransform.position.z += oVar6.physics2.X;
-                    oVar6 = oVar6.child;
-                    uVar2 = 0;
-                } while (oVar6 != null);
+                    vigObject.vTransform.position.x += vigObject.physics1.Z;
+                    vigObject.vTransform.position.y += vigObject.physics1.W;
+                    vigObject.vTransform.position.z += vigObject.physics2.X;
+                    vigObject = vigObject.child;
+                    result = 0u;
+                }
+                while (vigObject != null);
             }
         }
         else
         {
-            uVar2 = 0;
-
+            result = 0u;
             if (arg1 == 2)
             {
                 physics1.M0 = -1;
-                uVar2 = 0;
+                result = 0u;
             }
         }
-
-        return uVar2;
+        return result;
     }
 }

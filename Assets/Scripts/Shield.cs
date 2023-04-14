@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Shield : VigObject
@@ -11,31 +9,21 @@ public class Shield : VigObject
 
     protected override void Update()
     {
-        transform.localPosition = new Vector3(
-            (float)vTransform.position.x / GameManager.instance.translateFactor,
-            (float)-vTransform.position.y / GameManager.instance.translateFactor,
-            (float)vTransform.position.z / GameManager.instance.translateFactor);
-
-        transform.localRotation = vTransform.rotation.Matrix2Quaternion;
-        transform.localEulerAngles = new Vector3(-transform.localEulerAngles.x, transform.localEulerAngles.y, -transform.localEulerAngles.z);
-        transform.localScale = vTransform.rotation.Scale;
+        base.transform.localPosition = new Vector3((float)vTransform.position.x / (float)GameManager.instance.translateFactor, (float)(-vTransform.position.y) / (float)GameManager.instance.translateFactor, (float)vTransform.position.z / (float)GameManager.instance.translateFactor);
+        base.transform.localRotation = vTransform.rotation.Matrix2Quaternion;
+        base.transform.localEulerAngles = new Vector3(0f - base.transform.localEulerAngles.x, base.transform.localEulerAngles.y, 0f - base.transform.localEulerAngles.z);
+        base.transform.localScale = vTransform.rotation.Scale;
     }
 
-    //FUN_393A0
     public override uint UpdateW(int arg1, VigObject arg2)
     {
-        VigObject oVar1;
-        Vehicle vVar2;
-
         if (arg1 == 5)
         {
-            vVar2 = Utilities.FUN_2CD78(this) as Vehicle;
-            vVar2.DAT_F6 &= 0xfffe;
-            oVar1 = FUN_2CCBC();
-            GameManager.instance.FUN_307CC(oVar1);
-            return 0xffffffff;
+            (Utilities.FUN_2CD78(this) as Vehicle).DAT_F6 &= 65534;
+            VigObject param = FUN_2CCBC();
+            GameManager.instance.FUN_307CC(param);
+            return uint.MaxValue;
         }
-        else
-            return 0;
+        return 0u;
     }
 }

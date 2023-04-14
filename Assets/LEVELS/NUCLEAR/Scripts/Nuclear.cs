@@ -1,172 +1,144 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Nuclear : VigObject
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
+	public static Nuclear instance;
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-        flags |= 0x2000;
-        GameManager.instance.FUN_17F34(0x64000, 0x7ffffff);
-    }
+	private void Awake()
+	{
+		if (instance == null)
+		{
+			instance = this;
+		}
+		flags |= 8192u;
+		GameManager.instance.FUN_17F34(409600, 134217727);
+	}
 
-    public static Nuclear instance;
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		if (arg1 != 1)
+		{
+			switch (arg1)
+			{
+			case 2:
+				break;
+			default:
+				return 0u;
+			case 17:
+				GameManager.instance.FUN_17EB8();
+				return 0u;
+			}
+		}
+		else
+		{
+			GameManager.instance.offsetFactor = 2.5f;
+			GameManager.instance.offsetStart = 0f;
+			GameManager.instance.angleOffset = 0.4f;
+			GameManager.instance.aspectRatioScale = 240f;
+			Color32 dAT_DE = LevelManager.instance.DAT_DE0;
+			dAT_DE.a = 128;
+			UIManager.instance.underwater.color = dAT_DE;
+			GameManager.instance.DAT_1000 |= 1;
+			VigObject param = GameManager.instance.FUN_30250(GameManager.instance.DAT_1078, 256);
+			VigObject x = GameManager.instance.FUN_4AC1C(4261412864u, param);
+			GameManager.instance.DAT_1038 = ((x != null) ? 1 : 0);
+		}
+		GameManager.instance.FUN_34B34();
+		GameManager.instance.FUN_30CB0(this, 240);
+		return 0u;
+	}
 
-    //FUN_230 (NUCLEAR.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        VigObject oVar4;
-        int iVar5;
-        VigObject oVar5;
-
-        switch (arg1)
-        {
-            case 1:
-                GameManager.instance.offsetFactor = 2.5f;
-                GameManager.instance.offsetStart = 0;
-                GameManager.instance.angleOffset = 0.4f;
-                Color32 color = LevelManager.instance.DAT_DE0;
-                color.a = 0x80;
-                UIManager.instance.underwater.color = color;
-                GameManager.instance.DAT_1000 |= 1;
-                oVar4 = GameManager.instance.FUN_30250(GameManager.instance.DAT_1078, 0x100);
-                oVar5 = GameManager.instance.FUN_4AC1C(0xfe000000, oVar4);
-                GameManager.instance.DAT_1038 = oVar5 != null ? 1 : 0;
-                goto case 2;
-            case 2:
-                GameManager.instance.FUN_34B34();
-                GameManager.instance.FUN_30CB0(this, 240);
-                iVar5 = 0;
-                break;
-            default:
-                iVar5 = 0;
-                break;
-            case 17:
-                GameManager.instance.FUN_17EB8();
-                iVar5 = 0;
-                break;
-        }
-
-        return (uint)iVar5;
-    }
-
-    public override uint UpdateW(VigObject arg1, int arg2, int arg3)
-    {
-        int iVar1;
-        VigTuple2 tVar1;
-        VigObject oVar2;
-        int iVar3;
-        int iVar4;
-        VigObject oVar4;
-        ConfigContainer ccVar4;
-        int iVar5;
-        VigObject oVar5;
-        VigCamera cVar5;
-        int iVar6;
-        int iVar7;
-        Vehicle vVar8;
-
-        switch (arg2)
-        {
-            case 18:
-                GameManager.instance.FUN_327CC(arg1);
-                break;
-            case 19:
-                iVar6 = 0x7fff0000;
-                oVar5 = null;
-                iVar7 = 0;
-                tVar1 = GameManager.instance.FUN_2FF3C((uint)arg1.vTransform.position.x, (uint)arg1.vTransform.position.z);
-
-                if (tVar1 != null && (ushort)tVar1.id - 1U < 2)
-                {
-                    iVar7 = (tVar1.id - 1 ^ 1) + 514;
-                    oVar5 = GameManager.instance.FUN_31950(iVar7);
-                }
-
-                if (oVar5 == null)
-                {
-                    iVar1 = 0;
-
-                    do
-                    {
-                        oVar2 = GameManager.instance.FUN_31950(iVar1 + 49);
-
-                        if (oVar2 != null)
-                        {
-                            iVar3 = Utilities.FUN_29F6C(arg1.vTransform.position, oVar2.vTransform.position);
-
-                            if (iVar3 < iVar6)
-                            {
-                                iVar7 = iVar1 + 0x200;
-                                oVar5 = oVar2;
-                                iVar6 = iVar3;
-                            }
-                        }
-
-                        iVar1++;
-                    } while (iVar1 < 2);
-                }
-
-                ccVar4 = oVar5.FUN_2C5F4(0x8000);
-                arg1.vTransform = GameManager.instance.FUN_2CEAC(oVar5, ccVar4);
-                arg1.physics1.X = 0;
-                arg1.physics1.Y = 0;
-                arg1.physics1.Z = 0;
-                iVar5 = arg1.vTransform.rotation.V02 * 7629;
-
-                if (iVar5 < 0)
-                    iVar5 += 31;
-
-                arg1.physics1.X = iVar5 >> 5;
-                iVar5 = arg1.vTransform.rotation.V12 * 7629;
-
-                if (iVar5 < 0)
-                    iVar5 += 31;
-
-                arg1.physics1.Y = iVar5 >> 5;
-                iVar5 = arg1.vTransform.rotation.V22 * 7629;
-
-                if (iVar5 < 0)
-                    iVar5 += 31;
-
-                arg1.physics1.Z = iVar5 >> 5;
-                iVar4 = GameManager.instance.FUN_1DD9C();
-                GameManager.instance.FUN_1E580(iVar4, GameManager.instance.DAT_C2C, 37, arg1.vTransform.position);
-                vVar8 = (Vehicle)arg1;
-                vVar8.state = _VEHICLE_TYPE.NuclearTunnel;
-                vVar8.flags |= 0x4000000;
-                GameManager.instance.FUN_30CB0(vVar8, 30);
-                
-                if (vVar8.vCamera != null)
-                {
-                    oVar4 = GameManager.instance.FUN_30250(GameManager.instance.DAT_1078, iVar7);
-                    cVar5 = LevelManager.instance.FUN_4B984(vVar8, oVar4);
-                    cVar5.maxHalfHealth = 0x100;
-                    vVar8.vCamera.flags &= 0xfbffffff;
-                    GameManager.instance.FUN_30CB0(vVar8.vCamera, 90);
-                    vVar8.vCamera = cVar5;
-                    LevelManager.instance.defaultCamera.transform.SetParent(cVar5.transform, false);
-                    cVar5.FUN_30B78();
-                }
-
-                return 0xffffffff;
-        }
-
-        return 0;
-    }
+	public override uint UpdateW(VigObject arg1, int arg2, int arg3)
+	{
+		switch (arg2)
+		{
+		case 18:
+			GameManager.instance.FUN_327CC(arg1);
+			break;
+		case 19:
+		{
+			int num = 2147418112;
+			VigObject vigObject = null;
+			int num2 = 0;
+			VigTuple2 vigTuple = GameManager.instance.FUN_2FF3C((uint)arg1.vTransform.position.x, (uint)arg1.vTransform.position.z);
+			if (vigTuple != null && (uint)((ushort)vigTuple.id - 1) < 2u)
+			{
+				num2 = ((vigTuple.id - 1) ^ 1) + 514;
+				vigObject = GameManager.instance.FUN_31950(num2);
+			}
+			if (vigObject == null)
+			{
+				int num3 = 0;
+				do
+				{
+					VigObject vigObject2 = GameManager.instance.FUN_31950(num3 + 49);
+					if (vigObject2 != null)
+					{
+						int num4 = Utilities.FUN_29F6C(arg1.vTransform.position, vigObject2.vTransform.position);
+						if (num4 < num)
+						{
+							num2 = num3 + 512;
+							vigObject = vigObject2;
+							num = num4;
+						}
+					}
+					num3++;
+				}
+				while (num3 < 2);
+			}
+			ConfigContainer param = vigObject.FUN_2C5F4(32768);
+			arg1.vTransform = GameManager.instance.FUN_2CEAC(vigObject, param);
+			arg1.physics1.X = 0;
+			arg1.physics1.Y = 0;
+			arg1.physics1.Z = 0;
+			int num5 = arg1.vTransform.rotation.V02 * 7629;
+			if (num5 < 0)
+			{
+				num5 += 31;
+			}
+			arg1.physics1.X = num5 >> 5;
+			num5 = arg1.vTransform.rotation.V12 * 7629;
+			if (num5 < 0)
+			{
+				num5 += 31;
+			}
+			arg1.physics1.Y = num5 >> 5;
+			num5 = arg1.vTransform.rotation.V22 * 7629;
+			if (num5 < 0)
+			{
+				num5 += 31;
+			}
+			arg1.physics1.Z = num5 >> 5;
+			int param2 = GameManager.instance.FUN_1DD9C();
+			GameManager.instance.FUN_1E580(param2, GameManager.instance.DAT_C2C, 37, arg1.vTransform.position);
+			Vehicle vehicle = (Vehicle)arg1;
+			vehicle.state = _VEHICLE_TYPE.NuclearTunnel;
+			vehicle.flags |= 67108864u;
+			GameManager.instance.FUN_30CB0(vehicle, 30);
+			if (vehicle.vCamera != null)
+			{
+				VigObject param3 = GameManager.instance.FUN_30250(GameManager.instance.DAT_1078, num2);
+				VigCamera vigCamera = LevelManager.instance.FUN_4B984(vehicle, param3);
+				vigCamera.maxHalfHealth = 256;
+				vehicle.vCamera.flags &= 4227858431u;
+				GameManager.instance.FUN_30CB0(vehicle.vCamera, 90);
+				vehicle.vCamera = vigCamera;
+				LevelManager.instance.defaultCamera.transform.SetParent(vigCamera.transform, worldPositionStays: false);
+				vigCamera.FUN_30B78();
+			}
+			return uint.MaxValue;
+		}
+		}
+		return 0u;
+	}
 }

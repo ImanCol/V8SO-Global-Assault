@@ -1,169 +1,379 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class GloryRockets : VigObject
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
+	private bool isLeader;
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	public List<Biker2> bikers = new List<Biker2>();
 
-    //FUN_101C (STNTBIKE.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        uint uVar4;
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-        switch (arg1)
-        {
-            case 0:
-                FUN_42330(arg2);
-                uVar4 = 0;
-                break;
-            default:
-                uVar4 = 0;
-                break;
-            case 14:
-                uVar4 = 6;
-                break;
-        }
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-        return uVar4;
-    }
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		if (arg1 != 0)
+		{
+			if (arg1 != 4)
+			{
+				if (arg1 == 14)
+				{
+					return 6u;
+				}
+			}
+			else if (isLeader && bikers.Count > 0 && maxHalfHealth != 0)
+			{
+				GameManager.instance.FUN_308C4(bikers[0].weapons[0].FUN_2CCBC());
+				GameManager.instance.FUN_308C4(bikers[1].weapons[0].FUN_2CCBC());
+				bikers.Clear();
+			}
+			return 0u;
+		}
+		FUN_42330(arg2);
+		return 0u;
+	}
 
-    public override uint UpdateW(int arg1, VigObject arg2)
-    {
-        GloryRocket puVar1;
-        VigObject oVar2;
-        int iVar3;
-        VigObject oVar3;
-        uint uVar4;
-        int iVar5;
-        VigObject oVar5;
-        int iVar6;
-        VigObject oVar6;
-        short sVar9;
-        VigObject oVar10;
+	public override uint UpdateW(int arg1, VigObject arg2)
+	{
+		uint result;
+		switch (arg1)
+		{
+		case 0:
+			FUN_42330(arg2);
+			result = 0u;
+			break;
+		case 1:
+			maxHalfHealth = 3;
+			flags |= 16384u;
+			if (arg2.type == 2 && GameManager.instance.experimentalDakota)
+			{
+				List<VigTuple> worldObjs = GameManager.instance.worldObjs;
+				isLeader = true;
+				for (int j = 0; j < worldObjs.Count; j++)
+				{
+					VigObject vObject = worldObjs[j].vObject;
+					if (!(vObject != null) || vObject.type != 13 || vObject.id != arg2.id)
+					{
+						continue;
+					}
+					Biker2 biker = (Biker2)vObject;
+					ConfigContainer configContainer = biker.FUN_4AE5C(7);
+					if (configContainer == null)
+					{
+						continue;
+					}
+					VigObject vigObject3 = biker.FUN_4AE94(7);
+					if (vigObject3 != null)
+					{
+						if (!bikers.Contains(biker) && biker.weapons[0] == null)
+						{
+							bikers.Add(biker);
+						}
+						Utilities.FUN_2CA94(biker, configContainer, vigObject3);
+						vigObject3.transform.parent = biker.transform;
+						if (biker.weapons[0] == null)
+						{
+							biker.weapons[0] = vigObject3;
+						}
+						else
+						{
+							biker.weapons[0].UpdateW(20, vigObject3);
+						}
+					}
+				}
+			}
+			goto default;
+		default:
+			result = 0u;
+			break;
+		case 12:
+			if (!GameManager.instance.experimentalDakota)
+			{
+				if ((flags & 0x80) != 0)
+				{
+					return 0u;
+				}
+				int num2 = 0;
+				short num3 = 1;
+				VigObject vigObject = child2;
+				do
+				{
+					VigObject child = vigObject.child;
+					GloryRocket gloryRocket = vigObject.vData.ini.FUN_2C17C((ushort)vigObject.DAT_1A, typeof(GloryRocket), 0u) as GloryRocket;
+					gloryRocket.id = 3;
+					gloryRocket.vTransform = vigObject.vTransform;
+					gloryRocket.screen = vigObject.vTransform.position;
+					gloryRocket.type = 8;
+					gloryRocket.maxHalfHealth = 100;
+					if (((Vehicle)arg2).doubleDamage != 0)
+					{
+						gloryRocket.maxHalfHealth = 200;
+					}
+					gloryRocket.DAT_19 = (byte)num2;
+					gloryRocket.DAT_80 = arg2;
+					gloryRocket.flags |= 1610612768u;
+					VigObject dAT_ = ((Vehicle)arg2).target;
+					if (((Vehicle)arg2).target == null)
+					{
+						dAT_ = arg2;
+					}
+					gloryRocket.DAT_84 = dAT_;
+					gloryRocket.physics2.M3 = num3;
+					gloryRocket.FUN_30B78();
+					if (maxHalfHealth < 2)
+					{
+						VigObject obj = vigObject.FUN_2CCBC();
+						GameManager.instance.FUN_2C4B4(obj);
+					}
+					Utilities.FUN_2CC48(this, gloryRocket);
+					Utilities.ParentChildren(this, this);
+					GameManager.instance.DAT_1084++;
+					int num = (int)GameManager.FUN_2AC5C();
+					num3 = (short)(num3 + 15);
+					num2++;
+					gloryRocket.vr.x = 4096 / ((num * 15 >> 15) + 15);
+					GameManager.instance.FUN_30CB0(gloryRocket, 480);
+					vigObject = child;
+				}
+				while (num2 < 3);
+				DAT_19 = 0;
+				maxHalfHealth--;
+				int param = GameManager.instance.FUN_1DD9C();
+				GameManager.instance.FUN_1E188(param, vData.sndList, 2);
+			}
+			else
+			{
+				if ((flags & 0x80) != 0)
+				{
+					return 0u;
+				}
+				short num3 = 1;
+				VigObject vigObject = GetRocket((int)maxHalfHealth % 3);
+				GloryRocket gloryRocket = vigObject.vData.ini.FUN_2C17C((ushort)vigObject.DAT_1A, typeof(GloryRocket), 0u) as GloryRocket;
+				gloryRocket.id = 3;
+				gloryRocket.vTransform = vigObject.vTransform;
+				gloryRocket.screen = vigObject.vTransform.position;
+				gloryRocket.type = 8;
+				gloryRocket.maxHalfHealth = 100;
+				if (((Vehicle)arg2).doubleDamage != 0)
+				{
+					gloryRocket.maxHalfHealth = 200;
+				}
+				gloryRocket.DAT_19 = 0;
+				gloryRocket.DAT_80 = arg2;
+				gloryRocket.flags |= 1610612768u;
+				VigObject dAT_ = ((Vehicle)arg2).target;
+				if (((Vehicle)arg2).target == null)
+				{
+					dAT_ = arg2;
+				}
+				gloryRocket.DAT_84 = dAT_;
+				gloryRocket.physics2.M3 = num3;
+				gloryRocket.FUN_30B78();
+				if (maxHalfHealth < 4)
+				{
+					VigObject obj = vigObject.FUN_2CCBC();
+					GameManager.instance.FUN_2C4B4(obj);
+				}
+				Utilities.FUN_2CC48(this, gloryRocket);
+				Utilities.ParentChildren(this, this);
+				GameManager.instance.DAT_1084++;
+				int num = (int)GameManager.FUN_2AC5C();
+				num3 = (short)(num3 + 15);
+				gloryRocket.vr.x = 4096 / ((num * 15 >> 15) + 15);
+				GameManager.instance.FUN_30CB0(gloryRocket, 480);
+				vigObject = ((GloryRockets)bikers[0].weapons[0]).GetRocket((maxHalfHealth + 1) % 3);
+				gloryRocket = (vigObject.vData.ini.FUN_2C17C((ushort)vigObject.DAT_1A, typeof(GloryRocket), 0u) as GloryRocket);
+				gloryRocket.id = 3;
+				gloryRocket.vTransform = vigObject.vTransform;
+				gloryRocket.screen = vigObject.vTransform.position;
+				gloryRocket.type = 8;
+				gloryRocket.maxHalfHealth = 100;
+				if (((Vehicle)arg2).doubleDamage != 0)
+				{
+					gloryRocket.maxHalfHealth = 200;
+				}
+				gloryRocket.DAT_19 = 1;
+				gloryRocket.DAT_80 = arg2;
+				gloryRocket.flags |= 1610612768u;
+				dAT_ = ((Vehicle)arg2).target;
+				if (((Vehicle)arg2).target == null)
+				{
+					dAT_ = arg2;
+				}
+				gloryRocket.DAT_84 = dAT_;
+				gloryRocket.physics2.M3 = num3;
+				gloryRocket.FUN_30B78();
+				if (maxHalfHealth < 4)
+				{
+					VigObject obj = vigObject.FUN_2CCBC();
+					GameManager.instance.FUN_2C4B4(obj);
+				}
+				Utilities.FUN_2CC48(bikers[0].weapons[0], gloryRocket);
+				Utilities.ParentChildren(bikers[0].weapons[0], bikers[0].weapons[0]);
+				GameManager.instance.DAT_1084++;
+				num = (int)GameManager.FUN_2AC5C();
+				num3 = (short)(num3 + 15);
+				gloryRocket.vr.x = 4096 / ((num * 15 >> 15) + 15);
+				GameManager.instance.FUN_30CB0(gloryRocket, 480);
+				vigObject = ((GloryRockets)bikers[1].weapons[0]).GetRocket((maxHalfHealth + 2) % 3);
+				gloryRocket = (vigObject.vData.ini.FUN_2C17C((ushort)vigObject.DAT_1A, typeof(GloryRocket), 0u) as GloryRocket);
+				gloryRocket.id = 3;
+				gloryRocket.vTransform = vigObject.vTransform;
+				gloryRocket.screen = vigObject.vTransform.position;
+				gloryRocket.type = 8;
+				gloryRocket.maxHalfHealth = 100;
+				if (((Vehicle)arg2).doubleDamage != 0)
+				{
+					gloryRocket.maxHalfHealth = 200;
+				}
+				gloryRocket.DAT_19 = 2;
+				gloryRocket.DAT_80 = arg2;
+				gloryRocket.flags |= 1610612768u;
+				dAT_ = ((Vehicle)arg2).target;
+				if (((Vehicle)arg2).target == null)
+				{
+					dAT_ = arg2;
+				}
+				gloryRocket.DAT_84 = dAT_;
+				gloryRocket.physics2.M3 = num3;
+				gloryRocket.FUN_30B78();
+				if (maxHalfHealth < 4)
+				{
+					VigObject obj = vigObject.FUN_2CCBC();
+					GameManager.instance.FUN_2C4B4(obj);
+				}
+				Utilities.FUN_2CC48(bikers[1].weapons[0], gloryRocket);
+				Utilities.ParentChildren(bikers[1].weapons[0], bikers[1].weapons[0]);
+				GameManager.instance.DAT_1084++;
+				num = (int)GameManager.FUN_2AC5C();
+				gloryRocket.vr.x = 4096 / ((num * 15 >> 15) + 15);
+				GameManager.instance.FUN_30CB0(gloryRocket, 480);
+				DAT_19 = 0;
+				maxHalfHealth--;
+				bikers[0].weapons[0].maxHalfHealth = maxHalfHealth;
+				bikers[1].weapons[0].maxHalfHealth = maxHalfHealth;
+				int param = GameManager.instance.FUN_1DD9C();
+				GameManager.instance.FUN_1E188(param, vData.sndList, 2);
+			}
+			result = 780u;
+			if (arg2.id < 0)
+			{
+				result = 390u;
+			}
+			break;
+		case 13:
+			result = 0u;
+			if (GameManager.instance.DAT_1084 == 0)
+			{
+				int num = Utilities.FUN_29F6C(arg2.screen, ((Vehicle)arg2).target.screen);
+				if (num < 4096000)
+				{
+					result = ((614400 < num) ? 1u : 0u);
+				}
+			}
+			break;
+		case 14:
+			result = 6u;
+			break;
+		case 16:
+			if (!GameManager.instance.experimentalDakota)
+			{
+				int num = child2.id;
+				if (num != 0)
+				{
+					VigObject vigObject2 = arg2.child2;
+					for (short num3 = vigObject2.id; num3 != num - 1; num3 = vigObject2.id)
+					{
+						vigObject2 = vigObject2.child;
+					}
+					VigObject obj = vigObject2.FUN_2CCBC();
+					Utilities.FUN_2CC9C(this, obj);
+					Utilities.ParentChildren(this, this);
+					return 0u;
+				}
+			}
+			else
+			{
+				List<short> list = new List<short>();
+				VigObject vigObject = child2;
+				while (vigObject != null)
+				{
+					if (vigObject.id != 3)
+					{
+						list.Add(vigObject.id);
+					}
+					vigObject = vigObject.child;
+				}
+				VigObject vigObject2 = arg2.child2;
+				while (vigObject2 != null)
+				{
+					if (!list.Contains(vigObject2.id))
+					{
+						VigObject obj = vigObject2.FUN_2CCBC();
+						vigObject2.transform.parent = null;
+						Utilities.FUN_2CC9C(this, obj);
+						Utilities.ParentChildren(this, this);
+						return 0u;
+					}
+					vigObject2 = vigObject2.child;
+				}
+			}
+			goto default;
+		case 20:
+		{
+			List<short> list = new List<short>();
+			List<VigObject> list2 = new List<VigObject>();
+			VigObject vigObject = child2;
+			while (vigObject != null)
+			{
+				if (vigObject.id != 3)
+				{
+					list.Add(vigObject.id);
+				}
+				vigObject = vigObject.child;
+			}
+			VigObject vigObject2 = arg2.child2;
+			while (vigObject2 != null)
+			{
+				if (!list.Contains(vigObject2.id))
+				{
+					list2.Add(vigObject2);
+				}
+				vigObject2 = vigObject2.child;
+			}
+			for (int i = 0; i < list2.Count; i++)
+			{
+				vigObject2 = list2[i];
+				VigObject obj = vigObject2.FUN_2CCBC();
+				vigObject2.transform.parent = null;
+				Utilities.FUN_2CC9C(this, obj);
+				Utilities.ParentChildren(this, this);
+			}
+			GameManager.instance.FUN_308C4(arg2.FUN_2CCBC());
+			goto default;
+		}
+		}
+		return result;
+	}
 
-        switch (arg1)
-        {
-            case 0:
-                FUN_42330(arg2);
-                uVar4 = 0;
-                break;
-            case 1:
-                maxHalfHealth = 3;
-                flags |= 0x4000;
-                goto default;
-            default:
-                uVar4 = 0;
-                break;
-            case 12:
-                if ((flags & 0x80) == 0)
-                {
-                    iVar6 = 0;
-                    sVar9 = 1;
-                    oVar5 = child2;
-
-                    do
-                    {
-                        oVar10 = oVar5.child;
-                        puVar1 = oVar5.vData.ini.FUN_2C17C((ushort)oVar5.DAT_1A, typeof(GloryRocket), 0) as GloryRocket;
-                        puVar1.id = 3;
-                        puVar1.vTransform = oVar5.vTransform;
-                        puVar1.screen = oVar5.vTransform.position;
-                        puVar1.type = 8;
-                        puVar1.maxHalfHealth = 100;
-                        puVar1.DAT_19 = (byte)iVar6;
-                        puVar1.DAT_80 = arg2;
-                        puVar1.flags |= 0x60000020;
-                        oVar2 = ((Vehicle)arg2).target;
-
-                        if (((Vehicle)arg2).target == null)
-                            oVar2 = arg2;
-
-                        puVar1.DAT_84 = oVar2;
-                        puVar1.physics2.M3 = sVar9;
-                        puVar1.FUN_30B78();
-
-                        if (maxHalfHealth < 2)
-                        {
-                            oVar3 = oVar5.FUN_2CCBC();
-                            GameManager.instance.FUN_2C4B4(oVar3);
-                        }
-
-                        Utilities.FUN_2CC48(this, puVar1);
-                        Utilities.ParentChildren(this, this);
-                        GameManager.instance.DAT_1084++;
-                        iVar5 = (int)GameManager.FUN_2AC5C();
-                        sVar9 += 15;
-                        iVar6++;
-                        puVar1.vr.x = 0x1000 / ((iVar5 * 15 >> 15) + 15);
-                        GameManager.instance.FUN_30CB0(puVar1, 480);
-                        oVar5 = oVar10;
-                    } while (iVar6 < 3);
-
-                    DAT_19 = 0;
-                    maxHalfHealth--;
-                    iVar3 = GameManager.instance.FUN_1DD9C();
-                    GameManager.instance.FUN_1E188(iVar3, vData.sndList, 2);
-                }
-                else
-                {
-                    //iVar3 = GameManager.instance.FUN_1DD9C();
-                    //GameManager.instance.FUN_1E14C(iVar3, GameManager.instance.DAT_C2C, 1);
-                    return 0;
-                }
-
-                uVar4 = 780;
-
-                if (arg2.id < 0)
-                    uVar4 = 390;
-
-                break;
-            case 13:
-                uVar4 = 0;
-
-                if (GameManager.instance.DAT_1084 == 0)
-                {
-                    iVar5 = Utilities.FUN_29F6C(arg2.screen, ((Vehicle)arg2).target.screen);
-
-                    if (iVar5 < 0x3e8000)
-                        uVar4 = (uint)(0x96000 < iVar5 ? 1 : 0);
-                }
-
-                break;
-            case 14:
-                uVar4 = 6;
-                break;
-            case 16:
-                iVar5 = child2.id;
-
-                if (iVar5 != 0)
-                {
-                    oVar6 = arg2.child2;
-                    sVar9 = oVar6.id;
-
-                    while(sVar9 != iVar5 - 1)
-                    {
-                        oVar6 = oVar6.child;
-                        sVar9 = oVar6.id;
-                    }
-
-                    oVar3 = oVar6.FUN_2CCBC();
-                    Utilities.FUN_2CC9C(this, oVar3);
-                    Utilities.ParentChildren(this, this);
-                    return 0;
-                }
-
-                goto default;
-        }
-
-        return uVar4;
-    }
+	public VigObject GetRocket(int id)
+	{
+		VigObject vigObject = child2;
+		while (vigObject != null)
+		{
+			if (vigObject.id == id)
+			{
+				return vigObject;
+			}
+			vigObject = vigObject.child;
+		}
+		return null;
+	}
 }

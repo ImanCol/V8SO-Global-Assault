@@ -1,82 +1,127 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Rendering;
-using Unity.Collections;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
+
     public OcclusionCamera occlusionPrefab;
+
     public LensFlares lensFlarePrefab;
-    public Image flash; //gp+CC8h
+
+    public Image flash;
+
     public RectTransform hudRect;
+
     public RectTransform flaresRect;
+
     public List<Sprite> enemySprites;
+
     public List<Sprite> weaponSprites;
+
     public List<Sprite> digitSprites;
+
     public List<Sprite> slotSprites;
+
     public List<Sprite> asciiSprites;
+
     public GameObject unitPrefab;
+
     public GameObject characterPrefab;
+
     public Image weaponRect;
+
     public Image enemyRect;
+
     public RectTransform radarRect;
+
     public RectTransform feedbackRect;
+
     public Image playerHealthSlider;
+
     public Slider enemyHealthSlider;
+
     public List<Image> digits;
+
     public List<Image> slots;
+
     public List<Image> powerups;
+
     public RectTransform youWinRect;
+
     public RectTransform youLoseRect;
+
     public RectTransform gameOverRect;
+
     public RectTransform destroyedRect;
+
     public Text completionTime;
+
     public Text arcadeWhammies;
+
     public Text arcadeTotaled;
+
     public Text survivalTime;
+
     public Text survivalWhammies;
+
     public Text survivalTotaled;
+
     public Text survivalDestroyed;
+
     public Text difficulty;
+
     public Text destroyed;
+
     public List<LensFlares> flares;
+
     public List<OcclusionCamera> cameras;
+
     public Image underwater;
+
     public float units;
+
     public float radius;
+
     public float printSpeed;
+
     public float under;
+
     public float waterOffset;
 
     private Image printedChar;
+
     private List<Image> feedbackElements;
+
     private int printIndex;
+
     private bool CR_Running;
 
-    private static Color32 GREEN = new Color32(0x25, 0xff, 0x00, 0xff);
-    private static Color32 RED = new Color32(0xff, 0x00, 0x00, 0xff);
-    private static Color32 YELLOW = new Color32(0xff, 0xff, 0x00, 0xff);
+    private static Color32 GREEN = new Color32(37, byte.MaxValue, 0, byte.MaxValue);
+
+    private static Color32 RED = new Color32(byte.MaxValue, 0, 0, byte.MaxValue);
+
+    private static Color32 YELLOW = new Color32(byte.MaxValue, byte.MaxValue, 0, byte.MaxValue);
+
+    private static Color32 GRAY = Color.gray;
 
     private void Awake()
     {
         instance = this;
-        int scale = (Screen.width + Screen.height) / 800;
-        if (scale < 1) scale = 1;
-        hudRect.localScale = new Vector3(scale, scale, 1);
-
-        if (GameManager.instance.gameMode == _GAME_MODE.Survival)
-            destroyedRect.gameObject.SetActive(true);
+        if (GameManager.instance.gameMode == _GAME_MODE.Survival || GameManager.instance.gameMode == _GAME_MODE.Survival2)
+        {
+            destroyedRect.gameObject.SetActive(value: true);
+        }
     }
 
     public void Underwater(float cameraY, float waterY)
     {
-        float radius = (waterY + waterOffset - cameraY) / under;
-        float height = Mathf.Clamp(radius, 0, 1);
-        underwater.rectTransform.anchorMax = new Vector2(1, height);
+        float y = Mathf.Clamp((waterY + waterOffset - cameraY) / under, 0f, 1f);
+        underwater.rectTransform.anchorMax = new Vector2(1f, y);
     }
 
     public void RefreshDestroyed(int value)
@@ -86,14 +131,21 @@ public class UIManager : MonoBehaviour
 
     public RawImage InstantiateUnit()
     {
-        RawImage unit = Instantiate(unitPrefab, radarRect).GetComponent<RawImage>();
-        unit.color = RED;
-        return unit;
+        RawImage component = UnityEngine.Object.Instantiate(unitPrefab, radarRect).GetComponent<RawImage>();
+        component.color = RED;
+        return component;
+    }
+
+    public RawImage InstantiateFriendlyUnit()
+    {
+        RawImage component = UnityEngine.Object.Instantiate(unitPrefab, radarRect).GetComponent<RawImage>();
+        component.color = GRAY;
+        return component;
     }
 
     public void InstantiateCharacter()
     {
-        printedChar = Instantiate(characterPrefab, feedbackRect).GetComponent<Image>();
+        printedChar = UnityEngine.Object.Instantiate(characterPrefab, feedbackRect).GetComponent<Image>();
         feedbackElements.Add(printedChar);
     }
 
@@ -106,90 +158,75 @@ public class UIManager : MonoBehaviour
     public IEnumerator Printf(string text, bool overwrite = true)
     {
         CR_Running = true;
-
         if (feedbackElements != null)
         {
-            for (int i = 0; i < feedbackElements.Count; i++)
-                DestroyImmediate(feedbackElements[i].gameObject, false);
-
+            for (int k = 0; k < feedbackElements.Count; k++)
+            {
+                UnityEngine.Object.DestroyImmediate(feedbackElements[k].gameObject, allowDestroyingAssets: false);
+            }
             feedbackElements.Clear();
             feedbackElements = null;
         }
-
         if (feedbackElements == null)
         {
             feedbackElements = new List<Image>();
-
-            for (int i = 0; i < text.Length; i++)
+            for (int j = 0; j < text.Length; j++)
             {
                 InstantiateCharacter();
                 yield return new WaitForSeconds(printSpeed);
-                ReplaceCharacter(text[i]);
+                ReplaceCharacter(text[j]);
             }
-
             yield return new WaitForSeconds(5f);
-
-            for (int i = 0; i < 128; i++)
+            for (int j = 0; j < 128; j++)
             {
-                for (int j = 0; j < feedbackElements.Count; j++)
+                for (int l = 0; l < feedbackElements.Count; l++)
                 {
-                    Color32 newColor = feedbackElements[j].color;
-                    newColor.r--;
-                    newColor.g--;
-                    newColor.b--;
-                    feedbackElements[j].color = newColor;
+                    Color32 c = feedbackElements[l].color;
+                    c.r--;
+                    c.g--;
+                    c.b--;
+                    feedbackElements[l].color = c;
                 }
-
                 yield return null;
             }
-
-            for (int i = 0; i < feedbackElements.Count; i++)
-                DestroyImmediate(feedbackElements[i].gameObject, false);
-
+            for (int m = 0; m < feedbackElements.Count; m++)
+            {
+                UnityEngine.Object.DestroyImmediate(feedbackElements[m].gameObject, allowDestroyingAssets: false);
+            }
             feedbackElements.Clear();
             feedbackElements = null;
         }
-
         CR_Running = false;
     }
 
     private IEnumerator _WinScreen()
     {
         yield return new WaitForSeconds(5f);
-        Vehicle player = GameManager.instance.playerObjects[0];
-        TimeSpan t = TimeSpan.FromSeconds(Time.timeSinceLevelLoadAsDouble);
-        string answer = string.Format("{0:D2}:{1:D2}:{2:D2}:{3:D3}",
-                        t.Hours,
-                        t.Minutes,
-                        t.Seconds,
-                        t.Milliseconds);
-        arcadeWhammies.text = player.DAT_BE.ToString();
-        arcadeTotaled.text = player.DAT_BF + " of " + GameManager.instance.totalSpawns;
-        completionTime.text = answer;
-        youWinRect.gameObject.SetActive(true);
+        Vehicle vehicle = GameManager.instance.playerObjects[0];
+        TimeSpan timeSpan = TimeSpan.FromSeconds(Time.timeSinceLevelLoadAsDouble);
+        string text = $"{timeSpan.Hours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}:{timeSpan.Milliseconds:D3}";
+        arcadeWhammies.text = vehicle.DAT_BE.ToString();
+        arcadeTotaled.text = vehicle.DAT_BF.ToString() + " of " + GameManager.instance.totalSpawns.ToString();
+        completionTime.text = text;
+        youWinRect.gameObject.SetActive(value: true);
     }
 
     private IEnumerator _LoseScreen()
     {
         yield return new WaitForSeconds(5f);
-        youLoseRect.gameObject.SetActive(true);
+        youLoseRect.gameObject.SetActive(value: true);
     }
 
     private IEnumerator _GameOver()
     {
         yield return new WaitForSeconds(5f);
-        Vehicle player = GameManager.instance.playerObjects[0];
-        TimeSpan t = TimeSpan.FromSeconds(Time.timeSinceLevelLoadAsDouble);
-        string answer = string.Format("{0:D2}:{1:D2}:{2:D2}:{3:D3}",
-                        t.Hours,
-                        t.Minutes,
-                        t.Seconds,
-                        t.Milliseconds);
-        survivalWhammies.text = player.DAT_BE.ToString();
-        survivalTotaled.text = player.DAT_BF.ToString();
-        survivalTime.text = answer;
+        Vehicle vehicle = GameManager.instance.playerObjects[0];
+        TimeSpan timeSpan = TimeSpan.FromSeconds(Time.timeSinceLevelLoadAsDouble);
+        string text = $"{timeSpan.Hours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}:{timeSpan.Milliseconds:D3}";
+        survivalWhammies.text = vehicle.DAT_BE.ToString();
+        survivalTotaled.text = vehicle.DAT_BF.ToString();
+        survivalTime.text = text;
         survivalDestroyed.text = GameManager.instance.DAT_CC4.ToString();
-
         switch (GameManager.instance.DAT_C6E)
         {
             case 0:
@@ -202,96 +239,129 @@ public class UIManager : MonoBehaviour
                 difficulty.text = "Hard";
                 break;
         }
+        gameOverRect.gameObject.SetActive(value: true);
+    }
 
-        gameOverRect.gameObject.SetActive(true);
+    private IEnumerator _GoodJob()
+    {
+        yield return new WaitForSeconds(5f);
+        Vehicle vehicle = GameManager.instance.playerObjects[0];
+        TimeSpan timeSpan = TimeSpan.FromSeconds(Time.timeSinceLevelLoadAsDouble);
+        string text = $"{timeSpan.Hours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}:{timeSpan.Milliseconds:D3}";
+        survivalWhammies.text = vehicle.DAT_BE.ToString();
+        survivalTotaled.text = vehicle.DAT_BF.ToString();
+        survivalTime.text = text;
+        survivalDestroyed.text = GameManager.instance.DAT_CC4.ToString();
+        Text component = gameOverRect.Find("Title").GetComponent<Text>();
+        component.text = "GOOD JOB!";
+        component.color = Color.yellow;
+        switch (GameManager.instance.DAT_C6E)
+        {
+            case 0:
+                difficulty.text = "Easy";
+                break;
+            case 1:
+                difficulty.text = "Medium";
+                break;
+            default:
+                difficulty.text = "Hard";
+                break;
+        }
+        gameOverRect.gameObject.SetActive(value: true);
     }
 
     public void WinScreen()
     {
-        hudRect.gameObject.SetActive(false);
+        hudRect.gameObject.SetActive(value: false);
         StartCoroutine("_WinScreen");
     }
 
     public void LoseScreen()
     {
-        hudRect.gameObject.SetActive(false);
+        hudRect.gameObject.SetActive(value: false);
         StartCoroutine("_LoseScreen");
     }
 
     public void GameOver()
     {
-        hudRect.gameObject.SetActive(false);
+        hudRect.gameObject.SetActive(value: false);
         StartCoroutine("_GameOver");
+    }
+
+    public void GoodJob()
+    {
+        hudRect.gameObject.SetActive(value: false);
+        StartCoroutine("_GoodJob");
     }
 
     public void CalculateUnitPosition(RawImage unit, Vehicle obj)
     {
-        Vehicle player = GameManager.instance.playerObjects[0];
-        float alpha = Vector3.Angle(player.transform.forward, Vector3.forward);
-        Vector3 cross = Vector3.Cross(player.transform.forward, Vector3.forward);
-        if (cross.y < 0) alpha = -alpha;
-        Vector3 playerPosition = (Vector3)player.vTransform.position / GameManager.instance.translateFactor;
-        Vector3 targetPosition = (Vector3)obj.screen / GameManager.instance.translateFactor;
-        Vector3 direction = targetPosition - playerPosition;
-        direction = Quaternion.Euler(0, alpha, 0) * direction;
-        Vector3 offset = direction / units;
-        unit.color = player.target == obj ? obj.jammer == 0 && (obj.flags & 0x8000000) == 0 ? GREEN : YELLOW : RED;
-        Vector3 position = Vector3.ClampMagnitude(offset, radius);
-        unit.rectTransform.anchoredPosition = new Vector2(position.x, position.z);
+        Vehicle vehicle = GameManager.instance.playerObjects[0];
+        float num = Vector3.Angle(vehicle.transform.forward, Vector3.forward);
+        if (Vector3.Cross(vehicle.transform.forward, Vector3.forward).y < 0f)
+        {
+            num = 0f - num;
+        }
+        Vector3 b = (Vector3)vehicle.vTransform.position / (float)GameManager.instance.translateFactor;
+        Vector3 point = (Vector3)obj.screen / (float)GameManager.instance.translateFactor - b;
+        point = Quaternion.Euler(0f, num, 0f) * point;
+        Vector3 vector = point / units;
+        unit.color = ((!(vehicle.target == obj)) ? RED : ((obj.jammer == 0 && (obj.flags & 0x8000000) == 0) ? GREEN : YELLOW));
+        Vector3 vector2 = Vector3.ClampMagnitude(vector, radius);
+        unit.rectTransform.anchoredPosition = new Vector2(vector2.x, vector2.z);
     }
 
     public void UpdateHUD(Vehicle player, int tick)
     {
-        float playerHealth = GetHealth(player);
-        playerHealthSlider.fillAmount = playerHealth;
-
-        if (playerHealth < 0.3f)
-            playerHealthSlider.enabled = (tick & 0x10) == 0 ? true : false;
+        float health = GetHealth(player);
+        playerHealthSlider.fillAmount = health;
+        if (health < 0.3f)
+        {
+            playerHealthSlider.enabled = (((tick & 0x10) == 0) ? true : false);
+        }
         else
+        {
             playerHealthSlider.enabled = true;
-
+        }
         VigObject target = player.target;
-
         if (target != null && target.type == 2)
         {
-            Vehicle targetVehicle = (Vehicle)target;
+            Vehicle vehicle = (Vehicle)target;
             enemyRect.enabled = true;
-            enemyRect.sprite = enemySprites[(int)targetVehicle.vehicle];
+            enemyRect.sprite = enemySprites[(int)(((vehicle.DAT_F6 & 0x400) == 0) ? vehicle.vehicle : (vehicle.vehicle + 18))];
             enemyRect.SetNativeSize();
-            enemyHealthSlider.gameObject.SetActive(true);
-            enemyHealthSlider.value = GetHealth(targetVehicle);
+            enemyHealthSlider.gameObject.SetActive(value: true);
+            enemyHealthSlider.value = GetHealth(vehicle);
         }
         else
         {
             enemyRect.enabled = false;
-            enemyHealthSlider.gameObject.SetActive(false);
+            enemyHealthSlider.gameObject.SetActive(value: false);
         }
-
         for (int i = 0; i < 3; i++)
         {
             if (player.weapons[i] != null)
             {
                 if (!slots[i].gameObject.activeSelf)
-                    slots[i].gameObject.SetActive(true);
+                {
+                    slots[i].gameObject.SetActive(value: true);
+                }
             }
-            else
+            else if (slots[i].gameObject.activeSelf)
             {
-                if (slots[i].gameObject.activeSelf)
-                    slots[i].gameObject.SetActive(false);
+                slots[i].gameObject.SetActive(value: false);
             }
         }
-
-        VigObject weapon = player.weapons[player.weaponSlot];
-
-        if (weapon != null && weapon.maxHalfHealth != 0)
+        VigObject vigObject = player.weapons[player.weaponSlot];
+        if (vigObject != null && vigObject.maxHalfHealth != 0)
         {
             weaponRect.enabled = true;
-            weaponRect.sprite = weaponSprites[weapon.tags - 1];
+            weaponRect.sprite = weaponSprites[vigObject.tags - 1];
             weaponRect.SetNativeSize();
             digits[0].enabled = true;
             digits[1].enabled = true;
-            digits[0].sprite = digitSprites[weapon.maxHalfHealth / 10];
-            digits[1].sprite = digitSprites[weapon.maxHalfHealth % 10];
+            digits[0].sprite = digitSprites[(int)vigObject.maxHalfHealth / 10];
+            digits[1].sprite = digitSprites[(int)vigObject.maxHalfHealth % 10];
             slots[0].sprite = slotSprites[0];
             slots[1].sprite = slotSprites[0];
             slots[2].sprite = slotSprites[0];
@@ -303,11 +373,9 @@ public class UIManager : MonoBehaviour
             digits[0].enabled = false;
             digits[1].enabled = false;
         }
-
         if (player.transformation != 0)
         {
             int index;
-
             switch (player.wheelsType)
             {
                 case _WHEELS.Air:
@@ -323,109 +391,110 @@ public class UIManager : MonoBehaviour
                     index = 0;
                     break;
             }
-
             if (!powerups[index].gameObject.activeSelf)
             {
-                powerups[0].gameObject.SetActive(false);
-                powerups[1].gameObject.SetActive(false);
-                powerups[2].gameObject.SetActive(false);
-                powerups[index].gameObject.SetActive(true);
+                powerups[0].gameObject.SetActive(value: false);
+                powerups[1].gameObject.SetActive(value: false);
+                powerups[2].gameObject.SetActive(value: false);
+                powerups[index].gameObject.SetActive(value: true);
             }
-
             if (player.transformation < 300)
-                powerups[index].enabled = (tick & 0x10) == 0 ? true : false;
-            else
-                powerups[index].enabled = true;
-        }
-        else
-        {
-            if (powerups[0].gameObject.activeSelf ||
-                powerups[1].gameObject.activeSelf ||
-                powerups[2].gameObject.activeSelf)
             {
-                powerups[0].gameObject.SetActive(false);
-                powerups[1].gameObject.SetActive(false);
-                powerups[2].gameObject.SetActive(false);
+                powerups[index].enabled = (((tick & 0x10) == 0) ? true : false);
+            }
+            else
+            {
+                powerups[index].enabled = true;
             }
         }
-
+        else if (powerups[0].gameObject.activeSelf || powerups[1].gameObject.activeSelf || powerups[2].gameObject.activeSelf)
+        {
+            powerups[0].gameObject.SetActive(value: false);
+            powerups[1].gameObject.SetActive(value: false);
+            powerups[2].gameObject.SetActive(value: false);
+        }
         if (player.doubleDamage != 0)
         {
             if (!powerups[3].gameObject.activeSelf)
-                powerups[3].gameObject.SetActive(true);
-
+            {
+                powerups[3].gameObject.SetActive(value: true);
+            }
             if (player.doubleDamage < 300)
-                powerups[3].enabled = (tick & 0x10) == 0 ? true : false;
+            {
+                powerups[3].enabled = (((tick & 0x10) == 0) ? true : false);
+            }
             else
+            {
                 powerups[3].enabled = true;
+            }
         }
-        else
+        else if (powerups[3].gameObject.activeSelf)
         {
-            if (powerups[3].gameObject.activeSelf)
-                powerups[3].gameObject.SetActive(false);
+            powerups[3].gameObject.SetActive(value: false);
         }
-
         if (player.shield != 0)
         {
             if (!powerups[4].gameObject.activeSelf)
-                powerups[4].gameObject.SetActive(true);
-
+            {
+                powerups[4].gameObject.SetActive(value: true);
+            }
             if (player.shield < 300)
-                powerups[4].enabled = (tick & 0x10) == 0 ? true : false;
+            {
+                powerups[4].enabled = (((tick & 0x10) == 0) ? true : false);
+            }
             else
+            {
                 powerups[4].enabled = true;
+            }
         }
-        else
+        else if (powerups[4].gameObject.activeSelf)
         {
-            if (powerups[4].gameObject.activeSelf)
-                powerups[4].gameObject.SetActive(false);
+            powerups[4].gameObject.SetActive(value: false);
         }
-
         if (player.jammer != 0)
         {
             if (!powerups[5].gameObject.activeSelf)
-                powerups[5].gameObject.SetActive(true);
-
+            {
+                powerups[5].gameObject.SetActive(value: true);
+            }
             if (player.jammer < 300)
-                powerups[5].enabled = (tick & 0x10) == 0 ? true : false;
+            {
+                powerups[5].enabled = (((tick & 0x10) == 0) ? true : false);
+            }
             else
+            {
                 powerups[5].enabled = true;
+            }
         }
-        else
+        else if (powerups[5].gameObject.activeSelf)
         {
-            if (powerups[5].gameObject.activeSelf)
-                powerups[5].gameObject.SetActive(false);
+            powerups[5].gameObject.SetActive(value: false);
         }
     }
 
     public float GetHealth(Vehicle obj)
     {
-        int health;
-
-        if (obj.body[0] == null)
-            health = obj.maxHalfHealth;
-        else
-            health = obj.body[0].maxHalfHealth +
-                    obj.body[1].maxHalfHealth;
-
-        return (float)health / obj.maxFullHealth;
+        int num = (!(obj.body[0] == null)) ? (obj.body[0].maxHalfHealth + obj.body[1].maxHalfHealth) : obj.maxHalfHealth;
+        return (float)num / (float)(int)obj.maxFullHealth;
     }
 
     public void RefreshFlares(int counter)
     {
         for (int i = 0; i < flares.Count; i++)
         {
-            if (flares[i].update != counter)
-                if (flares[i].gameObject.activeSelf)
-                    flares[i].gameObject.SetActive(false);
+            if (flares[i].update != counter && flares[i].gameObject.activeSelf)
+            {
+                flares[i].gameObject.SetActive(value: false);
+            }
         }
     }
 
     public void RefreshCameras()
     {
         while (cameras.Count > 0 && cameras[0] == null)
+        {
             cameras.RemoveAt(0);
-
+        }
         if (cameras.Count > 0)
         {
             cameras[0].RenderW();
@@ -435,118 +504,105 @@ public class UIManager : MonoBehaviour
 
     public void FUN_1D00C(LensFlares param1)
     {
-        uint uVar9;
-        uint uVar10;
-        uint uVar11;
-        int iVar14;
-
-        float fVar19 = Mathf.Abs(param1.rectTransform.anchoredPosition.x / 1.5f);
-        float fVar18 = Mathf.Abs(param1.rectTransform.anchoredPosition.y / 1.5f);
-        int iVar8 = (int)Mathf.Sqrt(fVar19 * fVar19 + fVar18 * fVar18);
-
-        if (iVar8 < 0x40)
+        float num = Mathf.Abs(param1.rectTransform.anchoredPosition.x / 1.5f);
+        float num2 = Mathf.Abs(param1.rectTransform.anchoredPosition.y / 1.5f);
+        int num3 = (int)Mathf.Sqrt(num * num + num2 * num2);
+        if (num3 >= 64)
         {
-            Color32 color = param1.color;
-            Color32 newColor = new Color32();
-
-            if (!(color.r == 0 && color.g == 0 && color.b == 0))
+            return;
+        }
+        Color32 color = param1.color;
+        Color32 c = default(Color32);
+        if (color.r == 0 && color.g == 0 && color.b == 0)
+        {
+            return;
+        }
+        if (!param1.request.hasError && param1.request.done)
+        {
+            NativeArray<Color32> data = param1.request.GetData<Color32>();
+            param1.renderTexture.LoadRawTextureData(data);
+            param1.renderTexture.Apply();
+        }
+        if (((Color32)param1.renderTexture.GetPixel(32, 32)).r != 0)
+        {
+            int num4 = 64 - num3;
+            uint num5 = ((Color32)flash.color).b + ((uint)(num4 * color.b) >> 6);
+            uint num6 = 255u;
+            if (num5 < 255)
             {
-                //if (param1.request.hasError) return;
-
-                if (!param1.request.hasError && param1.request.done)
-                {
-                    NativeArray<Color32> buffer = param1.request.GetData<Color32>();
-                    param1.renderTexture.LoadRawTextureData(buffer);
-                    param1.renderTexture.Apply();
-                }
-
-                //param1.renderTexture.ReadPixels(new Rect(32, 32, 1, 1), 0, 0, false);
-                Color32 renderColor = param1.renderTexture.GetPixel(32, 32);
-
-                if (renderColor.r != 0)
-                {
-                    iVar14 = 0x40 - iVar8;
-                    uVar9 = (uint)(((Color32)flash.color).b + ((uint)(iVar14 * color.b) >> 6));
-                    uVar11 = 0xff;
-
-                    if (uVar9 < 0xff)
-                        uVar11 = uVar9;
-
-                    uVar10 = (uint)(((Color32)flash.color).g + ((uint)(iVar14 * color.g) >> 6));
-                    uVar9 = 0xff;
-
-                    if (uVar10 < 0xff)
-                        uVar9 = uVar10;
-
-                    newColor.b = (byte)uVar11;
-                    newColor.g = (byte)uVar9;
-                    uVar11 = (uint)(((Color32)flash.color).r + ((uint)(iVar14 * color.r) >> 6));
-                    newColor.r = 0xff;
-
-                    if (uVar11 < 0xff)
-                        newColor.r = (byte)uVar11;
-
-                    newColor.a = 255;
-                    flash.color = newColor;
-                }
+                num6 = num5;
             }
+            uint num7 = ((Color32)flash.color).g + ((uint)(num4 * color.g) >> 6);
+            num5 = 255u;
+            if (num7 < 255)
+            {
+                num5 = num7;
+            }
+            c.b = (byte)num6;
+            c.g = (byte)num5;
+            num6 = ((Color32)flash.color).r + ((uint)(num4 * color.r) >> 6);
+            c.r = byte.MaxValue;
+            if (num6 < 255)
+            {
+                c.r = (byte)num6;
+            }
+            c.a = byte.MaxValue;
+            flash.color = c;
         }
     }
 
     public Flash FUN_4E414(Vector3Int param1, Color32 param2)
     {
-        bool bVar1;
-        Flash fVar2;
-
+        Flash result;
         if (GameManager.instance.screenMode == _SCREEN_MODE.Whole)
         {
-            bVar1 = GameManager.instance.FUN_2E22C(param1, 0);
-            fVar2 = null;
-
-            if (bVar1)
-                fVar2 = FUN_4E338(param2);
+            bool num = GameManager.instance.FUN_2E22C(param1, 0);
+            result = null;
+            if (num)
+            {
+                result = FUN_4E338(param2);
+            }
         }
         else
-            fVar2 = null;
-
-        return fVar2;
+        {
+            result = null;
+        }
+        return result;
     }
 
     public Flash FUN_4E338(Color32 param1)
     {
-        Flash ppcVar1;
-
+        Flash flash;
         if (GameManager.instance.screenMode == _SCREEN_MODE.Whole)
         {
-            GameObject obj = new GameObject();
-            ppcVar1 = obj.AddComponent<Flash>();
-            ppcVar1.flags = 0xa0;
-            ppcVar1.DAT_3C = 0x80;
-            ppcVar1.DAT_34 = param1;
-            ppcVar1.FUN_305FC();
+            flash = new GameObject().AddComponent<Flash>();
+            flash.flags = 160u;
+            flash.DAT_3C = 128;
+            flash.DAT_34 = param1;
+            flash.FUN_305FC();
         }
         else
-            ppcVar1 = null;
-
-        return ppcVar1;
+        {
+            flash = null;
+        }
+        return flash;
     }
 
     public Flash FUN_4E3A8(Color32 param1)
     {
-        Flash ppcVar1;
-
+        Flash flash;
         if (GameManager.instance.screenMode == _SCREEN_MODE.Whole)
         {
-            GameObject obj = new GameObject();
-            ppcVar1 = obj.AddComponent<Flash>();
-            ppcVar1.flags = 0xa0;
-            ppcVar1.DAT_34 = param1;
-            ppcVar1.DAT_3C = 0;
-            ppcVar1.FUN_305FC();
+            flash = new GameObject().AddComponent<Flash>();
+            flash.flags = 160u;
+            flash.DAT_34 = param1;
+            flash.DAT_3C = 0;
+            flash.FUN_305FC();
         }
         else
-            ppcVar1 = null;
-
-        return ppcVar1;
+        {
+            flash = null;
+        }
+        return flash;
     }
 }

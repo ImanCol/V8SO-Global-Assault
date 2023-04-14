@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class TrumpetBallistic : Ballistic
 {
+    public Trumpet2 DAT_90;
+
     protected override void Start()
     {
         base.Start();
@@ -16,46 +14,30 @@ public class TrumpetBallistic : Ballistic
 
     public override uint OnCollision(HitDetection hit)
     {
-        int iVar4;
-        Vehicle vVar9;
-
         if (hit.self.type == 2 && (hit.self.flags & 0x4000000) == 0)
         {
-            vVar9 = (Vehicle)hit.self;
-
-            if (vVar9.id < 0)
-                GameManager.instance.FUN_15AA8(~vVar9.id, 8, 255, 64, 16);
-
-            vVar9.physics1.X += DAT_90.physics1.Z * 2 - vVar9.DAT_A6;
-            vVar9.physics1.Z += DAT_90.physics2.X * 2 - vVar9.DAT_A6;
-
-            if (DAT_94 == null)
+            Vehicle vehicle = (Vehicle)hit.self;
+            if (vehicle.shield != 0)
             {
-                DAT_94 = vVar9;
-                DAT_98 = 0x20000 - vVar9.DAT_A6 * 4;
+                return 0u;
             }
-        }
-
-        return 0;
-    }
-
-    public Trumpet2 DAT_90;
-    public Vehicle DAT_94;
-    public int DAT_98;
-
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        if (arg1 == 0)
-        {
-            if (DAT_94 != null)
+            if (vehicle.id < 0)
             {
-                DAT_94.physics2.X = DAT_98;
-                DAT_94.physics2.Y = DAT_98;
-                DAT_94.physics2.Z = DAT_98;
+                GameManager.instance.FUN_15AA8(~vehicle.id, 8, byte.MaxValue, 64, 16);
             }
+            int num = vehicle.DAT_A6 >> 17;
+            if (num == 0)
+            {
+                num = 1;
+            }
+            vehicle.physics1.X += DAT_90.physics1.Z * 2 / num;
+            vehicle.physics1.Z += DAT_90.physics2.X * 2 / num;
+            vehicle.physics2.X = 131072 / num;
+            vehicle.physics2.Y = 131072 / num;
+            vehicle.physics2.Z = 131072 / num;
+            maxHalfHealth = 0;
         }
-
-        return 0;
+        return 0u;
     }
 
     public override uint UpdateW(int arg1, VigObject arg2)

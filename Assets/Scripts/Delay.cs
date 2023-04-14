@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Delay : VigObject
@@ -14,15 +12,13 @@ public class Delay : VigObject
         base.Update();
     }
 
-    //FUN_4DAB4
     public override uint UpdateW(int arg1, int arg2)
     {
         if (arg1 == 2)
         {
             PDAT_74.FUN_4D8A8(vData, (ushort)DAT_1A, child2);
-            Destroy(gameObject);
+            UnityEngine.Object.Destroy(base.gameObject);
         }
-
-        return 0;
+        return 0u;
     }
 }

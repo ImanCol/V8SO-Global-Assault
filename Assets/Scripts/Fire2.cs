@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Fire2 : VigObject
 {
     protected override void Start()
@@ -14,7 +10,6 @@ public class Fire2 : VigObject
         base.Update();
     }
 
-    //FUN_4F0CC
     public override uint UpdateW(int arg1, int arg2)
     {
         if (arg1 == 0)
@@ -23,34 +18,25 @@ public class Fire2 : VigObject
             vTransform.position.y += physics1.W;
             vTransform.position.z += physics2.X;
         }
-
-        return 0;
+        return 0u;
     }
 
     public override uint UpdateW(int arg1, VigObject arg2)
     {
-        uint uVar1;
-
-        uVar1 = 0;
-
+        uint result = 0u;
         if (arg1 == 5)
         {
             FUN_4EE8C(GameManager.instance.interObjs);
-            uVar1 = 0xffffffff;
+            result = uint.MaxValue;
         }
-
-        return uVar1;
+        return result;
     }
 
     public void FUN_4EE40()
     {
-        VigTuple tVar1;
-
         ApplyTransformation();
         FUN_2D1DC();
-        tVar1 = GameManager.instance.FUN_30080(GameManager.instance.interObjs, this);
-        TDAT_74 = tVar1;
-        tVar1 = GameManager.instance.FUN_30080(GameManager.instance.DAT_10A8, this);
-        TDAT_78 = tVar1;
+        VigTuple vigTuple = TDAT_74 = GameManager.instance.FUN_30080(GameManager.instance.interObjs, this);
+        vigTuple = (TDAT_78 = GameManager.instance.FUN_30080(GameManager.instance.DAT_10A8, this));
     }
 }

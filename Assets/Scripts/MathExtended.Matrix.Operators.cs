@@ -8,138 +8,139 @@ namespace MathExtended.Matrices
         #region Overloaded operators
         public static Matrix operator ~(Matrix matrix)
         {
-            var result = matrix.Duplicate();
-            result.Transpose();
-            return result;
+            Matrix matrix2 = matrix.Duplicate();
+            matrix2.Transpose();
+            return matrix2;
         }
 
         public static Matrix operator !(Matrix matrix)
         {
-            var result = matrix.Duplicate();
-            result.Inverse();
-            return result;
+            Matrix matrix2 = matrix.Duplicate();
+            matrix2.Inverse();
+            return matrix2;
         }
 
         public static Matrix operator +(Matrix first, Matrix second)
         {
-            var result = first.Duplicate();
-            result.Add(second);
-            return result;
+            Matrix matrix = first.Duplicate();
+            matrix.Add(second);
+            return matrix;
         }
 
         public static Matrix operator -(Matrix first, Matrix second)
         {
-            var result = first.Duplicate();
-            result.Sub(second);
-            return result;
+            Matrix matrix = first.Duplicate();
+            matrix.Sub(second);
+            return matrix;
         }
 
         public static Matrix operator *(Matrix first, Matrix second)
         {
-            var result = first.Duplicate();
-            result.Multiply(second);
-            return result;
+            Matrix matrix = first.Duplicate();
+            matrix.Multiply(second);
+            return matrix;
         }
 
         public static Matrix operator *(Matrix matrix, double scalar)
         {
-            var result = matrix.Duplicate();
-            result.Multiply(scalar);
-            return result;
+            Matrix matrix2 = matrix.Duplicate();
+            matrix2.Multiply(scalar);
+            return matrix2;
         }
 
         public static Matrix operator *(double scalar, Matrix matrix)
         {
-            var result = matrix.Duplicate();
-            result.Multiply(scalar);
-            return result;
+            Matrix matrix2 = matrix.Duplicate();
+            matrix2.Multiply(scalar);
+            return matrix2;
         }
 
-        public static Boolean operator ==(Matrix first, Matrix second)
+        public static bool operator ==(Matrix first, Matrix second)
         {
-            bool result = (first.Rows == second.Rows) && (first.Columns == second.Columns);
-            if (result)
+            bool flag = first.Rows == second.Rows && first.Columns == second.Columns;
+            if (flag)
             {
-                for (int row = 1; row <= first.Rows; row++)
+                for (int i = 1; i <= first.Rows; i++)
                 {
-                    for (int col = 1; col <= first.Columns; col++)
+                    for (int j = 1; j <= first.Columns; j++)
                     {
-                        result &= (first[row, col] == second[row, col]);
+                        flag &= (first[i, j] == second[i, j]);
                     }
                 }
             }
-            return result;
+            return flag;
         }
 
-        public static Boolean operator !=(Matrix first, Matrix second)
+        public static bool operator !=(Matrix first, Matrix second)
         {
-            bool result = (first.Rows != second.Rows) || (first.Columns != second.Columns);
-            if (!result)
+            bool flag = first.Rows != second.Rows || first.Columns != second.Columns;
+            if (!flag)
             {
-                for (int row = 1; row <= first.Rows; row++)
+                for (int i = 1; i <= first.Rows; i++)
                 {
-                    for (int col = 1; col <= first.Columns; col++)
+                    for (int j = 1; j <= first.Columns; j++)
                     {
-                        result |= (first[row, col] != second[row, col]);
+                        flag |= (first[i, j] != second[i, j]);
                     }
                 }
             }
-            return result;
+            return flag;
         }
 
-        public static Boolean operator >(Matrix first, Matrix second)
+        public static bool operator >(Matrix first, Matrix second)
         {
-            return (first.Rows * first.Columns) > (second.Rows * second.Columns);
+            return first.Rows * first.Columns > second.Rows * second.Columns;
         }
 
-        public static Boolean operator <(Matrix first, Matrix second)
+        public static bool operator <(Matrix first, Matrix second)
         {
-            return (first.Rows * first.Columns) < (second.Rows * second.Columns);
+            return first.Rows * first.Columns < second.Rows * second.Columns;
         }
 
-        public static Boolean operator >=(Matrix first, Matrix second)
+        public static bool operator >=(Matrix first, Matrix second)
         {
-            return (first.Rows * first.Columns) >= (second.Rows * second.Columns);
+            return first.Rows * first.Columns >= second.Rows * second.Columns;
         }
 
-        public static Boolean operator <=(Matrix first, Matrix second)
+        public static bool operator <=(Matrix first, Matrix second)
         {
-            return (first.Rows * first.Columns) <= (second.Rows * second.Columns);
+            return first.Rows * first.Columns <= second.Rows * second.Columns;
         }
 
         public override bool Equals(object obj)
         {
-            var matrix = obj as Matrix;
+            Matrix matrix = obj as Matrix;
             if (obj == null)
             {
                 return false;
             }
-            bool result = (this.Rows == matrix.Rows) && (this.Columns == matrix.Columns);
-            if (result)
+            bool flag = Rows == matrix.Rows && Columns == matrix.Columns;
+            if (flag)
             {
-                for (int row = 1; row <= this.Rows; row++)
+                for (int i = 1; i <= Rows; i++)
                 {
-                    for (int col = 1; col <= this.Columns; col++)
+                    for (int j = 1; j <= Columns; j++)
                     {
-                        result &= (this[row, col] == matrix[row, col]);
+                        flag &= (this[i, j] == matrix[i, j]);
                     }
                 }
             }
-            return result;
+            return flag;
         }
 
         public override int GetHashCode()
         {
-            var _matrixString = new StringBuilder();
-            _matrixString.Append(this.Rows).Append("x").Append(this.Columns).Append("=");
-            for (int row = 1; row <= this.Rows; row++)
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append(Rows).Append("x").Append(Columns)
+                .Append("=");
+            for (int i = 1; i <= Rows; i++)
             {
-                for (int col = 1; col <= this.Columns; col++)
+                for (int j = 1; j <= Columns; j++)
                 {
-                    _matrixString.Append(this[row, col]).Append(";");
+                    stringBuilder.Append(this[i, j]).Append(";");
                 }
             }
-            return _matrixString.ToString().GetHashCode();
+            return stringBuilder.ToString().GetHashCode();
         }
         #endregion
     }

@@ -1,206 +1,305 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Invasion : VigObject
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-    //FUN_66C (CARAVLLE.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        int iVar5;
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		switch (arg1)
+		{
+		case 0:
+			if (FUN_42330(arg2) < 1)
+			{
+				return 0u;
+			}
+			child2.vr.y += 34;
+			if (arg2 != 0)
+			{
+				child2.ApplyRotationMatrix();
+				return 0u;
+			}
+			break;
+		case 10:
+		{
+			if (arg2 != 17427)
+			{
+				break;
+			}
+			Vehicle vehicle = Utilities.FUN_2CD78(this) as Vehicle;
+			if (vehicle == null || id != 0)
+			{
+				return 0u;
+			}
+			ushort num = 3;
+			if (vehicle.id < 0)
+			{
+				num = 5;
+			}
+			ConfigContainer param = child2.FUN_2C5F4(32768);
+			int num2 = 0;
+			short num3 = 1;
+			VigTransform vigTransform = GameManager.instance.FUN_2CEAC(child2, param);
+			do
+			{
+				Dictionary<int, Type> dictionary = new Dictionary<int, Type>();
+				dictionary.Add(vData.ini.GetContainerIndex(3, 0), typeof(VigChild));
+				Invasion2 invasion = vData.ini.FUN_2C17C(3, typeof(Invasion2), 8u, dictionary) as Invasion2;
+				Utilities.ParentChildren(invasion, invasion);
+				invasion.type = 4;
+				invasion.id = (short)num2;
+				invasion.flags = 162u;
+				invasion.vTransform = vigTransform;
+				invasion.physics2.M3 = num3;
+				int num4 = vehicle.physics1.X;
+				if (num4 < 0)
+				{
+					num4 += 127;
+				}
+				invasion.physics1.Z = (num4 >> 7) + vigTransform.rotation.V02;
+				num4 = vehicle.physics1.Y;
+				if (num4 < 0)
+				{
+					num4 += 127;
+				}
+				invasion.physics1.W = (num4 >> 7) + vigTransform.rotation.V12;
+				num4 = vehicle.physics1.Z;
+				if (num4 < 0)
+				{
+					num4 += 127;
+				}
+				num3 = (short)(num3 + 8);
+				num2++;
+				invasion.physics2.X = (num4 >> 7) + vigTransform.rotation.V22;
+				invasion.FUN_2D1DC();
+				invasion.FUN_305FC();
+			}
+			while (num2 < 4);
+			Vector3Int vin = default(Vector3Int);
+			vin.x = vehicle.screen.x - vehicle.vTransform.position.x;
+			vin.y = vehicle.screen.y - vehicle.vTransform.position.y;
+			vin.z = vehicle.screen.z - vehicle.vTransform.position.z;
+			num2 = Utilities.FUN_29FC8(vin, out Vector3Int _);
+			vin = vehicle.screen;
+			num2 = 0;
+			num3 = 360;
+			do
+			{
+				Saucer saucer = vData.ini.FUN_2C17C(2, typeof(Saucer), 8u) as Saucer;
+				saucer.type = 8;
+				saucer.flags = 1610612864u;
+				saucer.id = vehicle.id;
+				saucer.tags = 1;
+				saucer.screen.x = vin.x;
+				saucer.screen.y = vin.y - 2097152;
+				saucer.maxHalfHealth = num;
+				if (vehicle.doubleDamage != 0)
+				{
+					saucer.maxHalfHealth = (ushort)(num * 2);
+				}
+				saucer.screen.z = vin.z;
+				int num4 = (((num2 << 12) / 3) & 0xFFF) * 2;
+				short z = GameManager.DAT_65C90[num4 + 1];
+				saucer.physics1.W = 0;
+				saucer.physics1.Z = z;
+				z = GameManager.DAT_65C90[num4];
+				num2++;
+				saucer.physics2.M3 = num3;
+				num3 = (short)(num3 + 120);
+				saucer.DAT_80 = vehicle;
+				saucer.DAT_84 = vehicle;
+				GameManager.instance.DAT_1084++;
+				saucer.physics2.X = z;
+				saucer.FUN_3066C();
+			}
+			while (num2 < 3);
+			int param2 = GameManager.instance.FUN_1DD9C();
+			GameManager.instance.FUN_1E580(param2, vData.sndList, 4, vigTransform.position);
+			num3 = (short)(maxHalfHealth - 1);
+			maxHalfHealth = (ushort)num3;
+			if (num3 == 0)
+			{
+				FUN_3A368();
+			}
+			if (-1 < vehicle.id)
+			{
+				id = 1400;
+				return 1400u;
+			}
+			id = 1280;
+			return 1280u;
+		}
+		}
+		return 0u;
+	}
 
-        if (arg1 == 0)
-        {
-            iVar5 = FUN_42330(arg2);
-
-            if (iVar5 < 1)
-                return 0;
-
-            child2.vr.y += 34;
-
-            if (arg2 != 0)
-            {
-                child2.ApplyRotationMatrix();
-                return 0;
-            }
-        }
-
-        return 0;
-    }
-
-    public override uint UpdateW(int arg1, VigObject arg2)
-    {
-        short sVar1;
-        int iVar2;
-        ConfigContainer ccVar2;
-        Invasion2 puVar3;
-        int iVar4;
-        int iVar5;
-        VigObject oVar5;
-        int iVar6;
-        short sVar7;
-        ushort uVar8;
-        Saucer puVar9;
-        VigTransform local_50;
-        Vector3Int local_30;
-        Vector3Int local_20;
-
-        if (arg1 == 1)
-        {
-            FUN_2C344(vData, 1, 0);
-            Utilities.ParentChildren(this, this);
-            maxHalfHealth = 3;
-            flags |= 0x4000;
-        }
-        else
-        {
-            if (arg1 != 0)
-            {
-                if (arg1 == 12)
-                {
-                    oVar5 = ((Vehicle)arg2).target;
-
-                    if (oVar5 == null)
-                        oVar5 = arg2;
-
-                    ccVar2 = child2.FUN_2C5F4(0x8000);
-                    uVar8 = 3;
-
-                    if (oVar5.id < 0)
-                        uVar8 = 5;
-
-                    iVar6 = 0;
-                    sVar7 = 1;
-                    local_50 = GameManager.instance.FUN_2CEAC(child2, ccVar2);
-
-                    do
-                    {
-                        Dictionary<int, Type> dict = new Dictionary<int, Type>();
-                        dict.Add(97, typeof(VigChild));
-                        puVar3 = vData.ini.FUN_2C17C(3, typeof(Invasion2), 8, dict) as Invasion2;
-                        Utilities.ParentChildren(puVar3, puVar3);
-                        puVar3.type = 4;
-                        puVar3.id = (short)iVar6;
-                        puVar3.flags = 0xa2;
-                        puVar3.vTransform = local_50;
-                        puVar3.physics2.M3 = sVar7;
-                        iVar4 = arg2.physics1.X;
-
-                        if (iVar4 < 0)
-                            iVar4 += 127;
-
-                        puVar3.physics1.Z = (iVar4 >> 7) + local_50.rotation.V02;
-                        iVar4 = arg2.physics1.Y;
-
-                        if (iVar4 < 0)
-                            iVar4 += 127;
-
-                        puVar3.physics1.W = (iVar4 >> 7) + local_50.rotation.V12;
-                        iVar4 = arg2.physics1.Z;
-
-                        if (iVar4 < 0)
-                            iVar4 += 127;
-
-                        sVar7 += 8;
-                        iVar6++;
-                        puVar3.physics2.X = (iVar4 >> 7) + local_50.rotation.V22;
-                        puVar3.FUN_2D1DC();
-                        puVar3.FUN_305FC();
-                    } while (iVar6 < 4);
-
-                    local_30 = new Vector3Int();
-                    local_30.x = oVar5.screen.x - arg2.vTransform.position.x;
-                    local_30.y = oVar5.screen.y - arg2.vTransform.position.y;
-                    local_30.z = oVar5.screen.z - arg2.vTransform.position.z;
-                    iVar6 = Utilities.FUN_29FC8(local_30, out local_20);
-
-                    if (iVar6 < 0x140000)
-                        local_30 = oVar5.screen;
-                    else
-                    {
-                        local_30.x = arg2.vTransform.position.x + local_20.x * 320;
-                        local_30.y = arg2.vTransform.position.y + local_20.y * 320;
-                        local_30.z = arg2.vTransform.position.z + local_20.z * 320;
-                    }
-
-                    iVar6 = 0;
-                    sVar7 = 360;
-
-                    do
-                    {
-                        puVar9 = vData.ini.FUN_2C17C(2, typeof(Saucer), 8) as Saucer;
-                        puVar9.type = 8;
-                        puVar9.flags = 0x60000080;
-                        puVar9.screen.x = local_30.x;
-                        puVar9.screen.y = local_30.y - 0xc0000;
-                        puVar9.maxHalfHealth = uVar8;
-                        puVar9.screen.z = local_30.z;
-                        iVar4 = ((iVar6 << 12) / 3 & 0xfff) * 2;
-                        sVar1 = GameManager.DAT_65C90[iVar4 + 1];
-                        puVar9.physics1.W = 0;
-                        puVar9.physics1.Z = sVar1;
-                        sVar1 = GameManager.DAT_65C90[iVar4];
-                        iVar6++;
-                        puVar9.physics2.M3 = sVar7;
-                        sVar7 += 60;
-                        puVar9.DAT_80 = arg2;
-                        puVar9.DAT_84 = oVar5;
-                        GameManager.instance.DAT_1084++;
-                        puVar9.physics2.X = sVar1;
-                        puVar9.FUN_3066C();
-                    } while (iVar6 < 3);
-
-                    iVar2 = GameManager.instance.FUN_1DD9C();
-                    GameManager.instance.FUN_1E188(iVar2, vData.sndList, 2);
-                    iVar2 = GameManager.instance.FUN_1DD9C();
-                    GameManager.instance.FUN_1E580(iVar2, vData.sndList, 4, local_50.position);
-                    sVar7 = (short)(maxHalfHealth - 1);
-                    maxHalfHealth = (ushort)sVar7;
-
-                    if (sVar7 == 0)
-                        FUN_3A368();
-
-                    if (-1 < arg2.id)
-                        return 1200;
-
-                    return 840;
-                }
-
-                if (arg1 != 13)
-                    return 0;
-
-                if (GameManager.instance.DAT_1084 != 0)
-                    return 0;
-
-                iVar5 = Utilities.FUN_29F6C(arg2.screen, ((Vehicle)arg2).target.screen);
-                return 0x64000 < iVar5 ? 1U : 0;
-            }
-
-            iVar5 = FUN_42330(arg2);
-
-            if (iVar5 < 1)
-                return 0;
-
-            child2.vr.y += 34;
-
-            if (arg2 != null)
-            {
-                child2.ApplyRotationMatrix();
-                return 0;
-            }
-        }
-
-        return 0;
-    }
+	public override uint UpdateW(int arg1, VigObject arg2)
+	{
+		switch (arg1)
+		{
+		case 1:
+			FUN_2C344(vData, 1, 0u);
+			Utilities.ParentChildren(this, this);
+			maxHalfHealth = 3;
+			flags |= 16384u;
+			break;
+		case 12:
+		{
+			VigObject vigObject = ((Vehicle)arg2).target;
+			if (vigObject == null)
+			{
+				vigObject = arg2;
+			}
+			ConfigContainer param = child2.FUN_2C5F4(32768);
+			ushort num2 = 3;
+			if (vigObject.id < 0)
+			{
+				num2 = 5;
+			}
+			int num3 = 0;
+			short num4 = 1;
+			VigTransform vigTransform = GameManager.instance.FUN_2CEAC(child2, param);
+			do
+			{
+				Dictionary<int, Type> dictionary = new Dictionary<int, Type>();
+				dictionary.Add(vData.ini.GetContainerIndex(3, 0), typeof(VigChild));
+				Invasion2 invasion = vData.ini.FUN_2C17C(3, typeof(Invasion2), 8u, dictionary) as Invasion2;
+				Utilities.ParentChildren(invasion, invasion);
+				invasion.type = 4;
+				invasion.id = (short)num3;
+				invasion.flags = 162u;
+				invasion.vTransform = vigTransform;
+				invasion.physics2.M3 = num4;
+				int num5 = arg2.physics1.X;
+				if (num5 < 0)
+				{
+					num5 += 127;
+				}
+				invasion.physics1.Z = (num5 >> 7) + vigTransform.rotation.V02;
+				num5 = arg2.physics1.Y;
+				if (num5 < 0)
+				{
+					num5 += 127;
+				}
+				invasion.physics1.W = (num5 >> 7) + vigTransform.rotation.V12;
+				num5 = arg2.physics1.Z;
+				if (num5 < 0)
+				{
+					num5 += 127;
+				}
+				num4 = (short)(num4 + 8);
+				num3++;
+				invasion.physics2.X = (num5 >> 7) + vigTransform.rotation.V22;
+				invasion.FUN_2D1DC();
+				invasion.FUN_305FC();
+			}
+			while (num3 < 4);
+			Vector3Int vin = default(Vector3Int);
+			vin.x = vigObject.screen.x - arg2.vTransform.position.x;
+			vin.y = vigObject.screen.y - arg2.vTransform.position.y;
+			vin.z = vigObject.screen.z - arg2.vTransform.position.z;
+			num3 = Utilities.FUN_29FC8(vin, out Vector3Int vout);
+			if (num3 < 1310720)
+			{
+				vin = vigObject.screen;
+			}
+			else
+			{
+				vin.x = arg2.vTransform.position.x + vout.x * 320;
+				vin.y = arg2.vTransform.position.y + vout.y * 320;
+				vin.z = arg2.vTransform.position.z + vout.z * 320;
+			}
+			num3 = 0;
+			num4 = 360;
+			do
+			{
+				Saucer saucer = vData.ini.FUN_2C17C(2, typeof(Saucer), 8u) as Saucer;
+				saucer.type = 8;
+				saucer.flags = 1610612864u;
+				if (arg2 != vigObject)
+				{
+					saucer.id = arg2.id;
+				}
+				saucer.screen.x = vin.x;
+				saucer.screen.y = vin.y - 786432;
+				saucer.maxHalfHealth = num2;
+				if (((Vehicle)arg2).doubleDamage != 0)
+				{
+					saucer.maxHalfHealth = (ushort)(num2 * 2);
+				}
+				saucer.screen.z = vin.z;
+				int num5 = (((num3 << 12) / 3) & 0xFFF) * 2;
+				short z = GameManager.DAT_65C90[num5 + 1];
+				saucer.physics1.W = 0;
+				saucer.physics1.Z = z;
+				z = GameManager.DAT_65C90[num5];
+				num3++;
+				saucer.physics2.M3 = num4;
+				num4 = (short)(num4 + 60);
+				saucer.DAT_80 = arg2;
+				saucer.DAT_84 = vigObject;
+				GameManager.instance.DAT_1084++;
+				saucer.physics2.X = z;
+				saucer.FUN_3066C();
+			}
+			while (num3 < 3);
+			int param2 = GameManager.instance.FUN_1DD9C();
+			GameManager.instance.FUN_1E188(param2, vData.sndList, 2);
+			param2 = GameManager.instance.FUN_1DD9C();
+			GameManager.instance.FUN_1E580(param2, vData.sndList, 4, vigTransform.position);
+			num4 = (short)(maxHalfHealth - 1);
+			maxHalfHealth = (ushort)num4;
+			if (num4 == 0)
+			{
+				FUN_3A368();
+			}
+			if (-1 < arg2.id)
+			{
+				return 1200u;
+			}
+			return 840u;
+		}
+		default:
+			return 0u;
+		case 13:
+		{
+			if (GameManager.instance.DAT_1084 != 0)
+			{
+				return 0u;
+			}
+			int num = Utilities.FUN_29F6C(arg2.screen, ((Vehicle)arg2).target.screen);
+			if (409600 >= num)
+			{
+				return 0u;
+			}
+			return 1u;
+		}
+		case 0:
+		{
+			int num = FUN_42330(arg2);
+			if (num < 1)
+			{
+				return 0u;
+			}
+			child2.vr.y += 34;
+			if (arg2 != null)
+			{
+				child2.ApplyRotationMatrix();
+				return 0u;
+			}
+			break;
+		}
+		}
+		return 0u;
+	}
 }

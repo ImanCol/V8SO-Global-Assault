@@ -2,13 +2,13 @@
 #define __PSXEFFECTS_CGINC__
 
 sampler2D _MainTex;
-sampler2D _EmissionMap;
+sampler2D _Emission;
 sampler2D _NormalMap;
 sampler2D _SpecularMap;
 sampler2D _MetalMap;
 sampler2D _LODTex;
-sampler2D _DetailAlbedoMap;
-float4 _DetailAlbedoMap_ST;
+// sampler2D unity_Lightmap;
+// float4 unity_LightmapST;
 float4 _MainTex_ST;
 float _VertexSnappingDetail;
 float _VertexInaccuracy;
@@ -20,7 +20,7 @@ float _DarkMax;
 float _Unlit;
 float _SkyboxLighting;
 float _WorldSpace;
-float3 _Emission;
+float _EmissionAmt;
 float _Metallic;
 float _Smoothness;
 float _Triplanar;
@@ -33,7 +33,6 @@ float _LODAmt;
 float _ShadowType;
 samplerCUBE _Cube;
 float _NormalMapDepth;
-float _CutoutThreshold;
 
 // This function snaps a vertex to a screen-space approximation
 float4 PixelSnap(float4 pos)
@@ -45,7 +44,6 @@ float4 PixelSnap(float4 pos)
 	return pos;
 }
 
-// Unused
 float GetDither(float2 pos, float factor) {
 	float DITHER_THRESHOLDS[16] =
 	{
@@ -67,13 +65,12 @@ float GetDither(float2 pos, float factor) {
 	#endif
 }
 
-float2 PerformAffineMapping(float4 inp, float4 st) {
+float2 PerformAffineMapping(float4 inp, float4 st, bool aff) {
 	float2 rtn = inp.xy;
-	#if defined(AFFINE_MAPPING)
+	if (aff)
 		rtn = (inp / inp.z + st.zw) * st.xy;
-	#else
+	else
 		rtn = (inp + st.zw) * st.xy;
-	#endif
 	return rtn;
 }
 

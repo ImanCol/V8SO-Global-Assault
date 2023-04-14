@@ -11,101 +11,82 @@ public enum _FORKLIFT2_TYPE
 
 public class ForkLift2 : VigObject
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
+	public _FORKLIFT2_TYPE state;
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-    public override uint OnCollision(HitDetection hit)
-    {
-        if (hit.self.type == 3)
-            return 0;
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-        FUN_4DC94();
-        return 0;
-    }
+	public override uint OnCollision(HitDetection hit)
+	{
+		if (hit.self.type == 3)
+		{
+			return 0u;
+		}
+		FUN_4DC94();
+		return 0u;
+	}
 
-    public _FORKLIFT2_TYPE state;
-
-    //FUN_2640 (NUCLEAR.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        short sVar1;
-        ForkLift3 ppcVar2;
-        VigObject oVar3;
-        int iVar4;
-        VigObject oVar4;
-        Vector3Int local_10;
-
-        switch (state)
-        {
-            case _FORKLIFT2_TYPE.Type1:
-                if (arg1 != 2)
-                {
-                    if (arg1 < 3)
-                    {
-                        if (arg1 != 0)
-                            return 0;
-
-                        vCollider.reader.Seek(4, SeekOrigin.Current);
-                        FUN_2B4F8(vCollider.reader);
-                        vCollider.reader.Seek(-4, SeekOrigin.Current);
-                        return 0;
-                    }
-
-                    if (arg1 != 3)
-                    {
-                        if (arg1 != 9)
-                            return 0;
-
-                        if (arg2 == 0)
-                        {
-                            local_10 = GameManager.instance.FUN_2CE50(this);
-                            ppcVar2 = LevelManager.instance.xobfList[42].ini.FUN_2C17C(26, typeof(ForkLift3), 8) as ForkLift3;
-                            Utilities.ParentChildren(ppcVar2, ppcVar2);
-
-                            if (parent == null)
-                                sVar1 = id;
-                            else
-                            {
-                                oVar3 = Utilities.FUN_2CD78(this);
-                                sVar1 = oVar3.id;
-                            }
-
-                            ppcVar2.id = sVar1;
-                            ppcVar2.type = 8;
-                            ppcVar2.flags |= 0x314;
-                            ppcVar2.screen = local_10;
-                            ppcVar2.maxHalfHealth = 150;
-                            ppcVar2.FUN_3066C();
-                            ppcVar2.DAT_58 = ppcVar2.vCollider.reader.ReadInt32(16);
-                            LevelManager.instance.FUN_4DE54(local_10, 140);
-                            iVar4 = GameManager.instance.FUN_1DD9C();
-                            GameManager.instance.FUN_1E5D4(iVar4, LevelManager.instance.xobfList[42].sndList, 2, local_10);
-                            return 0;
-                        }
-
-                        if (parent != null)
-                        {
-                            oVar4 = FUN_2CCBC();
-                            GameManager.instance.FUN_307CC(oVar4);
-                            return 0xffffffff;
-                        }
-
-                        GameManager.instance.FUN_309A0(this);
-                        return 0xffffffff;
-                    }
-                }
-
-                FUN_4DC94();
-                return 0;
-        }
-
-        return 0;
-    }
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		if (state == _FORKLIFT2_TYPE.Type1)
+		{
+			if (arg1 != 2)
+			{
+				if (arg1 < 3)
+				{
+					if (arg1 != 0)
+					{
+						return 0u;
+					}
+					vCollider.reader.Seek(4L, SeekOrigin.Current);
+					FUN_2B4F8(vCollider.reader);
+					vCollider.reader.Seek(-4L, SeekOrigin.Current);
+					return 0u;
+				}
+				switch (arg1)
+				{
+				default:
+					return 0u;
+				case 9:
+					if (arg2 == 0)
+					{
+						Vector3Int vector3Int = GameManager.instance.FUN_2CE50(this);
+						ForkLift3 forkLift = LevelManager.instance.xobfList[42].ini.FUN_2C17C(26, typeof(ForkLift3), 8u) as ForkLift3;
+						Utilities.ParentChildren(forkLift, forkLift);
+						short num = forkLift.id = ((!(parent == null)) ? Utilities.FUN_2CD78(this).id : id);
+						forkLift.type = 8;
+						forkLift.flags |= 788u;
+						forkLift.screen = vector3Int;
+						forkLift.maxHalfHealth = 150;
+						forkLift.FUN_3066C();
+						forkLift.DAT_58 = forkLift.vCollider.reader.ReadInt32(16);
+						LevelManager.instance.FUN_4DE54(vector3Int, 140);
+						int param = GameManager.instance.FUN_1DD9C();
+						GameManager.instance.FUN_1E5D4(param, LevelManager.instance.xobfList[42].sndList, 2, vector3Int);
+						return 0u;
+					}
+					if (parent != null)
+					{
+						VigObject param2 = FUN_2CCBC();
+						GameManager.instance.FUN_307CC(param2);
+						return uint.MaxValue;
+					}
+					GameManager.instance.FUN_309A0(this);
+					return uint.MaxValue;
+				case 3:
+					break;
+				}
+			}
+			FUN_4DC94();
+			return 0u;
+		}
+		return 0u;
+	}
 }

@@ -16,7 +16,43 @@ public class TrainBoxcar : TrainEngine
 
     public override uint OnCollision(HitDetection hit)
     {
-        FUN_32CF0(hit);
+        if (base.FUN_32CF0(hit))
+		{
+			int num = 0;
+			Vector3Int vector3Int = default(Vector3Int);
+			do
+			{
+				num++;
+				int num2 = (int)GameManager.FUN_2AC5C();
+				vector3Int.x = (num2 * 3051 >> 15) - 1525;
+				vector3Int.y = -4577;
+				num2 = (int)GameManager.FUN_2AC5C();
+				vector3Int.z = (num2 * 3051 >> 15) - 1525;
+				LevelManager.instance.FUN_4AAC0(4261412864U, this.screen, vector3Int);
+				string text = "Debug1: ";
+				Vector3Int vector3Int2 = vector3Int;
+				Debug.Log(text + vector3Int2.ToString());
+				string text2 = "Debug2: ";
+				vector3Int2 = this.screen;
+				Debug.Log(text2 + vector3Int2.ToString());
+				vector3Int.x = (num2 * 3051 >> 15) - 1525;
+				vector3Int.y = -4577;
+				num2 = (int)GameManager.FUN_2AC5C();
+				vector3Int.z = (num2 * 3051 >> 15) - 1525;
+				LevelManager.instance.FUN_4AAC0(4261412864U, this.screen, vector3Int);
+				vector3Int.x = (num2 * 3051 >> 15) - 1525;
+				vector3Int.y = -4577;
+				num2 = (int)GameManager.FUN_2AC5C();
+				vector3Int.z = (num2 * 3051 >> 15) - 1525;
+				LevelManager.instance.FUN_4AAC0(4261412864U, this.screen, vector3Int);
+				vector3Int.x = (num2 * 3051 >> 15) - 1525;
+				vector3Int.y = -4577;
+				num2 = (int)GameManager.FUN_2AC5C();
+				vector3Int.z = (num2 * 3051 >> 15) - 1525;
+				LevelManager.instance.FUN_4AAC0(4261412864U, this.screen, vector3Int);
+			}
+			while (num < 6);
+		}
         return 0;
     }
 

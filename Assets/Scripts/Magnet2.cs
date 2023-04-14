@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Magnet2 : VigObject
 {
     protected override void Start()
@@ -14,7 +10,6 @@ public class Magnet2 : VigObject
         base.Update();
     }
 
-    //FUN_471A4
     public override uint UpdateW(int arg1, int arg2)
     {
         if (arg1 == 0)
@@ -23,22 +18,17 @@ public class Magnet2 : VigObject
             vTransform.position.y += physics1.W;
             vTransform.position.z += physics2.X;
         }
-
-        return 0;
+        return 0u;
     }
 
     public override uint UpdateW(int arg1, VigObject arg2)
     {
-        uint uVar1;
-
-        uVar1 = 0;
-
+        uint result = 0u;
         if (arg1 == 5)
         {
             GameManager.instance.FUN_309A0(this);
-            uVar1 = 0xffffffff;
+            result = uint.MaxValue;
         }
-
-        return uVar1;
+        return result;
     }
 }

@@ -1,337 +1,308 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Crane : VigObject
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
+	public VigTransform DAT_84_2;
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	public int DAT_A4;
 
-    public override uint OnCollision(HitDetection hit)
-    {
-        sbyte sVar1;
-        int iVar4;
-        ConfigContainer ccVar4;
-        int iVar5;
-        int iVar6;
-        int iVar7;
-        Vehicle ppcVar8;
-        int iVar9;
-        BufferedBinaryReader pcVar9;
-        int iVar10;
-        VigObject oVar10;
-        Vector3Int local_28;
-        Vector3Int local_30;
-        Vector3Int local_40;
-        VigTransform auStack128;
+	public int DAT_A8;
 
-        if (hit.self.type != 2)
-            return 0;
+	public int DAT_AC;
 
-        if (1U < (byte)tags)
-            return 0;
+	public int DAT_B0;
 
-        oVar10 = child2;
+	public int DAT_B4;
 
-        if (oVar10 == null)
-            return 0;
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-        ppcVar8 = (Vehicle)hit.self;
-        pcVar9 = ppcVar8.vCollider.reader;
-        ccVar4 = oVar10.FUN_2C5F4(0x8000);
-        auStack128 = GameManager.instance.FUN_2CEAC(oVar10, ccVar4);
-        local_28 = new Vector3Int();
-        local_28.x = (pcVar9.ReadInt32(4) + pcVar9.ReadInt32(16)) / 2;
-        local_28.y = pcVar9.ReadInt32(8);
-        local_28.z = (pcVar9.ReadInt32(12) + pcVar9.ReadInt32(24)) / 2;
-        local_28 = Utilities.FUN_24148(hit.self.vTransform, local_28);
-        local_40 = new Vector3Int();
-        local_40.x = auStack128.position.x - local_28.x;
-        local_40.y = auStack128.position.y - local_28.y;
-        local_40.z = auStack128.position.z - local_28.z;
-        iVar10 = Utilities.FUN_29FC8(local_40, out local_30);
-        iVar5 = -iVar10 + 0x40000;
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-        if (iVar10 < 0x40001)
-        {
-            if (iVar5 < 0)
-                iVar5 = -iVar10 + 0x40003;
+	public override uint OnCollision(HitDetection hit)
+	{
+		if (hit.self.type != 2)
+		{
+			return 0u;
+		}
+		if (1u < (uint)(byte)tags)
+		{
+			return 0u;
+		}
+		VigObject child = child2;
+		if (child == null)
+		{
+			return 0u;
+		}
+		Vehicle vehicle = (Vehicle)hit.self;
+		if ((vehicle.flags & 0x4000) != 0 && (vehicle.flags & 0x4000000) == 0)
+		{
+			BufferedBinaryReader reader = vehicle.vCollider.reader;
+			ConfigContainer param = child.FUN_2C5F4(32768);
+			VigTransform vigTransform = GameManager.instance.FUN_2CEAC(child, param);
+			Vector3Int v = default(Vector3Int);
+			v.x = (reader.ReadInt32(4) + reader.ReadInt32(16)) / 2;
+			v.y = reader.ReadInt32(8);
+			v.z = (reader.ReadInt32(12) + reader.ReadInt32(24)) / 2;
+			v = Utilities.FUN_24148(hit.self.vTransform, v);
+			Vector3Int vin = default(Vector3Int);
+			vin.x = vigTransform.position.x - v.x;
+			vin.y = vigTransform.position.y - v.y;
+			vin.z = vigTransform.position.z - v.z;
+			Vector3Int vout;
+			int num = Utilities.FUN_29FC8(vin, out vout);
+			int num2 = -num + 262144;
+			if (num < 262145)
+			{
+				if (num2 < 0)
+				{
+					num2 = -num + 262147;
+				}
+				num2 >>= 2;
+				vin.x = vout.x * num2 >> 12;
+				vin.y = vout.y * num2 >> 12;
+				vin.z = vout.z * num2 >> 12;
+				int x = vehicle.physics1.X;
+				int num3 = x;
+				if (x < 0)
+				{
+					num3 = x + 31;
+				}
+				int y = vehicle.physics1.Y;
+				vehicle.physics1.X = x + (vin.x - (num3 >> 5));
+				num3 = y;
+				if (y < 0)
+				{
+					num3 = x + 31;
+				}
+				x = vehicle.physics1.Z;
+				vehicle.physics1.Y = y + (vin.y - (num3 >> 5));
+				num3 = x;
+				if (x < 0)
+				{
+					num3 = x + 31;
+				}
+				vehicle.physics1.Z = x + (vin.z - (num3 >> 5));
+				if (tags == 0)
+				{
+					sbyte param2 = DAT_18 = (sbyte)GameManager.instance.FUN_1DD9C();
+					GameManager.instance.FUN_1E628(param2, GameManager.instance.DAT_C2C, 56, vigTransform.position, param5: true);
+					tags = 1;
+					FUN_30B78();
+					DAT_80 = vehicle;
+				}
+				else
+				{
+					if (num < 10241 && vehicle.physics1.W < 1525)
+					{
+						tags = 2;
+						vehicle.vTransform.position.y += vigTransform.position.y - v.y;
+						DAT_AC = vTransform.position.z;
+						int param3 = GameManager.instance.FUN_1DD9C();
+						GameManager.instance.FUN_1E628(param3, vData.sndList, 1, vTransform.position);
+						vehicle.state = _VEHICLE_TYPE.Crane;
+						vehicle.physics1.X = 0;
+						vehicle.flags |= 67108864u;
+						vehicle.physics1.Y = 0;
+						vehicle.physics1.Z = 0;
+						if (DAT_18 != 0)
+						{
+							GameManager.instance.FUN_1DE78(DAT_18);
+							DAT_18 = 0;
+						}
+						param3 = (DAT_A4 = GameManager.instance.FUN_1DD9C());
+						GameManager.instance.FUN_1E628(param3, vData.sndList, 6, vTransform.position, param5: true);
+						DAT_B4 = -91;
+						DAT_A8 = 0;
+						DAT_B0 = 6;
+						Utilities.FUN_2A454(vigTransform, vehicle.vTransform, out DAT_84_2);
+					}
+					DAT_80 = vehicle;
+				}
+			}
+		}
+		return 0u;
+	}
 
-            iVar5 >>= 2;
-            local_40.x = local_30.x * iVar5 >> 12;
-            local_40.y = local_30.y * iVar5 >> 12;
-            local_40.z = local_30.z * iVar5 >> 12;
-            iVar6 = ppcVar8.physics1.X;
-            iVar9 = iVar6;
-
-            if (iVar6 < 0)
-                iVar9 = iVar6 + 31;
-
-            iVar7 = ppcVar8.physics1.Y;
-            ppcVar8.physics1.X = iVar6 + (local_40.x - (iVar9 >> 5));
-            iVar9 = iVar7;
-
-            if (iVar7 < 0)
-                iVar9 = iVar6 + 31;
-
-            iVar6 = ppcVar8.physics1.Z;
-            ppcVar8.physics1.Y = iVar7 + (local_40.y - (iVar9 >> 5));
-            iVar9 = iVar6;
-
-            if (iVar6 < 0)
-                iVar9 = iVar6 + 31;
-
-            ppcVar8.physics1.Z = iVar6 + (local_40.z - (iVar9 >> 5));
-
-            if (tags == 0)
-            {
-                sVar1 = (sbyte)GameManager.instance.FUN_1DD9C();
-                DAT_18 = sVar1;
-                GameManager.instance.FUN_1E628(sVar1, GameManager.instance.DAT_C2C, 56, auStack128.position, true);
-                tags = 1;
-                FUN_30B78();
-                DAT_80 = ppcVar8;
-            }
-            else
-            {
-                if (iVar10 < 0x2801 && ppcVar8.physics1.W < 0x5f5)
-                {
-                    tags = 2;
-                    ppcVar8.vTransform.position.y += auStack128.position.y - local_28.y;
-                    DAT_AC = vTransform.position.z;
-                    iVar4 = GameManager.instance.FUN_1DD9C();
-                    GameManager.instance.FUN_1E628(iVar4, vData.sndList, 1, vTransform.position);
-                    ppcVar8.state = _VEHICLE_TYPE.Crane;
-                    ppcVar8.physics1.X = 0;
-                    ppcVar8.flags |= 0x4000000;
-                    ppcVar8.physics1.Y = 0;
-                    ppcVar8.physics1.Z = 0;
-
-                    if (DAT_18 != 0)
-                    {
-                        GameManager.instance.FUN_1DE78(DAT_18);
-                        DAT_18 = 0;
-                    }
-
-                    iVar4 = GameManager.instance.FUN_1DD9C();
-                    DAT_A4 = iVar4;
-                    GameManager.instance.FUN_1E628(iVar4, vData.sndList, 6, vTransform.position, true);
-                    DAT_B4 = -91;
-                    DAT_A8 = 0;
-                    DAT_B0 = 6;
-                    Utilities.FUN_2A454(auStack128, ppcVar8.vTransform, out DAT_84_2);
-                }
-
-                DAT_80 = ppcVar8;
-            }
-        }
-
-        return 0;
-    }
-
-    public VigTransform DAT_84_2; //0x84
-    public int DAT_A4; //0xA4
-    public int DAT_A8; //0xA8
-    public int DAT_AC; //0xAC
-    public int DAT_B0; //0xB0
-    public int DAT_B4; //0xB4
-
-    //FUN_2C4C (STEELMIL.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        uint uVar2;
-        Magnet2 puVar3;
-        int iVar4;
-        ConfigContainer ccVar4;
-        VigObject oVar5;
-        int iVar10;
-        BufferedBinaryReader brVar10;
-        VigObject oVar11;
-        Vector3Int local_60;
-        Vector3Int local_50;
-        Vector3Int local_40;
-        VigTransform local_38;
-        VigTransform auStack128;
-
-        switch (arg1)
-        {
-            case 0:
-                switch (tags)
-                {
-                    case 1:
-                        if (DAT_80 == null)
-                        {
-                            FUN_30BA8();
-                            tags = 0;
-
-                            if (DAT_18 != 0)
-                            {
-                                GameManager.instance.FUN_1DE78(DAT_18);
-                                DAT_18 = 0;
-                            }
-                        }
-                        else
-                        {
-                            if (arg2 == 0)
-                                return 0;
-
-                            uVar2 = GameManager.FUN_2AC5C();
-
-                            if ((uVar2 & 1) != 0)
-                            {
-                                oVar11 = child2;
-                                puVar3 = LevelManager.instance.xobfList[19].ini.FUN_2C17C(49, typeof(Magnet2), 8) as Magnet2;
-                                brVar10 = DAT_80.vCollider.reader;
-                                local_60 = new Vector3Int();
-                                local_60.x = (brVar10.ReadInt32(4) + brVar10.ReadInt32(16)) / 2;
-                                local_60.y = brVar10.ReadInt32(8);
-                                local_60.z = (brVar10.ReadInt32(12) + brVar10.ReadInt32(24)) / 2;
-                                local_60 = Utilities.FUN_24148(DAT_80.vTransform, local_60);
-                                iVar10 = (int)GameManager.FUN_2AC5C();
-                                puVar3.vTransform.position.x = local_60.x + iVar10;
-                                iVar10 = (int)GameManager.FUN_2AC5C();
-                                puVar3.vTransform.position.y = local_60.y + iVar10;
-                                iVar10 = (int)GameManager.FUN_2AC5C();
-                                puVar3.vTransform.position.z = local_60.z + iVar10;
-                                ccVar4 = oVar11.FUN_2C5F4(0x8000);
-                                auStack128 = GameManager.instance.FUN_2CEAC(oVar11, ccVar4);
-                                local_50 = new Vector3Int();
-                                local_50.x = auStack128.position.x - local_60.x;
-                                local_50.y = auStack128.position.y - local_60.y;
-                                local_50.z = auStack128.position.z - local_60.z;
-                                Utilities.FUN_29FC8(local_50, out local_40);
-                                iVar10 = local_40.x;
-
-                                if (iVar10 < 0)
-                                    iVar10 += 15;
-
-                                puVar3.physics1.Z = iVar10 >> 4;
-                                iVar10 = local_40.y;
-
-                                if (iVar10 < 0)
-                                    iVar10 += 15;
-
-                                puVar3.physics1.W = iVar10 >> 4;
-                                iVar10 = local_40.z;
-
-                                if (iVar10 < 0)
-                                    iVar10 += 15;
-
-                                puVar3.physics2.X = iVar10 >> 4;
-                                puVar3.flags = 0xb4;
-                                puVar3.vTransform.rotation.V00 = 0x1000;
-                                puVar3.vTransform.rotation.V11 = 0x1000;
-                                puVar3.vTransform.rotation.V22 = 0x1000;
-                                puVar3.FUN_305FC();
-                            }
-
-                            DAT_80 = null;
-                        }
-
-                        break;
-                    case 2:
-                        oVar5 = child2;
-                        oVar5.FUN_24700((short)DAT_B4, 0, 0);
-                        oVar5.vTransform.rotation = Utilities.MatrixNormal(oVar5.vTransform.rotation);
-                        iVar10 = DAT_B4;
-
-                        if (iVar10 < 0)
-                            iVar10 = -iVar10;
-
-                        if (91 < iVar10)
-                            DAT_B0 = -DAT_B0;
-
-                        DAT_B4 += DAT_B0;
-
-                        if (DAT_AC - vTransform.position.z < 0x190001 && 
-                            ((Vehicle)DAT_80).state == _VEHICLE_TYPE.Crane)
-                        {
-                            if (DAT_A8 < 0x2666)
-                                DAT_A8 += 163;
-
-                            vTransform.position.z -= DAT_A8;
-                            ccVar4 = oVar5.FUN_2C5F4(0x8000);
-                            local_38 = GameManager.instance.FUN_2CEAC(oVar5, ccVar4);
-                            DAT_80.vTransform = Utilities.CompMatrixLV(local_38, DAT_84_2);
-                            return 0;
-                        }
-
-                        iVar4 = GameManager.instance.FUN_1DD9C();
-                        GameManager.instance.FUN_1E628(iVar4, vData.sndList, 1, vTransform.position);
-                        ((Vehicle)DAT_80).FUN_41FEC();
-                        DAT_80 = null;
-                        tags = 3;
-                        break;
-                    case 3:
-                        vTransform.position.z += 0x2666;
-                        child2.FUN_24700((short)DAT_B4, 0, 0);
-                        child2.vTransform.rotation = Utilities.MatrixNormal(child2.vTransform.rotation);
-                        iVar10 = DAT_B4;
-
-                        if (iVar10 < 0)
-                            iVar10 = -iVar10;
-
-                        if (91 < iVar10)
-                            DAT_B0 = -DAT_B0;
-
-                        DAT_B4 += DAT_B0;
-
-                        if (vTransform.position.z < DAT_AC)
-                            return 0;
-
-                        vTransform.position.z = DAT_AC;
-                        tags = 4;
-                        iVar4 = GameManager.instance.FUN_1DD9C();
-                        GameManager.instance.FUN_1E628(iVar4, vData.sndList, 1, vTransform.position);
-
-                        if (DAT_A4 == 0)
-                            return 0;
-
-                        GameManager.instance.FUN_1DE78(DAT_A4);
-                        DAT_A4 = 0;
-                        break;
-                    case 4:
-                        oVar5 = child2;
-                        oVar5.FUN_24700((short)DAT_B4, 0, 0);
-                        oVar5.vTransform.rotation = Utilities.MatrixNormal(oVar5.vTransform.rotation);
-
-                        if (oVar5.vTransform.rotation.V11 < 4092)
-                        {
-                            iVar10 = DAT_B4;
-
-                            if (iVar10 < 0)
-                                iVar10 = -iVar10;
-
-                            if (91 < iVar10)
-                                DAT_B0 = -DAT_B0;
-                        }
-                        else
-                        {
-                            FUN_30BA8();
-                            tags = 0;
-                        }
-
-                        DAT_B4 += DAT_B0;
-                        break;
-                }
-
-                break;
-            case 1:
-                type = 3;
-                flags |= 0x100;
-                break;
-            case 8:
-                FUN_32B90((uint)arg2);
-                return 0;
-        }
-
-        return 0;
-    }
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		switch (arg1)
+		{
+		case 0:
+			switch (tags)
+			{
+			case 1:
+				if (DAT_80 == null)
+				{
+					FUN_30BA8();
+					tags = 0;
+					if (DAT_18 != 0)
+					{
+						GameManager.instance.FUN_1DE78(DAT_18);
+						DAT_18 = 0;
+					}
+					break;
+				}
+				if (arg2 == 0)
+				{
+					return 0u;
+				}
+				if ((GameManager.FUN_2AC5C() & 1) != 0)
+				{
+					VigObject child2 = base.child2;
+					Magnet2 obj = LevelManager.instance.xobfList[19].ini.FUN_2C17C(49, typeof(Magnet2), 8u) as Magnet2;
+					BufferedBinaryReader reader = DAT_80.vCollider.reader;
+					Vector3Int vector3Int = Utilities.FUN_24148(v: new Vector3Int
+					{
+						x = (reader.ReadInt32(4) + reader.ReadInt32(16)) / 2,
+						y = reader.ReadInt32(8),
+						z = (reader.ReadInt32(12) + reader.ReadInt32(24)) / 2
+					}, transform: DAT_80.vTransform);
+					int num = (int)GameManager.FUN_2AC5C();
+					obj.vTransform.position.x = vector3Int.x + num;
+					num = (int)GameManager.FUN_2AC5C();
+					obj.vTransform.position.y = vector3Int.y + num;
+					num = (int)GameManager.FUN_2AC5C();
+					obj.vTransform.position.z = vector3Int.z + num;
+					ConfigContainer param = child2.FUN_2C5F4(32768);
+					VigTransform vigTransform = GameManager.instance.FUN_2CEAC(child2, param);
+					Utilities.FUN_29FC8(new Vector3Int
+					{
+						x = vigTransform.position.x - vector3Int.x,
+						y = vigTransform.position.y - vector3Int.y,
+						z = vigTransform.position.z - vector3Int.z
+					}, out Vector3Int vout);
+					num = vout.x;
+					if (num < 0)
+					{
+						num += 15;
+					}
+					obj.physics1.Z = num >> 4;
+					num = vout.y;
+					if (num < 0)
+					{
+						num += 15;
+					}
+					obj.physics1.W = num >> 4;
+					num = vout.z;
+					if (num < 0)
+					{
+						num += 15;
+					}
+					obj.physics2.X = num >> 4;
+					obj.flags = 180u;
+					obj.vTransform.rotation.V00 = 4096;
+					obj.vTransform.rotation.V11 = 4096;
+					obj.vTransform.rotation.V22 = 4096;
+					obj.FUN_305FC();
+				}
+				DAT_80 = null;
+				break;
+			case 2:
+			{
+				VigObject child = base.child2;
+				child.FUN_24700((short)DAT_B4, 0, 0);
+				child.vTransform.rotation = Utilities.MatrixNormal(child.vTransform.rotation);
+				int num = DAT_B4;
+				if (num < 0)
+				{
+					num = -num;
+				}
+				if (91 < num)
+				{
+					DAT_B0 = -DAT_B0;
+				}
+				DAT_B4 += DAT_B0;
+				if (DAT_AC - vTransform.position.z < 1638401 && ((Vehicle)DAT_80).state == _VEHICLE_TYPE.Crane)
+				{
+					if (DAT_A8 < 9830)
+					{
+						DAT_A8 += 163;
+					}
+					vTransform.position.z -= DAT_A8;
+					ConfigContainer param = child.FUN_2C5F4(32768);
+					VigTransform m = GameManager.instance.FUN_2CEAC(child, param);
+					DAT_80.vTransform = Utilities.CompMatrixLV(m, DAT_84_2);
+					return 0u;
+				}
+				int param2 = GameManager.instance.FUN_1DD9C();
+				GameManager.instance.FUN_1E628(param2, vData.sndList, 1, vTransform.position);
+				((Vehicle)DAT_80).FUN_41FEC();
+				DAT_80 = null;
+				tags = 3;
+				break;
+			}
+			case 3:
+			{
+				vTransform.position.z += 9830;
+				base.child2.FUN_24700((short)DAT_B4, 0, 0);
+				base.child2.vTransform.rotation = Utilities.MatrixNormal(base.child2.vTransform.rotation);
+				int num = DAT_B4;
+				if (num < 0)
+				{
+					num = -num;
+				}
+				if (91 < num)
+				{
+					DAT_B0 = -DAT_B0;
+				}
+				DAT_B4 += DAT_B0;
+				if (vTransform.position.z < DAT_AC)
+				{
+					return 0u;
+				}
+				vTransform.position.z = DAT_AC;
+				tags = 4;
+				int param2 = GameManager.instance.FUN_1DD9C();
+				GameManager.instance.FUN_1E628(param2, vData.sndList, 1, vTransform.position);
+				if (DAT_A4 == 0)
+				{
+					return 0u;
+				}
+				GameManager.instance.FUN_1DE78(DAT_A4);
+				DAT_A4 = 0;
+				break;
+			}
+			case 4:
+			{
+				VigObject child = base.child2;
+				child.FUN_24700((short)DAT_B4, 0, 0);
+				child.vTransform.rotation = Utilities.MatrixNormal(child.vTransform.rotation);
+				if (child.vTransform.rotation.V11 < 4092)
+				{
+					int num = DAT_B4;
+					if (num < 0)
+					{
+						num = -num;
+					}
+					if (91 < num)
+					{
+						DAT_B0 = -DAT_B0;
+					}
+				}
+				else
+				{
+					FUN_30BA8();
+					tags = 0;
+				}
+				DAT_B4 += DAT_B0;
+				break;
+			}
+			}
+			break;
+		case 1:
+			type = 3;
+			flags |= 256u;
+			break;
+		case 8:
+			FUN_32B90((uint)arg2);
+			return 0u;
+		}
+		return 0u;
+	}
 }

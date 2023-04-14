@@ -6,52 +6,60 @@ namespace MathExtended.Matrices
     {
         private void Zero()
         {
-            for (int _row = 0; _row < _matrix.GetLength(0); _row++)
-                for (int _col = 0; _col < _matrix.GetLength(1); _col++)
+            for (int i = 0; i < _matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < _matrix.GetLength(1); j++)
                 {
-                    _matrix[_row, _col] = 0.0;
+                    _matrix[i, j] = 0.0;
                 }
+            }
         }
 
         private void Identity()
         {
             if (!IsSquare)
+            {
                 throw new InvalidOperationException("Identity matrix must be square.");
+            }
             Zero();
-            for (int n = 0; n < Rows; n++)
-                _matrix[n, n] = 1.0;
+            for (int i = 0; i < Rows; i++)
+            {
+                _matrix[i, i] = 1.0;
+            }
         }
 
         public static Matrix Zero(int size)
         {
-            var _result = new Matrix(size);
-            _result.Zero();
-            return _result;
+            Matrix matrix = new Matrix(size);
+            matrix.Zero();
+            return matrix;
         }
 
         public static Matrix Zero(int rows, int cols)
         {
-            var _result = new Matrix(rows, cols);
-            _result.Zero();
-            return _result;
+            Matrix matrix = new Matrix(rows, cols);
+            matrix.Zero();
+            return matrix;
         }
 
         public static Matrix Identity(int size)
         {
-            var _result = new Matrix(size);
-            _result.Identity();
-            return _result;
+            Matrix matrix = new Matrix(size);
+            matrix.Identity();
+            return matrix;
         }
 
         public static Matrix Vandermonde(int rows, int cols)
         {
-            var _result = new Matrix(rows, cols);
-            for (int m = 1; m <= rows; m++)
-                for (int n = 1; n <= cols; n++)
+            Matrix matrix = new Matrix(rows, cols);
+            for (int i = 1; i <= rows; i++)
+            {
+                for (int j = 1; j <= cols; j++)
                 {
-                    _result[m, n] = Math.Pow(m, n - 1);
+                    matrix[i, j] = Math.Pow(i, j - 1);
                 }
-            return _result;
+            }
+            return matrix;
         }
     }
 }

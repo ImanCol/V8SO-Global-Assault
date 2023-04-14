@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Particle4 : VigObject
@@ -14,65 +12,66 @@ public class Particle4 : VigObject
         base.Update();
     }
 
-    //FUN_4E744
     public override uint UpdateW(int arg1, int arg2)
     {
-        bool bVar1;
-        uint uVar2;
-        VigObject oVar3;
-        int iVar4;
-        int iVar5;
-        VigObject oVar5;
-
-        if (arg1 == 1)
+        switch (arg1)
         {
-            iVar5 = 0;
-
-            do
-            {
-                oVar3 = LevelManager.instance.xobfList[19].ini.FUN_2C17C((ushort)DAT_1A, typeof(VigObject), 8);
-                oVar3.vTransform.position = new Vector3Int(0, 0, 0);
-                iVar4 = (int)GameManager.FUN_2AC5C();
-                oVar3.physics1.Z = ((iVar4 << 11) >> 15) - 0x400;
-                iVar4 = (int)GameManager.FUN_2AC5C();
-                oVar3.physics1.W = -((iVar4 << 13) >> 15);
-                iVar4 = (int)GameManager.FUN_2AC5C();
-                oVar3.physics2.X = ((iVar4 << 11) >> 15) - 0x400;
-                oVar3.flags = 0x10;
-                Utilities.FUN_2CC48(this, oVar3);
-                Utilities.ParentChildren(this, this);
-                bVar1 = iVar5 < 8;
-                iVar5++;
-            } while (bVar1);
-
-            uVar2 = 0;
-        }
-        else
-        {
-            if (arg1 == 0)
-            {
-                oVar5 = child2;
-                uVar2 = 0;
-
-                if (oVar5 != null)
+            case 1:
                 {
+                    int num2 = 0;
+                    bool flag;
                     do
                     {
-                        oVar5.vTransform.position.x += oVar5.physics1.Z;
-                        oVar5.vTransform.position.y += oVar5.physics1.W;
-                        oVar5.vTransform.position.z += oVar5.physics2.X;
-                        oVar5.physics1.W += 56;
-                        oVar5 = oVar5.child;
-                    } while (oVar5 != null);
-
-                    uVar2 = 0;
+                        VigObject vigObject2 = LevelManager.instance.xobfList[19].ini.FUN_2C17C((ushort)DAT_1A, typeof(VigObject), 8u);
+                        vigObject2.vTransform.position = new Vector3Int(0, 0, 0);
+                        vigObject2.vTransform.rotation = new Matrix3x3
+                        {
+                            V00 = 4096,
+                            V01 = 0,
+                            V02 = 0,
+                            V10 = 0,
+                            V11 = 4096,
+                            V12 = 0,
+                            V20 = 0,
+                            V21 = 0,
+                            V22 = 4096
+                        };
+                        int num3 = (int)GameManager.FUN_2AC5C();
+                        vigObject2.physics1.Z = (num3 << 11 >> 15) - 1024;
+                        num3 = (int)GameManager.FUN_2AC5C();
+                        vigObject2.physics1.W = -(num3 << 13 >> 15);
+                        num3 = (int)GameManager.FUN_2AC5C();
+                        vigObject2.physics2.X = (num3 << 11 >> 15) - 1024;
+                        vigObject2.flags = 16u;
+                        Utilities.FUN_2CC48(this, vigObject2);
+                        Utilities.ParentChildren(this, this);
+                        flag = (num2 < 8);
+                        num2++;
+                    }
+                    while (flag);
+                    return 0u;
                 }
-            }
-
-            uVar2 = 0;
+            case 0:
+                {
+                    VigObject vigObject = child2;
+                    uint num = 0u;
+                    if (vigObject != null)
+                    {
+                        do
+                        {
+                            vigObject.vTransform.position.x += vigObject.physics1.Z;
+                            vigObject.vTransform.position.y += vigObject.physics1.W;
+                            vigObject.vTransform.position.z += vigObject.physics2.X;
+                            vigObject.physics1.W += 56;
+                            vigObject = vigObject.child;
+                        }
+                        while (vigObject != null);
+                        num = 0u;
+                    }
+                    break;
+                }
         }
-
-        return uVar2;
+        return 0u;
     }
 
     public override uint UpdateW(int arg1, VigObject arg2)
@@ -80,9 +79,8 @@ public class Particle4 : VigObject
         if (arg1 == 5)
         {
             GameManager.instance.FUN_309A0(this);
-            return 0xfffffffe;
+            return 4294967294u;
         }
-
-        return 0;
+        return 0u;
     }
 }

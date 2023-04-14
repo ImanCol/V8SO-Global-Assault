@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FlameThrower : VigObject
@@ -15,516 +13,521 @@ public class FlameThrower : VigObject
         base.Update();
     }
 
-    //FUN_48FB4
     public override uint UpdateW(int arg1, int arg2)
     {
-        byte bVar1;
-        bool bVar2;
-        sbyte sVar3;
-        ushort uVar4;
-        short sVar5;
-        ushort uVar5;
-        short sVar6;
-        ushort uVar7;
-        Vehicle pcVar8;
-        VigTransform pMVar9;
-        VigObject ppcVar10;
-        Type pcVar11;
-        VigObject ppcVar12;
-        int iVar13;
-        ConfigContainer ccVar13;
-        int iVar14;
-        int iVar16;
-        ConfigContainer ccVar16;
-        Vehicle vVar16;
-        ushort uVar18;
-        uint uVar19;
-        Vector3Int local_30;
-        Vector3Int local_38;
-        Vector3Int local_28;
-        Vector3Int local_20;
-
         switch (arg1)
         {
             case 0:
-                iVar16 = FUN_42330(arg2);
-
-                if (iVar16 < 1)
-                    return 0;
-
-                if (id != 0)
-                    return 0;
-
-                break;
-            default:
-                return 0;
-            case 4:
-                break;
-            case 10:
-                arg2 &= 0xfff;
-
-                if (arg2 == 0x314)
                 {
-                    if (maxHalfHealth < 10)
-                        return 0xffffffff;
-
-                    pcVar8 = Utilities.FUN_2CD78(this) as Vehicle;
-                    pMVar9 = GameManager.instance.FUN_2CDF4(this);
-                    ccVar16 = FUN_2C5F4(0x8000);
-                    ppcVar10 = LevelManager.instance.xobfList[19].ini.FUN_2C17C(3, typeof(Ballistic), 8);
-                    ppcVar12 = LevelManager.instance.xobfList[19].ini.FUN_2C17C(110, typeof(Brimstone), 8);
-                    local_30 = new Vector3Int(0, 0, 0);
-                    local_30.y = -0x100;
-                    local_30.z = 0x1000;
-                    Utilities.FUN_2CA94(this, ccVar16, ppcVar10);
-                    ppcVar10.FUN_30BF0();
-                    ppcVar12.vTransform.position = Utilities.FUN_24148(pMVar9, ccVar16.v3_1);
-                    ppcVar12.vTransform.rotation = new Matrix3x3()
+                    int num = FUN_42330(arg2);
+                    if (num < 1)
                     {
-                        V00 = 0x1000,
-                        V01 = 0,
-                        V02 = 0,
-                        V10 = 0,
-                        V11 = 0x1000,
-                        V12 = 0,
-                        V20 = 0,
-                        V21 = 0,
-                        V22 = 0x1000
-                    };
-                    iVar13 = GameManager.instance.FUN_1DD9C();
-                    GameManager.instance.FUN_1E14C(iVar13, GameManager.instance.DAT_C2C, 60);
-                    ppcVar12.flags = 0x60000694;
-                    sVar5 = pcVar8.id;
-                    ppcVar12.type = 8;
-                    ppcVar12.maxHalfHealth = 100;
-                    ppcVar12.DAT_80 = pcVar8;
-                    ppcVar12.physics2.M3 = 2;
-                    ppcVar12.id = sVar5;
-                    local_30 = Utilities.ApplyMatrixSV(pMVar9.rotation, local_30);
-                    iVar16 = pcVar8.physics1.X;
-
-                    if (iVar16 < 0)
-                        iVar16 += 127;
-
-                    ppcVar12.physics1.Z = (iVar16 >> 7) + local_30.x * 4;
-                    iVar16 = pcVar8.physics1.Y;
-
-                    if (iVar16 < 0)
-                        iVar16 += 127;
-
-                    ppcVar12.physics1.W = (iVar16 >> 7) + local_30.y * 4;
-                    iVar16 = pcVar8.physics1.Z;
-
-                    if (iVar16 < 0)
-                        iVar16 += 127;
-
-                    ppcVar12.physics2.X = (iVar16 >> 7) + local_30.z * 4;
-                    ppcVar12.FUN_305FC();
-                    sVar6 = (short)(maxHalfHealth - 10);
-                }
-                else
-                {
-                    if (arg2 == 0x312)
-                    {
-                        if (maxHalfHealth < 2)
-                            return 0xffffffff;
-
-                        pcVar8 = Utilities.FUN_2CD78(this) as Vehicle;
-                        ccVar13 = FUN_2C5F4(0x8000);
-                        uVar19 = 0;
-                        uVar4 = 0xfe00;
-                        ppcVar10 = LevelManager.instance.xobfList[19].ini.FUN_2C17C(20, typeof(Ballistic), 8);
-                        local_30 = new Vector3Int(0, 0, 0);
-                        local_30.y = 0x100;
-                        Utilities.FUN_2CA94(this, ccVar13, ppcVar10);
-                        Utilities.ParentChildren(this, this);
-                        ppcVar10.FUN_30BF0();
-                        GameManager.instance.FUN_2CF00(out local_20, this, ccVar13);
-                        iVar13 = GameManager.instance.FUN_1DD9C();
-                        GameManager.instance.FUN_1E14C(iVar13, GameManager.instance.DAT_C2C, 60);
-
-                        while (true)
-                        {
-                            ppcVar10 = LevelManager.instance.xobfList[19].ini.FUN_2C17C(113, typeof(Flamewall1), 8);
-                            ppcVar10.flags = 0x60000494;
-                            sVar5 = pcVar8.id;
-                            ppcVar10.type = 8;
-                            ppcVar10.maxHalfHealth = 100;
-                            ppcVar10.DAT_80 = pcVar8;
-                            ppcVar10.id = sVar5;
-                            ppcVar10.vTransform.rotation = new Matrix3x3()
-                            {
-                                V00 = 0x1000,
-                                V01 = 0,
-                                V02 = 0,
-                                V10 = 0,
-                                V11 = 0x1000,
-                                V12 = 0,
-                                V20 = 0,
-                                V21 = 0,
-                                V22 = 0x1000
-                            };
-                            ppcVar10.vTransform.position = local_20;
-
-                            if ((uVar19 & 1) == 0)
-                                local_30.x = (short)uVar4;
-                            else
-                                local_30.x = (short)uVar19 * 0x400 - 0x200;
-
-                            local_28 = Utilities.ApplyMatrixSV(pcVar8.vTransform.rotation, local_30);
-                            iVar16 = pcVar8.physics1.X;
-
-                            if (iVar16 < 0)
-                                iVar16 += 127;
-
-                            ppcVar10.physics1.Z = (iVar16 >> 7) + local_28.x;
-                            iVar16 = pcVar8.physics1.Y;
-
-                            if (iVar16 < 0)
-                                iVar16 += 127;
-
-                            ppcVar10.physics1.W = (iVar16 >> 7) + local_28.y;
-                            iVar16 = pcVar8.physics1.Z;
-
-                            if (iVar16 < 0)
-                                iVar16 += 127;
-
-                            ppcVar10.physics2.X = (iVar16 >> 7) + local_28.z;
-                            ppcVar10.FUN_305FC();
-                            uVar7 = (ushort)(maxHalfHealth - 2);
-                            maxHalfHealth = uVar7;
-                            uVar19++;
-
-                            if (uVar7 < 2) break;
-
-                            uVar4 -= 0x400;
-
-                            if (7 < (int)uVar19)
-                                return 120;
-                        }
-
-                        if (uVar7 != 0)
-                            return 120;
-
-                        goto LAB_497B8;
+                        return 0u;
                     }
-
-                    if (arg2 != 0x313)
-                        return 0;
-
-                    if (maxHalfHealth < 5)
-                        return 0xffffffff;
-
-                    vVar16 = Utilities.FUN_2CD78(this) as Vehicle;
-                    ccVar13 = FUN_2C5F4(0x8000);
-                    ppcVar10 = LevelManager.instance.xobfList[19].ini.FUN_2C17C(222, typeof(OilSlick1), 8);
-                    Utilities.ParentChildren(ppcVar10, ppcVar10);
-                    ppcVar10.vTransform = GameManager.instance.FUN_2CEAC(this, ccVar13);
-                    iVar13 = GameManager.instance.FUN_1DD9C();
-                    GameManager.instance.FUN_1E14C(iVar13, GameManager.instance.DAT_C2C, 60);
-                    ppcVar10.flags = 0xAC;
-                    sVar5 = vVar16.id;
-                    ppcVar10.maxHalfHealth = 100;
-                    ppcVar10.id = sVar5;
-                    iVar14 = vVar16.physics1.X;
-
-                    if (iVar14 < 0)
-                        iVar14 += 255;
-
-                    ppcVar10.physics1.X = iVar14 >> 8;
-                    iVar14 = vVar16.physics1.Y;
-
-                    if (iVar14 < 0)
-                        iVar14 += 255;
-
-                    ppcVar10.physics1.Y = iVar14 >> 8;
-                    iVar16 = vVar16.physics1.Z;
-
-                    if (iVar16 < 0)
-                        iVar16 += 255;
-
-                    ppcVar10.physics1.Z = iVar16 >> 8;
-                    ppcVar10.FUN_2D1DC();
-                    ppcVar10.FUN_4C9C8();
-                    ppcVar10.FUN_305FC();
-                    sVar6 = (short)(maxHalfHealth - 5);
+                    if (base.id != 0)
+                    {
+                        return 0u;
+                    }
+                    break;
                 }
-
-                maxHalfHealth = (ushort)sVar6;
-
-                if (sVar6 != 0)
-                    return 120;
-
-                LAB_497B8:
-                FUN_3A368();
-                return 120;
+            default:
+                return 0u;
+            case 10:
+                {
+                    arg2 &= 0xFFF;
+                    Matrix3x3 matrix3x;
+                    short num2;
+                    if (arg2 == 788)
+                    {
+                        if (base.maxHalfHealth < 10)
+                        {
+                            return uint.MaxValue;
+                        }
+                        Vehicle vehicle = Utilities.FUN_2CD78(this) as Vehicle;
+                        VigTransform vigTransform = GameManager.instance.FUN_2CDF4(this);
+                        ConfigContainer configContainer = FUN_2C5F4(32768);
+                        VigObject vigObject = LevelManager.instance.xobfList[19].ini.FUN_2C17C(3, typeof(Ballistic), 8u);
+                        VigObject vigObject2 = LevelManager.instance.xobfList[19].ini.FUN_2C17C(110, typeof(Brimstone), 8u);
+                        Vector3Int v = new Vector3Int(0, 0, 0);
+                        v.y = -256;
+                        v.z = 4096;
+                        Utilities.FUN_2CA94(this, configContainer, vigObject);
+                        vigObject.FUN_30BF0();
+                        vigObject2.vTransform.position = Utilities.FUN_24148(vigTransform, configContainer.v3_1);
+                        matrix3x = (vigObject2.vTransform.rotation = new Matrix3x3
+                        {
+                            V00 = 4096,
+                            V01 = 0,
+                            V02 = 0,
+                            V10 = 0,
+                            V11 = 4096,
+                            V12 = 0,
+                            V20 = 0,
+                            V21 = 0,
+                            V22 = 4096
+                        });
+                        int param = GameManager.instance.FUN_1DD9C();
+                        GameManager.instance.FUN_1E14C(param, GameManager.instance.DAT_C2C, 60);
+                        vigObject2.flags = 1610614420u;
+                        short id = vehicle.id;
+                        vigObject2.type = 8;
+                        vigObject2.maxHalfHealth = 100;
+                        if (vehicle.doubleDamage != 0)
+                        {
+                            vigObject2.maxHalfHealth = 200;
+                        }
+                        vigObject2.DAT_80 = vehicle;
+                        vigObject2.physics2.M3 = 2;
+                        vigObject2.id = id;
+                        v = Utilities.ApplyMatrixSV(vigTransform.rotation, v);
+                        int num = vehicle.physics1.X;
+                        if (num < 0)
+                        {
+                            num += 127;
+                        }
+                        vigObject2.physics1.Z = (num >> 7) + v.x * 4;
+                        num = vehicle.physics1.Y;
+                        if (num < 0)
+                        {
+                            num += 127;
+                        }
+                        vigObject2.physics1.W = (num >> 7) + v.y * 4;
+                        num = vehicle.physics1.Z;
+                        if (num < 0)
+                        {
+                            num += 127;
+                        }
+                        vigObject2.physics2.X = (num >> 7) + v.z * 4;
+                        vigObject2.FUN_305FC();
+                        num2 = (short)(base.maxHalfHealth - 10);
+                    }
+                    else
+                    {
+                        ConfigContainer configContainer2;
+                        VigObject vigObject;
+                        int param;
+                        short id;
+                        int num;
+                        if (arg2 == 786)
+                        {
+                            if (base.maxHalfHealth < 2)
+                            {
+                                return uint.MaxValue;
+                            }
+                            Vehicle vehicle = Utilities.FUN_2CD78(this) as Vehicle;
+                            configContainer2 = FUN_2C5F4(32768);
+                            uint num3 = 0u;
+                            ushort num4 = 65024;
+                            vigObject = LevelManager.instance.xobfList[19].ini.FUN_2C17C(20, typeof(Ballistic), 8u);
+                            Vector3Int v = new Vector3Int(0, 0, 0);
+                            v.y = 256;
+                            Utilities.FUN_2CA94(this, configContainer2, vigObject);
+                            Utilities.ParentChildren(this, this);
+                            vigObject.FUN_30BF0();
+                            GameManager.instance.FUN_2CF00(out Vector3Int param2, this, configContainer2);
+                            param = GameManager.instance.FUN_1DD9C();
+                            GameManager.instance.FUN_1E14C(param, GameManager.instance.DAT_C2C, 60);
+                            ushort num5;
+                            while (true)
+                            {
+                                vigObject = LevelManager.instance.xobfList[19].ini.FUN_2C17C(113, typeof(Flamewall1), 8u);
+                                vigObject.flags = 1610613908u;
+                                id = vehicle.id;
+                                vigObject.type = 8;
+                                vigObject.maxHalfHealth = 50;
+                                if (vehicle.doubleDamage != 0)
+                                {
+                                    vigObject.maxHalfHealth = 100;
+                                }
+                                vigObject.DAT_80 = vehicle;
+                                vigObject.id = id;
+                                matrix3x = (vigObject.vTransform.rotation = new Matrix3x3
+                                {
+                                    V00 = 4096,
+                                    V01 = 0,
+                                    V02 = 0,
+                                    V10 = 0,
+                                    V11 = 4096,
+                                    V12 = 0,
+                                    V20 = 0,
+                                    V21 = 0,
+                                    V22 = 4096
+                                });
+                                vigObject.vTransform.position = param2;
+                                if ((num3 & 1) == 0)
+                                {
+                                    v.x = (short)num4;
+                                }
+                                else
+                                {
+                                    v.x = (short)num3 * 1024 - 512;
+                                }
+                                Vector3Int vector3Int = Utilities.ApplyMatrixSV(vehicle.vTransform.rotation, v);
+                                num = vehicle.physics1.X;
+                                if (num < 0)
+                                {
+                                    num += 127;
+                                }
+                                vigObject.physics1.Z = (num >> 7) + vector3Int.x;
+                                num = vehicle.physics1.Y;
+                                if (num < 0)
+                                {
+                                    num += 127;
+                                }
+                                vigObject.physics1.W = (num >> 7) + vector3Int.y;
+                                num = vehicle.physics1.Z;
+                                if (num < 0)
+                                {
+                                    num += 127;
+                                }
+                                vigObject.physics2.X = (num >> 7) + vector3Int.z;
+                                vigObject.FUN_305FC();
+                                num5 = (base.maxHalfHealth -= 2);
+                                num3++;
+                                if (num5 < 2)
+                                {
+                                    break;
+                                }
+                                num4 = (ushort)(num4 - 1024);
+                                if (7 < (int)num3)
+                                {
+                                    return 120u;
+                                }
+                            }
+                            if (num5 != 0)
+                            {
+                                return 120u;
+                            }
+                            goto IL_070e;
+                        }
+                        if (arg2 != 787)
+                        {
+                            return 0u;
+                        }
+                        if (base.maxHalfHealth < 5)
+                        {
+                            return uint.MaxValue;
+                        }
+                        Vehicle obj = Utilities.FUN_2CD78(this) as Vehicle;
+                        configContainer2 = FUN_2C5F4(32768);
+                        vigObject = LevelManager.instance.xobfList[19].ini.FUN_2C17C(222, typeof(OilSlick1), 8u);
+                        Utilities.ParentChildren(vigObject, vigObject);
+                        vigObject.vTransform = GameManager.instance.FUN_2CEAC(this, configContainer2);
+                        param = GameManager.instance.FUN_1DD9C();
+                        GameManager.instance.FUN_1E14C(param, GameManager.instance.DAT_C2C, 60);
+                        vigObject.flags = 172u;
+                        id = obj.id;
+                        vigObject.maxHalfHealth = 100;
+                        vigObject.id = id;
+                        int num6 = obj.physics1.X;
+                        if (num6 < 0)
+                        {
+                            num6 += 255;
+                        }
+                        vigObject.physics1.X = num6 >> 8;
+                        num6 = obj.physics1.Y;
+                        if (num6 < 0)
+                        {
+                            num6 += 255;
+                        }
+                        vigObject.physics1.Y = num6 >> 8;
+                        num = obj.physics1.Z;
+                        if (num < 0)
+                        {
+                            num += 255;
+                        }
+                        vigObject.physics1.Z = num >> 8;
+                        vigObject.FUN_2D1DC();
+                        vigObject.FUN_4C9C8();
+                        vigObject.FUN_305FC();
+                        num2 = (short)(base.maxHalfHealth - 5);
+                    }
+                    base.maxHalfHealth = (ushort)num2;
+                    if (num2 != 0)
+                    {
+                        return 120u;
+                    }
+                    goto IL_070e;
+                }
             case 2:
-                pcVar8 = (Vehicle)Utilities.FUN_2CD78(this);
-                pMVar9 = GameManager.instance.FUN_2CDF4(this);
-                ccVar16 = FUN_2C5F4(0x8000);
-                bVar1 = DAT_19;
-                bVar2 = (bVar1 & 3) != 0;
-
-                if (bVar2)
-                    pcVar11 = typeof(Flame2);
-                else
-                    pcVar11 = typeof(Flame1);
-
-                ppcVar10 = LevelManager.instance.xobfList[19].ini.FUN_2C17C(111, pcVar11, 8);
-                Utilities.ParentChildren(ppcVar10, ppcVar10);
-                local_30 = new Vector3Int(0, 0, 0);
-                local_38 = new Vector3Int(0, 0, 0);
-                uVar4 = (ushort)GameManager.FUN_2AC5C();
-                local_30.x = (short)((uVar4 & 0x1ff) - 0x100);
-                uVar4 = (ushort)GameManager.FUN_2AC5C();
-                uVar18 = 20;
-                local_30.y = (short)((uVar4 & 0x1ff) - 0x100);
-                local_30.z = 0x1000;
-                local_38 = local_30;
-                sVar6 = id;
-                ppcVar10.flags = 0x284;
-                ppcVar10.tags = (sbyte)(sVar6 == 0 ? 1 : 0);
-                uVar5 = (ushort)pcVar8.id;
-                ppcVar10.type = 8;
-                ppcVar10.id = (short)uVar5;
-
-                if (pcVar8.doubleDamage != 0)
-                    uVar18 = 40;
-
-                ppcVar10.maxHalfHealth = uVar18;
-                uVar5 = (ushort)GameManager.FUN_2AC5C();
-                ppcVar10.vr.z = uVar5;
-                ppcVar10.child2.flags = 0x410;
-
-                if (pcVar11.Equals(typeof(Flame1)))
-                    ((Flame1)ppcVar10).DAT_80 = pcVar8;
-                else
-                    ((Flame2)ppcVar10).DAT_80 = pcVar8;
-
-                ppcVar10.ApplyTransformation();
-                ppcVar10.vTransform.position = Utilities.FUN_24148(pMVar9, ccVar16.v3_1);
-                local_38 = Utilities.ApplyMatrixSV(pMVar9.rotation, local_38);
-                iVar16 = pcVar8.physics1.X;
-
-                if (iVar16 < 0)
-                    iVar16 += 127;
-
-                ppcVar10.physics1.Z = ((iVar16 >> 7) + local_38.x * 2);
-                iVar16 = pcVar8.physics1.Y;
-
-                if (iVar16 < 0)
-                    iVar16 += 127;
-
-                ppcVar10.physics1.W = ((iVar16 >> 7) + local_38.y * 2);
-                iVar16 = pcVar8.physics1.Z;
-
-                if (iVar16 < 0)
-                    iVar16 += 127;
-
-                ppcVar10.physics2.X = ((iVar16 >> 7) + local_38.z * 2);
-
-                if (bVar2)
                 {
-                    ppcVar10.FUN_4EDFC();
-                    GameManager.instance.FUN_30080(GameManager.instance.DAT_1088, ppcVar10);
+                    Vehicle vehicle = (Vehicle)Utilities.FUN_2CD78(this);
+                    VigTransform vigTransform = GameManager.instance.FUN_2CDF4(this);
+                    ConfigContainer configContainer = FUN_2C5F4(32768);
+                    bool num7 = (DAT_19 & 3) != 0;
+                    Type type = (!num7) ? typeof(Flame1) : typeof(Flame2);
+                    VigObject vigObject = LevelManager.instance.xobfList[19].ini.FUN_2C17C(111, type, 8u);
+                    Utilities.ParentChildren(vigObject, vigObject);
+                    Vector3Int v = new Vector3Int(0, 0, 0);
+                    Vector3Int vector3Int2 = new Vector3Int(0, 0, 0);
+                    ushort num4 = (ushort)GameManager.FUN_2AC5C();
+                    v.x = (short)((num4 & 0x1FF) - 256);
+                    num4 = (ushort)GameManager.FUN_2AC5C();
+                    ushort maxHalfHealth = 20;
+                    v.y = (short)((num4 & 0x1FF) - 256);
+                    v.z = 4096;
+                    vector3Int2 = v;
+                    short num2 = base.id;
+                    vigObject.flags = 644u;
+                    vigObject.tags = (sbyte)((num2 == 0) ? 1 : 0);
+                    ushort num8 = (ushort)vehicle.id;
+                    vigObject.type = 8;
+                    vigObject.id = (short)num8;
+                    if (vehicle.doubleDamage != 0)
+                    {
+                        maxHalfHealth = 40;
+                    }
+                    vigObject.maxHalfHealth = maxHalfHealth;
+                    num8 = (ushort)GameManager.FUN_2AC5C();
+                    vigObject.vr.z = num8;
+                    vigObject.child2.flags = 1040u;
+                    if (type.Equals(typeof(Flame1)))
+                    {
+                        ((Flame1)vigObject).DAT_80 = vehicle;
+                    }
+                    else
+                    {
+                        ((Flame2)vigObject).DAT_80 = vehicle;
+                    }
+                    vigObject.ApplyTransformation();
+                    vigObject.vTransform.position = Utilities.FUN_24148(vigTransform, configContainer.v3_1);
+                    vector3Int2 = Utilities.ApplyMatrixSV(vigTransform.rotation, vector3Int2);
+                    int num = vehicle.physics1.X;
+                    if (num < 0)
+                    {
+                        num += 127;
+                    }
+                    vigObject.physics1.Z = (num >> 7) + vector3Int2.x * 2;
+                    num = vehicle.physics1.Y;
+                    if (num < 0)
+                    {
+                        num += 127;
+                    }
+                    vigObject.physics1.W = (num >> 7) + vector3Int2.y * 2;
+                    num = vehicle.physics1.Z;
+                    if (num < 0)
+                    {
+                        num += 127;
+                    }
+                    vigObject.physics2.X = (num >> 7) + vector3Int2.z * 2;
+                    if (num7)
+                    {
+                        vigObject.FUN_4EDFC();
+                        GameManager.instance.FUN_30080(GameManager.instance.DAT_1088, vigObject);
+                    }
+                    else
+                    {
+                        vigObject.FUN_305FC();
+                    }
+                    DAT_19--;
+                    if (DAT_19 == 0)
+                    {
+                        if (base.maxHalfHealth == 0)
+                        {
+                            FUN_3A368();
+                        }
+                    }
+                    else
+                    {
+                        GameManager.instance.FUN_30CB0(this, 2);
+                    }
+                    return (uint)((DAT_19 + 1) * 2);
                 }
-                else
-                    ppcVar10.FUN_305FC();
-
-                DAT_19--;
-
-                if (DAT_19 == 0)
-                {
-                    if (maxHalfHealth == 0)
-                        FUN_3A368();
-                }
-                else
-                    GameManager.instance.FUN_30CB0(this, 2);
-
-                return (uint)(DAT_19 + 1) * 2;
             case 11:
                 if (arg2 != 0)
-                    return 0;
-
+                {
+                    return 0u;
+                }
                 break;
+            case 4:
+                break;
+            IL_070e:
+                FUN_3A368();
+                return 120u;
         }
-
         if (DAT_18 != 0)
         {
             GameManager.instance.FUN_1E14C(DAT_18, GameManager.instance.DAT_C2C, 60);
             DAT_18 = 0;
         }
-
-        return 0;
+        return 0u;
     }
 
     public override uint UpdateW(int arg1, VigObject arg2)
     {
-        byte bVar1;
-        bool bVar2;
-        sbyte sVar3;
-        ushort uVar4;
-        ushort uVar5;
-        short sVar6;
-        Vehicle pcVar8;
-        VigTransform pMVar9;
-        VigObject ppcVar10;
-        Type pcVar11;
-        long lVar15;
-        int iVar16;
-        VigObject oVar16;
-        ConfigContainer ccVar16;
-        byte bVar17;
-        ushort uVar18;
-        Vector3Int local_30;
-        Vector3Int local_38;
-
         switch (arg1)
         {
             case 0:
-                iVar16 = FUN_42330(arg2);
-
-                if (iVar16 < 1)
-                    return 0;
-
-                if (id != 0)
-                    return 0;
-
-                break;
+                {
+                    int num6 = FUN_42330(arg2);
+                    if (num6 < 1)
+                    {
+                        return 0u;
+                    }
+                    if (base.id != 0)
+                    {
+                        return 0u;
+                    }
+                    break;
+                }
             case 1:
-                maxHalfHealth = 20;
-                return 0;
+                base.maxHalfHealth = 20;
+                return 0u;
             default:
-                return 0;
-            case 4:
-                break;
+                return 0u;
             case 11:
                 if (arg2 != null)
-                    return 0;
-
+                {
+                    return 0u;
+                }
                 break;
             case 12:
-                if (DAT_18 == 0)
                 {
-                    sVar3 = (sbyte)GameManager.instance.FUN_1DD9C();
-                    DAT_18 = sVar3;
-                    GameManager.instance.FUN_1E14C(sVar3, GameManager.instance.DAT_C2C, 59, true);
+                    if (DAT_18 == 0)
+                    {
+                        sbyte param = DAT_18 = (sbyte)GameManager.instance.FUN_1DD9C();
+                        GameManager.instance.FUN_1E14C(param, GameManager.instance.DAT_C2C, 59, param4: true);
+                    }
+                    base.maxHalfHealth--;
+                    VigObject vigObject2 = Utilities.FUN_2CD78(this);
+                    byte dAT_ = 12;
+                    if (vigObject2.id < 0)
+                    {
+                        dAT_ = 4;
+                    }
+                    DAT_19 = dAT_;
+                    goto case 2;
                 }
-
-                maxHalfHealth--;
-                oVar16 = Utilities.FUN_2CD78(this);
-                bVar17 = 12;
-
-                if (oVar16.id < 0)
-                    bVar17 = 4;
-
-                DAT_19 = bVar17;
-                goto case 2;
             case 2:
-                pcVar8 = (Vehicle)Utilities.FUN_2CD78(this);
-                pMVar9 = GameManager.instance.FUN_2CDF4(this);
-                ccVar16 = FUN_2C5F4(0x8000);
-                bVar1 = DAT_19;
-                bVar2 = (bVar1 & 3) != 0;
-
-                if (bVar2)
-                    pcVar11 = typeof(Flame2);
-                else
-                    pcVar11 = typeof(Flame1);
-
-                ppcVar10 = LevelManager.instance.xobfList[19].ini.FUN_2C17C(111, pcVar11, 8);
-                Utilities.ParentChildren(ppcVar10, ppcVar10);
-                local_30 = new Vector3Int(0, 0, 0);
-                local_38 = new Vector3Int(0, 0, 0);
-                uVar4 = (ushort)GameManager.FUN_2AC5C();
-                local_30.x = (short)((uVar4 & 0x1ff) - 0x100);
-                uVar4 = (ushort)GameManager.FUN_2AC5C();
-                uVar18 = 20;
-                local_30.y = (short)((uVar4 & 0x1ff) - 0x100);
-                local_30.z = 0x1000;
-                local_38 = local_30;
-                sVar6 = id;
-                ppcVar10.flags = 0x284;
-                ppcVar10.tags = (sbyte)(sVar6 == 0 ? 1 : 0);
-                uVar5 = (ushort)pcVar8.id;
-                ppcVar10.type = 8;
-                ppcVar10.id = (short)uVar5;
-
-                if (pcVar8.doubleDamage != 0)
-                    uVar18 = 40;
-
-                ppcVar10.maxHalfHealth = uVar18;
-                uVar5 = (ushort)GameManager.FUN_2AC5C();
-                ppcVar10.vr.z = uVar5;
-                ppcVar10.child2.flags = 0x410;
-
-                if (pcVar11.Equals(typeof(Flame1)))
-                    ((Flame1)ppcVar10).DAT_80 = pcVar8;
-                else
-                    ((Flame2)ppcVar10).DAT_80 = pcVar8;
-
-                ppcVar10.ApplyTransformation();
-                ppcVar10.vTransform.position = Utilities.FUN_24148(pMVar9, ccVar16.v3_1);
-                local_38 = Utilities.ApplyMatrixSV(pMVar9.rotation, local_38);
-                iVar16 = pcVar8.physics1.X;
-
-                if (iVar16 < 0)
-                    iVar16 += 127;
-
-                ppcVar10.physics1.Z = ((iVar16 >> 7) + local_38.x * 2);
-                iVar16 = pcVar8.physics1.Y;
-
-                if (iVar16 < 0)
-                    iVar16 += 127;
-
-                ppcVar10.physics1.W = ((iVar16 >> 7) + local_38.y * 2);
-                iVar16 = pcVar8.physics1.Z;
-
-                if (iVar16 < 0)
-                    iVar16 += 127;
-
-                ppcVar10.physics2.X = ((iVar16 >> 7) + local_38.z * 2);
-
-                if (bVar2)
                 {
-                    ppcVar10.FUN_4EDFC();
-                    GameManager.instance.FUN_30080(GameManager.instance.DAT_1088, ppcVar10);
+                    Vehicle vehicle = (Vehicle)Utilities.FUN_2CD78(this);
+                    VigTransform vigTransform = GameManager.instance.FUN_2CDF4(this);
+                    ConfigContainer configContainer = FUN_2C5F4(32768);
+                    bool num3 = (DAT_19 & 3) != 0;
+                    Type type = (!num3) ? typeof(Flame1) : typeof(Flame2);
+                    VigObject vigObject = LevelManager.instance.xobfList[19].ini.FUN_2C17C(111, type, 8u);
+                    Utilities.ParentChildren(vigObject, vigObject);
+                    Vector3Int vector3Int2 = new Vector3Int(0, 0, 0);
+                    Vector3Int vector3Int3 = new Vector3Int(0, 0, 0);
+                    ushort num4 = (ushort)GameManager.FUN_2AC5C();
+                    vector3Int2.x = (short)((num4 & 0x1FF) - 256);
+                    num4 = (ushort)GameManager.FUN_2AC5C();
+                    ushort maxHalfHealth = 20;
+                    vector3Int2.y = (short)((num4 & 0x1FF) - 256);
+                    vector3Int2.z = 4096;
+                    vector3Int3 = vector3Int2;
+                    short id = base.id;
+                    vigObject.flags = 644u;
+                    vigObject.tags = (sbyte)((id == 0) ? 1 : 0);
+                    ushort num5 = (ushort)vehicle.id;
+                    vigObject.type = 8;
+                    vigObject.id = (short)num5;
+                    if (vehicle.doubleDamage != 0)
+                    {
+                        maxHalfHealth = 40;
+                    }
+                    vigObject.maxHalfHealth = maxHalfHealth;
+                    num5 = (ushort)GameManager.FUN_2AC5C();
+                    vigObject.vr.z = num5;
+                    vigObject.child2.flags = 1040u;
+                    if (type.Equals(typeof(Flame1)))
+                    {
+                        ((Flame1)vigObject).DAT_80 = vehicle;
+                    }
+                    else
+                    {
+                        ((Flame2)vigObject).DAT_80 = vehicle;
+                    }
+                    vigObject.ApplyTransformation();
+                    vigObject.vTransform.position = Utilities.FUN_24148(vigTransform, configContainer.v3_1);
+                    vector3Int3 = Utilities.ApplyMatrixSV(vigTransform.rotation, vector3Int3);
+                    int num6 = vehicle.physics1.X;
+                    if (num6 < 0)
+                    {
+                        num6 += 127;
+                    }
+                    vigObject.physics1.Z = (num6 >> 7) + vector3Int3.x * 2;
+                    num6 = vehicle.physics1.Y;
+                    if (num6 < 0)
+                    {
+                        num6 += 127;
+                    }
+                    vigObject.physics1.W = (num6 >> 7) + vector3Int3.y * 2;
+                    num6 = vehicle.physics1.Z;
+                    if (num6 < 0)
+                    {
+                        num6 += 127;
+                    }
+                    vigObject.physics2.X = (num6 >> 7) + vector3Int3.z * 2;
+                    if (num3)
+                    {
+                        vigObject.FUN_4EDFC();
+                        GameManager.instance.FUN_30080(GameManager.instance.DAT_1088, vigObject);
+                    }
+                    else
+                    {
+                        vigObject.FUN_305FC();
+                    }
+                    DAT_19--;
+                    if (DAT_19 == 0)
+                    {
+                        if (base.maxHalfHealth == 0)
+                        {
+                            FUN_3A368();
+                        }
+                    }
+                    else
+                    {
+                        GameManager.instance.FUN_30CB0(this, 2);
+                    }
+                    return (uint)((DAT_19 + 1) * 2);
                 }
-                else
-                    ppcVar10.FUN_305FC();
-
-                DAT_19--;
-
-                if (DAT_19 == 0)
-                {
-                    if (maxHalfHealth == 0)
-                        FUN_3A368();
-                }
-                else
-                    GameManager.instance.FUN_30CB0(this, 2);
-
-                return (uint)(DAT_19 + 1) * 2;
             case 13:
-                local_30 = Utilities.FUN_24304(arg2.vTransform, ((Vehicle)arg2).target.vTransform.position);
-
-                if (0x3bfff < local_30.z)
-                    return 0;
-
-                lVar15 = Utilities.Ratan2(local_30.x, local_30.z);
-                iVar16 = (int)(lVar15 << 20) >> 20;
-
-                if (iVar16 < 0)
-                    iVar16 = -iVar16;
-
-                return (uint)(iVar16 < 113 ? 1 : 0);
+                {
+                    Vector3Int vector3Int2 = Utilities.FUN_24304(arg2.vTransform, ((Vehicle)arg2).target.vTransform.position);
+                    if (245759 < vector3Int2.z)
+                    {
+                        return 0u;
+                    }
+                    int num6 = (int)((long)Utilities.Ratan2(vector3Int2.x, vector3Int2.z) << 20) >> 20;
+                    if (num6 < 0)
+                    {
+                        num6 = -num6;
+                    }
+                    if (num6 >= 113)
+                    {
+                        return 0u;
+                    }
+                    return 1u;
+                }
+            case 14:
+                if (((GameManager.instance.DAT_28 - (arg2.DAT_19 ^ 0x14)) & Mathf.Clamp(63 - (GameManager.instance.DAT_CC4 - 70), 0, 63)) == 0)
+                {
+                    Vector3Int vector3Int = Utilities.FUN_24304(arg2.vTransform, ((Vehicle)arg2).target.vTransform.position);
+                    uint num = 0u;
+                    if (vector3Int.z < 2048000)
+                    {
+                        int num2 = (int)((long)Utilities.Ratan2(vector3Int.x, vector3Int.z) << 20) >> 20;
+                        if (num2 < 0)
+                        {
+                            num2 = -num2;
+                        }
+                        num = ((num2 < 113) ? 1u : 0u);
+                    }
+                    if (num != 0)
+                    {
+                        return 788u;
+                    }
+                }
+                return 0u;
+            case 4:
+                break;
         }
-
         if (DAT_18 != 0)
         {
             GameManager.instance.FUN_1E14C(DAT_18, GameManager.instance.DAT_C2C, 60);
             DAT_18 = 0;
         }
-
-        return 0;
+        return 0u;
     }
 }

@@ -1,149 +1,126 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class Sharky2 : VigObject
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-    //FUN_3B5C (LAUNCH.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        RSEG_DB rVar1;
-        VigTuple ppiVar1;
-        bool bVar2;
-        List<VigTuple> ppiVar4;
-        int iVar5;
-        JUNC_DB jVar5;
-        int iVar6;
-        JUNC_DB jVar6;
-        JUNC_DB puVar7;
-        JUNC_DB jVar8;
-        JUNC_DB jVar11;
-        int iVar12;
-        JUNC_DB jVar12;
-        int iVar13;
-        Sharky oVar13;
-        VigObject oVar14;
-
-        if (arg1 == 2)
-        {
-            ppiVar4 = GameManager.instance.worldObjs;
-
-            for (int i = 0; i < ppiVar4.Count; i++)
-            {
-                ppiVar1 = ppiVar4[i];
-                oVar14 = ppiVar1.vObject;
-
-                if (oVar14.type == 2 && oVar14.id < 0 && oVar14.maxHalfHealth != 0)
-                {
-                    iVar5 = GameManager.instance.terrain.FUN_1B750((uint)oVar14.vTransform.position.x, (uint)oVar14.vTransform.position.z);
-
-                    if (0x2e6800 < iVar5)
-                    {
-                        iVar13 = 0x7fffffff;
-                        iVar12 = 0;
-                        jVar5 = null;
-
-                        if (0 < LevelManager.instance.DAT_1184)
-                        {
-                            do
-                            {
-                                jVar11 = LevelManager.instance.juncList[iVar12];
-
-                                if (jVar11.DAT_12 - 16 < 4)
-                                {
-                                    iVar6 = Utilities.FUN_29F6C(oVar14.vTransform.position, jVar11.DAT_00);
-
-                                    if (iVar6 < iVar13)
-                                    {
-                                        jVar5 = jVar11;
-                                        iVar13 = iVar6;
-                                    }
-                                }
-
-                                iVar12++;
-                            } while (iVar12 < LevelManager.instance.DAT_1184);
-                        }
-
-                        if (iVar5 != 0)
-                        {
-                            oVar13 = GameManager.instance.FUN_30250(GameManager.instance.worldObjs, jVar5.DAT_12) as Sharky;
-
-                            if (oVar13 != null && oVar13.tags < 3)
-                            {
-                                if (oVar13.DAT_19 == 0)
-                                {
-                                    jVar11 = oVar13.DAT_84_2;
-                                    jVar12 = jVar11.DAT_1C[0].DAT_00[1];
-                                }
-                                else
-                                {
-                                    jVar12 = oVar13.DAT_84_2;
-                                    jVar11 = jVar12.DAT_1C[jVar12.DAT_11 - 1].DAT_00[0];
-                                }
-
-                                bVar2 = jVar12 == jVar5;
-
-                                if (bVar2)
-                                    oVar13.tags = 2;
-                                else
-                                {
-                                    jVar6 = jVar11;
-                                    jVar8 = jVar12;
-
-                                    if (jVar11 == jVar5)
-                                        oVar13.tags = 2;
-                                    else
-                                    {
-                                        while (!(bVar2 = jVar6.DAT_11 == 1) && jVar8.DAT_11 != 1)
-                                        {
-                                            rVar1 = jVar6.DAT_1C[1];
-                                            jVar8 = jVar8.DAT_1C[0].DAT_00[1];
-                                            bVar2 = jVar8 == jVar5;
-
-                                            if (bVar2) break;
-                                            else
-                                            {
-                                                jVar6 = rVar1.DAT_00[0];
-
-                                                if (rVar1.DAT_00[0] == jVar5) break;
-                                            }
-                                        }
-
-                                        oVar13.tags = 1;
-                                    }
-                                }
-
-                                oVar13.DAT_80 = oVar14;
-                                oVar13.DAT_19 = (byte)(bVar2 ? 1 : 0);
-
-                                if (bVar2)
-                                    oVar13.DAT_84_2 = jVar12;
-                                else
-                                    oVar13.DAT_84_2 = jVar11;
-
-                                puVar7 = oVar13.DAT_84_2;
-                                oVar13.physics1.Z = puVar7.DAT_00.x;
-                                oVar13.physics1.W = puVar7.DAT_00.y;
-                                oVar13.physics2.X = puVar7.DAT_00.z;
-                            }
-                        }
-                    }
-                }
-            }
-
-            GameManager.instance.FUN_30CB0(this, 60);
-        }
-
-        return 0;
-    }
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		if (arg1 == 2)
+		{
+			List<VigTuple> worldObjs = GameManager.instance.worldObjs;
+			for (int i = 0; i < worldObjs.Count; i++)
+			{
+				VigObject vObject = worldObjs[i].vObject;
+				if (vObject.type != 2 || vObject.id >= 0 || vObject.maxHalfHealth == 0)
+				{
+					continue;
+				}
+				int num = GameManager.instance.terrain.FUN_1B750((uint)vObject.vTransform.position.x, (uint)vObject.vTransform.position.z);
+				if (3041280 >= num)
+				{
+					continue;
+				}
+				int num2 = int.MaxValue;
+				int num3 = 0;
+				JUNC_DB jUNC_DB = null;
+				JUNC_DB jUNC_DB2;
+				if (0 < LevelManager.instance.DAT_1184)
+				{
+					do
+					{
+						jUNC_DB2 = LevelManager.instance.juncList[num3];
+						if (jUNC_DB2.DAT_12 - 16 < 4)
+						{
+							int num4 = Utilities.FUN_29F6C(vObject.vTransform.position, jUNC_DB2.DAT_00);
+							if (num4 < num2)
+							{
+								jUNC_DB = jUNC_DB2;
+								num2 = num4;
+							}
+						}
+						num3++;
+					}
+					while (num3 < LevelManager.instance.DAT_1184);
+				}
+				if (num == 0)
+				{
+					continue;
+				}
+				Sharky sharky = GameManager.instance.FUN_30250(GameManager.instance.worldObjs, jUNC_DB.DAT_12) as Sharky;
+				if (!(sharky != null) || sharky.tags >= 3)
+				{
+					continue;
+				}
+				JUNC_DB jUNC_DB3;
+				if (sharky.DAT_19 == 0)
+				{
+					jUNC_DB2 = sharky.DAT_84_2;
+					jUNC_DB3 = jUNC_DB2.DAT_1C[0].DAT_00[1];
+				}
+				else
+				{
+					jUNC_DB3 = sharky.DAT_84_2;
+					jUNC_DB2 = jUNC_DB3.DAT_1C[jUNC_DB3.DAT_11 - 1].DAT_00[0];
+				}
+				bool flag = jUNC_DB3 == jUNC_DB;
+				if (flag)
+				{
+					sharky.tags = 2;
+				}
+				else
+				{
+					JUNC_DB jUNC_DB4 = jUNC_DB2;
+					JUNC_DB jUNC_DB5 = jUNC_DB3;
+					if (jUNC_DB2 == jUNC_DB)
+					{
+						sharky.tags = 2;
+					}
+					else
+					{
+						while (!(flag = (jUNC_DB4.DAT_11 == 1)) && jUNC_DB5.DAT_11 != 1)
+						{
+							RSEG_DB rSEG_DB = jUNC_DB4.DAT_1C[1];
+							jUNC_DB5 = jUNC_DB5.DAT_1C[0].DAT_00[1];
+							flag = (jUNC_DB5 == jUNC_DB);
+							if (flag)
+							{
+								break;
+							}
+							jUNC_DB4 = rSEG_DB.DAT_00[0];
+							if (rSEG_DB.DAT_00[0] == jUNC_DB)
+							{
+								break;
+							}
+						}
+						sharky.tags = 1;
+					}
+				}
+				sharky.DAT_80 = vObject;
+				sharky.DAT_19 = (byte)(flag ? 1 : 0);
+				if (flag)
+				{
+					sharky.DAT_84_2 = jUNC_DB3;
+				}
+				else
+				{
+					sharky.DAT_84_2 = jUNC_DB2;
+				}
+				JUNC_DB dAT_84_ = sharky.DAT_84_2;
+				sharky.physics1.Z = dAT_84_.DAT_00.x;
+				sharky.physics1.W = dAT_84_.DAT_00.y;
+				sharky.physics2.X = dAT_84_.DAT_00.z;
+			}
+			GameManager.instance.FUN_30CB0(this, 60);
+		}
+		return 0u;
+	}
 }

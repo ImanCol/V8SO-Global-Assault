@@ -1,848 +1,893 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Collector2 : VigObject
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
-
-    protected override void Update()
-    {
-        base.Update();
-    }
-
-    //0x20 (GRBLDER.DLL)
-    private static Vector3Int DAT_20 = new Vector3Int(0, 0, 0);
-
-    public override uint OnCollision(HitDetection hit)
-    {
-        short sVar1;
-        VigObject oVar1;
-        Vehicle vVar1;
-        short sVar2;
-        short sVar6;
-        VigObject oVar8;
-        int iVar9;
-        ConfigContainer ccVar9;
-        byte bVar14;
-        VigObject oVar16;
-        VigCamera cVar16;
-
-        oVar1 = hit.self;
-
-        if (oVar1.type != 2)
-            return 0;
-
-        vVar1 = (Vehicle)oVar1;
-
-        if ((vVar1.flags & 0x4004000) != 0x4000)
-            return 0;
-
-        ccVar9 = FUN_2C5F4(0x8000);
-        GameObject obj = new GameObject();
-        oVar16 = obj.AddComponent<VigObject>();
-        oVar8 = Utilities.FUN_2CD78(this);
-        PDAT_74 = vVar1;
-        PDAT_78 = oVar16;
-        Utilities.FUN_2CA94(this, ccVar9, oVar16);
-        Utilities.ParentChildren(this, this);
-
-        if (vVar1.DAT_58 < 0x10000)
-        {
-            oVar16.type = 4;
-
-            if ((flags & 0x10000000) != 0)
-            {
-                DAT_19 = 0x23;
-                iVar9 = 15;
-                goto LAB_1374;
-            }
-
-            DAT_19 = 3;
-        }
-        else
-        {
-            sVar6 = oVar16.vTransform.rotation.V00;
-            oVar16.vTransform.rotation.V00 = oVar16.vTransform.rotation.V02;
-            sVar1 = oVar16.vTransform.rotation.V10;
-            sVar2 = oVar16.vTransform.rotation.V20;
-            oVar16.vTransform.rotation.V02 = (short)-sVar6;
-            oVar16.vTransform.rotation.V10 = oVar16.vTransform.rotation.V12;
-            oVar16.vTransform.rotation.V12 = (short)-sVar1;
-            oVar16.vTransform.rotation.V20 = oVar16.vTransform.rotation.V22;
-            oVar16.vTransform.rotation.V22 = (short)-sVar2;
-            bVar14 = 0x10;
-
-            if ((flags & 0x10000000) != 0)
-                bVar14 = 0x30;
-
-            DAT_19 = bVar14;
-        }
-
-        iVar9 = 63;
-        LAB_1374:
-        GameManager.instance.FUN_30CB0(this, iVar9);
-        FUN_30B78();
-        flags |= 0x20000020;
-        vVar1.flags = vVar1.flags & 0xfffffffd | 0x6000020;
-        oVar8.flags &= 0xfffff7ff;
-        vVar1.FUN_30BA8();
-        vVar1.state = _VEHICLE_TYPE.Collector;
-        vVar1.PDAT_74 = this;
-        vVar1.physics1.X = 0;
-        vVar1.physics1.Y = 0;
-        vVar1.physics1.Z = 0;
-        vVar1.physics2.X = 0;
-        vVar1.physics2.Y = 0;
-        vVar1.physics2.Z = 0;
-        cVar16 = vVar1.vCamera;
-
-        if (cVar16 != null)
-        {
-            cVar16.target = oVar8;
-            cVar16.DAT_92 = 0x400;
-            cVar16.DAT_9C = 0x3c000;
-        }
-
-        iVar9 = vVar1.FUN_3B078(oVar8, (ushort)DAT_1A, -150, 1);
-        vVar1.FUN_3A020(iVar9, DAT_20, true);
-
-        if (vVar1.id < 0)
-            GameManager.instance.FUN_15B00(~vVar1.id, 255, 0, 64);
-
-        return 1;
-    }
-
-    //FUN_3B0 (GRBLDER.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        sbyte sVar4;
-        sbyte sVar5;
-        short sVar6;
-        VigTransform puVar7;
-        Body bVar7;
-        VigObject oVar7;
-        int iVar8;
-        VigObject oVar8;
-        Vehicle vVar8;
-        VigTransform tVar8;
-        int iVar9;
-        VigTransform tVar9;
-        VigObject oVar9;
-        ConfigContainer ccVar9;
-        Vector3Int v3Var10;
-        int iVar11;
-        int iVar12;
-        uint uVar12;
-        int iVar13;
-        int iVar16;
-        VigObject oVar16;
-        Vehicle vVar16;
-        int iVar17;
-        VigObject oVar17;
-        int iVar18;
-        Matrix3x3 local_68;
-        Vector3Int local_58;
-        Matrix3x3 auStack72;
-        Matrix3x3 auStack40;
-
-        switch (arg1)
-        {
-            case 0:
-                iVar16 = FUN_42330(arg2);
-
-                if (iVar16 < 1)
-                    return 0;
-
-                if (arg2 < 0)
-                    return 0;
-
-                oVar16 = child2;
-
-                switch (DAT_19)
-                {
-                    case 0:
-                        vr.x -= 64;
-                        sVar6 = (short)(oVar16.vr.x - 64);
-                        goto LAB_480;
-                    default:
-                        return 0;
-                    case 2:
-                        vr.x += 64;
-                        sVar6 = (short)(oVar16.vr.x + 64);
-                        LAB_480:
-                        oVar16.vr.x = sVar6;
-                        
-                        if (arg2 == 0)
-                            return 0;
-                        
-                        ApplyRotationMatrix();
-                        oVar16.ApplyRotationMatrix();
-                        return 0;
-                    case 3:
-                        oVar17 = PDAT_74;
-                        tVar8 = GameManager.instance.FUN_2CDF4(PDAT_78);
-                        Utilities.FUN_248C4(oVar17.vTransform.rotation, tVar8.rotation, out local_68);
-                        iVar16 = -local_68.V12;
-
-                        if (0 < local_68.V12)
-                            iVar16 += 7;
-
-                        iVar11 = local_68.V02 - local_68.V20;
-                        iVar16 >>= 3;
-
-                        if (iVar11 < 0)
-                            iVar11 += 7;
-
-                        iVar13 = local_68.V10;
-                        iVar11 >>= 3;
-                        goto LAB_9D8;
-                    case 4:
-                        vr.x += 32;
-                        oVar8 = PDAT_78;
-                        oVar16.vr.x += 32;
-                        oVar8.vr.x -= 32;
-
-                        if (arg2 == 0)
-                            return 0;
-
-                        ApplyRotationMatrix();
-                        oVar16.ApplyRotationMatrix();
-                        oVar8.ApplyRotationMatrix();
-                        goto LAB_BA4;
-                    case 5:
-                    case 0x26:
-                        oVar8 = PDAT_78;
-                        iVar16 = oVar8.vTransform.rotation.V02 * 1525;
-
-                        if (iVar16 < 0)
-                            iVar16 += 4095;
-
-                        iVar17 = oVar8.vTransform.rotation.V12 * 1525;
-                        oVar8.vTransform.position.x += iVar16 >> 12;
-
-                        if (iVar17 < 0)
-                            iVar17 += 4095;
-
-                        iVar16 = oVar8.vTransform.rotation.V22 * 1525;
-                        oVar8.vTransform.position.y += iVar17 >> 12;
-
-                        if (iVar16 < 0)
-                            iVar16 += 4095;
-
-                        oVar8.vTransform.position.z += iVar16 >> 12;
-
-                        if (arg2 == 0)
-                            return 0;
-
-                        goto LAB_BA4;
-                    case 6:
-                    case 0x28:
-                        oVar16 = Utilities.FUN_2CD78(this);
-
-                        if ((oVar16.flags & 0x4000000) == 0)
-                        {
-                            uVar12 = GameManager.FUN_2AC5C();
-
-                            if ((uVar12 & 7) == 0)
-                            {
-                                iVar8 = (int)GameManager.FUN_2AC5C();
-                                oVar16.physics1.X += ((iVar8 * 1524 >> 15) - 762) * 128;
-                                iVar8 = (int)GameManager.FUN_2AC5C();
-                                oVar16.physics1.Y += ((iVar8 * 1524 >> 15) - 762) * 128;
-                                iVar8 = (int)GameManager.FUN_2AC5C();
-                                oVar16.physics1.Z += ((iVar8 * 1524 >> 15) - 762) * 128;
-                            }
-                        }
-
-                        ((Vehicle)PDAT_74).FUN_39DCC(-2, DAT_20, false);
-                        return 0;
-                    case 7:
-                    case 0x29:
-                        oVar8 = PDAT_74;
-                        iVar16 = oVar8.physics1.X;
-
-                        if (iVar16 < 0)
-                            iVar16 += 127;
-
-                        iVar17 = oVar8.physics1.Y;
-                        oVar8.vTransform.position.x += iVar16 >> 7;
-
-                        if (iVar17 < 0)
-                            iVar17 += 127;
-
-                        iVar16 = oVar8.physics1.Z;
-                        oVar8.vTransform.position.y += iVar17 >> 7;
-
-                        if (iVar16 < 0)
-                            iVar16 += 127;
-
-                        oVar8.vTransform.position.z += iVar16 >> 7;
-                        return 0;
-                    case 0x10:
-                    case 0x30:
-                        oVar17 = PDAT_74;
-                        tVar8 = GameManager.instance.FUN_2CDF4(PDAT_78);
-                        Utilities.FUN_248C4(oVar17.vTransform.rotation, tVar8.rotation, out auStack72);
-                        iVar16 = -auStack72.V12;
-
-                        if (0 < auStack72.V12)
-                            iVar16 += 7;
-
-                        iVar11 = auStack72.V02 - auStack72.V20;
-                        iVar16 >>= 3;
-
-                        if (iVar11 < 0)
-                            iVar11 += 7;
-
-                        iVar13 = auStack72.V10;
-                        iVar11 >>= 3;
-                        goto LAB_9D8;
-                    case 0x11:
-                    case 0x13:
-                    case 0x15:
-                    case 0x17:
-                        vr.x += 32;
-                        oVar16.vr.x += 32;
-
-                        if (arg2 == 0)
-                            return 0;
-
-                        ApplyTransformation();
-                        oVar16.ApplyTransformation();
-                        sVar5 = (sbyte)DAT_19;
-                        sVar4 = 23;
-                        break;
-                    case 0x12:
-                    case 0x14:
-                    case 0x16:
-                        vr.x -= 64;
-                        oVar16.vr.x -= 64;
-
-                        if (arg2 == 0)
-                            return 0;
-
-                        ApplyTransformation();
-                        oVar16.ApplyTransformation();
-                        sVar5 = (sbyte)DAT_19;
-                        sVar4 = 22;
-                        break;
-                    case 0x20:
-                        do
-                        {
-                            sVar6 = -21;
-
-                            if (oVar16.id != 0)
-                                sVar6 = 21;
-
-                            oVar16.vr.y += sVar6;
-                            oVar16.child2.vr.y += sVar6;
-
-                            if (arg2 != 0)
-                            {
-                                oVar16.ApplyTransformation();
-                                oVar16.child2.ApplyTransformation();
-                            }
-
-                            oVar16 = oVar16.child;
-                        } while (oVar16 != null);
-
-                        return 0;
-                    case 0x22:
-                    case 0x37:
-                        do
-                        {
-                            sVar6 = 21;
-
-                            if (oVar16.id != 0)
-                                sVar6 = -21;
-
-                            oVar16.vr.y += sVar6;
-                            oVar16.child2.vr.y += sVar6;
-
-                            if (arg2 != 0)
-                            {
-                                oVar16.ApplyTransformation();
-                                oVar16.child2.ApplyTransformation();
-                            }
-
-                            oVar16 = oVar16.child;
-                        } while (oVar16 != null);
-
-                        return 0;
-                    case 0x23:
-                        do
-                        {
-                            sVar6 = 21;
-
-                            if (oVar16.id != 0)
-                                sVar6 = -21;
-
-                            oVar16.vr.y += sVar6;
-                            oVar16.child2.vr.y += sVar6;
-
-                            if (arg2 != 0)
-                            {
-                                oVar16.ApplyTransformation();
-                                oVar16.child2.ApplyTransformation();
-                            }
-
-                            oVar16 = oVar16.child;
-                        } while (oVar16.type == 0);
-
-                        goto case 0x24;
-                    case 0x24:
-                        oVar17 = PDAT_74;
-                        tVar8 = GameManager.instance.FUN_2CDF4(PDAT_78);
-                        Utilities.FUN_248C4(oVar17.vTransform.rotation, tVar8.rotation, out auStack40);
-                        iVar16 = -auStack40.V12;
-
-                        if (0 < auStack40.V12)
-                            iVar16 += 7;
-
-                        iVar11 = auStack40.V02 - auStack40.V20;
-                        iVar16 >>= 3;
-
-                        if (iVar11 < 0)
-                            iVar11 += 7;
-
-                        iVar13 = auStack40.V10;
-                        iVar11 >>= 3;
-                        LAB_9D8:
-
-                        if (iVar13 < 0)
-                            iVar13 += 7;
-
-                        oVar17.FUN_24700((short)iVar16, (short)iVar11, (short)(iVar13 >> 3));
-                        iVar16 = tVar8.position.x - oVar17.vTransform.position.x;
-
-                        if (iVar16 < 0)
-                            iVar16 += 7;
-
-                        iVar16 >>= 3;
-                        oVar17.vTransform.position.x += iVar16;
-                        iVar18 = tVar8.position.y - oVar17.vTransform.position.y;
-
-                        if (iVar18 < 0)
-                            iVar18 += 7;
-
-                        iVar18 >>= 3;
-                        oVar17.vTransform.position.y += iVar18;
-                        iVar8 = tVar8.position.z - oVar17.vTransform.position.z;
-
-                        if (iVar8 < 0)
-                            iVar8 += 7;
-
-                        iVar8 >>= 3;
-                        oVar17.vTransform.position.z += iVar8;
-
-                        if ((flags & 0x20000000) != 0)
-                        {
-                            if (iVar16 < 0)
-                                iVar16 = -iVar16;
-
-                            if (iVar16 < 0x800)
-                            {
-                                if (iVar18 < 0)
-                                    iVar18 = -iVar18;
-
-                                if (iVar18 < 0x800)
-                                {
-                                    if (iVar8 < 0)
-                                        iVar8 = -iVar8;
-
-                                    if (iVar8 < 0x800)
-                                    {
-                                        flags &= 0xdfffffff;
-                                        iVar9 = GameManager.instance.FUN_1DD9C();
-                                        v3Var10 = GameManager.instance.FUN_2CE50(oVar17);
-                                        GameManager.instance.FUN_1E628(iVar9, vData.sndList, 6, v3Var10);
-                                    }
-                                }
-                            }
-                        }
-
-                        oVar17.vTransform.rotation = Utilities.MatrixNormal(oVar17.vTransform.rotation);
-                        return 0;
-                    case 0x25:
-                        oVar8 = PDAT_78;
-                        vr.x += 32;
-
-                        if (arg2 == 0)
-                            return 0;
-
-                        ApplyRotationMatrix();
-                        goto LAB_BA4;
-                    case 0x27:
-                        vr.x -= 64;
-
-                        if (arg2 == 0)
-                            return 0;
-
-                        ApplyTransformation();
-                        return 0;
-                    case 0x31:
-                    case 0x33:
-                    case 0x35:
-                        vr.x += 32;
-
-                        if (arg2 == 0)
-                            return 0;
-
-                        ApplyTransformation();
-                        goto LAB_BA0;
-                    case 0x32:
-                    case 0x34:
-                    case 0x36:
-                        vr.x -= 64;
-
-                        if (arg2 == 0)
-                            return 0;
-
-                        ApplyTransformation();
-                        sVar5 = (sbyte)DAT_19;
-                        sVar4 = 54;
-                        break;
-                }
-
-                if (sVar5 == sVar4)
-                    return 0;
-
-                LAB_BA0:
-                oVar8 = PDAT_78;
-                LAB_BA4:
-                puVar7 = GameManager.instance.FUN_2CDF4(oVar8);
-                oVar16 = PDAT_74;
-                oVar16.vTransform = puVar7;
-                return 0;
-            case 2:
-                break;
-            case 4:
-                if (DAT_19 == 0)
-                    return 0;
-
-                if (PDAT_78 != null)
-                {
-                    oVar9 = PDAT_78.FUN_2CCBC();
-                    Destroy(oVar9.gameObject);
-                    PDAT_78 = null;
-                }
-
-                oVar16 = PDAT_74;
-
-                if (oVar16 != null)
-                {
-                    vVar16 = (Vehicle)oVar16;
-                    vVar16.FUN_41FEC();
-                    uVar12 = vVar16.flags;
-                    vVar16.flags = uVar12 & 0xffffffdd;
-
-                    if ((uVar12 & 0x80) == 0)
-                        vVar16.FUN_30B78();
-
-                    if (vVar16.vCamera != null)
-                    {
-                        vVar16.vCamera.target = vVar16;
-                        vVar16.vCamera.FUN_4B898();
-                    }
-
-                    PDAT_74 = null;
-                }
-
-                GameManager.instance.FUN_1DE78(DAT_18);
-                return 0;
-            default:
-                return 0;
-        }
-
-        ApplyTransformation();
-        child2.ApplyTransformation();
-        sVar5 = (sbyte)(DAT_19 + 1);
-        DAT_19 = (byte)sVar5;
-
-        switch (sVar5)
-        {
-            case 1:
-            case 0x21:
-                FUN_30BA8();
-                GameManager.instance.FUN_30CB0(this, 128);
-                flags &= 0xffffffdf;
-                oVar16 = Utilities.FUN_2CD78(this);
-                oVar16.flags |= 0x800;
-                break;
-            case 2:
-            case 0x22:
-                FUN_30B78();
-                GameManager.instance.FUN_30CB0(this, 16);
-                flags |= 0x20;
-                oVar16 = Utilities.FUN_2CD78(this);
-                oVar16.flags &= 0xfffff7ff;
-                iVar9 = GameManager.instance.FUN_1DD9C();
-                GameManager.instance.FUN_1E628(iVar9, vData.sndList, 4, oVar16.vTransform.position);
-                break;
-            case 3:
-            case 0x23:
-                FUN_30BA8();
-                DAT_19 = 0;
-
-                if (maxHalfHealth == 0)
-                {
-                    FUN_3A368();
-                    return 0;
-                }
-
-                break;
-            case 4:
-            case 0x25:
-                iVar9 = 32;
-                goto LAB_11A0;
-            case 5:
-            case 0x26:
-                LevelManager.instance.FUN_4DE54(PDAT_74.vTransform.position, 138);
-                GameManager.instance.FUN_30CB0(this, 24);
-                iVar9 = GameManager.instance.FUN_1DD9C();
-                v3Var10 = GameManager.instance.FUN_2CE50(this);
-                GameManager.instance.FUN_1E580(iVar9, GameManager.instance.DAT_C2C, 36, v3Var10);
-                break;
-            case 6:
-            case 0x28:
-                oVar8 = PDAT_74;
-                vVar16 = (Vehicle)Utilities.FUN_2CD78(this);
-                oVar8.flags |= 2;
-                sVar5 = (sbyte)GameManager.instance.FUN_1DD9C();
-                DAT_18 = sVar5;
-                GameManager.instance.FUN_1E580(sVar5, vData.sndList, 3, oVar8.vTransform.position, true);
-
-                if (oVar8.id < 0)
-                    GameManager.instance.FUN_15AA8(~oVar8.id, 255, 255, 255, 64);
-
-                if (vVar16.id < 0)
-                    GameManager.instance.FUN_15B00(~vVar16.id, 255, 255, 64);
-
-                oVar9 = PDAT_78.FUN_2CCBC();
-                Destroy(oVar9.gameObject);
-                PDAT_78 = null;
-                GameManager.instance.FUN_30CB0(this, 256);
-                bVar7 = vVar16.body[1].child2 as Body;
-
-                if (bVar7 != null)
-                {
-                    do
-                    {
-                        if (bVar7.id - 16 < 2)
-                        {
-                            bVar7.state = _BODY_TYPE.Collector;
-                            bVar7.tags = (sbyte)((byte)bVar7.id & 1);
-                            GameManager.instance.FUN_30CB0(bVar7, 232);
-                        }
-
-                        bVar7 = bVar7.child as Body;
-                    } while (bVar7 != null);
-
-                    return 0;
-                }
-
-                break;
-            case 7:
-            case 0x29:
-                oVar8 = PDAT_74;
-                oVar8.flags &= 0xfffffffd;
-                ccVar9 = FUN_2C5F4(0x8001);
-                oVar8.vTransform = GameManager.instance.FUN_2CEAC(this, ccVar9);
-                iVar16 = oVar8.vTransform.rotation.V02 * 4577;
-
-                if (iVar16 < 0)
-                    iVar16 += 31;
-
-                oVar8.physics1.X = iVar16 >> 5;
-                iVar16 = oVar8.vTransform.rotation.V12 * 4577;
-
-                if (iVar16 < 0)
-                    iVar16 += 31;
-
-                oVar8.physics1.Y = iVar16 >> 5;
-                iVar16 = oVar8.vTransform.rotation.V22 * 4577;
-
-                if (iVar16 < 0)
-                    iVar16 += 31;
-
-                oVar8.physics1.Z = iVar16 >> 5;
-                GameManager.instance.FUN_30CB0(this, 24);
-                GameManager.instance.FUN_1E580(DAT_18, GameManager.instance.DAT_C2C, 37, oVar8.vTransform.position);
-                DAT_18 = 0;
-                break;
-            case 8:
-            case 0x2A:
-                vVar16 = (Vehicle)PDAT_74;
-                vVar16.FUN_41FEC();
-                vVar16.flags &= 0xfdffffdf;
-                vVar16.FUN_30B78();
-                PDAT_74 = null;
-                goto LAB_1210;
-            case 0x13:
-            case 0x15:
-            case 0x33:
-            case 0x35:
-                iVar9 = GameManager.instance.FUN_1DD9C();
-                v3Var10 = GameManager.instance.FUN_2CE50(this);
-                GameManager.instance.FUN_1E628(iVar9, vData.sndList, 5, v3Var10);
-                goto case 0x11;
-            case 0x11:
-            case 0x31:
-                oVar9 = Utilities.FUN_2CD78(this);
-                iVar9 = ((Vehicle)PDAT_74).FUN_3B078(oVar9, (ushort)DAT_1A, -150, 1);
-                ((Vehicle)PDAT_74).FUN_3A020(iVar9, DAT_20, true);
-                goto case 0x17;
-            case 0x17:
-                iVar9 = 32;
-                goto LAB_11A0;
-            case 0x16:
-            case 0x36:
-                oVar8 = PDAT_78;
-                tVar9 = GameManager.instance.FUN_2CDF4(this);
-                oVar16 = Utilities.FUN_2CD78(this);
-                local_58 = new Vector3Int
-                    (0, oVar8.vTransform.position.z, -oVar8.vTransform.position.y);
-                local_58 = Utilities.FUN_24094(tVar9.rotation, local_58);
-                vVar8 = (Vehicle)PDAT_74;
-                vVar8.FUN_41FEC();
-                vVar8.physics1.X = oVar16.physics1.X + local_58.x * 16;
-                vVar8.physics1.Y = oVar16.physics1.Y + local_58.y * 16;
-                vVar8.physics1.Z = oVar16.physics1.Z + local_58.z * 16;
-                vVar8.physics2.Z = -0x40000;
-                vVar8.flags &= 0xffffffdf;
-                vVar8.FUN_30B78();
-                iVar9 = GameManager.instance.FUN_1DD9C();
-                v3Var10 = GameManager.instance.FUN_2CE50(this);
-                GameManager.instance.FUN_1E628(iVar9, vData.sndList, 4, v3Var10);
-                oVar9 = PDAT_78.FUN_2CCBC();
-                Destroy(oVar9.gameObject);
-                PDAT_78 = null;
-                iVar9 = vVar8.FUN_3B078(oVar16, (ushort)DAT_1A, -150, 1);
-                vVar8.FUN_3A020(iVar9, DAT_20, true);
-                goto case 0x12;
-            case 0x12:
-            case 0x14:
-            case 0x32:
-            case 0x34:
-                iVar12 = PDAT_74.id;
-
-                if (iVar12 < 0)
-                    GameManager.instance.FUN_15B00(~iVar12, 255, 0, 64);
-
-                iVar9 = 16;
-                goto LAB_11A0;
-            case 0x18:
-            case 0x38:
-                vVar16 = (Vehicle)PDAT_74;
-                PDAT_74 = null;
-                vVar16.flags &= 0xfdffffdf;
-                LAB_1210:
-                DAT_19 = 0;
-                FUN_30BA8();
-
-                if (maxHalfHealth == 0)
-                    FUN_3A368();
-
-                if (vVar16.vCamera != null)
-                {
-                    vVar16.vCamera.target = vVar16;
-                    vVar16.vCamera.FUN_4B898();
-                }
-
-                break;
-            case 0x24:
-                GameManager.instance.FUN_30CB0(this, 48);
-                break;
-            case 0x27:
-                iVar9 = 16;
-                PDAT_74.flags |= 2;
-                LAB_11A0:
-                GameManager.instance.FUN_30CB0(this, iVar9);
-                iVar9 = GameManager.instance.FUN_1DD9C();
-                v3Var10 = GameManager.instance.FUN_2CE50(this);
-                GameManager.instance.FUN_1E628(iVar9, vData.sndList, 4, v3Var10);
-                break;
-            case 0x37:
-                GameManager.instance.FUN_30CB0(this, 16);
-                break;
-        }
-
-        return 0;
-    }
-
-    
-    public override uint UpdateW(int arg1, VigObject arg2)
-    {
-        bool bVar3;
-        int iVar9;
-        Vector3Int v3Var10;
-        Vector3Int local_58;
-
-        switch (arg1)
-        {
-            case 1:
-                type = 3;
-                maxHalfHealth = 6;
-
-                if (-1 < arg2.id)
-                    return 0;
-
-                //salvage points
-                return 0;
-            default:
-                return 0;
-            case 12:
-                if (DAT_19 == 0)
-                {
-                    arg2.tags = 3;
-                    PDAT_74 = null;
-                    DAT_19 = (byte)(((flags & 0x10000000) != 0 ? 1 : 0) << 5);
-                    FUN_30B78();
-                    GameManager.instance.FUN_30CB0(this, 15);
-                    iVar9 = GameManager.instance.FUN_1DD9C();
-                    v3Var10 = GameManager.instance.FUN_2CE50(this);
-                    GameManager.instance.FUN_1E628(iVar9, vData.sndList, 4, v3Var10);
-                    iVar9 = GameManager.instance.FUN_1DD9C();
-                    GameManager.instance.FUN_1E188(iVar9, vData.sndList, 2);
-                    maxHalfHealth--;
-                }
-                else
-                {
-                    iVar9 = GameManager.instance.FUN_1DD9C();
-                    GameManager.instance.FUN_1E14C(iVar9, GameManager.instance.DAT_C2C, 1);
-                }
-
-                if (-1 < arg2.id)
-                    return 900;
-
-                return 480;
-            case 13:
-                if (DAT_19 != 0)
-                    return 0;
-
-                local_58 = Utilities.FUN_24304(arg2.vTransform, ((Vehicle)arg2).target.vTransform.position);
-
-                if (0x22ffe < (uint)local_58.z - 1)
-                    return 0;
-
-                if (local_58.x < 0)
-                    local_58.x = -local_58.x;
-
-                bVar3 = local_58.x < 0x10000;
-
-                if (0x10000 < local_58.z)
-                    bVar3 = local_58.x < local_58.z;
-
-                if (!bVar3)
-                    return 0;
-
-                return 1;
-        }
-
-        return 0;
-    }
+	private static Vector3Int DAT_20 = new Vector3Int(0, 0, 0);
+
+	protected override void Start()
+	{
+		base.Start();
+	}
+
+	protected override void Update()
+	{
+		base.Update();
+	}
+
+	public override uint OnCollision(HitDetection hit)
+	{
+		VigObject self = hit.self;
+		if (self.type != 2)
+		{
+			return 0u;
+		}
+		Vehicle vehicle = (Vehicle)self;
+		if ((vehicle.flags & 0x4004000) != 16384)
+		{
+			return 0u;
+		}
+		ConfigContainer cont = FUN_2C5F4(32768);
+		VigObject vigObject = new GameObject().AddComponent<VigObject>();
+		VigObject vigObject2 = Utilities.FUN_2CD78(this);
+		PDAT_74 = vehicle;
+		PDAT_78 = vigObject;
+		Utilities.FUN_2CA94(this, cont, vigObject);
+		Utilities.ParentChildren(this, this);
+		int param;
+		if (vehicle.DAT_58 < 65536)
+		{
+			vigObject.type = 4;
+			if ((flags & 0x10000000) != 0)
+			{
+				DAT_19 = 35;
+				param = 15;
+				goto IL_01ab;
+			}
+			DAT_19 = 3;
+		}
+		else
+		{
+			short v = vigObject.vTransform.rotation.V00;
+			vigObject.vTransform.rotation.V00 = vigObject.vTransform.rotation.V02;
+			short v2 = vigObject.vTransform.rotation.V10;
+			short v3 = vigObject.vTransform.rotation.V20;
+			vigObject.vTransform.rotation.V02 = (short)(-v);
+			vigObject.vTransform.rotation.V10 = vigObject.vTransform.rotation.V12;
+			vigObject.vTransform.rotation.V12 = (short)(-v2);
+			vigObject.vTransform.rotation.V20 = vigObject.vTransform.rotation.V22;
+			vigObject.vTransform.rotation.V22 = (short)(-v3);
+			byte dAT_ = 16;
+			if ((flags & 0x10000000) != 0)
+			{
+				dAT_ = 48;
+			}
+			DAT_19 = dAT_;
+		}
+		param = 63;
+		goto IL_01ab;
+		IL_01ab:
+		GameManager.instance.FUN_30CB0(this, param);
+		FUN_30B78();
+		flags |= 536870944u;
+		vehicle.flags = (uint)(((int)vehicle.flags & -3) | 0x6000020);
+		vigObject2.flags &= 4294965247u;
+		vehicle.FUN_30BA8();
+		vehicle.state = _VEHICLE_TYPE.Collector;
+		vehicle.DAT_F6 |= 2048;
+		vehicle.PDAT_74 = this;
+		vehicle.physics1.X = 0;
+		vehicle.physics1.Y = 0;
+		vehicle.physics1.Z = 0;
+		vehicle.physics2.X = 0;
+		vehicle.physics2.Y = 0;
+		vehicle.physics2.Z = 0;
+		VigCamera vCamera = vehicle.vCamera;
+		if (vCamera != null)
+		{
+			vCamera.target = vigObject2;
+			vCamera.DAT_92 = 1024;
+			vCamera.DAT_9C = 245760;
+		}
+		param = -150;
+		if (((Vehicle)vigObject2).doubleDamage != 0)
+		{
+			param = -300;
+		}
+		param = vehicle.FUN_3B078(vigObject2, (ushort)DAT_1A, param, 1u);
+		vehicle.FUN_3A020(param, DAT_20, param3: true);
+		if (vehicle.id < 0)
+		{
+			GameManager.instance.FUN_15B00(~vehicle.id, byte.MaxValue, 0, 64);
+		}
+		return 1u;
+	}
+
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		switch (arg1)
+		{
+		case 0:
+		{
+			int num = FUN_42330(arg2);
+			if (num < 1)
+			{
+				return 0u;
+			}
+			if (arg2 < 0)
+			{
+				return 0u;
+			}
+			VigObject vigObject = child2;
+			VigObject pDAT_2;
+			VigTransform vigTransform2;
+			int num4;
+			VigObject pDAT_;
+			sbyte b;
+			sbyte b2;
+			short x;
+			int num3;
+			int num7;
+			int num6;
+			switch (DAT_19)
+			{
+			case 0:
+				vr.x -= 64;
+				x = (short)(vigObject.vr.x - 64);
+				goto IL_017c;
+			default:
+				return 0u;
+			case 2:
+				vr.x += 64;
+				x = (short)(vigObject.vr.x + 64);
+				goto IL_017c;
+			case 3:
+				pDAT_2 = PDAT_74;
+				vigTransform2 = GameManager.instance.FUN_2CDF4(PDAT_78);
+				Utilities.FUN_248C4(pDAT_2.vTransform.rotation, vigTransform2.rotation, out Matrix3x3 m3);
+				num = -m3.V12;
+				if (0 < m3.V12)
+				{
+					num += 7;
+				}
+				num3 = m3.V02 - m3.V20;
+				num >>= 3;
+				if (num3 < 0)
+				{
+					num3 += 7;
+				}
+				num4 = m3.V10;
+				num3 >>= 3;
+				goto IL_0863;
+			case 4:
+				vr.x += 32;
+				pDAT_ = PDAT_78;
+				vigObject.vr.x += 32;
+				pDAT_.vr.x -= 32;
+				if (arg2 == 0)
+				{
+					return 0u;
+				}
+				ApplyRotationMatrix();
+				vigObject.ApplyRotationMatrix();
+				pDAT_.ApplyRotationMatrix();
+				break;
+			case 5:
+			case 38:
+			{
+				pDAT_ = PDAT_78;
+				num = pDAT_.vTransform.rotation.V02 * 1525;
+				if (num < 0)
+				{
+					num += 4095;
+				}
+				int num2 = pDAT_.vTransform.rotation.V12 * 1525;
+				pDAT_.vTransform.position.x += num >> 12;
+				if (num2 < 0)
+				{
+					num2 += 4095;
+				}
+				num = pDAT_.vTransform.rotation.V22 * 1525;
+				pDAT_.vTransform.position.y += num2 >> 12;
+				if (num < 0)
+				{
+					num += 4095;
+				}
+				pDAT_.vTransform.position.z += num >> 12;
+				if (arg2 == 0)
+				{
+					return 0u;
+				}
+				break;
+			}
+			case 6:
+			case 40:
+			{
+				vigObject = Utilities.FUN_2CD78(this);
+				if ((vigObject.flags & 0x4000000) == 0)
+				{
+					uint num5 = GameManager.FUN_2AC5C();
+					if ((num5 & 7) == 0)
+					{
+						num6 = (int)GameManager.FUN_2AC5C();
+						vigObject.physics1.X += ((num6 * 1524 >> 15) - 762) * 128;
+						num6 = (int)GameManager.FUN_2AC5C();
+						vigObject.physics1.Y += ((num6 * 1524 >> 15) - 762) * 128;
+						num6 = (int)GameManager.FUN_2AC5C();
+						vigObject.physics1.Z += ((num6 * 1524 >> 15) - 762) * 128;
+					}
+				}
+				Vehicle vehicle = (Vehicle)PDAT_74;
+				vehicle.vTransform.position = vigObject.vTransform.position;
+				vehicle.screen = vehicle.vTransform.position;
+				int num2 = -2;
+				if (((Vehicle)vigObject).doubleDamage != 0)
+				{
+					num2 = -4;
+				}
+				vehicle.FUN_3A020(num2, DAT_20, param3: false);
+				if (vehicle.shield == 0)
+				{
+					vehicle = (Vehicle)DAT_80;
+					if (vehicle.body[0] == null)
+					{
+						if (vehicle.maxFullHealth <= vehicle.maxHalfHealth)
+						{
+							return 0u;
+						}
+					}
+					else if (vehicle.maxFullHealth <= vehicle.body[0].maxHalfHealth + vehicle.body[1].maxHalfHealth)
+					{
+						return 0u;
+					}
+					vehicle.FUN_3A0C0(-num2);
+				}
+				return 0u;
+			}
+			case 7:
+			case 41:
+			{
+				pDAT_ = PDAT_74;
+				num = pDAT_.physics1.X;
+				if (num < 0)
+				{
+					num += 127;
+				}
+				int num2 = pDAT_.physics1.Y;
+				pDAT_.vTransform.position.x += num >> 7;
+				if (num2 < 0)
+				{
+					num2 += 127;
+				}
+				num = pDAT_.physics1.Z;
+				pDAT_.vTransform.position.y += num2 >> 7;
+				if (num < 0)
+				{
+					num += 127;
+				}
+				pDAT_.vTransform.position.z += num >> 7;
+				return 0u;
+			}
+			case 16:
+			case 48:
+				pDAT_2 = PDAT_74;
+				vigTransform2 = GameManager.instance.FUN_2CDF4(PDAT_78);
+				Utilities.FUN_248C4(pDAT_2.vTransform.rotation, vigTransform2.rotation, out Matrix3x3 m2);
+				num = -m2.V12;
+				if (0 < m2.V12)
+				{
+					num += 7;
+				}
+				num3 = m2.V02 - m2.V20;
+				num >>= 3;
+				if (num3 < 0)
+				{
+					num3 += 7;
+				}
+				num4 = m2.V10;
+				num3 >>= 3;
+				goto IL_0863;
+			case 17:
+			case 19:
+			case 21:
+			case 23:
+				vr.x += 32;
+				vigObject.vr.x += 32;
+				if (arg2 == 0)
+				{
+					return 0u;
+				}
+				ApplyTransformation();
+				vigObject.ApplyTransformation();
+				b = (sbyte)DAT_19;
+				b2 = 23;
+				goto IL_0aa6;
+			case 18:
+			case 20:
+			case 22:
+				vr.x -= 64;
+				vigObject.vr.x -= 64;
+				if (arg2 == 0)
+				{
+					return 0u;
+				}
+				ApplyTransformation();
+				vigObject.ApplyTransformation();
+				b = (sbyte)DAT_19;
+				b2 = 22;
+				goto IL_0aa6;
+			case 32:
+				do
+				{
+					x = -21;
+					if (vigObject.id != 0)
+					{
+						x = 21;
+					}
+					vigObject.vr.y += x;
+					vigObject.child2.vr.y += x;
+					if (arg2 != 0)
+					{
+						vigObject.ApplyTransformation();
+						vigObject.child2.ApplyTransformation();
+					}
+					vigObject = vigObject.child;
+				}
+				while (vigObject != null);
+				return 0u;
+			case 34:
+			case 55:
+				do
+				{
+					x = 21;
+					if (vigObject.id != 0)
+					{
+						x = -21;
+					}
+					vigObject.vr.y += x;
+					vigObject.child2.vr.y += x;
+					if (arg2 != 0)
+					{
+						vigObject.ApplyTransformation();
+						vigObject.child2.ApplyTransformation();
+					}
+					vigObject = vigObject.child;
+				}
+				while (vigObject != null);
+				return 0u;
+			case 35:
+				do
+				{
+					x = 21;
+					if (vigObject.id != 0)
+					{
+						x = -21;
+					}
+					vigObject.vr.y += x;
+					vigObject.child2.vr.y += x;
+					if (arg2 != 0)
+					{
+						vigObject.ApplyTransformation();
+						vigObject.child2.ApplyTransformation();
+					}
+					vigObject = vigObject.child;
+				}
+				while (vigObject.type == 0);
+				goto case 36;
+			case 36:
+				pDAT_2 = PDAT_74;
+				vigTransform2 = GameManager.instance.FUN_2CDF4(PDAT_78);
+				Utilities.FUN_248C4(pDAT_2.vTransform.rotation, vigTransform2.rotation, out Matrix3x3 m);
+				num = -m.V12;
+				if (0 < m.V12)
+				{
+					num += 7;
+				}
+				num3 = m.V02 - m.V20;
+				num >>= 3;
+				if (num3 < 0)
+				{
+					num3 += 7;
+				}
+				num4 = m.V10;
+				num3 >>= 3;
+				goto IL_0863;
+			case 37:
+				pDAT_ = PDAT_78;
+				vr.x += 32;
+				if (arg2 == 0)
+				{
+					return 0u;
+				}
+				ApplyRotationMatrix();
+				break;
+			case 39:
+				vr.x -= 64;
+				if (arg2 == 0)
+				{
+					return 0u;
+				}
+				ApplyTransformation();
+				return 0u;
+			case 49:
+			case 51:
+			case 53:
+				vr.x += 32;
+				if (arg2 == 0)
+				{
+					return 0u;
+				}
+				ApplyTransformation();
+				goto IL_0aac;
+			case 50:
+			case 52:
+			case 54:
+				{
+					vr.x -= 64;
+					if (arg2 == 0)
+					{
+						return 0u;
+					}
+					ApplyTransformation();
+					b = (sbyte)DAT_19;
+					b2 = 54;
+					goto IL_0aa6;
+				}
+				IL_017c:
+				vigObject.vr.x = x;
+				if (arg2 == 0)
+				{
+					return 0u;
+				}
+				ApplyRotationMatrix();
+				vigObject.ApplyRotationMatrix();
+				return 0u;
+				IL_0aa6:
+				if (b == b2)
+				{
+					return 0u;
+				}
+				goto IL_0aac;
+				IL_0aac:
+				pDAT_ = PDAT_78;
+				break;
+				IL_0863:
+				if (num4 < 0)
+				{
+					num4 += 7;
+				}
+				pDAT_2.FUN_24700((short)num, (short)num3, (short)(num4 >> 3));
+				num = vigTransform2.position.x - pDAT_2.vTransform.position.x;
+				if (num < 0)
+				{
+					num += 7;
+				}
+				num >>= 3;
+				pDAT_2.vTransform.position.x += num;
+				num7 = vigTransform2.position.y - pDAT_2.vTransform.position.y;
+				if (num7 < 0)
+				{
+					num7 += 7;
+				}
+				num7 >>= 3;
+				pDAT_2.vTransform.position.y += num7;
+				num6 = vigTransform2.position.z - pDAT_2.vTransform.position.z;
+				if (num6 < 0)
+				{
+					num6 += 7;
+				}
+				num6 >>= 3;
+				pDAT_2.vTransform.position.z += num6;
+				if ((flags & 0x20000000) != 0)
+				{
+					if (num < 0)
+					{
+						num = -num;
+					}
+					if (num < 2048)
+					{
+						if (num7 < 0)
+						{
+							num7 = -num7;
+						}
+						if (num7 < 2048)
+						{
+							if (num6 < 0)
+							{
+								num6 = -num6;
+							}
+							if (num6 < 2048)
+							{
+								flags &= 3758096383u;
+								int param = GameManager.instance.FUN_1DD9C();
+								Vector3Int param2 = GameManager.instance.FUN_2CE50(pDAT_2);
+								GameManager.instance.FUN_1E628(param, vData.sndList, 6, param2);
+							}
+						}
+					}
+				}
+				pDAT_2.vTransform.rotation = Utilities.MatrixNormal(pDAT_2.vTransform.rotation);
+				return 0u;
+			}
+			VigTransform vTransform = GameManager.instance.FUN_2CDF4(pDAT_);
+			vigObject = PDAT_74;
+			vigObject.vTransform = vTransform;
+			return 0u;
+		}
+		case 4:
+		{
+			if (DAT_19 == 0)
+			{
+				return 0u;
+			}
+			if (PDAT_78 != null)
+			{
+				VigObject vigObject2 = PDAT_78.FUN_2CCBC();
+				UnityEngine.Object.Destroy(vigObject2.gameObject);
+				PDAT_78 = null;
+			}
+			VigObject vigObject = PDAT_74;
+			if (vigObject != null)
+			{
+				Vehicle vehicle = (Vehicle)vigObject;
+				vehicle.FUN_41FEC();
+				vehicle.DAT_F6 &= 63487;
+				uint num5 = vehicle.flags;
+				vehicle.flags = (uint)((int)num5 & -35);
+				if ((num5 & 0x80) == 0)
+				{
+					vehicle.FUN_30B78();
+				}
+				if (vehicle.vCamera != null)
+				{
+					vehicle.vCamera.target = vehicle;
+					vehicle.vCamera.FUN_4B898();
+				}
+				PDAT_74 = null;
+			}
+			GameManager.instance.FUN_1DE78(DAT_18);
+			return 0u;
+		}
+		default:
+			return 0u;
+		case 2:
+		{
+			ApplyTransformation();
+			child2.ApplyTransformation();
+			sbyte b = (sbyte)(DAT_19 + 1);
+			DAT_19 = (byte)b;
+			Vehicle vehicle;
+			int param;
+			Vector3Int param2;
+			switch (b)
+			{
+			case 1:
+			case 33:
+			{
+				FUN_30BA8();
+				GameManager.instance.FUN_30CB0(this, 128);
+				flags &= 4294967263u;
+				VigObject vigObject = Utilities.FUN_2CD78(this);
+				vigObject.flags |= 2048u;
+				break;
+			}
+			case 2:
+			case 34:
+			{
+				FUN_30B78();
+				GameManager.instance.FUN_30CB0(this, 16);
+				flags |= 32u;
+				VigObject vigObject = Utilities.FUN_2CD78(this);
+				vigObject.flags &= 4294965247u;
+				param = GameManager.instance.FUN_1DD9C();
+				GameManager.instance.FUN_1E628(param, vData.sndList, 4, vigObject.vTransform.position);
+				break;
+			}
+			case 3:
+			case 35:
+				FUN_30BA8();
+				DAT_19 = 0;
+				if (maxHalfHealth == 0)
+				{
+					FUN_3A368();
+					return 0u;
+				}
+				break;
+			case 4:
+			case 37:
+				param = 32;
+				goto IL_13f1;
+			case 5:
+			case 38:
+				LevelManager.instance.FUN_4DE54(PDAT_74.vTransform.position, 138);
+				GameManager.instance.FUN_30CB0(this, 24);
+				param = GameManager.instance.FUN_1DD9C();
+				param2 = GameManager.instance.FUN_2CE50(this);
+				GameManager.instance.FUN_1E580(param, GameManager.instance.DAT_C2C, 36, param2);
+				break;
+			case 6:
+			case 40:
+			{
+				VigObject pDAT_ = PDAT_74;
+				vehicle = (Vehicle)Utilities.FUN_2CD78(this);
+				pDAT_.flags |= 2u;
+				b = (DAT_18 = (sbyte)GameManager.instance.FUN_1DD9C());
+				GameManager.instance.FUN_1E580(b, vData.sndList, 3, pDAT_.vTransform.position, param5: true);
+				if (pDAT_.id < 0)
+				{
+					GameManager.instance.FUN_15AA8(~pDAT_.id, byte.MaxValue, byte.MaxValue, byte.MaxValue, 64);
+				}
+				if (vehicle.id < 0)
+				{
+					GameManager.instance.FUN_15B00(~vehicle.id, byte.MaxValue, byte.MaxValue, 64);
+				}
+				VigObject vigObject2 = PDAT_78.FUN_2CCBC();
+				UnityEngine.Object.Destroy(vigObject2.gameObject);
+				PDAT_78 = null;
+				GameManager.instance.FUN_30CB0(this, 256);
+				VigObject vigObject3 = vehicle.body[1].child2;
+				if (!(vigObject3 != null))
+				{
+					break;
+				}
+				do
+				{
+					if (vigObject3.id - 16 < 2)
+					{
+						if (vigObject3.GetType() == typeof(Body))
+						{
+							((Body)vigObject3).state = _BODY_TYPE.Collector;
+						}
+						else if (vigObject3.GetType() == typeof(Particle6))
+						{
+							((Particle6)vigObject3).state = _PARTICLE6_TYPE.Collector;
+						}
+						vigObject3.tags = (sbyte)((byte)vigObject3.id & 1);
+						GameManager.instance.FUN_30CB0(vigObject3, 232);
+					}
+					vigObject3 = vigObject3.child;
+				}
+				while (vigObject3 != null);
+				return 0u;
+			}
+			case 7:
+			case 41:
+			{
+				VigObject pDAT_ = PDAT_74;
+				pDAT_.flags &= 4294967293u;
+				ConfigContainer param3 = FUN_2C5F4(32769);
+				pDAT_.vTransform = GameManager.instance.FUN_2CEAC(this, param3);
+				int num = pDAT_.vTransform.rotation.V02 * 4577;
+				if (num < 0)
+				{
+					num += 31;
+				}
+				pDAT_.physics1.X = num >> 5;
+				num = pDAT_.vTransform.rotation.V12 * 4577;
+				if (num < 0)
+				{
+					num += 31;
+				}
+				pDAT_.physics1.Y = num >> 5;
+				num = pDAT_.vTransform.rotation.V22 * 4577;
+				if (num < 0)
+				{
+					num += 31;
+				}
+				pDAT_.physics1.Z = num >> 5;
+				GameManager.instance.FUN_30CB0(this, 24);
+				GameManager.instance.FUN_1E580(DAT_18, GameManager.instance.DAT_C2C, 37, pDAT_.vTransform.position);
+				DAT_18 = 0;
+				break;
+			}
+			case 8:
+			case 42:
+				vehicle = (Vehicle)PDAT_74;
+				vehicle.FUN_41FEC();
+				vehicle.DAT_F6 &= 63487;
+				vehicle.flags &= 4261412831u;
+				vehicle.FUN_30B78();
+				PDAT_74 = null;
+				goto IL_1381;
+			case 19:
+			case 21:
+			case 51:
+			case 53:
+				param = GameManager.instance.FUN_1DD9C();
+				param2 = GameManager.instance.FUN_2CE50(this);
+				GameManager.instance.FUN_1E628(param, vData.sndList, 5, param2);
+				goto case 17;
+			case 17:
+			case 49:
+			{
+				VigObject vigObject2 = Utilities.FUN_2CD78(this);
+				param = -150;
+				if (((Vehicle)vigObject2).doubleDamage != 0)
+				{
+					param = -300;
+				}
+				param = ((Vehicle)PDAT_74).FUN_3B078(vigObject2, (ushort)DAT_1A, param, 1u);
+				((Vehicle)PDAT_74).FUN_3A020(param, DAT_20, param3: true);
+				goto case 23;
+			}
+			case 23:
+				param = 32;
+				goto IL_13f1;
+			case 22:
+			case 54:
+			{
+				VigObject pDAT_ = PDAT_78;
+				VigTransform vigTransform = GameManager.instance.FUN_2CDF4(this);
+				VigObject vigObject = Utilities.FUN_2CD78(this);
+				Vector3Int vector3Int = Utilities.FUN_24094(v: new Vector3Int(0, pDAT_.vTransform.position.z, -pDAT_.vTransform.position.y), rot: vigTransform.rotation);
+				Vehicle obj = (Vehicle)PDAT_74;
+				obj.FUN_41FEC();
+				obj.DAT_F6 &= 63487;
+				obj.physics1.X = vigObject.physics1.X + vector3Int.x * 16;
+				obj.physics1.Y = vigObject.physics1.Y + vector3Int.y * 16;
+				obj.physics1.Z = vigObject.physics1.Z + vector3Int.z * 16;
+				obj.physics2.Z = -32768;
+				obj.flags &= 4294967263u;
+				obj.FUN_30B78();
+				param = GameManager.instance.FUN_1DD9C();
+				param2 = GameManager.instance.FUN_2CE50(this);
+				GameManager.instance.FUN_1E628(param, vData.sndList, 4, param2);
+				VigObject vigObject2 = PDAT_78.FUN_2CCBC();
+				UnityEngine.Object.Destroy(vigObject2.gameObject);
+				PDAT_78 = null;
+				param = -150;
+				if (((Vehicle)vigObject).doubleDamage != 0)
+				{
+					param = -300;
+				}
+				param = obj.FUN_3B078(vigObject, (ushort)DAT_1A, param, 1u);
+				obj.FUN_3A020(param, DAT_20, param3: true);
+				goto case 18;
+			}
+			case 18:
+			case 20:
+			case 50:
+			case 52:
+			{
+				int id = PDAT_74.id;
+				if (id < 0)
+				{
+					GameManager.instance.FUN_15B00(~id, byte.MaxValue, 0, 64);
+				}
+				param = 16;
+				goto IL_13f1;
+			}
+			case 24:
+			case 56:
+				vehicle = (Vehicle)PDAT_74;
+				PDAT_74 = null;
+				vehicle.flags &= 4261412831u;
+				goto IL_1381;
+			case 36:
+				GameManager.instance.FUN_30CB0(this, 48);
+				break;
+			case 39:
+				param = 16;
+				PDAT_74.flags |= 2u;
+				goto IL_13f1;
+			case 55:
+				{
+					GameManager.instance.FUN_30CB0(this, 16);
+					break;
+				}
+				IL_13f1:
+				GameManager.instance.FUN_30CB0(this, param);
+				param = GameManager.instance.FUN_1DD9C();
+				param2 = GameManager.instance.FUN_2CE50(this);
+				GameManager.instance.FUN_1E628(param, vData.sndList, 4, param2);
+				break;
+				IL_1381:
+				DAT_19 = 0;
+				FUN_30BA8();
+				if (maxHalfHealth == 0)
+				{
+					FUN_3A368();
+				}
+				if (vehicle.vCamera != null)
+				{
+					vehicle.vCamera.target = vehicle;
+					vehicle.vCamera.FUN_4B898();
+				}
+				break;
+			}
+			return 0u;
+		}
+		}
+	}
+
+	public override uint UpdateW(int arg1, VigObject arg2)
+	{
+		switch (arg1)
+		{
+		case 0:
+			FUN_42330(arg2);
+			return 0u;
+		case 1:
+			type = 3;
+			if (GameManager.instance.gameMode != _GAME_MODE.Versus2)
+			{
+				maxHalfHealth = 6;
+			}
+			else
+			{
+				maxHalfHealth = 3;
+			}
+			if ((((Vehicle)arg2).DAT_F6 & 0x400) != 0)
+			{
+				flags |= 268435456u;
+				return 0u;
+			}
+			if (-1 < arg2.id)
+			{
+				if (GameManager.instance.vehicles[arg2.id + 1] == 13)
+				{
+					return 0u;
+				}
+			}
+			else if (GameManager.instance.vehicles[~arg2.id] == 13)
+			{
+				return 0u;
+			}
+			flags |= 268435456u;
+			return 0u;
+		default:
+			return 0u;
+		case 12:
+			if (DAT_19 == 0)
+			{
+				arg2.tags = 3;
+				PDAT_74 = null;
+				DAT_80 = arg2;
+				DAT_19 = (byte)((((flags & 0x10000000) != 0) ? 1 : 0) << 5);
+				FUN_30B78();
+				GameManager.instance.FUN_30CB0(this, 15);
+				int param = GameManager.instance.FUN_1DD9C();
+				Vector3Int param2 = GameManager.instance.FUN_2CE50(this);
+				GameManager.instance.FUN_1E628(param, vData.sndList, 4, param2);
+				param = GameManager.instance.FUN_1DD9C();
+				GameManager.instance.FUN_1E188(param, vData.sndList, 2);
+				maxHalfHealth--;
+			}
+			else
+			{
+				int param = GameManager.instance.FUN_1DD9C();
+				GameManager.instance.FUN_1E14C(param, GameManager.instance.DAT_C2C, 1);
+			}
+			if (-1 < arg2.id)
+			{
+				return 900u;
+			}
+			return 480u;
+		case 13:
+		{
+			if (DAT_19 != 0)
+			{
+				return 0u;
+			}
+			Vector3Int vector3Int = Utilities.FUN_24304(arg2.vTransform, ((Vehicle)arg2).target.vTransform.position);
+			if (143358u < (uint)(vector3Int.z - 1))
+			{
+				return 0u;
+			}
+			if (vector3Int.x < 0)
+			{
+				vector3Int.x = -vector3Int.x;
+			}
+			bool flag = vector3Int.x < 65536;
+			if (65536 < vector3Int.z)
+			{
+				flag = (vector3Int.x < vector3Int.z);
+			}
+			if (!flag)
+			{
+				return 0u;
+			}
+			return 1u;
+		}
+		}
+	}
 }

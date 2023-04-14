@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Fire1 : VigObject
 {
+    public XOBF_DB DAT_98;
+
     protected override void Start()
     {
         base.Start();
@@ -14,77 +12,62 @@ public class Fire1 : VigObject
         base.Update();
     }
 
-    public XOBF_DB DAT_98;
-
-    //FUN_3982C
     public override uint UpdateW(int arg1, int arg2)
     {
-        short sVar1;
-        uint uVar2;
-        VigObject oVar2;
-        Vehicle vVar2;
-        Fire2 ppcVar3;
-        uint uVar4;
-        int iVar6;
-        Vehicle vVar6;
-        int iVar9;
-
-        if (arg1 == 0)
+        uint result;
+        switch (arg1)
         {
-            sVar1 = (short)(physics1.M0 - 1);
-            physics1.M0 = sVar1;
-            uVar2 = 0;
-
-            if (sVar1 == -1)
-            {
-                ppcVar3 = DAT_98.ini.FUN_2C17C((ushort)physics2.M3, typeof(Fire2), 8) as Fire2;
-                uVar4 = GameManager.FUN_2AC5C();
-                iVar6 = (int)(uVar4 & 0xfff) * 2;
-                ppcVar3.flags |= 0x434;
-                iVar9 = physics1.Y * GameManager.DAT_65C90[iVar6];
-
-                if (iVar9 < 0)
-                    iVar9 += 4095;
-
-                ppcVar3.physics1.Z = iVar9 >> 12;
-                iVar6 = physics1.Y * GameManager.DAT_65C90[iVar6 + 1];
-
-                if (iVar6 < 0)
-                    iVar6 += 4095;
-
-                ppcVar3.physics2.X = iVar6 >> 12;
-                iVar6 = (int)GameManager.FUN_2AC5C();
-                ppcVar3.physics1.W = physics1.Z + (iVar6 * physics1.Z >> 15);
-                ppcVar3.screen = GameManager.instance.FUN_2CE50(this);
-                ppcVar3.FUN_4EE40();
-                ppcVar3.FUN_30B78();
-                physics1.M0 = physics1.M1;
-                vVar2 = Utilities.FUN_2CDB0(this) as Vehicle;
-                vVar2.FUN_39DCC(-maxHalfHealth, vTransform.position, true);
-
-                if (DAT_18 != 0)
+            case 0:
                 {
-                    uVar2 = GameManager.instance.FUN_1E478(ppcVar3.vTransform.position);
-                    GameManager.instance.FUN_1E2C8(DAT_18, uVar2);
-                    uVar2 = 0;
+                    short num = (short)(physics1.M0 - 1);
+                    physics1.M0 = num;
+                    result = 0u;
+                    if (num == -1)
+                    {
+                        Fire2 fire = DAT_98.ini.FUN_2C17C((ushort)physics2.M3, typeof(Fire2), 8u) as Fire2;
+                        int num2 = (int)((GameManager.FUN_2AC5C() & 0xFFF) * 2);
+                        fire.flags |= 1076u;
+                        int num3 = physics1.Y * GameManager.DAT_65C90[num2];
+                        if (num3 < 0)
+                        {
+                            num3 += 4095;
+                        }
+                        fire.physics1.Z = num3 >> 12;
+                        num2 = physics1.Y * GameManager.DAT_65C90[num2 + 1];
+                        if (num2 < 0)
+                        {
+                            num2 += 4095;
+                        }
+                        fire.physics2.X = num2 >> 12;
+                        num2 = (int)GameManager.FUN_2AC5C();
+                        fire.physics1.W = physics1.Z + (num2 * physics1.Z >> 15);
+                        fire.screen = GameManager.instance.FUN_2CE50(this);
+                        fire.FUN_4EE40();
+                        fire.FUN_30B78();
+                        physics1.M0 = physics1.M1;
+                        (Utilities.FUN_2CDB0(this) as Vehicle).FUN_39DCC(-maxHalfHealth, vTransform.position, param3: true);
+                        if (DAT_18 != 0)
+                        {
+                            result = GameManager.instance.FUN_1E478(fire.vTransform.position);
+                            GameManager.instance.FUN_1E2C8(DAT_18, result);
+                            result = 0u;
+                        }
+                    }
+                    break;
                 }
-            }
+            case 2:
+                {
+                    (Utilities.FUN_2CDB0(this) as Vehicle).DAT_F6 &= 65527;
+                    GameManager.instance.FUN_1DE78(DAT_18);
+                    VigObject param = FUN_2CCBC();
+                    GameManager.instance.FUN_307CC(param);
+                    result = uint.MaxValue;
+                    break;
+                }
+            default:
+                result = 0u;
+                break;
         }
-        else
-        {
-            if (arg1 == 2)
-            {
-                vVar6 = Utilities.FUN_2CDB0(this) as Vehicle;
-                vVar6.DAT_F6 &= 0xfff7;
-                GameManager.instance.FUN_1DE78(DAT_18);
-                oVar2 = FUN_2CCBC();
-                GameManager.instance.FUN_307CC(oVar2);
-                uVar2 = 0xffffffff;
-            }
-            else
-                uVar2 = 0;
-        }
-
-        return uVar2;
+        return result;
     }
 }

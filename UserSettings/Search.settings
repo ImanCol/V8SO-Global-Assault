@@ -7,6 +7,12 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
+	"last_search.CC326D59" = "Load"
+	"OpenInspectorPreview.CC326D59" = "1"
+	"currentGroup.CC326D59" = "menu"
+	"last_search.DD2EEDCB" = "skybox"
+	"OpenInspectorPreview.DD2EEDCB" = "0"
+	"currentGroup.DD2EEDCB" = "all"
 }
 providers = {
 	expression = {
@@ -61,10 +67,11 @@ providers = {
 	}
 }
 recentSearches = [
+	"Load"
+	"LoadLevel"
 ]
 searchItemFavorites = [
 ]
 savedSearchesSortOrder = 0
-showSavedSearchPanel = false
-expandedQueries = [
-]
+showSavedSearchPanel = true
+expandedQueries = [-980895856]

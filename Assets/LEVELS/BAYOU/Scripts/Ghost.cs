@@ -1,191 +1,163 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Ghost : VigObject
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-    public override uint OnCollision(HitDetection hit)
-    {
-        VigObject oVar2;
-        Vehicle vVar2;
-        int iVar5;
-        Vector3Int local_10;
+	public override uint OnCollision(HitDetection hit)
+	{
+		VigObject self = hit.self;
+		if (self.type == 2)
+		{
+			Vehicle obj = (Vehicle)self;
+			int param = GameManager.instance.FUN_1DD9C();
+			GameManager.instance.FUN_1E628(param, vData.sndList, 6, vTransform.position);
+			param = GameManager.instance.FUN_1DD9C();
+			GameManager.instance.FUN_1E628(param, GameManager.instance.DAT_C2C, 24, vTransform.position);
+			LevelManager.instance.FUN_4DE54(vTransform.position, 144);
+			UIManager.instance.FUN_4E414(vTransform.position, new Color32(0, 128, 0, 8));
+			obj.FUN_2B370(new Vector3Int
+			{
+				x = physics1.Y << 6,
+				y = physics1.Z << 6,
+				z = physics1.W << 6
+			}, vTransform.position);
+			DAT_80 = this;
+			flags |= 32u;
+			screen.y -= 1024000;
+		}
+		return 0u;
+	}
 
-        oVar2 = hit.self;
-
-        if (oVar2.type == 2)
-        {
-            vVar2 = (Vehicle)oVar2;
-            iVar5 = GameManager.instance.FUN_1DD9C();
-            GameManager.instance.FUN_1E628(iVar5, vData.sndList, 6, vTransform.position);
-            iVar5 = GameManager.instance.FUN_1DD9C();
-            GameManager.instance.FUN_1E628(iVar5, GameManager.instance.DAT_C2C, 24, vTransform.position);
-            LevelManager.instance.FUN_4DE54(vTransform.position, 144);
-            UIManager.instance.FUN_4E414(vTransform.position, new Color32(0x00, 0x80, 0x00, 8));
-            local_10 = new Vector3Int();
-            local_10.x = physics1.Y << 6;
-            local_10.y = physics1.Z << 6;
-            local_10.z = physics1.W << 6;
-            vVar2.FUN_2B370(local_10, vTransform.position);
-            DAT_80 = this;
-            flags |= 0x20;
-            screen.y -= 0xfa000;
-        }
-
-        return 0;
-    }
-
-    //FUN_203C (BAYOU.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        sbyte sVar1;
-        int iVar2;
-        VigObject oVar2;
-        Ballistic puVar3;
-        int iVar4;
-        int iVar5;
-        short sVar5;
-        VigObject oVar5;
-        uint uVar8;
-        Vector3Int local_20;
-
-        if (arg1 == 2)
-        {
-            sVar1 = (sbyte)(tags + 1);
-            tags = sVar1;
-
-            if (sVar1 == 1)
-            {
-                oVar5 = GameManager.instance.FUN_320DC(vTransform.position, 0);
-                DAT_80 = oVar5;
-            }
-            else
-            {
-                if (sVar1 == 6)
-                {
-                    GameManager.instance.FUN_309A0(this);
-                    return 0xffffffff;
-                }
-            }
-
-            GameManager.instance.FUN_30CB0(this, 60);
-            iVar5 = GameManager.instance.FUN_1DD9C();
-            GameManager.instance.FUN_1E628(iVar5, vData.sndList, 8, vTransform.position);
-        }
-        else
-        {
-            if (arg1 < 3)
-            {
-                if (arg1 == 0)
-                {
-                    oVar2 = DAT_80;
-                    local_20 = new Vector3Int();
-                    local_20.x = oVar2.screen.x;
-                    local_20.z = oVar2.screen.z;
-                    local_20.y = oVar2.screen.y - 0x5000;
-                    local_20 = Utilities.FUN_24304(vTransform, local_20);
-                    iVar2 = (local_20.y * -0x800) / local_20.z;
-
-                    if (iVar2 < -0x200)
-                        iVar4 = -0x200;
-                    else
-                    {
-                        iVar4 = 0x200;
-
-                        if (iVar2 < 0x201)
-                            iVar4 = iVar2;
-                    }
-
-                    sVar5 = -0x200;
-
-                    if (0 < local_20.x)
-                        sVar5 = 0x200;
-
-                    FUN_24700((short)iVar4, sVar5, 0);
-                    iVar2 = vTransform.rotation.V02 * 0x3b9a;
-
-                    if (iVar2 < 0)
-                        iVar2 += 4095;
-
-                    iVar2 = (iVar2 >> 12) - physics1.Y;
-
-                    if (iVar2 < 0)
-                        iVar2 += 15;
-
-                    iVar2 >>= 4;
-                    iVar4 = -0x100;
-
-                    if (-0x101 < iVar2)
-                    {
-                        iVar4 = 0x100;
-
-                        if (iVar2 < 0x101)
-                            iVar4 = iVar2;
-                    }
-
-                    iVar2 = vTransform.rotation.V12 * 0x3b9a;
-                    physics1.Y += iVar4;
-
-                    if (iVar2 < 0)
-                        iVar2 += 4095;
-
-                    iVar2 = (iVar2 >> 12) - physics1.Z;
-
-                    if (iVar2 < 0)
-                        iVar2 += 7;
-
-                    physics1.Z += iVar2 >> 3;
-                    iVar2 = vTransform.rotation.V22 * 0x3b9a;
-
-                    if (iVar2 < 0)
-                        iVar2 += 4095;
-
-                    iVar2 = (iVar2 >> 12) - physics1.W;
-
-                    if (iVar2 < 0)
-                        iVar2 += 15;
-
-                    iVar2 >>= 4;
-                    iVar4 = -0x100;
-
-                    if (-0x101 < iVar2)
-                    {
-                        iVar4 = 0x100;
-
-                        if (iVar2 < 0x101)
-                            iVar4 = iVar2;
-                    }
-
-                    physics1.W += iVar4;
-                    vTransform.position.x += physics1.Y;
-                    vTransform.position.y += physics1.Z;
-                    vTransform.position.z += physics1.W;
-                    uVar8 = (uint)GameManager.instance.DAT_28 - DAT_19;
-
-                    if ((uVar8 & 31) == 0)
-                        vTransform.rotation = Utilities.MatrixNormal(vTransform.rotation);
-                    
-                    if ((uVar8 & 3) == 0)
-                    {
-                        puVar3 = vData.ini.FUN_2C17C(29, typeof(Ballistic), 8) as Ballistic;
-                        puVar3.flags = 0x24;
-                        puVar3.vTransform = vTransform;
-                        puVar3.FUN_305FC();
-                    }
-                }
-            }
-        }
-
-        return 0;
-    }
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		switch (arg1)
+		{
+		case 2:
+		{
+			switch (tags = (sbyte)(tags + 1))
+			{
+			case 1:
+			{
+				VigObject vigObject = DAT_80 = GameManager.instance.FUN_320DC(vTransform.position, 0);
+				break;
+			}
+			case 6:
+				GameManager.instance.FUN_309A0(this);
+				return uint.MaxValue;
+			}
+			GameManager.instance.FUN_30CB0(this, 60);
+			int param = GameManager.instance.FUN_1DD9C();
+			GameManager.instance.FUN_1E628(param, vData.sndList, 8, vTransform.position);
+			break;
+		}
+		case 0:
+		{
+			VigObject dAT_ = DAT_80;
+			Vector3Int v = default(Vector3Int);
+			v.x = dAT_.screen.x;
+			v.z = dAT_.screen.z;
+			v.y = dAT_.screen.y - 20480;
+			v = Utilities.FUN_24304(vTransform, v);
+			int num = v.y * -2048 / v.z;
+			int num2;
+			if (num < -512)
+			{
+				num2 = -512;
+			}
+			else
+			{
+				num2 = 512;
+				if (num < 513)
+				{
+					num2 = num;
+				}
+			}
+			short y = -512;
+			if (0 < v.x)
+			{
+				y = 512;
+			}
+			FUN_24700((short)num2, y, 0);
+			num = vTransform.rotation.V02 * 15258;
+			if (num < 0)
+			{
+				num += 4095;
+			}
+			num = (num >> 12) - physics1.Y;
+			if (num < 0)
+			{
+				num += 15;
+			}
+			num >>= 4;
+			num2 = -256;
+			if (-257 < num)
+			{
+				num2 = 256;
+				if (num < 257)
+				{
+					num2 = num;
+				}
+			}
+			num = vTransform.rotation.V12 * 15258;
+			physics1.Y += num2;
+			if (num < 0)
+			{
+				num += 4095;
+			}
+			num = (num >> 12) - physics1.Z;
+			if (num < 0)
+			{
+				num += 7;
+			}
+			physics1.Z += num >> 3;
+			num = vTransform.rotation.V22 * 15258;
+			if (num < 0)
+			{
+				num += 4095;
+			}
+			num = (num >> 12) - physics1.W;
+			if (num < 0)
+			{
+				num += 15;
+			}
+			num >>= 4;
+			num2 = -256;
+			if (-257 < num)
+			{
+				num2 = 256;
+				if (num < 257)
+				{
+					num2 = num;
+				}
+			}
+			physics1.W += num2;
+			vTransform.position.x += physics1.Y;
+			vTransform.position.y += physics1.Z;
+			vTransform.position.z += physics1.W;
+			int num3 = GameManager.instance.DAT_28 - DAT_19;
+			if ((num3 & 0x1F) == 0)
+			{
+				vTransform.rotation = Utilities.MatrixNormal(vTransform.rotation);
+			}
+			if ((num3 & 3) == 0)
+			{
+				Ballistic obj = vData.ini.FUN_2C17C(29, typeof(Ballistic), 8u) as Ballistic;
+				obj.flags = 36u;
+				obj.vTransform = vTransform;
+				obj.FUN_305FC();
+			}
+			break;
+		}
+		}
+		return 0u;
+	}
 }

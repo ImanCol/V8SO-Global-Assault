@@ -11,6 +11,8 @@ public enum _PARTICLE1_TYPE
 
 public class Particle1 : VigObject
 {
+    public _PARTICLE1_TYPE state;
+
     protected override void Start()
     {
         base.Start();
@@ -21,61 +23,48 @@ public class Particle1 : VigObject
         base.Update();
     }
 
-    public _PARTICLE1_TYPE state;
-
     public override uint UpdateW(int arg1, int arg2)
     {
-        switch (state)
+        if (state == _PARTICLE1_TYPE.LaunchRocket)
         {
-            case _PARTICLE1_TYPE.LaunchRocket:
-                if (arg1 == 0)
-                {
-                    vTransform.position.x += screen.x;
-                    vTransform.position.y += screen.y;
-                    vTransform.position.z += screen.z;
-                    screen.y += 28;
-                }
-
-                return 0;
+            if (arg1 == 0)
+            {
+                vTransform.position.x += screen.x;
+                vTransform.position.y += screen.y;
+                vTransform.position.z += screen.z;
+                screen.y += 28;
+            }
+            return 0u;
         }
-
-        return 0;
+        return 0u;
     }
 
-    //FUN_4DE1C
     public override uint UpdateW(int arg1, VigObject arg2)
     {
-        uint uVar1;
-
-        uVar1 = 0;
-
+        uint result = 0u;
         switch (state)
         {
             case _PARTICLE1_TYPE.Default:
                 if (arg1 == 5)
                 {
-                    Tuple<List<VigTuple>, VigTuple> tuple;
-                    tuple = new Tuple<List<VigTuple>, VigTuple>(GameManager.instance.interObjs, TDAT_74);
-                    GameManager.instance.FUN_3094C(tuple);
-                    uVar1 = 0xffffffff;
+                    Tuple<List<VigTuple>, VigTuple> param = new Tuple<List<VigTuple>, VigTuple>(GameManager.instance.interObjs, TDAT_74);
+                    GameManager.instance.FUN_3094C(param);
+                    result = uint.MaxValue;
                 }
                 else
-                    uVar1 = 0;
-
+                {
+                    result = 0u;
+                }
                 break;
-
             case _PARTICLE1_TYPE.LaunchRocket:
-                uVar1 = 0;
-
+                result = 0u;
                 if (arg1 == 5)
                 {
                     FUN_4EE8C(GameManager.instance.interObjs);
-                    uVar1 = 0xfffffffe;
+                    result = 4294967294u;
                 }
-
                 break;
         }
-
-        return uVar1;
+        return result;
     }
 }

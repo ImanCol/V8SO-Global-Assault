@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Magnet1 : VigObject
@@ -14,69 +12,65 @@ public class Magnet1 : VigObject
         base.Update();
     }
 
-    //FUN_47230
     public override uint UpdateW(int arg1, int arg2)
     {
         if (arg1 == 4)
+        {
             LevelManager.instance.DAT_117C--;
-
-        return 0;
+        }
+        return 0u;
     }
 
     public override uint UpdateW(int arg1, VigObject arg2)
     {
-        sbyte sVar1;
-        ushort uVar2;
-        short sVar3;
-        int iVar4;
-        BufferedBinaryReader brVar4;
-        VigObject oVar5;
-
         if (arg1 != 5)
-            return 0;
-
-        sVar1 = tags;
-
-        if (sVar1 != 1)
         {
-            if (1 < sVar1)
-            {
-                if (sVar1 != 2)
-                    return 0;
-
-                oVar5 = Utilities.FUN_2CD78(this);
-                LevelManager.instance.FUN_4DF20(oVar5.vTransform.position, 13, 0x800);
-                iVar4 = GameManager.instance.FUN_1DD9C();
-                GameManager.instance.FUN_1E628(iVar4, GameManager.instance.DAT_C2C, 63, oVar5.vTransform.position);
-                GameManager.instance.FUN_309A0(oVar5);
-                return 0xffffffff;
-            }
-
-            if (sVar1 != 0)
-                return 0;
-
-            brVar4 = vData.FUN_2CBB0(193);
-            uVar2 = GameManager.instance.timer;
-            vAnim.ChangeBuffer(brVar4);
-            tags = 1;
-            maxHalfHealth = 10;
-            DAT_4A = uVar2;
-            oVar5 = Utilities.FUN_2CD78(this);
-            UIManager.instance.FUN_4E414(oVar5.vTransform.position, new Color32(0x00, 0x00, 0x80, 8));
-            return 0;
+            return 0u;
         }
-
-        sVar3 = (short)(maxHalfHealth - 1);
-        maxHalfHealth = (ushort)sVar3;
-
-        if (sVar3 != 0)
-            return 0;
-
-        brVar4 = vData.FUN_2CBB0(194);
-        uVar2 = GameManager.instance.timer;
-        vAnim.ChangeBuffer(brVar4);
-        tags = 2;
-        DAT_4A = uVar2;
-        return 0;
+        sbyte tags = base.tags;
+        BufferedBinaryReader reader;
+        ushort timer;
+        if (tags != 1)
+        {
+            VigObject vigObject;
+            if (1 < tags)
+            {
+                if (tags != 2)
+                {
+                    return 0u;
+                }
+                vigObject = Utilities.FUN_2CD78(this);
+                LevelManager.instance.FUN_4DF20(vigObject.vTransform.position, 13, 2048);
+                int param = GameManager.instance.FUN_1DD9C();
+                GameManager.instance.FUN_1E628(param, GameManager.instance.DAT_C2C, 63, vigObject.vTransform.position);
+                GameManager.instance.FUN_309A0(vigObject);
+                return uint.MaxValue;
+            }
+            if (tags != 0)
+            {
+                return 0u;
+            }
+            reader = vData.FUN_2CBB0(193);
+            timer = GameManager.instance.timer;
+            vAnim.ChangeBuffer(reader);
+            base.tags = 1;
+            maxHalfHealth = 10;
+            DAT_4A = timer;
+            vigObject = Utilities.FUN_2CD78(this);
+            UIManager.instance.FUN_4E414(vigObject.vTransform.position, new Color32(0, 0, 128, 8));
+            return 0u;
+        }
+        short num = (short)(maxHalfHealth - 1);
+        maxHalfHealth = (ushort)num;
+        if (num != 0)
+        {
+            return 0u;
+        }
+        reader = vData.FUN_2CBB0(194);
+        timer = GameManager.instance.timer;
+        vAnim.ChangeBuffer(reader);
+        base.tags = 2;
+        DAT_4A = timer;
+        return 0u;
     }
 }

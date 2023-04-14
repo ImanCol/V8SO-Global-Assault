@@ -1,97 +1,81 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Ant3 : VigObject
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
+	public VigCamera[] DAT_8C = new VigCamera[2];
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	public short[] cameraDefault = new short[2];
 
-    public VigCamera[] DAT_8C = new VigCamera[2];
-    public short[] cameraDefault = new short[2];
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-    //FUN_2914 (ROUTE66.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        int iVar1;
-        int iVar2;
-        int iVar3;
-        VigCamera cVar4;
-        Vehicle vVar5;
-        Vehicle[] puVar6;
-        int iVar7;
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-        if (arg1 == 2)
-        {
-            iVar1 = physics1.Y;
-            iVar2 = -iVar1;
-            physics1.Y = iVar2;
-
-            if (iVar1 < 0)
-            {
-                iVar2 -= physics1.Z;
-                physics1.Y = iVar2;
-
-                if (iVar2 < 1)
-                {
-                    GameManager.instance.FUN_307CC(this);
-
-                    for (int i = 0; i < DAT_8C.Length; i++)
-                        if (DAT_8C[i] != null)
-                            DAT_8C[i].DAT_94 = cameraDefault[i];
-
-                    return 0xffffffff;
-                }
-
-                iVar1 = physics1.Z;
-                iVar2 = iVar1;
-
-                if (iVar1 < 0)
-                    iVar2 += 31;
-
-                physics1.Z = iVar1 - (iVar2 >> 5);
-            }
-
-            iVar7 = 0;
-            iVar1 = physics1.Y;
-            iVar3 = physics1.X;
-            puVar6 = GameManager.instance.playerObjects;
-
-            do
-            {
-                vVar5 = puVar6[iVar7];
-
-                if (vVar5 != null && (vVar5.flags & 0x2000000) == 0 && vVar5.vCamera != null)
-                {
-                    cVar4 = DAT_8C[iVar7];
-
-                    if (cVar4 == vVar5.vCamera)
-                        cVar4.DAT_94 += (short)(iVar1 - iVar3 >> 16);
-                    else
-                    {
-                        if (cVar4 != null)
-                            cVar4.DAT_94 -= physics1.M1;
-
-                        DAT_8C[iVar7] = vVar5.vCamera;
-                        cameraDefault[iVar7] = DAT_8C[iVar7].DAT_94;
-                        vVar5.vCamera.DAT_94 += physics1.M3;
-                    }
-                }
-
-                iVar7++;
-            } while (iVar7 < 2);
-
-            physics1.X = physics1.Y;
-            GameManager.instance.FUN_30CB0(this, 3);
-        }
-
-        return 0;
-    }
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		if (arg1 == 2)
+		{
+			int y = physics1.Y;
+			int num = -y;
+			physics1.Y = num;
+			if (y < 0)
+			{
+				num -= physics1.Z;
+				physics1.Y = num;
+				if (num < 1)
+				{
+					GameManager.instance.FUN_307CC(this);
+					for (int i = 0; i < DAT_8C.Length; i++)
+					{
+						if (DAT_8C[i] != null)
+						{
+							DAT_8C[i].DAT_94 = cameraDefault[i];
+						}
+					}
+					return uint.MaxValue;
+				}
+				y = physics1.Z;
+				num = y;
+				if (y < 0)
+				{
+					num += 31;
+				}
+				physics1.Z = y - (num >> 5);
+			}
+			int num2 = 0;
+			y = physics1.Y;
+			int x = physics1.X;
+			Vehicle[] playerObjects = GameManager.instance.playerObjects;
+			do
+			{
+				Vehicle vehicle = playerObjects[num2];
+				if (vehicle != null && (vehicle.flags & 0x2000000) == 0 && vehicle.vCamera != null)
+				{
+					VigCamera vigCamera = DAT_8C[num2];
+					if (vigCamera == vehicle.vCamera)
+					{
+						vigCamera.DAT_94 += (short)(y - x >> 16);
+					}
+					else
+					{
+						if (vigCamera != null)
+						{
+							vigCamera.DAT_94 -= physics1.M1;
+						}
+						DAT_8C[num2] = vehicle.vCamera;
+						cameraDefault[num2] = DAT_8C[num2].DAT_94;
+						vehicle.vCamera.DAT_94 += physics1.M3;
+					}
+				}
+				num2++;
+			}
+			while (num2 < 2);
+			physics1.X = physics1.Y;
+			GameManager.instance.FUN_30CB0(this, 3);
+		}
+		return 0u;
+	}
 }

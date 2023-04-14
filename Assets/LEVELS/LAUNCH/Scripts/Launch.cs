@@ -1,156 +1,136 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Launch : VigObject
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
+	public static Launch instance;
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	public byte DAT_5874;
 
-    private void Awake()
-    {
-        GameManager.instance.FUN_17F34(0x2f800, 0x7fff0000);
+	public byte DAT_5875;
 
-        if (instance == null)
-        {
-            instance = this;
-        }
-    }
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-    public static Launch instance;
-    public byte DAT_5874; //0x5874 (LAUNCH.DLL)
-    public byte DAT_5875; //0x5875 (LAUNCH.DLL)
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-    //FUN_200 (LAUNCH.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        VigObject oVar2;
-        uint uVar3;
-        VigObject oVar3;
+	private void Awake()
+	{
+		GameManager.instance.FUN_17F34(194560, 2147418112);
+		if (instance == null)
+		{
+			instance = this;
+		}
+	}
 
-        switch (arg1)
-        {
-            case 1:
-                GameManager.instance.offsetFactor = 2.5f;
-                GameManager.instance.offsetStart = 0;
-                GameManager.instance.angleOffset = 0.4f;
-                Color32 color = LevelManager.instance.DAT_DE0;
-                color.a = 0x80;
-                UIManager.instance.underwater.color = color;
-                oVar3 = GameManager.instance.FUN_30250(GameManager.instance.DAT_1078, 0x100);
-                oVar2 = GameManager.instance.FUN_4AC1C(0xfe000000, oVar3);
-                GameManager.instance.DAT_1038 = oVar2 != null ? 1 : 0;
-                DAT_5875 = 0;
-                DAT_5874 = 0;
-                GameManager.instance.DAT_1000 |= 4;
-                goto case 2;
-            case 2:
-                GameManager.instance.FUN_34B34();
-                GameManager.instance.FUN_30CB0(this, 240);
-                uVar3 = 0;
-                break;
-            case 17:
-                GameManager.instance.FUN_17EB8();
-                uVar3 = 0;
-                break;
-            default:
-                uVar3 = 0;
-                break;
-        }
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		if (arg1 != 1)
+		{
+			switch (arg1)
+			{
+			case 2:
+				break;
+			case 17:
+				GameManager.instance.FUN_17EB8();
+				return 0u;
+			default:
+				return 0u;
+			}
+		}
+		else
+		{
+			GameManager.instance.offsetFactor = 2.5f;
+			GameManager.instance.offsetStart = 0f;
+			GameManager.instance.angleOffset = 0.4f;
+			GameManager.instance.aspectRatioScale = 240f;
+			Color32 dAT_DE = LevelManager.instance.DAT_DE0;
+			dAT_DE.a = 128;
+			UIManager.instance.underwater.color = dAT_DE;
+			VigObject param = GameManager.instance.FUN_30250(GameManager.instance.DAT_1078, 256);
+			VigObject x = GameManager.instance.FUN_4AC1C(4261412864u, param);
+			GameManager.instance.DAT_1038 = ((x != null) ? 1 : 0);
+			DAT_5875 = 0;
+			DAT_5874 = 0;
+			GameManager.instance.DAT_1000 |= 4;
+		}
+		GameManager.instance.FUN_34B34();
+		GameManager.instance.FUN_30CB0(this, 240);
+		return 0u;
+	}
 
-        return uVar3;
-    }
+	public override uint UpdateW(VigObject arg1, int arg2, int arg3)
+	{
+		switch (arg2)
+		{
+		case 18:
+			GameManager.instance.FUN_327CC(arg1);
+			break;
+		case 19:
+		{
+			VigObject vigObject = GameManager.instance.FUN_318D0(49);
+			ushort num = (ushort)((vigObject.screen.x < arg1.vTransform.position.x) ? 1 : 0);
+			ConfigContainer param = vigObject.FUN_2C5F4((ushort)(num + 32768));
+			arg1.vTransform = GameManager.instance.FUN_2CEAC(vigObject, param);
+			int num2 = arg1.vTransform.rotation.V02 * 15258;
+			if (num2 < 0)
+			{
+				num2 += 31;
+			}
+			arg1.physics1.X = num2 >> 5;
+			num2 = arg1.vTransform.rotation.V12 * 15258;
+			if (num2 < 0)
+			{
+				num2 += 31;
+			}
+			arg1.physics1.Y = num2 >> 5;
+			num2 = arg1.vTransform.rotation.V22 * 15258;
+			if (num2 < 0)
+			{
+				num2 += 31;
+			}
+			arg1.physics1.Z = num2 >> 5;
+			arg1.physics2.X = 0;
+			arg1.physics2.Y = 0;
+			arg1.physics2.Z = 0;
+			int param2 = GameManager.instance.FUN_1DD9C();
+			GameManager.instance.FUN_1E580(param2, GameManager.instance.DAT_C2C, 37, arg1.vTransform.position);
+			Vehicle vehicle = (Vehicle)arg1;
+			if (vehicle.vCamera != null)
+			{
+				VigObject param3 = GameManager.instance.FUN_30250(GameManager.instance.DAT_1078, num + 513);
+				VigCamera vigCamera = LevelManager.instance.FUN_4B984(vehicle, param3);
+				vigCamera.maxHalfHealth = 256;
+				vehicle.vCamera.flags &= 4093640703u;
+				GameManager.instance.FUN_30CB0(vehicle.vCamera, 90);
+				vehicle.vCamera = vigCamera;
+				LevelManager.instance.defaultCamera.transform.SetParent(vigCamera.transform, worldPositionStays: false);
+				vigCamera.FUN_30B78();
+			}
+			vehicle.FUN_41FEC();
+			return uint.MaxValue;
+		}
+		}
+		return 0u;
+	}
 
-    public override uint UpdateW(VigObject arg1, int arg2, int arg3)
-    {
-        ushort uVar1;
-        int iVar2;
-        VigObject oVar2;
-        VigCamera cVar2;
-        int iVar3;
-        ConfigContainer ccVar3;
-        VigObject oVar3;
-        Vehicle vVar4;
-
-        switch (arg2)
-        {
-            case 18:
-                GameManager.instance.FUN_327CC(arg1);
-                break;
-            case 19:
-                oVar2 = GameManager.instance.FUN_318D0(49);
-                uVar1 = (ushort)(oVar2.screen.x < arg1.vTransform.position.x ? 1 : 0);
-                ccVar3 = oVar2.FUN_2C5F4((ushort)(uVar1 + 0x8000));
-                arg1.vTransform = GameManager.instance.FUN_2CEAC(oVar2, ccVar3);
-                iVar2 = arg1.vTransform.rotation.V02 * 0x3b9a;
-
-                if (iVar2 < 0)
-                    iVar2 += 31;
-
-                arg1.physics1.X = iVar2 >> 5;
-                iVar2 = arg1.vTransform.rotation.V12 * 0x3b9a;
-
-                if (iVar2 < 0)
-                    iVar2 += 31;
-
-                arg1.physics1.Y = iVar2 >> 5;
-                iVar2 = arg1.vTransform.rotation.V22 * 0x3b9a;
-
-                if (iVar2 < 0)
-                    iVar2 += 31;
-
-                arg1.physics1.Z = iVar2 >> 5;
-                arg1.physics2.X = 0;
-                arg1.physics2.Y = 0;
-                arg1.physics2.Z = 0;
-                iVar3 = GameManager.instance.FUN_1DD9C();
-                GameManager.instance.FUN_1E580(iVar3, GameManager.instance.DAT_C2C, 37, arg1.vTransform.position);
-                vVar4 = (Vehicle)arg1;
-
-                if (vVar4.vCamera != null)
-                {
-                    oVar3 = GameManager.instance.FUN_30250(GameManager.instance.DAT_1078, uVar1 + 0x201);
-                    cVar2 = LevelManager.instance.FUN_4B984(vVar4, oVar3);
-                    cVar2.maxHalfHealth = 0x100;
-                    vVar4.vCamera.flags &= 0xf3ffffff;
-                    GameManager.instance.FUN_30CB0(vVar4.vCamera, 90);
-                    vVar4.vCamera = cVar2;
-                    LevelManager.instance.defaultCamera.transform.SetParent(cVar2.transform, false);
-                    cVar2.FUN_30B78();
-                }
-
-                vVar4.FUN_41FEC();
-                return 0xffffffff;
-        }
-
-        return 0;
-    }
-
-    //FUN_5730 (LAUNCH.DLL)
-    public static void FUN_5730(ref Matrix3x3 param1, Vector3Int param2)
-    {
-        int iVar1;
-        int iVar2;
-        int iVar3;
-
-        iVar1 = param2.x;
-        iVar2 = param2.y;
-        iVar3 = param2.z;
-        param1.V00 = (short)(param1.V00 * iVar1 >> 12);
-        param1.V01 = (short)(param1.V01 * iVar2 >> 12);
-        param1.V02 = (short)(param1.V02 * iVar3 >> 12);
-        param1.V10 = (short)(param1.V10 * iVar1 >> 12);
-        param1.V11 = (short)(param1.V11 * iVar2 >> 12);
-        param1.V12 = (short)(param1.V12 * iVar3 >> 12);
-        param1.V20 = (short)(param1.V20 * iVar1 >> 12);
-        param1.V21 = (short)(param1.V21 * iVar2 >> 12);
-        param1.V22 = (short)(param1.V22 * iVar3 >> 12);
-    }
+	public static void FUN_5730(ref Matrix3x3 param1, Vector3Int param2)
+	{
+		int x = param2.x;
+		int y = param2.y;
+		int z = param2.z;
+		param1.V00 = (short)(param1.V00 * x >> 12);
+		param1.V01 = (short)(param1.V01 * y >> 12);
+		param1.V02 = (short)(param1.V02 * z >> 12);
+		param1.V10 = (short)(param1.V10 * x >> 12);
+		param1.V11 = (short)(param1.V11 * y >> 12);
+		param1.V12 = (short)(param1.V12 * z >> 12);
+		param1.V20 = (short)(param1.V20 * x >> 12);
+		param1.V21 = (short)(param1.V21 * y >> 12);
+		param1.V22 = (short)(param1.V22 * z >> 12);
+	}
 }

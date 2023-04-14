@@ -1,60 +1,50 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Container : Destructible
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-    public override uint OnCollision(HitDetection hit)
-    {
-        FUN_32CF0(hit);
-        return 0;
-    }
+	public override uint OnCollision(HitDetection hit)
+	{
+		FUN_32CF0(hit);
+		return 0u;
+	}
 
-    //FUN_32BC (HARBOR.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        short sVar1;
-        VigObject oVar2;
-        Vector2Int local_20;
-        Vector2Int local_18;
-
-        if (arg1 < 4)
-        {
-            if (arg1 == 2)
-                FUN_4DC94();
-        }
-        else
-        {
-            if (arg1 == 8)
-                FUN_32B90((uint)arg2);
-            else
-            {
-                if (arg1 == 9 && arg2 == 0)
-                {
-                    local_20 = new Vector2Int(screen.x, screen.x);
-                    local_18 = new Vector2Int(screen.z, screen.z);
-                    sVar1 = id;
-                    id = 0;
-                    oVar2 = GameManager.instance.FUN_31C98(sVar1, sVar1, local_20, local_18);
-
-                    if (oVar2 != null && oVar2.screen.y < screen.y)
-                        GameManager.instance.FUN_30CB0(oVar2, 30);
-
-                    id = sVar1;
-                }
-            }
-        }
-
-        return 0;
-    }
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		switch (arg1)
+		{
+		case 2:
+			FUN_4DC94();
+			break;
+		case 8:
+			FUN_32B90((uint)arg2);
+			break;
+		case 9:
+			if (arg2 == 0)
+			{
+				Vector2Int param = new Vector2Int(screen.x, screen.x);
+				Vector2Int param2 = new Vector2Int(screen.z, screen.z);
+				short id = base.id;
+				base.id = 0;
+				VigObject vigObject = GameManager.instance.FUN_31C98(id, id, param, param2);
+				if (vigObject != null && vigObject.screen.y < screen.y)
+				{
+					GameManager.instance.FUN_30CB0(vigObject, 30);
+				}
+				base.id = id;
+				LevelManager.instance.FUN_359FC(screen.x, screen.z, 36736u);
+			}
+			break;
+		}
+		return 0u;
+	}
 }

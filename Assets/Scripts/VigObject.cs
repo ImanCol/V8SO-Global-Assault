@@ -10,342 +10,469 @@ using MathExtended.Matrices;
 [Serializable]
 public struct Matrix3x3
 {
-    public short V00, V01, V02;
-    public short V10, V11, V12;
-    public short V20, V21, V22;
-    public bool skewed;
-    public short _V00, _V01, _V02;
-    public short _V10, _V11, _V12;
-    public short _V20, _V21, _V22;
-
+    // Token: 0x1700001C RID: 28
+    // (get) Token: 0x06000B6F RID: 2927 RVA: 0x00098DAC File Offset: 0x00096FAC
     public Vector3 Scale
     {
         get
         {
-            float fV00, fV01, fV02;
-
-            const int SHRT_MAX = 4096;
-            fV00 = (float)V00 / SHRT_MAX;
-            fV01 = (float)V01 / SHRT_MAX;
-            fV02 = (float)V02 / SHRT_MAX;
-
-            //float sx = new Vector3(fV00, fV01, fV02).magnitude;
-
-            float fV10, fV11, fV12;
-
-            fV10 = (float)V10 / SHRT_MAX;
-            fV11 = (float)V11 / SHRT_MAX;
-            fV12 = (float)V12 / SHRT_MAX;
-
-            //float sy = new Vector3(fV10, fV11, fV12).magnitude;
-
-            float fV20, fV21, fV22;
-
-            fV20 = (float)V20 / SHRT_MAX;
-            fV21 = (float)V21 / SHRT_MAX;
-            fV22 = (float)V22 / SHRT_MAX;
-
-            float sx = new Vector3(fV00, fV10, fV20).magnitude;
-            float sy = new Vector3(fV01, fV11, fV21).magnitude;
-            float sz = new Vector3(fV02, fV12, fV22).magnitude;
-
-            return new Vector3(sx, sy, sz);
+            float num = (float)this.V00 / 4096f;
+            float num2 = (float)this.V01 / 4096f;
+            float num3 = (float)this.V02 / 4096f;
+            float num4 = (float)this.V10 / 4096f;
+            float num5 = (float)this.V11 / 4096f;
+            float num6 = (float)this.V12 / 4096f;
+            float num7 = (float)this.V20 / 4096f;
+            float num8 = (float)this.V21 / 4096f;
+            float num9 = (float)this.V22 / 4096f;
+            float magnitude = new Vector3(num, num4, num7).magnitude;
+            float magnitude2 = new Vector3(num2, num5, num8).magnitude;
+            float magnitude3 = new Vector3(num3, num6, num9).magnitude;
+            return new Vector3(magnitude, magnitude2, magnitude3);
         }
     }
 
+    // Token: 0x1700001D RID: 29
+    // (get) Token: 0x06000B70 RID: 2928 RVA: 0x00098E80 File Offset: 0x00097080
     public Quaternion Matrix2Quaternion
     {
         get
         {
-            const int SHRT_MAX = 4096;
-            double fV00, fV01, fV02;
-            double fV10, fV11, fV12;
-            double fV20, fV21, fV22;
-
-            if (skewed)
+            double num;
+            double num2;
+            double num3;
+            double num4;
+            double num5;
+            double num6;
+            double num7;
+            double num8;
+            double num9;
+            if (this.skewed)
             {
-                /*Matrix3x3 m33 = Utilities.MatrixNormal(this);
-                fV00 = (double)m33.V00 / SHRT_MAX;
-                fV01 = (double)m33.V01 / SHRT_MAX;
-                fV02 = (double)m33.V02 / SHRT_MAX;
-                fV10 = (double)m33.V10 / SHRT_MAX;
-                fV11 = (double)m33.V11 / SHRT_MAX;
-                fV12 = (double)m33.V12 / SHRT_MAX;
-                fV20 = (double)m33.V20 / SHRT_MAX;
-                fV21 = (double)m33.V21 / SHRT_MAX;
-                fV22 = (double)m33.V22 / SHRT_MAX;*/
-                fV00 = (double)_V00 / SHRT_MAX;
-                fV01 = (double)_V01 / SHRT_MAX;
-                fV02 = (double)_V02 / SHRT_MAX;
-                fV10 = (double)_V10 / SHRT_MAX;
-                fV11 = (double)_V11 / SHRT_MAX;
-                fV12 = (double)_V12 / SHRT_MAX;
-                fV20 = (double)_V20 / SHRT_MAX;
-                fV21 = (double)_V21 / SHRT_MAX;
-                fV22 = (double)_V22 / SHRT_MAX;
+                num = (double)this._V00 / 4096.0;
+                num2 = (double)this._V01 / 4096.0;
+                num3 = (double)this._V02 / 4096.0;
+                num4 = (double)this._V10 / 4096.0;
+                num5 = (double)this._V11 / 4096.0;
+                num6 = (double)this._V12 / 4096.0;
+                num7 = (double)this._V20 / 4096.0;
+                num8 = (double)this._V21 / 4096.0;
+                num9 = (double)this._V22 / 4096.0;
             }
             else
             {
-                fV00 = (double)V00 / SHRT_MAX;
-                fV01 = (double)V01 / SHRT_MAX;
-                fV02 = (double)V02 / SHRT_MAX;
-                fV10 = (double)V10 / SHRT_MAX;
-                fV11 = (double)V11 / SHRT_MAX;
-                fV12 = (double)V12 / SHRT_MAX;
-                fV20 = (double)V20 / SHRT_MAX;
-                fV21 = (double)V21 / SHRT_MAX;
-                fV22 = (double)V22 / SHRT_MAX;
+                num = (double)this.V00 / 4096.0;
+                num2 = (double)this.V01 / 4096.0;
+                num3 = (double)this.V02 / 4096.0;
+                num4 = (double)this.V10 / 4096.0;
+                num5 = (double)this.V11 / 4096.0;
+                num6 = (double)this.V12 / 4096.0;
+                num7 = (double)this.V20 / 4096.0;
+                num8 = (double)this.V21 / 4096.0;
+                num9 = (double)this.V22 / 4096.0;
             }
-
-            float tr = (float)(fV00 + fV11 + fV22);
-            double qw, qx, qy, qz;
-
-            if (tr > 0)
+            float num10 = (float)(num + num5 + num9);
+            double num12;
+            double num13;
+            double num14;
+            double num15;
+            if (num10 > 0f)
             {
-                float S = (float)Math.Sqrt(tr + 1f) * 2;
-                qw = 0.25 * S;
-                qx = (fV21 - fV12) / S;
-                qy = (fV02 - fV20) / S;
-                qz = (fV10 - fV01) / S;
+                float num11 = (float)Math.Sqrt((double)(num10 + 1f)) * 2f;
+                num12 = 0.25 * (double)num11;
+                num13 = (num8 - num6) / (double)num11;
+                num14 = (num3 - num7) / (double)num11;
+                num15 = (num4 - num2) / (double)num11;
             }
-            else if ((fV00 > fV11) & (fV00 > fV22))
+            else if ((num > num5) & (num > num9))
             {
-                float S = (float)Math.Sqrt(1.0 + fV00 - fV11 - fV22) * 2; // S=4*qx 
-                qw = (fV21 - fV12) / S;
-                qx = 0.25 * S;
-                qy = (fV01 + fV10) / S;
-                qz = (fV02 + fV20) / S;
+                float num16 = (float)Math.Sqrt(1.0 + num - num5 - num9) * 2f;
+                num12 = (num8 - num6) / (double)num16;
+                num13 = 0.25 * (double)num16;
+                num14 = (num2 + num4) / (double)num16;
+                num15 = (num3 + num7) / (double)num16;
             }
-            else if (fV11 > fV22)
+            else if (num5 > num9)
             {
-                float S = (float)Math.Sqrt(1.0 + fV11 - fV00 - fV22) * 2; // S=4*qy
-                qw = (fV02 - fV20) / S;
-                qx = (fV01 + fV10) / S;
-                qy = 0.25 * S;
-                qz = (fV12 + fV21) / S;
+                float num17 = (float)Math.Sqrt(1.0 + num5 - num - num9) * 2f;
+                num12 = (num3 - num7) / (double)num17;
+                num13 = (num2 + num4) / (double)num17;
+                num14 = 0.25 * (double)num17;
+                num15 = (num6 + num8) / (double)num17;
             }
             else
             {
-                float S = (float)Math.Sqrt(1.0 + fV22 - fV00 - fV11) * 2; // S=4*qz
-                qw = (fV10 - fV01) / S;
-                qx = (fV02 + fV20) / S;
-                qy = (fV12 + fV21) / S;
-                qz = 0.25 * S;
+                float num18 = (float)Math.Sqrt(1.0 + num9 - num - num5) * 2f;
+                num12 = (num4 - num2) / (double)num18;
+                num13 = (num3 + num7) / (double)num18;
+                num14 = (num6 + num8) / (double)num18;
+                num15 = 0.25 * (double)num18;
             }
-
-            return new Quaternion((float)qx, (float)qy, (float)qz, (float)qw);
+            return new Quaternion((float)num13, (float)num14, (float)num15, (float)num12);
         }
     }
 
+    // Token: 0x06000B71 RID: 2929 RVA: 0x00099158 File Offset: 0x00097358
+    public void MatrixNormal()
+    {
+        this.skewed = true;
+        this._V00 = this.V00;
+        this._V01 = this.V01;
+        this._V02 = this.V02;
+        this._V10 = this.V10;
+        this._V11 = this.V11;
+        this._V12 = this.V12;
+        this._V20 = this.V20;
+        this._V21 = this.V21;
+        this._V22 = this.V22;
+    }
+
+    // Token: 0x06000B72 RID: 2930 RVA: 0x000991D8 File Offset: 0x000973D8
     public int GetValue32(int index)
     {
-        int value = 0;
-
         if (index >= 5)
+        {
             index = 4;
+        }
         else if (index < 0)
+        {
             index = 0;
-
+        }
+        int num;
         switch (index)
         {
             case 0:
-                value = V01 << 16 | (ushort)V00;
+                num = ((int)this.V01 << 16) | (int)((ushort)this.V00);
                 break;
             case 1:
-                value = V10 << 16 | (ushort)V02;
+                num = ((int)this.V10 << 16) | (int)((ushort)this.V02);
                 break;
             case 2:
-                value = V12 << 16 | (ushort)V11;
+                num = ((int)this.V12 << 16) | (int)((ushort)this.V11);
                 break;
             case 3:
-                value = V21 << 16 | (ushort)V20;
+                num = ((int)this.V21 << 16) | (int)((ushort)this.V20);
                 break;
             default:
-                value = V22;
+                num = (int)this.V22;
                 break;
         }
-
-        return value;
+        return num;
     }
 
+    // Token: 0x06000B73 RID: 2931 RVA: 0x00099268 File Offset: 0x00097468
     public void SetValue32(int index, int value)
     {
         switch (index)
         {
             case 0:
-                V00 = (short)value;
-                V01 = (short)(value >> 16);
-                break;
+                this.V00 = (short)value;
+                this.V01 = (short)(value >> 16);
+                return;
             case 1:
-                V02 = (short)value;
-                V10 = (short)(value >> 16);
-                break;
+                this.V02 = (short)value;
+                this.V10 = (short)(value >> 16);
+                return;
             case 2:
-                V11 = (short)value;
-                V12 = (short)(value >> 16);
-                break;
+                this.V11 = (short)value;
+                this.V12 = (short)(value >> 16);
+                return;
             case 3:
-                V20 = (short)value;
-                V21 = (short)(value >> 16);
-                break;
+                this.V20 = (short)value;
+                this.V21 = (short)(value >> 16);
+                return;
             default:
-                V22 = (short)value;
-                break;
+                this.V22 = (short)value;
+                return;
         }
     }
 
+    // Token: 0x06000B74 RID: 2932 RVA: 0x000992E8 File Offset: 0x000974E8
     public void SetValue16(int index, int value)
     {
         switch (index)
         {
             case 0:
-                V00 = (short)value;
-                break;
+                this.V00 = (short)value;
+                return;
             case 1:
-                V01 = (short)value;
-                break;
+                this.V01 = (short)value;
+                return;
             case 2:
-                V02 = (short)value;
-                break;
+                this.V02 = (short)value;
+                return;
             case 3:
-                V10 = (short)value;
-                break;
+                this.V10 = (short)value;
+                return;
             case 4:
-                V11 = (short)value;
-                break;
+                this.V11 = (short)value;
+                return;
             case 5:
-                V12 = (short)value;
-                break;
+                this.V12 = (short)value;
+                return;
             case 6:
-                V20 = (short)value;
-                break;
+                this.V20 = (short)value;
+                return;
             case 7:
-                V21 = (short)value;
-                break;
+                this.V21 = (short)value;
+                return;
             default:
-                V22 = (short)value;
-                break;
+                this.V22 = (short)value;
+                return;
         }
     }
-}
 
+    // Token: 0x040007DD RID: 2013
+    public short V00;
+
+    // Token: 0x040007DE RID: 2014
+    public short V01;
+
+    // Token: 0x040007DF RID: 2015
+    public short V02;
+
+    // Token: 0x040007E0 RID: 2016
+    public short V10;
+
+    // Token: 0x040007E1 RID: 2017
+    public short V11;
+
+    // Token: 0x040007E2 RID: 2018
+    public short V12;
+
+    // Token: 0x040007E3 RID: 2019
+    public short V20;
+
+    // Token: 0x040007E4 RID: 2020
+    public short V21;
+
+    // Token: 0x040007E5 RID: 2021
+    public short V22;
+
+    // Token: 0x040007E6 RID: 2022
+    public bool skewed;
+
+    // Token: 0x040007E7 RID: 2023
+    public short _V00;
+
+    // Token: 0x040007E8 RID: 2024
+    public short _V01;
+
+    // Token: 0x040007E9 RID: 2025
+    public short _V02;
+
+    // Token: 0x040007EA RID: 2026
+    public short _V10;
+
+    // Token: 0x040007EB RID: 2027
+    public short _V11;
+
+    // Token: 0x040007EC RID: 2028
+    public short _V12;
+
+    // Token: 0x040007ED RID: 2029
+    public short _V20;
+
+    // Token: 0x040007EE RID: 2030
+    public short _V21;
+
+    // Token: 0x040007EF RID: 2031
+    public short _V22;
+}
 [Serializable]
 public struct Matrix2x3
 {
-    public short M0, M1;
-    public short M2, M3;
-    public short M4, M5;
-
+    // Token: 0x06000B75 RID: 2933 RVA: 0x00099370 File Offset: 0x00097570
     public Matrix2x3(int x, int y, int z)
     {
-        M0 = (short)(x & 0xFFFF);
-        M1 = (short)(x >> 16);
-        M2 = (short)(y & 0xFFFF);
-        M3 = (short)(y >> 16);
-        M4 = (short)(z & 0xFFFF);
-        M5 = (short)(z >> 16);
+        this.M0 = (short)(x & 65535);
+        this.M1 = (short)(x >> 16);
+        this.M2 = (short)(y & 65535);
+        this.M3 = (short)(y >> 16);
+        this.M4 = (short)(z & 65535);
+        this.M5 = (short)(z >> 16);
     }
 
+    // Token: 0x06000B76 RID: 2934 RVA: 0x000993C8 File Offset: 0x000975C8
     public Matrix2x3(Vector3Int v3)
     {
-        M0 = (short)(v3.x & 0xFFFF);
-        M1 = (short)(v3.x >> 16);
-        M2 = (short)(v3.y & 0xFFFF);
-        M3 = (short)(v3.y >> 16);
-        M4 = (short)(v3.z & 0xFFFF);
-        M5 = (short)(v3.z >> 16);
+        this.M0 = (short)(v3.x & 65535);
+        this.M1 = (short)(v3.x >> 16);
+        this.M2 = (short)(v3.y & 65535);
+        this.M3 = (short)(v3.y >> 16);
+        this.M4 = (short)(v3.z & 65535);
+        this.M5 = (short)(v3.z >> 16);
     }
 
+    // Token: 0x1700001E RID: 30
+    // (get) Token: 0x06000B77 RID: 2935 RVA: 0x0000B20D File Offset: 0x0000940D
+    // (set) Token: 0x06000B78 RID: 2936 RVA: 0x0000B220 File Offset: 0x00009420
     public int X
     {
-        get { return M1 << 16 | (ushort)M0; }
+        get
+        {
+            return ((int)this.M1 << 16) | (int)((ushort)this.M0);
+        }
         set
         {
-            M0 = (short)(value & 0xFFFF);
-            M1 = (short)(value >> 16);
+            this.M0 = (short)(value & 65535);
+            this.M1 = (short)(value >> 16);
         }
     }
 
+    // Token: 0x1700001F RID: 31
+    // (get) Token: 0x06000B79 RID: 2937 RVA: 0x0000B23B File Offset: 0x0000943B
+    // (set) Token: 0x06000B7A RID: 2938 RVA: 0x0000B24E File Offset: 0x0000944E
     public int Y
     {
-        get { return M3 << 16 | (ushort)M2; }
+        get
+        {
+            return ((int)this.M3 << 16) | (int)((ushort)this.M2);
+        }
         set
         {
-            M2 = (short)(value & 0xFFFF);
-            M3 = (short)(value >> 16);
+            this.M2 = (short)(value & 65535);
+            this.M3 = (short)(value >> 16);
         }
     }
 
+    // Token: 0x17000020 RID: 32
+    // (get) Token: 0x06000B7B RID: 2939 RVA: 0x0000B269 File Offset: 0x00009469
+    // (set) Token: 0x06000B7C RID: 2940 RVA: 0x0000B27C File Offset: 0x0000947C
     public int Z
     {
-        get { return M5 << 16 | (ushort)M4; }
+        get
+        {
+            return ((int)this.M5 << 16) | (int)((ushort)this.M4);
+        }
         set
         {
-            M4 = (short)(value & 0xFFFF);
-            M5 = (short)(value >> 16);
+            this.M4 = (short)(value & 65535);
+            this.M5 = (short)(value >> 16);
         }
     }
-}
 
+    // Token: 0x040007F0 RID: 2032
+    public short M0;
+
+    // Token: 0x040007F1 RID: 2033
+    public short M1;
+
+    // Token: 0x040007F2 RID: 2034
+    public short M2;
+
+    // Token: 0x040007F3 RID: 2035
+    public short M3;
+
+    // Token: 0x040007F4 RID: 2036
+    public short M4;
+
+    // Token: 0x040007F5 RID: 2037
+    public short M5;
+}
 [Serializable]
 public struct Matrix2x4
 {
-    public short M0, M1;
-    public short M2, M3;
-    public short M4, M5;
-    public short M6, M7;
-
+    // Token: 0x06000B7D RID: 2941 RVA: 0x00099444 File Offset: 0x00097644
     public Matrix2x4(int x, int y, int z, int w)
     {
-        M0 = (short)(x & 0xFFFF);
-        M1 = (short)(x >> 16);
-        M2 = (short)(y & 0xFFFF);
-        M3 = (short)(y >> 16);
-        M4 = (short)(z & 0xFFFF);
-        M5 = (short)(z >> 16);
-        M6 = (short)(w & 0xFFFF);
-        M7 = (short)(w >> 16);
+        this.M0 = (short)(x & 65535);
+        this.M1 = (short)(x >> 16);
+        this.M2 = (short)(y & 65535);
+        this.M3 = (short)(y >> 16);
+        this.M4 = (short)(z & 65535);
+        this.M5 = (short)(z >> 16);
+        this.M6 = (short)(w & 65535);
+        this.M7 = (short)(w >> 16);
     }
 
+    // Token: 0x17000021 RID: 33
+    // (get) Token: 0x06000B7E RID: 2942 RVA: 0x0000B297 File Offset: 0x00009497
+    // (set) Token: 0x06000B7F RID: 2943 RVA: 0x0000B2AA File Offset: 0x000094AA
     public int X
     {
-        get { return M1 << 16 | (ushort)M0; }
+        get
+        {
+            return ((int)this.M1 << 16) | (int)((ushort)this.M0);
+        }
         set
         {
-            M0 = (short)(value & 0xFFFF);
-            M1 = (short)(value >> 16);
+            this.M0 = (short)(value & 65535);
+            this.M1 = (short)(value >> 16);
         }
     }
 
+    // Token: 0x17000022 RID: 34
+    // (get) Token: 0x06000B80 RID: 2944 RVA: 0x0000B2C5 File Offset: 0x000094C5
+    // (set) Token: 0x06000B81 RID: 2945 RVA: 0x0000B2D8 File Offset: 0x000094D8
     public int Y
     {
-        get { return M3 << 16 | (ushort)M2; }
+        get
+        {
+            return ((int)this.M3 << 16) | (int)((ushort)this.M2);
+        }
         set
         {
-            M2 = (short)(value & 0xFFFF);
-            M3 = (short)(value >> 16);
+            this.M2 = (short)(value & 65535);
+            this.M3 = (short)(value >> 16);
         }
     }
 
+    // Token: 0x17000023 RID: 35
+    // (get) Token: 0x06000B82 RID: 2946 RVA: 0x0000B2F3 File Offset: 0x000094F3
+    // (set) Token: 0x06000B83 RID: 2947 RVA: 0x0000B306 File Offset: 0x00009506
     public int Z
     {
-        get { return M5 << 16 | (ushort)M4; }
+        get
+        {
+            return ((int)this.M5 << 16) | (int)((ushort)this.M4);
+        }
         set
         {
-            M4 = (short)(value & 0xFFFF);
-            M5 = (short)(value >> 16);
+            this.M4 = (short)(value & 65535);
+            this.M5 = (short)(value >> 16);
         }
     }
 
+    // Token: 0x17000024 RID: 36
+    // (get) Token: 0x06000B84 RID: 2948 RVA: 0x0000B321 File Offset: 0x00009521
+    // (set) Token: 0x06000B85 RID: 2949 RVA: 0x0000B334 File Offset: 0x00009534
     public int W
     {
-        get { return M7 << 16 | (ushort)M6; }
+        get
+        {
+            return ((int)this.M7 << 16) | (int)((ushort)this.M6);
+        }
         set
         {
-            M6 = (short)(value & 0xFFFF);
-            M7 = (short)(value >> 16);
+            this.M6 = (short)(value & 65535);
+            this.M7 = (short)(value >> 16);
         }
     }
+
+    // Token: 0x040007F6 RID: 2038
+    public short M0;
+
+    // Token: 0x040007F7 RID: 2039
+    public short M1;
+
+    // Token: 0x040007F8 RID: 2040
+    public short M2;
+
+    // Token: 0x040007F9 RID: 2041
+    public short M3;
+
+    // Token: 0x040007FA RID: 2042
+    public short M4;
+
+    // Token: 0x040007FB RID: 2043
+    public short M5;
+
+    // Token: 0x040007FC RID: 2044
+    public short M6;
+
+    // Token: 0x040007FD RID: 2045
+    public short M7;
 }
 
 [Serializable]
@@ -356,102 +483,119 @@ public struct VigTransform
     public Vector3Int position;
 }
 
+
 public class VigObject : MonoBehaviour
 {
-    public uint flags; //0x04
-    public byte type; //0x08
-    public sbyte tags; //0x09
-    public short id; //0x0A
+    public uint flags;
 
-    public VigObject child; //0x0C
-    public VigObject child2; //0x10
-    public VigObject parent; //0x14
+    public byte type;
 
-    public sbyte DAT_18; //0x18
-    public byte DAT_19; //0x19
-    public short DAT_1A; //0x1A
+    public sbyte tags;
 
-    public ushort maxHalfHealth; //0x1C
-    public ushort maxFullHealth; //0x1E
+    public short id;
 
-    public VigTransform vTransform; //0x20
+    public VigObject child;
 
-    public VigMesh vMesh; //0x40
+    public VigObject child2;
 
-    public Vector3Int screen; //0x4C
-    public Vector3Int vr; //0x44
-    public ushort DAT_4A; //0x4A
+    public VigObject parent;
 
-    public int DAT_58; //0x58
-    public XOBF_DB vData; //0x5C
-    public VigCollider vCollider; //0x60
-    public BufferedBinaryReader vAnim; //0x64
-    public VigMesh vLOD; //0x68
-    public int DAT_6C; //0x6C
-    public VigShadow vShadow; //0x70
-    public VigObject PDAT_74; //0x74
-    public ConfigContainer CCDAT_74; //0x74
-    public VigTuple TDAT_74; //0x74
-    public int IDAT_74; //0x74
-    public VigObject PDAT_78; //0x78
-    public VigTuple TDAT_78; //0x78
-    public int IDAT_78; //0x78
-    public VigObject PDAT_7C; //0x7C
-    public int IDAT_7C; //0x7C
-    public VigObject DAT_80; //0x80
-    public VigObject DAT_84; //0x84
+    public sbyte DAT_18;
+
+    public byte DAT_19;
+
+    public short DAT_1A;
+
+    public ushort maxHalfHealth;
+
+    public ushort maxFullHealth;
+
+    public VigTransform vTransform;
+
+    public VigMesh vMesh;
+
+    public Vector3Int screen;
+
+    public Vector3Int vr;
+
+    public ushort DAT_4A;
+
+    public int DAT_58;
+
+    public XOBF_DB vData;
+
+    public VigCollider vCollider;
+
+    public BufferedBinaryReader vAnim;
+
+    public VigMesh vLOD;
+
+    public int DAT_6C;
+
+    public VigShadow vShadow;
+
+    public VigObject PDAT_74;
+
+    public ConfigContainer CCDAT_74;
+
+    public VigTuple TDAT_74;
+
+    public int IDAT_74;
+
+    public VigObject PDAT_78;
+
+    public List<VigObject> LDAT_78;
+
+    public VigTuple TDAT_78;
+
+    public int IDAT_78;
+
+    public VigObject PDAT_7C;
+
+    public int IDAT_7C;
+
+    public VigObject DAT_80;
+
+    public VigObject DAT_84;
 
     public Matrix2x4 physics1;
+
     public Matrix2x4 physics2;
 
-    public Vector3Int DAT_A0; //0xA0
-    public short DAT_A6; //0xA6
+    public Vector3Int DAT_A0;
 
-    // Start is called before the first frame update
+    public short DAT_A6;
+
     protected virtual void Start()
     {
-        /*vTransform.position = new Vector3Int(
-            (int)(transform.localPosition.x * GameManager.translateFactor), 
-            (int)(-transform.localPosition.y * GameManager.translateFactor), 
-            (int)(transform.localPosition.z * GameManager.translateFactor));
-
-        ApplyRotationMatrix();*/
-        //screen = position;
-
-
     }
 
-    // Update is called once per frame
     protected virtual void Update()
     {
-        transform.localPosition = new Vector3(
-            (float)vTransform.position.x / GameManager.instance.translateFactor, 
-            (float)-vTransform.position.y / GameManager.instance.translateFactor, 
-            (float)vTransform.position.z / GameManager.instance.translateFactor);
-
-        transform.localRotation = vTransform.rotation.Matrix2Quaternion;
-        transform.localEulerAngles = new Vector3(-transform.localEulerAngles.x, transform.localEulerAngles.y, -transform.localEulerAngles.z);
-        transform.localScale = vTransform.rotation.Scale;
+        base.transform.localPosition = new Vector3((float)vTransform.position.x / (float)GameManager.instance.translateFactor, (float)(-vTransform.position.y) / (float)GameManager.instance.translateFactor, (float)vTransform.position.z / (float)GameManager.instance.translateFactor);
+        base.transform.localRotation = vTransform.rotation.Matrix2Quaternion;
+        base.transform.localEulerAngles = new Vector3(0f - base.transform.localEulerAngles.x, base.transform.localEulerAngles.y, 0f - base.transform.localEulerAngles.z);
+        base.transform.localScale = vTransform.rotation.Scale;
     }
 
     public virtual uint UpdateW(int arg1, int arg2)
     {
-        return 0;
+        return 0u;
     }
 
     public virtual uint UpdateW(int arg1, VigObject arg2)
     {
-        return 0;
+        return 0u;
     }
 
     public virtual uint UpdateW(VigObject arg1, int arg2, Vector3Int arg3)
     {
-        return 0;
+        return 0u;
     }
 
     public virtual uint UpdateW(VigObject arg1, int arg2, int arg3)
     {
-        return 0;
+        return 0u;
     }
 
     public virtual sbyte UpdateW(VigObject arg1, int arg2, TileData arg3)
@@ -461,19 +605,13 @@ public class VigObject : MonoBehaviour
 
     public Transform GetTransform()
     {
-        transform.localPosition = new Vector3(
-            (float)vTransform.position.x / GameManager.instance.translateFactor,
-            (float)-vTransform.position.y / GameManager.instance.translateFactor,
-            (float)vTransform.position.z / GameManager.instance.translateFactor);
-
-        transform.localRotation = vTransform.rotation.Matrix2Quaternion;
-        transform.localEulerAngles = new Vector3(-transform.localEulerAngles.x, transform.localEulerAngles.y, -transform.localEulerAngles.z);
-        transform.localScale = vTransform.rotation.Scale;
-
-        return transform;
+        base.transform.localPosition = new Vector3((float)vTransform.position.x / (float)GameManager.instance.translateFactor, (float)(-vTransform.position.y) / (float)GameManager.instance.translateFactor, (float)vTransform.position.z / (float)GameManager.instance.translateFactor);
+        base.transform.localRotation = vTransform.rotation.Matrix2Quaternion;
+        base.transform.localEulerAngles = new Vector3(0f - base.transform.localEulerAngles.x, base.transform.localEulerAngles.y, 0f - base.transform.localEulerAngles.z);
+        base.transform.localScale = vTransform.rotation.Scale;
+        return base.transform;
     }
 
-    // FUN_2CF74
     public void ApplyTransformation()
     {
         vTransform.position = screen;
@@ -482,7 +620,6 @@ public class VigObject : MonoBehaviour
         vTransform.padding = 0;
     }
 
-    //FUN_2CF44
     public void ApplyRotationMatrix()
     {
         vTransform.rotation = Utilities.RotMatrixYXZ_gte(vr);
@@ -501,29 +638,24 @@ public class VigObject : MonoBehaviour
         Coprocessor.rotationMatrix.rt31 = vTransform.rotation.V20;
         Coprocessor.rotationMatrix.rt32 = vTransform.rotation.V21;
         Coprocessor.rotationMatrix.rt33 = vTransform.rotation.V22;
-        Coprocessor.accumulator.ir1 = 0x1000;
+        Coprocessor.accumulator.ir1 = 4096;
         Coprocessor.accumulator.ir2 = z;
-        Coprocessor.accumulator.ir3 = (short)-y;
-        Coprocessor.ExecuteMVMVA(_MVMVA_MULTIPLY_MATRIX.Rotation, _MVMVA_MULTIPLY_VECTOR.IR, _MVMVA_TRANSLATION_VECTOR.None, 12, false);
-
+        Coprocessor.accumulator.ir3 = (short)(-y);
+        Coprocessor.ExecuteMVMVA(_MVMVA_MULTIPLY_MATRIX.Rotation, _MVMVA_MULTIPLY_VECTOR.IR, _MVMVA_TRANSLATION_VECTOR.None, 12, lm: false);
         vTransform.rotation.V00 = Coprocessor.accumulator.ir1;
         vTransform.rotation.V10 = Coprocessor.accumulator.ir2;
         vTransform.rotation.V20 = Coprocessor.accumulator.ir3;
-
-        Coprocessor.vector0.vx0 = (short)-z;
-        Coprocessor.vector0.vy0 = 0x1000;
+        Coprocessor.vector0.vx0 = (short)(-z);
+        Coprocessor.vector0.vy0 = 4096;
         Coprocessor.vector0.vz0 = x;
-        Coprocessor.ExecuteMVMVA(_MVMVA_MULTIPLY_MATRIX.Rotation, _MVMVA_MULTIPLY_VECTOR.V0, _MVMVA_TRANSLATION_VECTOR.None, 12, false);
-
+        Coprocessor.ExecuteMVMVA(_MVMVA_MULTIPLY_MATRIX.Rotation, _MVMVA_MULTIPLY_VECTOR.V0, _MVMVA_TRANSLATION_VECTOR.None, 12, lm: false);
         vTransform.rotation.V01 = Coprocessor.accumulator.ir1;
         vTransform.rotation.V11 = Coprocessor.accumulator.ir2;
         vTransform.rotation.V21 = Coprocessor.accumulator.ir3;
-
         Coprocessor.vector1.vx1 = y;
-        Coprocessor.vector1.vy1 = (short)-x;
-        Coprocessor.vector1.vz1 = 0x1000;
-        Coprocessor.ExecuteMVMVA(_MVMVA_MULTIPLY_MATRIX.Rotation, _MVMVA_MULTIPLY_VECTOR.V1, _MVMVA_TRANSLATION_VECTOR.None, 12, false);
-
+        Coprocessor.vector1.vy1 = (short)(-x);
+        Coprocessor.vector1.vz1 = 4096;
+        Coprocessor.ExecuteMVMVA(_MVMVA_MULTIPLY_MATRIX.Rotation, _MVMVA_MULTIPLY_VECTOR.V1, _MVMVA_TRANSLATION_VECTOR.None, 12, lm: false);
         vTransform.rotation.V02 = Coprocessor.accumulator.ir1;
         vTransform.rotation.V12 = Coprocessor.accumulator.ir2;
         vTransform.rotation.V22 = Coprocessor.accumulator.ir3;
@@ -531,329 +663,433 @@ public class VigObject : MonoBehaviour
 
     public VigTransform FUN_2AE18()
     {
-        VigTransform container = new VigTransform
+        VigTransform vigTransform = default(VigTransform);
+        vigTransform.rotation = new Matrix3x3
         {
-            rotation = new Matrix3x3
-            {
-                V00 = 0,
-                V01 = (short)-physics2.M4,
-                V02 = physics2.M2,
-                V10 = physics2.M4,
-                V11 = 0,
-                V12 = (short)-physics2.M0,
-                V20 = (short)-physics2.M2,
-                V21 = physics2.M0,
-                V22 = 0
-            },
-            position = new Vector3Int
-            (physics1.X, physics1.Y, physics1.Z)
+            V00 = 0,
+            V01 = (short)(-physics2.M4),
+            V02 = physics2.M2,
+            V10 = physics2.M4,
+            V11 = 0,
+            V12 = (short)(-physics2.M0),
+            V20 = (short)(-physics2.M2),
+            V21 = physics2.M0,
+            V22 = 0
         };
-
-        container.rotation = Utilities.FUN_247C4(vTransform.rotation, container.rotation);
-        return container;
+        vigTransform.position = new Vector3Int(physics1.X, physics1.Y, physics1.Z);
+        VigTransform vigTransform2 = vigTransform;
+        vigTransform2.rotation = Utilities.FUN_247C4(vTransform.rotation, vigTransform2.rotation);
+        return vigTransform2;
     }
 
     public VigTransform FUN_2AEAC()
     {
-        VigTransform output = new VigTransform();
-
-        output.rotation.V22 = 0;
-        output.rotation.V11 = 0;
-        output.rotation.V00 = 0;
-        output.rotation.V21 = physics2.M0;
-        output.rotation.V12 = (short)-physics2.M0;
-        output.rotation.V02 = physics2.M2;
-        output.rotation.V20 = (short)-physics2.M2;
-        output.rotation.V10 = physics2.M4;
-        output.rotation.V01 = (short)-physics2.M4;
-
-        output.position = Utilities.FUN_2426C(vTransform.rotation, physics1);
-        return output;
+        VigTransform result = default(VigTransform);
+        result.rotation.V22 = 0;
+        result.rotation.V11 = 0;
+        result.rotation.V00 = 0;
+        result.rotation.V21 = physics2.M0;
+        result.rotation.V12 = (short)(-physics2.M0);
+        result.rotation.V02 = physics2.M2;
+        result.rotation.V20 = (short)(-physics2.M2);
+        result.rotation.V10 = physics2.M4;
+        result.rotation.V01 = (short)(-physics2.M4);
+        result.position = Utilities.FUN_2426C(vTransform.rotation, physics1);
+        return result;
     }
 
     public void FUN_2AF20()
     {
-        int iVar1;
-        int iVar2;
-        int iVar3;
-        Matrix3x3 m;
-
-        iVar1 = physics2.X;
-
-        if (iVar1 < 0)
-            iVar1 += 127;
-
-        iVar2 = physics2.Y;
-
-        if (iVar2 < 0)
-            iVar2 += 127;
-
-        iVar3 = physics2.Z;
-
-        if (iVar3 < 0)
-            iVar3 += 127;
-
-        FUN_24700((short)(iVar1 >> 7), (short)(iVar2 >> 7), (short)(iVar3 >> 7));
-        iVar1 = physics1.X;
-
-        if (iVar1 < 0)
-            iVar1 += 127;
-
-        iVar2 = physics1.Y;
-        vTransform.position.x += iVar1 >> 7;
-
-        if (iVar2 < 0)
-            iVar2 += 127;
-
-        iVar1 = physics1.Z;
-        vTransform.position.y += iVar2 >> 7;
-
-        if (iVar1 < 0)
-            iVar1 += 127;
-
-        vTransform.position.z += iVar1 >> 7;
+        int num = physics2.X;
+        if (num < 0)
+        {
+            num += 127;
+        }
+        int num2 = physics2.Y;
+        if (num2 < 0)
+        {
+            num2 += 127;
+        }
+        int num3 = physics2.Z;
+        if (num3 < 0)
+        {
+            num3 += 127;
+        }
+        FUN_24700((short)(num >> 7), (short)(num2 >> 7), (short)(num3 >> 7));
+        num = physics1.X;
+        if (num < 0)
+        {
+            num += 127;
+        }
+        num2 = physics1.Y;
+        vTransform.position.x += num >> 7;
+        if (num2 < 0)
+        {
+            num2 += 127;
+        }
+        num = physics1.Z;
+        vTransform.position.y += num2 >> 7;
+        if (num < 0)
+        {
+            num += 127;
+        }
+        vTransform.position.z += num >> 7;
         vTransform.rotation = Utilities.MatrixNormal(vTransform.rotation);
     }
 
-    public void FUN_2AFF8(Vector3Int v1, Vector3Int v2, bool noflip = true)
+    public void FUN_2AFF8(Vector3Int v1, Vector3Int v2, bool noflip = false)
     {
-        int iVar1;
-        int iVar2;
-        
         physics1.X += v1.x;
         physics1.Y += v1.y;
         physics1.Z += v1.z;
-
-        iVar1 = v2.x * DAT_A0.x; //r3
-
-        if (iVar1 < 0)
-            iVar1 += 63;
-
-        iVar2 = physics2.X + (iVar1 >> 6); //r4
-        iVar1 = -0x8000;
-        
-        if (-0x8001 < iVar2)
+        int num = v2.x * DAT_A0.x;
+        if (num < 0)
         {
-            iVar1 = 0x7FFF;
-
-            if (iVar2 < iVar1)
-                iVar1 = iVar2;
+            num += 63;
         }
-
-        if (!noflip)
-            iVar1 = iVar2;
-
-        physics2.X = iVar1;
-        iVar1 = v2.y * DAT_A0.y;
-
-        if (iVar1 < 0)
-            iVar1 += 63;
-
-        iVar2 = physics2.Y + (iVar1 >> 6);
-        iVar1 = -0x8000;
-
-        if (-0x8001 < iVar2)
+        int num2 = physics2.X + (num >> 6);
+        num = -32768;
+        if (-32769 < num2)
         {
-            iVar1 = 0x7FFF;
-
-            if (iVar2 < iVar1)
-                iVar1 = iVar2;
+            num = 32767;
+            if (num2 < num)
+            {
+                num = num2;
+            }
         }
-
         if (!noflip)
-            iVar1 = iVar2;
-
-        physics2.Y = iVar1;
-        iVar1 = v2.z * DAT_A0.z;
-
-        if (iVar1 < 0)
-            iVar1 += 63;
-
-        iVar2 = physics2.Z + (iVar1 >> 6);
-        iVar1 = -0x8000;
-
-        if (-0x8001 < iVar2)
         {
-            iVar1 = 0x7FFF;
-
-            if (iVar2 < iVar1)
-                iVar1 = iVar2;
+            num = num2;
         }
-
+        physics2.X = num;
+        num = v2.y * DAT_A0.y;
+        if (num < 0)
+        {
+            num += 63;
+        }
+        num2 = physics2.Y + (num >> 6);
+        num = -32768;
+        if (-32769 < num2)
+        {
+            num = 32767;
+            if (num2 < num)
+            {
+                num = num2;
+            }
+        }
         if (!noflip)
-            iVar1 = iVar2;
-
-        physics2.Z = iVar1;
-        iVar2 = physics2.X;
-
-        if (iVar2 < 0)
-            iVar2 += 127;
-
-        int iVar3 = physics2.Y; //r6
-
-        if (iVar3 < 0)
-            iVar3 += 127;
-
-        if (iVar1 < 0)
-            iVar1 += 127;
-
-        FUN_24700((short)(iVar2 >> 7), (short)(iVar3 >> 7), (short)(iVar1 >> 7));
-
-        iVar1 = physics1.X;
-
-        if (iVar1 < 0)
-            iVar1 += 127;
-
-        vTransform.position.x += iVar1 >> 7;
-        iVar2 = physics1.Y;
-
-        if (iVar2 < 0)
-            iVar2 += 127;
-
-        vTransform.position.y += iVar2 >> 7;
-        iVar1 = physics1.Z;
-
-        if (iVar1 < 0)
-            iVar1 += 127;
-
-        vTransform.position.z += iVar1 >> 7;
-
+        {
+            num = num2;
+        }
+        physics2.Y = num;
+        num = v2.z * DAT_A0.z;
+        if (num < 0)
+        {
+            num += 63;
+        }
+        num2 = physics2.Z + (num >> 6);
+        num = -32768;
+        if (-32769 < num2)
+        {
+            num = 32767;
+            if (num2 < num)
+            {
+                num = num2;
+            }
+        }
+        if (!noflip)
+        {
+            num = num2;
+        }
+        physics2.Z = num;
+        if (!noflip)
+        {
+            num = num2;
+            if (physics2.X > 720896)
+            {
+                physics2.X = 720896;
+            }
+            else if (physics2.X < -720896)
+            {
+                physics2.X = -720896;
+            }
+            if (physics2.Y > 720896)
+            {
+                physics2.Y = 720896;
+            }
+            else if (physics2.Y < -720896)
+            {
+                physics2.Y = -720896;
+            }
+            if (num > 720896)
+            {
+                num = 720896;
+            }
+            else if (num < -720896)
+            {
+                num = -720896;
+            }
+        }
+        num2 = physics2.X;
+        if (num2 < 0)
+        {
+            num2 += 127;
+        }
+        int num3 = physics2.Y;
+        if (num3 < 0)
+        {
+            num3 += 127;
+        }
+        if (num < 0)
+        {
+            num += 127;
+        }
+        FUN_24700((short)(num2 >> 7), (short)(num3 >> 7), (short)(num >> 7));
+        num = physics1.X;
+        if (num < 0)
+        {
+            num += 127;
+        }
+        vTransform.position.x += num >> 7;
+        num2 = physics1.Y;
+        if (num2 < 0)
+        {
+            num2 += 127;
+        }
+        vTransform.position.y += num2 >> 7;
+        num3 = physics1.Z;
+        if (num3 < 0)
+        {
+            num3 += 127;
+        }
+        vTransform.position.z += num3 >> 7;
         vTransform.rotation = Utilities.MatrixNormal(vTransform.rotation);
     }
 
-    public void FUN_2B1FC(Vector3Int v1, Vector3Int v2)
+    public void FUN_2AFF8_2(Vector3Int v1, Vector3Int v2, bool noflip = true)
     {
-        int iVar1;
-        Vector3Int local_10;
+        physics1.X += v1.x;
+        physics1.Y += v1.y;
+        physics1.Z += v1.z;
+        int num = v2.x * DAT_A0.x;
+        if (num < 0)
+        {
+            num += 63;
+        }
+        int num2 = physics2.X + (num >> 6);
+        num = -32768;
+        if (-32769 < num2)
+        {
+            num = 32767;
+            if (num2 < num)
+            {
+                num = num2;
+            }
+        }
+        if (!noflip)
+        {
+            num = num2;
+        }
+        physics2.X = num;
+        num = v2.y * DAT_A0.y;
+        if (num < 0)
+        {
+            num += 63;
+        }
+        num2 = physics2.Y + (num >> 6);
+        num = -32768;
+        if (-32769 < num2)
+        {
+            num = 32767;
+            if (num2 < num)
+            {
+                num = num2;
+            }
+        }
+        if (!noflip)
+        {
+            num = num2;
+        }
+        physics2.Y = num;
+        num = v2.z * DAT_A0.z;
+        if (num < 0)
+        {
+            num += 63;
+        }
+        num2 = physics2.Z + (num >> 6);
+        num = -32768;
+        if (-32769 < num2)
+        {
+            num = 32767;
+            if (num2 < num)
+            {
+                num = num2;
+            }
+        }
+        if (!noflip)
+        {
+            num = num2;
+        }
+        physics2.Z = num;
+        if (!noflip)
+        {
+            num = num2;
+            if (physics2.X > 720896)
+            {
+                physics2.X = 720896;
+            }
+            else if (physics2.X < -720896)
+            {
+                physics2.X = -720896;
+            }
+            if (physics2.Y > 720896)
+            {
+                physics2.Y = 720896;
+            }
+            else if (physics2.Y < -720896)
+            {
+                physics2.Y = -720896;
+            }
+            if (num > 720896)
+            {
+                num = 720896;
+            }
+            else if (num < -720896)
+            {
+                num = -720896;
+            }
+        }
+        num2 = physics2.X;
+        if (num2 < 0)
+        {
+            num2 += 127;
+        }
+        int num3 = physics2.Y;
+        if (num3 < 0)
+        {
+            num3 += 127;
+        }
+        if (num < 0)
+        {
+            num += 127;
+        }
+        FUN_24700((short)(num2 >> 7), (short)(num3 >> 7), (short)(num >> 7));
+        vTransform.rotation = Utilities.MatrixNormal(vTransform.rotation);
+    }
 
-        local_10 = Utilities.FUN_24094(vTransform.rotation, v1);
-        Coprocessor.rotationMatrix.rt11 = (short)(v2.x >> 4 & 0xFFFF);
+    public void FUN_2B1FC(Vector3Int v1, Vector3Int v2, int shift = 0)
+    {
+        Vector3Int vector3Int = Utilities.FUN_24094(vTransform.rotation, v1);
+        Coprocessor.rotationMatrix.rt11 = (short)((v2.x >> 4) & 0xFFFF);
         Coprocessor.rotationMatrix.rt12 = (short)(v2.x >> 4 >> 16);
-        Coprocessor.rotationMatrix.rt22 = (short)(v2.y >> 4 & 0xFFFF);
+        Coprocessor.rotationMatrix.rt22 = (short)((v2.y >> 4) & 0xFFFF);
         Coprocessor.rotationMatrix.rt23 = (short)(v2.y >> 4 >> 16);
         Coprocessor.rotationMatrix.rt33 = (short)(v2.z >> 4);
         Coprocessor.accumulator.ir1 = (short)(v1.x >> 3);
         Coprocessor.accumulator.ir2 = (short)(v1.y >> 3);
         Coprocessor.accumulator.ir3 = (short)(v1.z >> 3);
-        Coprocessor.ExecuteOP(12, false);
-
-        physics1.X += local_10.x;
-        physics1.Y += local_10.y;
-        physics1.Z += local_10.z;
-
-        iVar1 = Coprocessor.mathsAccumulator.mac1;
-        iVar1 = iVar1 * DAT_A0.x;
-
-        if (iVar1 < 0)
-            iVar1 += 63;
-
-        physics2.X += iVar1 >> 6;
-        iVar1 = Coprocessor.mathsAccumulator.mac2;
-        iVar1 = iVar1 * DAT_A0.y;
-
-        if (iVar1 < 0)
-            iVar1 += 63;
-
-        physics2.Y += iVar1 >> 6;
-        iVar1 = Coprocessor.mathsAccumulator.mac3;
-        iVar1 = iVar1 * DAT_A0.z;
-
-        if (iVar1 < 0)
-            iVar1 += 63;
-
-        physics2.Z += iVar1 >> 6;
+        Coprocessor.ExecuteOP(12, lm: false);
+        physics1.X += vector3Int.x << shift;
+        physics1.Y += vector3Int.y << shift;
+        physics1.Z += vector3Int.z << shift;
+        int mac = Coprocessor.mathsAccumulator.mac1;
+        mac *= DAT_A0.x;
+        if (mac < 0)
+        {
+            mac += 63;
+        }
+        physics2.X += mac >> 6;
+        mac = Coprocessor.mathsAccumulator.mac2;
+        mac *= DAT_A0.y;
+        if (mac < 0)
+        {
+            mac += 63;
+        }
+        physics2.Y += mac >> 6;
+        mac = Coprocessor.mathsAccumulator.mac3;
+        mac *= DAT_A0.z;
+        if (mac < 0)
+        {
+            mac += 63;
+        }
+        physics2.Z += mac >> 6;
     }
 
-    public void FUN_2B370(Vector3Int v1, Vector3Int v2)
+    public void FUN_2B370(Vector3Int v1, Vector3Int v2, int shift = 0)
     {
-        int iVar2;
-        Vector3Int local_res0;
-
-        int cop2r32 = v2.x - vTransform.position.x >> 3;
-        int cop2r34 = v2.y - vTransform.position.y >> 3;
-        int cop2r36 = v2.z - vTransform.position.z >> 3;
-        Coprocessor.rotationMatrix.rt11 = (short)cop2r32;
-        Coprocessor.rotationMatrix.rt12 = (short)(cop2r32 >> 16);
-        Coprocessor.rotationMatrix.rt22 = (short)cop2r34;
-        Coprocessor.rotationMatrix.rt23 = (short)(cop2r34 >> 16);
-        Coprocessor.rotationMatrix.rt33 = (short)cop2r36;
+        int num = v2.x - vTransform.position.x >> 3;
+        int num2 = v2.y - vTransform.position.y >> 3;
+        int num3 = v2.z - vTransform.position.z >> 3;
+        Coprocessor.rotationMatrix.rt11 = (short)num;
+        Coprocessor.rotationMatrix.rt12 = (short)(num >> 16);
+        Coprocessor.rotationMatrix.rt22 = (short)num2;
+        Coprocessor.rotationMatrix.rt23 = (short)(num2 >> 16);
+        Coprocessor.rotationMatrix.rt33 = (short)num3;
         Coprocessor.accumulator.ir1 = (short)(v1.x >> 3);
         Coprocessor.accumulator.ir2 = (short)(v1.y >> 3);
         Coprocessor.accumulator.ir3 = (short)(v1.z >> 3);
-        Coprocessor.ExecuteOP(12, false);
-        physics1.X += v1.x;
-        physics1.Y += v1.y;
-        physics1.Z += v1.z;
-        local_res0 = new Vector3Int(
-            Coprocessor.mathsAccumulator.mac1,
-            Coprocessor.mathsAccumulator.mac2,
-            Coprocessor.mathsAccumulator.mac3);
-        local_res0 = Utilities.FUN_24238(vTransform.rotation, local_res0);
-        iVar2 = local_res0.x * DAT_A0.x;
-
-        if (iVar2 < 0)
-            iVar2 += 127;
-
-        physics2.X += iVar2 >> 7;
-        iVar2 = local_res0.y * DAT_A0.y;
-
-        if (iVar2 < 0)
-            iVar2 += 127;
-
-        physics2.Y += iVar2 >> 7;
-        iVar2 = local_res0.z * DAT_A0.z;
-
-        if (iVar2 < 0)
-            iVar2 += 127;
-
-        physics2.Z += iVar2 >> 7;
+        Coprocessor.ExecuteOP(12, lm: false);
+        physics1.X += v1.x << shift;
+        physics1.Y += v1.y << shift;
+        physics1.Z += v1.z << shift;
+        Vector3Int vector3Int = Utilities.FUN_24238(v3: new Vector3Int(Coprocessor.mathsAccumulator.mac1, Coprocessor.mathsAccumulator.mac2, Coprocessor.mathsAccumulator.mac3), m33: vTransform.rotation);
+        int num4 = vector3Int.x * DAT_A0.x;
+        if (num4 < 0)
+        {
+            num4 += 127;
+        }
+        physics2.X += num4 >> 7 << shift;
+        num4 = vector3Int.y * DAT_A0.y;
+        if (num4 < 0)
+        {
+            num4 += 127;
+        }
+        physics2.Y += num4 >> 7 << shift;
+        num4 = vector3Int.z * DAT_A0.z;
+        if (num4 < 0)
+        {
+            num4 += 127;
+        }
+        physics2.Z += num4 >> 7 << shift;
     }
 
     public void FUN_2C01C()
     {
-        int iVar1;
-        int iVar2;
-        BufferedBinaryReader brVar3;
-
-        brVar3 = new BufferedBinaryReader(vData.animations);
-
-        if (brVar3.GetBuffer() != null)
+        BufferedBinaryReader bufferedBinaryReader = new BufferedBinaryReader(vData.animations);
+        if (bufferedBinaryReader.GetBuffer() != null)
         {
-            iVar2 = brVar3.ReadInt32((ushort)DAT_1A * 4 + 4);
-
-            if (iVar2 != 0)
-                brVar3.Seek(iVar2, SeekOrigin.Begin);
-
-            vAnim = brVar3;
+            int num = bufferedBinaryReader.ReadInt32((ushort)DAT_1A * 4 + 4);
+            if (num != 0)
+            {
+                bufferedBinaryReader.Seek(num, SeekOrigin.Begin);
+            }
+            vAnim = bufferedBinaryReader;
         }
         else
+        {
             vAnim = null;
-
+        }
         DAT_4A = 0;
     }
 
     public void FUN_2C05C()
     {
-        ushort uVar1;
-        int iVar2;
-        BufferedBinaryReader brVar3;
-
-        uVar1 = GameManager.instance.timer;
-        brVar3 = new BufferedBinaryReader(vData.animations);
-
-        if (brVar3.GetBuffer() != null)
+        ushort timer = GameManager.instance.timer;
+        BufferedBinaryReader bufferedBinaryReader = new BufferedBinaryReader(vData.animations);
+        if (bufferedBinaryReader.GetBuffer() != null)
         {
-            iVar2 = brVar3.ReadInt32((ushort)DAT_1A * 4 + 4);
-
-            if (iVar2 != 0)
-                brVar3.Seek(iVar2, SeekOrigin.Begin);
-
-            vAnim = brVar3;
+            int num = bufferedBinaryReader.ReadInt32((ushort)DAT_1A * 4 + 4);
+            if (num != 0)
+            {
+                bufferedBinaryReader.Seek(num, SeekOrigin.Begin);
+            }
+            vAnim = bufferedBinaryReader;
         }
         else
+        {
             vAnim = null;
-
-        DAT_4A = uVar1;
+        }
+        DAT_4A = timer;
     }
 
     public void FUN_2C124(ushort param1)
@@ -861,7 +1097,7 @@ public class VigObject : MonoBehaviour
         GameManager.instance.FUN_1FEB8(vMesh);
         GameManager.instance.FUN_307CC(child2);
         child2 = null;
-        FUN_2C344(vData, param1, 8);
+        FUN_2C344(vData, param1, 8u);
     }
 
     public void FUN_2C124(ushort param1, Dictionary<int, Type> param2)
@@ -869,7 +1105,7 @@ public class VigObject : MonoBehaviour
         GameManager.instance.FUN_1FEB8(vMesh);
         GameManager.instance.FUN_307CC(child2);
         child2 = null;
-        FUN_2C344(vData, param1, 8, param2);
+        FUN_2C344(vData, param1, 8u, param2);
     }
 
     public void FUN_2C124_2(ushort param1)
@@ -877,1021 +1113,945 @@ public class VigObject : MonoBehaviour
         GameManager.instance.FUN_1FEB8(vMesh);
         GameManager.instance.FUN_307CC(child2);
         child2 = null;
-        FUN_2C344_2(vData, param1, 8);
+        FUN_2C344_2(vData, param1, 8u);
     }
 
     public VigObject FUN_2C344(XOBF_DB param1, ushort param2, uint param3)
     {
-        VigMesh mVar1;
-        int iVar2;
-        VigObject oVar3;
-        BufferedBinaryReader brVar4;
-        ConfigContainer puVar5;
-
-        puVar5 = param1.ini.configContainers[param2];
-
-        if ((puVar5.flag & 0x7ff) == 0x7ff)
+        ConfigContainer configContainer = param1.ini.configContainers[param2];
+        if ((configContainer.flag & 0x7FF) != 2047)
+        {
+            VigMesh vigMesh = vMesh = param1.FUN_1FD18(base.gameObject, (uint)(configContainer.flag & 0x7FF), init: true);
+        }
+        else
+        {
             vMesh = null;
-        else
-        {
-            mVar1 = param1.FUN_1FD18(gameObject, puVar5.flag, true);
-            vMesh = mVar1;
         }
-
-        if (puVar5.colliderID < 0)
+        if (configContainer.colliderID < 0)
+        {
             vCollider = null;
+        }
         else
         {
-            VigCollider collider = param1.cbbList[puVar5.colliderID];
-            vCollider = new VigCollider(collider.buffer);
+            VigCollider vigCollider = param1.cbbList[configContainer.colliderID];
+            vCollider = new VigCollider(vigCollider.buffer);
         }
-
         vData = param1;
         DAT_1A = (short)param2;
-
         if ((param3 & 8) == 0)
+        {
             vAnim = null;
+        }
         else
         {
-            brVar4 = vAnim;
-
-            if (brVar4 == null)
+            BufferedBinaryReader bufferedBinaryReader = vAnim;
+            if (bufferedBinaryReader == null)
             {
-                brVar4 = new BufferedBinaryReader(param1.animations);
-
-                if (brVar4.GetBuffer() != null)
+                bufferedBinaryReader = new BufferedBinaryReader(param1.animations);
+                if (bufferedBinaryReader.GetBuffer() != null)
                 {
-                    iVar2 = brVar4.ReadInt32(param2 * 4 + 4);
-
-                    if (iVar2 != 0)
-                        brVar4.Seek(iVar2, SeekOrigin.Begin);
+                    int num = bufferedBinaryReader.ReadInt32(param2 * 4 + 4);
+                    if (num != 0)
+                    {
+                        bufferedBinaryReader.Seek(num, SeekOrigin.Begin);
+                    }
                     else
-                        brVar4 = null;
+                    {
+                        bufferedBinaryReader = null;
+                    }
                 }
                 else
-                    brVar4 = null;
+                {
+                    bufferedBinaryReader = null;
+                }
             }
             else
             {
-                brVar4.Seek(0, SeekOrigin.Begin);
-                iVar2 = brVar4.ReadInt32(param2 * 4 + 4);
-
-                if (iVar2 != 0)
-                    brVar4.Seek(iVar2, SeekOrigin.Begin);
+                bufferedBinaryReader.Seek(0L, SeekOrigin.Begin);
+                int num = bufferedBinaryReader.ReadInt32(param2 * 4 + 4);
+                if (num != 0)
+                {
+                    bufferedBinaryReader.Seek(num, SeekOrigin.Begin);
+                }
                 else
-                    brVar4 = null;
+                {
+                    bufferedBinaryReader = null;
+                }
             }
-
-            vAnim = brVar4;
+            vAnim = bufferedBinaryReader;
         }
-
         DAT_4A = GameManager.instance.timer;
-
-        if ((param3 & 2) == 0 && puVar5.next != 0xffff)
+        if ((param3 & 2) == 0 && configContainer.next != ushort.MaxValue)
         {
-            oVar3 = param1.ini.FUN_2C17C(puVar5.next, typeof(VigObject), param3 | 0x21);
-            child2 = oVar3;
-
-            if (oVar3 != null)
+            VigObject vigObject = child2 = param1.ini.FUN_2C17C(configContainer.next, typeof(VigObject), param3 | 0x21);
+            if (vigObject != null)
             {
-                oVar3.ApplyTransformation();
+                vigObject.ApplyTransformation();
                 child2.parent = this;
             }
         }
         else
+        {
             child2 = null;
-
+        }
         return this;
     }
 
     public VigObject FUN_2C344(XOBF_DB param1, ushort param2, uint param3, Dictionary<int, Type> param4)
     {
-        VigMesh mVar1;
-        int iVar2;
-        VigObject oVar3;
-        BufferedBinaryReader brVar4;
-        ConfigContainer puVar5;
-
-        puVar5 = param1.ini.configContainers[param2];
-
-        if ((puVar5.flag & 0x7ff) == 0x7ff)
+        ConfigContainer configContainer = param1.ini.configContainers[param2];
+        if ((configContainer.flag & 0x7FF) != 2047)
+        {
+            VigMesh vigMesh = vMesh = param1.FUN_1FD18(base.gameObject, (uint)(configContainer.flag & 0x7FF), init: true);
+        }
+        else
+        {
             vMesh = null;
-        else
-        {
-            mVar1 = param1.FUN_1FD18(gameObject, puVar5.flag, true);
-            vMesh = mVar1;
         }
-
-        if (puVar5.colliderID < 0)
+        if (configContainer.colliderID < 0)
+        {
             vCollider = null;
+        }
         else
         {
-            VigCollider collider = param1.cbbList[puVar5.colliderID];
-            vCollider = new VigCollider(collider.buffer);
+            VigCollider vigCollider = param1.cbbList[configContainer.colliderID];
+            vCollider = new VigCollider(vigCollider.buffer);
         }
-
         vData = param1;
         DAT_1A = (short)param2;
-
         if ((param3 & 8) == 0)
+        {
             vAnim = null;
+        }
         else
         {
-            brVar4 = vAnim;
-
-            if (brVar4 == null)
+            BufferedBinaryReader bufferedBinaryReader = vAnim;
+            if (bufferedBinaryReader == null)
             {
-                brVar4 = new BufferedBinaryReader(param1.animations);
-
-                if (brVar4.GetBuffer() != null)
+                bufferedBinaryReader = new BufferedBinaryReader(param1.animations);
+                if (bufferedBinaryReader.GetBuffer() != null)
                 {
-                    iVar2 = brVar4.ReadInt32(param2 * 4 + 4);
-
-                    if (iVar2 != 0)
-                        brVar4.Seek(iVar2, SeekOrigin.Begin);
+                    int num = bufferedBinaryReader.ReadInt32(param2 * 4 + 4);
+                    if (num != 0)
+                    {
+                        bufferedBinaryReader.Seek(num, SeekOrigin.Begin);
+                    }
                     else
-                        brVar4 = null;
+                    {
+                        bufferedBinaryReader = null;
+                    }
                 }
                 else
-                    brVar4 = null;
+                {
+                    bufferedBinaryReader = null;
+                }
             }
             else
             {
-                brVar4.Seek(0, SeekOrigin.Begin);
-                iVar2 = brVar4.ReadInt32(param2 * 4 + 4);
-
-                if (iVar2 != 0)
-                    brVar4.Seek(iVar2, SeekOrigin.Begin);
+                bufferedBinaryReader.Seek(0L, SeekOrigin.Begin);
+                int num = bufferedBinaryReader.ReadInt32(param2 * 4 + 4);
+                if (num != 0)
+                {
+                    bufferedBinaryReader.Seek(num, SeekOrigin.Begin);
+                }
                 else
-                    brVar4 = null;
+                {
+                    bufferedBinaryReader = null;
+                }
             }
-
-            vAnim = brVar4;
+            vAnim = bufferedBinaryReader;
         }
-
         DAT_4A = GameManager.instance.timer;
-
-        if ((param3 & 2) == 0 && puVar5.next != 0xffff)
+        if ((param3 & 2) == 0 && configContainer.next != ushort.MaxValue)
         {
-            oVar3 = param1.ini.FUN_2C17C(puVar5.next, param4, param3 | 0x21);
-            child2 = oVar3;
-
-            if (oVar3 != null)
+            VigObject vigObject = child2 = param1.ini.FUN_2C17C(configContainer.next, param4, param3 | 0x21);
+            if (vigObject != null)
             {
-                oVar3.ApplyTransformation();
+                vigObject.ApplyTransformation();
                 child2.parent = this;
             }
         }
         else
+        {
             child2 = null;
-
+        }
         return this;
     }
 
     public VigObject FUN_2C344_2(XOBF_DB param1, ushort param2, uint param3)
     {
-        VigMesh mVar1;
-        int iVar2;
-        VigObject oVar3;
-        BufferedBinaryReader brVar4;
-        ConfigContainer puVar5;
-
-        puVar5 = param1.ini.configContainers[param2];
-
-        if ((puVar5.flag & 0x7ff) == 0x7ff)
+        ConfigContainer configContainer = param1.ini.configContainers[param2];
+        if ((configContainer.flag & 0x7FF) != 2047)
+        {
+            VigMesh vigMesh = vMesh = param1.FUN_1FD18(base.gameObject, configContainer.flag, init: true);
+        }
+        else
+        {
             vMesh = null;
-        else
-        {
-            mVar1 = param1.FUN_1FD18(gameObject, puVar5.flag, true);
-            vMesh = mVar1;
         }
-
-        if (puVar5.colliderID < 0)
+        if (configContainer.colliderID < 0)
+        {
             vCollider = null;
+        }
         else
         {
-            VigCollider collider = param1.cbbList[puVar5.colliderID];
-            vCollider = new VigCollider(collider.buffer);
+            VigCollider vigCollider = param1.cbbList[configContainer.colliderID];
+            vCollider = new VigCollider(vigCollider.buffer);
         }
-
         vData = param1;
         DAT_1A = (short)param2;
-
         if ((param3 & 8) == 0)
+        {
             vAnim = null;
+        }
         else
         {
-            brVar4 = vAnim;
-
-            if (brVar4 == null)
+            BufferedBinaryReader bufferedBinaryReader = vAnim;
+            if (bufferedBinaryReader == null)
             {
-                brVar4 = new BufferedBinaryReader(param1.animations);
-
-                if (brVar4.GetBuffer() != null)
+                bufferedBinaryReader = new BufferedBinaryReader(param1.animations);
+                if (bufferedBinaryReader.GetBuffer() != null)
                 {
-                    iVar2 = brVar4.ReadInt32(param2 * 4 + 4);
-
-                    if (iVar2 != 0)
-                        brVar4.Seek(iVar2, SeekOrigin.Begin);
+                    int num = bufferedBinaryReader.ReadInt32(param2 * 4 + 4);
+                    if (num != 0)
+                    {
+                        bufferedBinaryReader.Seek(num, SeekOrigin.Begin);
+                    }
                     else
-                        brVar4 = null;
+                    {
+                        bufferedBinaryReader = null;
+                    }
                 }
                 else
-                    brVar4 = null;
+                {
+                    bufferedBinaryReader = null;
+                }
             }
             else
             {
-                brVar4.Seek(0, SeekOrigin.Begin);
-                iVar2 = brVar4.ReadInt32(param2 * 4 + 4);
-
-                if (iVar2 != 0)
-                    brVar4.Seek(iVar2, SeekOrigin.Begin);
+                bufferedBinaryReader.Seek(0L, SeekOrigin.Begin);
+                int num = bufferedBinaryReader.ReadInt32(param2 * 4 + 4);
+                if (num != 0)
+                {
+                    bufferedBinaryReader.Seek(num, SeekOrigin.Begin);
+                }
                 else
-                    brVar4 = null;
+                {
+                    bufferedBinaryReader = null;
+                }
             }
-
-            vAnim = brVar4;
+            vAnim = bufferedBinaryReader;
         }
-
         DAT_4A = GameManager.instance.timer;
-
-        if ((param3 & 2) == 0 && puVar5.next != 0xffff)
+        if ((param3 & 2) == 0 && configContainer.next != ushort.MaxValue)
         {
-            oVar3 = param1.ini.FUN_2C17C_2(puVar5.next, typeof(Body), param3 | 0x21);
-            child2 = oVar3;
-
-            if (oVar3 != null)
+            VigObject vigObject = child2 = param1.ini.FUN_2C17C_2(configContainer.next, typeof(Body), param3 | 0x21);
+            if (vigObject != null)
             {
-                oVar3.ApplyTransformation();
+                vigObject.ApplyTransformation();
                 child2.parent = this;
             }
         }
         else
+        {
             child2 = null;
-
+        }
         return this;
     }
 
     public int FUN_2CFBC(Vector3Int pos, ref Vector3Int normalVector3, out TileData normalTile)
     {
-        int iVar1;
-        int iVar3;
-
-        GameManager gameManager = GameManager.instance;
-        TileData tile = gameManager.terrain.GetTileByPosition((uint)pos.x, (uint)pos.z); //r21
-        int vertexHeight = 0x2f0000; //r16
-
-        if ((tile.flags & 4) == 0)
-            vertexHeight = gameManager.terrain.FUN_1B750((uint)pos.x, (uint)pos.z);
-        else
-            vertexHeight = 0x2ff800;
-
+        GameManager instance = GameManager.instance;
+        TileData tileByPosition = instance.terrain.GetTileByPosition((uint)pos.x, (uint)pos.z);
+        int num = 3080192;
+        num = (((tileByPosition.flags & 4) != 0) ? 3143680 : instance.terrain.FUN_1B750((uint)pos.x, (uint)pos.z));
         if (PDAT_74 != null)
         {
-            iVar3 = PDAT_74.FUN_2F710(vertexHeight, pos, ref normalVector3);
-
-            if (iVar3 != 0)
+            int num2 = PDAT_74.FUN_2F710(num, pos, ref normalVector3);
+            if (num2 != 0)
             {
                 if (PDAT_78 != null)
                 {
-                    iVar1 = PDAT_78.FUN_2F710(iVar3, pos, ref normalVector3);
-
-                    if (iVar1 != 0)
-                        iVar3 = iVar1;
+                    int num3 = PDAT_78.FUN_2F710(num2, pos, ref normalVector3);
+                    if (num3 != 0)
+                    {
+                        num2 = num3;
+                    }
                 }
-
                 normalTile = null;
-                return iVar3;
+                return num2;
             }
-
             if (PDAT_78 != null)
             {
-                iVar3 = PDAT_78.FUN_2F710(vertexHeight, pos, ref normalVector3);
-
-                if (iVar3 != 0)
+                num2 = PDAT_78.FUN_2F710(num, pos, ref normalVector3);
+                if (num2 != 0)
                 {
                     normalTile = null;
-                    return iVar3;
+                    return num2;
                 }
             }
         }
-
-        normalVector3 = gameManager.terrain.FUN_1B998((uint)pos.x, (uint)pos.z);
+        normalVector3 = instance.terrain.FUN_1B998((uint)pos.x, (uint)pos.z);
         normalVector3 = Utilities.VectorNormal(normalVector3);
-        normalTile = tile;
-
-        return vertexHeight;
+        normalTile = tileByPosition;
+        return num;
     }
 
     public int FUN_2CFBC(Vector3Int pos, ref Vector3Int normalVector3)
     {
-        int iVar1;
-        int iVar3;
-
-        GameManager gameManager = GameManager.instance;
-        TileData tile = gameManager.terrain.GetTileByPosition((uint)pos.x, (uint)pos.z); //r21
-        int vertexHeight = 0x2f0000; //r16
-
-        if ((tile.flags & 4) == 0)
-            vertexHeight = gameManager.terrain.FUN_1B750((uint)pos.x, (uint)pos.z);
-        else
-            vertexHeight = 0x2ff800;
-
+        GameManager instance = GameManager.instance;
+        TileData tileByPosition = instance.terrain.GetTileByPosition((uint)pos.x, (uint)pos.z);
+        int num = 3080192;
+        num = (((tileByPosition.flags & 4) != 0) ? 3143680 : instance.terrain.FUN_1B750((uint)pos.x, (uint)pos.z));
         if (PDAT_74 != null)
         {
-            iVar3 = PDAT_74.FUN_2F710(vertexHeight, pos, ref normalVector3);
-
-            if (iVar3 != 0)
+            int num2 = PDAT_74.FUN_2F710(num, pos, ref normalVector3);
+            if (num2 != 0)
             {
                 if (PDAT_78 != null)
                 {
-                    iVar1 = PDAT_78.FUN_2F710(iVar3, pos, ref normalVector3);
-
-                    if (iVar1 != 0)
-                        iVar3 = iVar1;
+                    int num3 = PDAT_78.FUN_2F710(num2, pos, ref normalVector3);
+                    if (num3 != 0)
+                    {
+                        num2 = num3;
+                    }
                 }
-
-                return iVar3;
+                return num2;
             }
-
             if (PDAT_78 != null)
             {
-                iVar3 = PDAT_78.FUN_2F710(vertexHeight, pos, ref normalVector3);
-
-                if (iVar3 != 0)
+                num2 = PDAT_78.FUN_2F710(num, pos, ref normalVector3);
+                if (num2 != 0)
                 {
-                    return iVar3;
+                    return num2;
                 }
             }
         }
-
-        normalVector3 = gameManager.terrain.FUN_1B998((uint)pos.x, (uint)pos.z);
+        normalVector3 = instance.terrain.FUN_1B998((uint)pos.x, (uint)pos.z);
         normalVector3 = Utilities.VectorNormal(normalVector3);
-
-        return vertexHeight;
+        return num;
     }
 
     public int FUN_2CFBC(Vector3Int pos, out TileData normalTile)
     {
-        GameManager gameManager = GameManager.instance;
-        TileData tile = gameManager.terrain.GetTileByPosition((uint)pos.x, (uint)pos.z); //r21
-        int vertexHeight = 0x2f0000; //r16
-
-        if ((tile.flags & 4) == 0)
-            vertexHeight = gameManager.terrain.FUN_1B750((uint)pos.x, (uint)pos.z);
-        else
-            vertexHeight = 0x2ff800;
-
+        GameManager instance = GameManager.instance;
+        TileData tileByPosition = instance.terrain.GetTileByPosition((uint)pos.x, (uint)pos.z);
+        int num = 3080192;
+        num = (((tileByPosition.flags & 4) != 0) ? 3143680 : instance.terrain.FUN_1B750((uint)pos.x, (uint)pos.z));
+        normalTile = tileByPosition;
         if (PDAT_74 != null)
         {
-            //...
+            Vector3Int param = new Vector3Int(0, 0, 0);
+            int num2 = PDAT_74.FUN_2F710(num, pos, ref param);
+            if (num2 != 0)
+            {
+                if (PDAT_78 != null)
+                {
+                    int num3 = PDAT_78.FUN_2F710(num2, pos, ref param);
+                    if (num3 != 0)
+                    {
+                        num2 = num3;
+                    }
+                }
+                return num2;
+            }
+            if (PDAT_78 != null)
+            {
+                num2 = PDAT_78.FUN_2F710(num, pos, ref param);
+                if (num2 != 0)
+                {
+                    return num2;
+                }
+            }
         }
-
-        normalTile = tile;
-
-        return vertexHeight;
+        return num;
     }
 
     public int FUN_2CFBC(Vector3Int pos)
     {
-        GameManager gameManager = GameManager.instance;
-        TileData tile = gameManager.terrain.GetTileByPosition((uint)pos.x, (uint)pos.z); //r21
-        int vertexHeight = 0x2f0000; //r16
-
-        if ((tile.flags & 4) == 0)
-            vertexHeight = gameManager.terrain.FUN_1B750((uint)pos.x, (uint)pos.z);
-        else
-            vertexHeight = 0x2ff800;
-
-        return vertexHeight;
+        GameManager instance = GameManager.instance;
+        TileData tileByPosition = instance.terrain.GetTileByPosition((uint)pos.x, (uint)pos.z);
+        int num = 3080192;
+        num = (((tileByPosition.flags & 4) != 0) ? 3143680 : instance.terrain.FUN_1B750((uint)pos.x, (uint)pos.z));
+        if (PDAT_74 != null)
+        {
+            Vector3Int param = new Vector3Int(0, 0, 0);
+            int num2 = PDAT_74.FUN_2F710(num, pos, ref param);
+            if (num2 != 0)
+            {
+                if (PDAT_78 != null)
+                {
+                    int num3 = PDAT_78.FUN_2F710(num2, pos, ref param);
+                    if (num3 != 0)
+                    {
+                        num2 = num3;
+                    }
+                }
+                return num2;
+            }
+            if (PDAT_78 != null)
+            {
+                num2 = PDAT_78.FUN_2F710(num, pos, ref param);
+                if (num2 != 0)
+                {
+                    return num2;
+                }
+            }
+        }
+        return num;
     }
 
     public VigObject FUN_2CCBC()
     {
-        VigObject oVar1;
-        VigObject oVar2;
-
-        oVar2 = parent;
-
-        if (oVar2 != null)
+        VigObject vigObject = parent;
+        if (vigObject != null)
         {
-            oVar1 = child;
-
-            if (oVar2.child2 == this)
-                oVar2.child2 = oVar1;
+            VigObject vigObject2 = child;
+            if (vigObject.child2 == this)
+            {
+                vigObject.child2 = vigObject2;
+            }
             else
-                oVar2.child = oVar1;
-
-            if (oVar1 != null)
-                oVar1.parent = oVar2;
-
+            {
+                vigObject.child = vigObject2;
+            }
+            if (vigObject2 != null)
+            {
+                vigObject2.parent = vigObject;
+            }
             child = null;
             parent = null;
         }
-
         return this;
     }
 
     public VigObject FUN_2CA1C()
     {
-        VigObject oVar1;
-        ConfigContainer container = FUN_2C9A4();
-
-        if (container == null)
-            oVar1 = null;
-        else
+        if (FUN_2C9A4() == null)
         {
-            oVar1 = null;
-            //...
+            return null;
         }
-
-        return oVar1;
+        return null;
     }
 
-    public ConfigContainer FUN_2C5F4(ushort param2)
+    public ConfigContainer FUN_2C5F4(ushort param1)
     {
-        VigConfig cVar1;
+        VigConfig ini = vData.ini;
+        return ini.FUN_2C534(ini.configContainers[DAT_1A].next, param1);
+    }
 
-        cVar1 = vData.ini;
-        return cVar1.FUN_2C534(cVar1.configContainers[DAT_1A].next, param2);
+    public ConfigContainer FUN_2C6F8(ushort param1)
+    {
+        VigConfig ini = vData.ini;
+        return ini.FUN_2C638(ini.configContainers[DAT_1A].next, param1);
     }
 
     public void FUN_2C958()
     {
-        VigObject oVar1;
-
         FUN_2C7D0();
-        oVar1 = child2;
-
-        while (oVar1 != null)
+        VigObject vigObject = child2;
+        while (vigObject != null)
         {
-            oVar1.FUN_2C958();
-            oVar1 = oVar1.child;
+            vigObject.FUN_2C958();
+            vigObject = vigObject.child;
         }
     }
 
     public void FUN_2D114(Vector3Int param1, ref VigTransform param2)
     {
-        int iVar1;
-        Vector3Int auStack8;
-
-        auStack8 = new Vector3Int();
-        iVar1 = FUN_2CFBC(param1, ref auStack8);
-        param2.position.y = iVar1;
+        Vector3Int normalVector = default(Vector3Int);
+        int y = FUN_2CFBC(param1, ref normalVector);
+        param2.position.y = y;
         param2.position.x = param1.x;
         param2.position.z = param1.z;
-        param2.rotation = Utilities.FUN_2A5EC(auStack8);
+        param2.rotation = Utilities.FUN_2A5EC(normalVector);
     }
 
     public int FUN_2D1DC()
     {
-        int iVar1;
-        int iVar2;
-        int iVar3;
-        VigObject oVar4;
-        int iVar5;
-
-        iVar5 = 0;
-
+        int num = 0;
+        int num2 = 0;
         if (vMesh != null)
-            iVar5 = (int)vMesh.DAT_18;
-
-        oVar4 = child2;
-
-        while(oVar4 != null)
         {
-            iVar1 = oVar4.FUN_2D1DC();
-            iVar2 = Utilities.FUN_29E84(oVar4.vTransform.position);
-            iVar3 = iVar1 + iVar2;
-
-            if (iVar1 + iVar2 < iVar5)
-                iVar3 = iVar5;
-
-            oVar4 = oVar4.child;
-            iVar5 = iVar3;
+            num = (int)vMesh.DAT_18;
         }
-
-        DAT_58 = iVar5;
-        return iVar5;
+        VigObject vigObject = child2;
+        while (vigObject != null)
+        {
+            if (vigObject.type != 12)
+            {
+                int num3 = vigObject.FUN_2D1DC();
+                int num4 = Utilities.FUN_29E84(vigObject.vTransform.position);
+                num2 = num3 + num4;
+                if (num3 + num4 < num)
+                {
+                    num2 = num;
+                }
+            }
+            vigObject = vigObject.child;
+            num = num2;
+        }
+        DAT_58 = num;
+        return num;
     }
 
     public void FUN_2D368(VigTransform param1)
     {
-        VigTransform t2;
-        bool local_2e;
-
         if ((flags & 2) == 0)
         {
-            t2 = Utilities.CompMatrixLV(param1, vTransform);
-            t2.padding = 0;
-
+            VigTransform vigTransform = Utilities.CompMatrixLV(param1, vTransform);
+            vigTransform.padding = 0;
             if (param1.padding != 0 || vTransform.padding != 0)
-                t2.padding = 1;
-
+            {
+                vigTransform.padding = 1;
+            }
             if ((flags & 0x10) != 0)
             {
                 if ((flags & 0x400) == 0)
                 {
-                    if (t2.padding == 0)
-                        t2.rotation = GameManager.instance.DAT_EE0.rotation;
+                    if (vigTransform.padding == 0)
+                    {
+                        vigTransform.rotation = GameManager.instance.DAT_EE0.rotation;
+                    }
                     else
-                        t2.rotation = Utilities.FUN_2A4A4(t2.rotation);
+                    {
+                        vigTransform.rotation = Utilities.FUN_2A4A4(vigTransform.rotation);
+                    }
                 }
                 else
-                    t2.rotation = vTransform.rotation;
+                {
+                    vigTransform.rotation = vTransform.rotation;
+                }
             }
-
             if (vMesh != null)
-                vMesh.FUN_2D2A8(t2);
-
+            {
+                vMesh.FUN_2D2A8(vigTransform);
+            }
             if (child2 != null)
-                child2.FUN_2D368(t2);
+            {
+                child2.FUN_2D368(vigTransform);
+            }
         }
-
         if (child != null)
+        {
             child.FUN_2D368(param1);
+        }
     }
 
     public void FUN_2D5EC(VigTransform param1, Vector3Int param2, Vector3Int param3)
     {
-        VigTransform t2;
-
         if ((flags & 2) == 0)
         {
-            t2 = Utilities.CompMatrixLV(param1, vTransform);
-            t2.padding = 0;
-
+            VigTransform vigTransform = Utilities.CompMatrixLV(param1, vTransform);
+            vigTransform.padding = 0;
             if (param1.padding != 0 || vTransform.padding != 0)
-                t2.padding = 1;
-
+            {
+                vigTransform.padding = 1;
+            }
             if ((flags & 0x10) != 0)
             {
                 if ((flags & 0x400) == 0)
                 {
-                    if (t2.padding == 0)
+                    if (vigTransform.padding == 0)
                     {
-                        t2.rotation.SetValue32(0, 0);
-                        t2.rotation.SetValue32(1, 0);
-                        t2.rotation.SetValue32(2, 0);
-                        t2.rotation.SetValue32(3, 0);
-                        t2.rotation.SetValue32(4, 0);
+                        vigTransform.rotation.SetValue32(0, 0);
+                        vigTransform.rotation.SetValue32(1, 0);
+                        vigTransform.rotation.SetValue32(2, 0);
+                        vigTransform.rotation.SetValue32(3, 0);
+                        vigTransform.rotation.SetValue32(4, 0);
                     }
                     else
-                        t2.rotation = Utilities.FUN_2A4A4(t2.rotation);
+                    {
+                        vigTransform.rotation = Utilities.FUN_2A4A4(vigTransform.rotation);
+                    }
                 }
                 else
-                    t2.rotation = vTransform.rotation;
+                {
+                    vigTransform.rotation = vTransform.rotation;
+                }
             }
-
             if (vMesh != null)
-                vMesh.FUN_2D4D4(t2, param2, param3);
-
+            {
+                vMesh.FUN_2D4D4(vigTransform, param2, param3);
+            }
             if (child2 != null)
-                child2.FUN_2D5EC(t2, param2, param3);
+            {
+                child2.FUN_2D5EC(vigTransform, param2, param3);
+            }
         }
-
         if (child != null)
+        {
             child.FUN_2D5EC(param1, param2, param3);
+        }
     }
 
     public Matrix3x3 FUN_2D884(VigTransform param1)
     {
-        VigObject oVar6;
-        VigTransform auStack32;
-
-        if ((flags & 0x1010) == 0x1000)
+        if ((flags & 0x1010) == 4096)
         {
             if ((flags & 0x400) == 0)
             {
                 if (vTransform.padding == 0)
+                {
                     param1.rotation = GameManager.instance.DAT_EE0.rotation;
+                }
                 else
+                {
                     param1.rotation = Utilities.FUN_2A4A4(param1.rotation);
+                }
             }
             else
             {
                 param1.rotation = GameManager.defaultTransform.rotation;
             }
         }
-
         vLOD.FUN_21F70(param1);
-        oVar6 = child2;
-
-        while (oVar6 != null)
+        VigObject vigObject = child2;
+        while (vigObject != null)
         {
-            if ((oVar6.flags & 2) == 0 && oVar6.vLOD != null)
+            if ((vigObject.flags & 2) == 0 && vigObject.vLOD != null)
             {
-                auStack32 = Utilities.CompMatrixLV(param1, oVar6.vTransform);
-                auStack32.padding = 0;
-
-                if (param1.padding != 0 || oVar6.vTransform.padding != 0)
-                    auStack32.padding = 1;
-
-                auStack32.rotation = oVar6.FUN_2D884(auStack32);
+                VigTransform param2 = Utilities.CompMatrixLV(param1, vigObject.vTransform);
+                param2.padding = 0;
+                if (param1.padding != 0 || vigObject.vTransform.padding != 0)
+                {
+                    param2.padding = 1;
+                }
+                param2.rotation = vigObject.FUN_2D884(param2);
             }
-
-            oVar6 = oVar6.child;
+            vigObject = vigObject.child;
         }
-
         return param1.rotation;
     }
 
     public virtual uint OnCollision(HitDetection hit)
     {
-        return 0;
+        return 0u;
     }
-    
+
     public void FUN_2E868(uint param1)
     {
-        short sVar1;
-        BufferedBinaryReader brVar2;
-        int psVar3;
-
-        brVar2 = vCollider.reader;
-        psVar3 = 0;
-        sVar1 = brVar2.ReadInt16(0);
-
-        LAB_2E878:
-        if (sVar1 == 0)
-            return;
-
-        sVar1 = brVar2.ReadInt16(psVar3);
-
-        if (sVar1 != 1) goto LAB_2E89C;
-
-        if ((brVar2.ReadUInt16(psVar3 + 2) & 0xffff7fff) == param1)
-            brVar2.WriteUInt16(psVar3 + 2, (ushort)(brVar2.ReadUInt16(psVar3 + 2) & 0x7fff));
-
-        psVar3 += 28;
-        sVar1 = brVar2.ReadInt16(psVar3);
-        goto LAB_2E878;
-        
-        LAB_2E89C:
-        if (sVar1 == 2)
+        BufferedBinaryReader reader = vCollider.reader;
+        int num = 0;
+        short num2 = reader.ReadInt16(0);
+        while (num2 != 0)
         {
-            psVar3 = psVar3 + brVar2.ReadUInt16(psVar3 + 2) * 12 + 4;
-            sVar1 = brVar2.ReadInt16(psVar3);
+            num2 = reader.ReadInt16(num);
+            switch (num2)
+            {
+                case 1:
+                    if ((reader.ReadUInt16(num + 2) & -32769) == (int)param1)
+                    {
+                        reader.WriteUInt16(num + 2, (ushort)(reader.ReadUInt16(num + 2) & 0x7FFF));
+                    }
+                    num += 28;
+                    num2 = reader.ReadInt16(num);
+                    break;
+                case 2:
+                    num = num + reader.ReadUInt16(num + 2) * 12 + 4;
+                    num2 = reader.ReadInt16(num);
+                    break;
+            }
         }
-
-        goto LAB_2E878;
     }
 
     public void FUN_2E900(uint param1)
     {
-        short sVar1;
-        BufferedBinaryReader brVar2;
-        int psVar3;
-
-        brVar2 = vCollider.reader;
-        psVar3 = 0;
-        sVar1 = brVar2.ReadInt16(0);
-
-        LAB_2E910:
-        if (sVar1 == 0)
-            return;
-
-        sVar1 = brVar2.ReadInt16(psVar3);
-
-        if (sVar1 != 1) goto LAB_2E934;
-
-        if ((brVar2.ReadUInt16(psVar3 + 2) & 0xffff7fff) == param1)
-            brVar2.WriteUInt16(psVar3 + 2, (ushort)(brVar2.ReadUInt16(psVar3 + 2) | 0x8000));
-
-        psVar3 += 28;
-        sVar1 = brVar2.ReadInt16(psVar3);
-        goto LAB_2E910;
-
-        LAB_2E934:
-        if (sVar1 == 2)
+        BufferedBinaryReader reader = vCollider.reader;
+        int num = 0;
+        short num2 = reader.ReadInt16(0);
+        while (num2 != 0)
         {
-            psVar3 = psVar3 + brVar2.ReadUInt16(psVar3 + 2) * 12 + 4;
-            sVar1 = brVar2.ReadInt16(psVar3);
+            num2 = reader.ReadInt16(num);
+            switch (num2)
+            {
+                case 1:
+                    if ((reader.ReadUInt16(num + 2) & -32769) == (int)param1)
+                    {
+                        reader.WriteUInt16(num + 2, (ushort)(reader.ReadUInt16(num + 2) | 0x8000));
+                    }
+                    num += 28;
+                    num2 = reader.ReadInt16(num);
+                    break;
+                case 2:
+                    num = num + reader.ReadUInt16(num + 2) * 12 + 4;
+                    num2 = reader.ReadInt16(num);
+                    break;
+            }
         }
-
-        goto LAB_2E910;
     }
 
     public uint FUN_2EC7C()
     {
-        uint uVar1;
-        VigObject oVar2;
-        uint uVar3;
-
-        oVar2 = child2;
-        uVar3 = 0;
-
-        while(oVar2 != null)
+        VigObject vigObject = child2;
+        uint num = 0u;
+        while (vigObject != null)
         {
-            uVar1 = oVar2.FUN_2EC7C();
-            oVar2 = oVar2.child;
-            uVar3 |= uVar1;
+            uint num2 = vigObject.FUN_2EC7C();
+            vigObject = vigObject.child;
+            num |= num2;
         }
-
-        if (uVar3 != 0)
-            flags |= 0x800;
-
-        return uVar3 | (uint)(vCollider != null ? 1 : 0);
+        if (num != 0)
+        {
+            flags |= 2048u;
+        }
+        return (uint)((int)num | ((vCollider != null) ? 1 : 0));
     }
 
     public int FUN_2FBC8(ushort param1)
     {
-        ushort uVar1;
-        short sVar2;
-        ushort uVar3;
-        bool bVar4;
-        int iVar5;
-        VigObject ppcVar5;
-        int iVar6;
-        Material mVar7;
-        int iVar11;
-        uint uVar12;
-        int iVar13;
-        VigMesh pcVar14;
-
-        if (GetType() == typeof(Laser))
-        {
-            iVar6 = 0;
-        }
-
         if (vAnim != null)
         {
-            if ((uint)(ushort)(param1 - DAT_4A) < vAnim.ReadUInt16(0))
+            if ((uint)(ushort)(param1 - DAT_4A) < (uint)vAnim.ReadUInt16(0))
+            {
                 return 0;
-
-            iVar13 = -1;
-            iVar11 = 0; //not in the original code
-            pcVar14 = vMesh;
-            bVar4 = false;
-
+            }
+            int num = -1;
+            int num2 = 0;
+            VigMesh vMesh2 = vMesh;
+            bool flag = false;
             do
             {
-                uVar12 = (uint)(int)vAnim.ReadInt16(2);
-                iVar5 = 4;
-
-                if ((int)uVar12 < 0)
+                uint num3 = (uint)vAnim.ReadInt16(2);
+                int num4 = 4;
+                if ((int)num3 < 0)
                 {
                     DAT_4A += vAnim.ReadUInt16(0);
-                    vAnim.Seek((int)uVar12, SeekOrigin.Current);
-                    ppcVar5 = this;
-
+                    vAnim.Seek((int)num3, SeekOrigin.Current);
+                    VigObject vigObject = this;
+                    int num5;
                     if (!GetType().IsSubclassOf(typeof(VigObject)))
                     {
-                        do
+                        while (!(vigObject.parent == null))
                         {
-                            if (ppcVar5.parent == null) break;
-
-                            ppcVar5 = Utilities.FUN_2CD78(ppcVar5);
-                        } while (!ppcVar5.GetType().IsSubclassOf(typeof(VigObject)));
-
-                        iVar6 = 0;
-
-                        if (ppcVar5.GetType().IsSubclassOf(typeof(VigObject)))
-                            iVar6 = (int)ppcVar5.UpdateW(5, this);
+                            vigObject = Utilities.FUN_2CD78(vigObject);
+                            if (vigObject.GetType().IsSubclassOf(typeof(VigObject)))
+                            {
+                                break;
+                            }
+                        }
+                        num5 = 0;
+                        if (vigObject.GetType().IsSubclassOf(typeof(VigObject)))
+                        {
+                            num5 = (int)vigObject.UpdateW(5, this);
+                        }
                     }
                     else
-                        iVar6 = (int)ppcVar5.UpdateW(5, this);
-
-                    if (iVar6 < 0)
-                        return iVar6;
+                    {
+                        num5 = (int)vigObject.UpdateW(5, this);
+                    }
+                    if (num5 < 0)
+                    {
+                        return num5;
+                    }
+                    continue;
                 }
-                else
+                if ((num3 & 1) != 0)
                 {
-                    if ((uVar12 & 1) != 0)
-                    {
-                        sVar2 = vAnim.ReadInt16(8);
-                        vr.x = vAnim.ReadInt16(4);
-                        vr.y = vAnim.ReadInt16(6);
-                        vr.z = sVar2;
-                        iVar5 = 12;
-                        bVar4 = true;
-                    }
-
-                    if ((uVar12 & 2) != 0)
-                    {
-                        screen.x = vAnim.ReadInt32(iVar5);
-                        screen.y = vAnim.ReadInt32(iVar5 + 4);
-                        screen.z = vAnim.ReadInt32(iVar5 + 8);
-                        iVar5 += 12;
-                        bVar4 = true;
-                    }
-
-                    if ((uVar12 & 8) != 0)
-                    {
-                        screen.x += vAnim.ReadInt16(iVar5);
-                        bVar4 = true;
-                        screen.y += vAnim.ReadInt16(iVar5 + 2);
-                        iVar11 = iVar5 + 4;
-                        iVar5 += 8;
-                        screen.z += vAnim.ReadInt16(iVar11);
-                    }
-
-                    if ((uVar12 & 0x10) != 0)
-                    {
-                        do
-                        {
-                            uVar3 = vAnim.ReadUInt16(iVar5);
-                            uVar1 = vAnim.ReadUInt16(iVar5 + 2);
-                            iVar5 += 4;
-                            vData.FUN_1F288(uVar1, vMesh);
-                            vMesh.DAT_1C[uVar3 & 0x7fff] = uVar1;
-                        } while (-1 < uVar3 << 16);
-                    }
-
-                    iVar11 = iVar5;
-                    
-                    if ((uVar12 & 0x20) != 0)
-                    {
-                        iVar11 = iVar5 + 8;
-                        bVar4 = true;
-                        iVar13 = iVar5;
-                    }
-                    
-                    if ((uVar12 & 0x40) != 0)
-                    {
-                        vMesh.SetVertices(vAnim.GetBuffer(), (int)vAnim.Position + iVar11 + 4);
-                        iVar11 += vAnim.ReadInt32(iVar11) * 8 + 4;
-                    }
-
-                    vAnim.Seek(iVar11, SeekOrigin.Current);
+                    short z = vAnim.ReadInt16(8);
+                    vr.x = vAnim.ReadInt16(4);
+                    vr.y = vAnim.ReadInt16(6);
+                    vr.z = z;
+                    num4 = 12;
+                    flag = true;
                 }
-            } while (vAnim.ReadUInt16(0) <= (uint)(ushort)(param1 - DAT_4A));
-
-            if (!bVar4)
-                return 0;
-
-            ApplyTransformation();
-
-            if (iVar13 != -1)
+                if ((num3 & 2) != 0)
+                {
+                    screen.x = vAnim.ReadInt32(num4);
+                    screen.y = vAnim.ReadInt32(num4 + 4);
+                    screen.z = vAnim.ReadInt32(num4 + 8);
+                    num4 += 12;
+                    flag = true;
+                }
+                if ((num3 & 8) != 0)
+                {
+                    screen.x += vAnim.ReadInt16(num4);
+                    flag = true;
+                    screen.y += vAnim.ReadInt16(num4 + 2);
+                    num2 = num4 + 4;
+                    num4 += 8;
+                    screen.z += vAnim.ReadInt16(num2);
+                }
+                if ((num3 & 0x10) != 0)
+                {
+                    ushort num6;
+                    do
+                    {
+                        num6 = vAnim.ReadUInt16(num4);
+                        ushort num7 = vAnim.ReadUInt16(num4 + 2);
+                        num4 += 4;
+                        vData.FUN_1F288(num7, vMesh);
+                        vMesh.DAT_1C[num6 & 0x7FFF] = num7;
+                    }
+                    while (-1 < num6 << 16);
+                }
+                num2 = num4;
+                if ((num3 & 0x20) != 0)
+                {
+                    num2 = num4 + 8;
+                    flag = true;
+                    num = num4;
+                }
+                if ((num3 & 0x40) != 0)
+                {
+                    vMesh.SetVertices(vAnim.GetBuffer(), (int)vAnim.Position + num2 + 4);
+                    num2 += vAnim.ReadInt32(num2) * 8 + 4;
+                }
+                vAnim.Seek(num2, SeekOrigin.Current);
+            }
+            while ((uint)vAnim.ReadUInt16(0) <= (uint)(ushort)(param1 - DAT_4A));
+            if (!flag)
             {
-                iVar13 -= iVar11; //not in the original code
-                Utilities.FUN_245AC(ref vTransform.rotation, 
-                    new Vector3Int(vAnim.ReadInt16(iVar13), vAnim.ReadInt16(iVar13 + 2), vAnim.ReadInt16(iVar13 + 4)));
-                vTransform.padding = vAnim.ReadInt16(iVar13);
-                //transform.localScale = vTransform.rotation.Scale;
+                return 0;
+            }
+            ApplyTransformation();
+            if (num != -1)
+            {
+                num -= num2;
+                Utilities.FUN_245AC(ref vTransform.rotation, new Vector3Int(vAnim.ReadInt16(num), vAnim.ReadInt16(num + 2), vAnim.ReadInt16(num + 4)));
+                vTransform.padding = vAnim.ReadInt16(num);
             }
         }
-
         return 0;
     }
 
     public bool FUN_3066C()
     {
-        int iVar1;
-        bool bVar2;
-
         ApplyTransformation();
-
-        if (!GetType().IsSubclassOf(typeof(VigObject)))
-            iVar1 = 0;
-        else
-            iVar1 = (int)UpdateW(1, 0);
-
-        bVar2 = false;
-
-        if (-1 < iVar1)
+        int num = (int)(GetType().IsSubclassOf(typeof(VigObject)) ? UpdateW(1, 0) : 0);
+        bool result = false;
+        if (-1 < num)
         {
             if ((flags & 8) != 0)
             {
                 if (vShadow == null)
+                {
                     FUN_4C98C();
-
+                }
                 FUN_4C4F4();
             }
-
             FUN_305FC();
-            bVar2 = true;
+            result = true;
         }
-
-        return bVar2;
+        return result;
     }
 
     public VigObject FUN_306FC()
     {
         if (GetType().IsSubclassOf(typeof(VigObject)))
+        {
             UpdateW(4, 0);
-
+        }
         if ((flags & 0x80) != 0)
+        {
             GameManager.instance.FUN_300B8(GameManager.instance.DAT_1088, this);
-
+        }
         if ((flags & 4) != 0)
+        {
             GameManager.instance.FUN_300B8(GameManager.instance.DAT_10A8, this);
-
+        }
         if ((flags & 1) != 0)
+        {
             GameManager.instance.FUN_300B8(GameManager.instance.DAT_1110, this);
-
+        }
         return this;
     }
 
     public void FUN_30B78()
     {
-        flags |= 0x80;
+        flags |= 128u;
         GameManager.instance.FUN_30080(GameManager.instance.DAT_1088, this);
     }
 
     public bool FUN_30BA8()
     {
-        bool bVar1;
-
         if ((flags & 0x80) == 0)
-            bVar1 = false;
-        else
         {
-            flags &= 0xffffff7f;
-            bVar1 = GameManager.instance.FUN_300B8(GameManager.instance.DAT_1088, this);
+            return false;
         }
-
-        return bVar1;
+        flags &= 4294967167u;
+        return GameManager.instance.FUN_300B8(GameManager.instance.DAT_1088, this);
     }
 
     public void FUN_30BF0()
     {
-        flags |= 4;
+        flags |= 4u;
         GameManager.instance.FUN_30080(GameManager.instance.DAT_10A8, this);
     }
 
     public bool FUN_30C20()
     {
-        bool bVar1;
-
         if ((flags & 4) == 0)
-            bVar1 = false;
-        else
         {
-            flags &= 0xfffffffb;
-            bVar1 = GameManager.instance.FUN_300B8(GameManager.instance.DAT_10A8, this);
+            return false;
         }
-
-        return bVar1;
+        flags &= 4294967291u;
+        return GameManager.instance.FUN_300B8(GameManager.instance.DAT_10A8, this);
     }
 
     public bool FUN_30C68()
     {
-        bool bVar1;
-
         if ((flags & 1) == 0)
-            bVar1 = false;
-        else
         {
-            flags &= 0xfffffffe;
-            bVar1 = GameManager.instance.FUN_300B8(GameManager.instance.DAT_1110, this);
+            return false;
         }
-
-        return bVar1;
+        flags &= 4294967294u;
+        return GameManager.instance.FUN_300B8(GameManager.instance.DAT_1110, this);
     }
 
     public virtual VigObject FUN_31DDC()
     {
-        ushort uVar2;
-        ushort uVar3;
-        VigObject puVar4;
-        VigObject oVar7;
-
-        puVar4 = Utilities.FUN_31D30(GetType(), vData, DAT_1A, (flags & 4) << 1);
-        uVar2 = maxHalfHealth;
-        uVar3 = maxFullHealth;
-        puVar4.flags |= flags;
-        puVar4.id = id;
-        puVar4.tags = tags;
-        puVar4.screen = screen;
-        puVar4.vr = vr;
-        puVar4.DAT_19 = DAT_19;
-
-        if (uVar2 != 0 || uVar3 != 0)
+        VigObject vigObject = Utilities.FUN_31D30(GetType(), vData, DAT_1A, (flags & 4) << 1);
+        ushort num = maxHalfHealth;
+        ushort num2 = maxFullHealth;
+        vigObject.flags |= flags;
+        vigObject.id = id;
+        vigObject.tags = tags;
+        vigObject.screen = screen;
+        vigObject.vr = vr;
+        vigObject.DAT_19 = DAT_19;
+        if (num != 0 || num2 != 0)
         {
-            oVar7 = puVar4.child2;
-            puVar4.maxHalfHealth = uVar2;
-            puVar4.maxFullHealth = uVar3;
-
-            while (oVar7 != null)
+            VigObject vigObject2 = vigObject.child2;
+            vigObject.maxHalfHealth = num;
+            vigObject.maxFullHealth = num2;
+            while (vigObject2 != null)
             {
-                oVar7.maxHalfHealth = uVar2;
-                oVar7 = oVar7.child;
+                vigObject2.maxHalfHealth = num;
+                vigObject2 = vigObject2.child;
             }
         }
-
-        puVar4.FUN_2D1DC();
-        puVar4.FUN_2C958();
-        return puVar4;
+        vigObject.FUN_2D1DC();
+        vigObject.FUN_2C958();
+        return vigObject;
     }
 
     public bool FUN_32B90(uint param1)
     {
-        bool bVar1;
-        int iVar1;
-        Pickup pVar1;
-        Vector3Int local_10;
-
+        if (GameManager.instance.gameMode >= _GAME_MODE.Versus2)
+        {
+            int num = GameManager.instance.networkObjs.IndexOf(this);
+            //if (DiscordController.IsOwner())
+            //{
+            //	if (num != -1 && (flags & 0x8000) == 0 && maxHalfHealth < param1)
+            //	{
+            //		ClientSend.ObjectDestroyed(num);
+            //	}
+            //}
+            //else if (num != -1)
+            if (num != -1)
+            {
+                return false;
+            }
+        }
         if ((flags & 0x8000) == 0)
         {
             if (maxHalfHealth < param1)
             {
                 maxHalfHealth = maxFullHealth;
-
                 if ((flags & 0x40000) == 0)
                 {
-                    bVar1 = FUN_4DC94();
-
-                    if (bVar1)
+                    if (FUN_4DC94())
                     {
                         LevelManager.instance.level.UpdateW(this, 18, 0);
                         return true;
@@ -1899,127 +2059,141 @@ public class VigObject : MonoBehaviour
                 }
                 else
                 {
-                    iVar1 = (int)GameManager.FUN_2AC5C();
-                    local_10 = new Vector3Int();
-                    local_10.x = (iVar1 * 3051 >> 15) - 1525;
-                    local_10.y = -4577;
-                    iVar1 = (int)GameManager.FUN_2AC5C();
-                    local_10.z = (iVar1 * 3051 >> 15) - 1525;
-                    pVar1 = LevelManager.instance.FUN_4AA24((ushort)GameManager.DAT_63FA4[GameManager.instance.DAT_1004],
-                                                          vTransform.position, local_10);
-                    pVar1.flags |= 0x2040000;
-                    flags &= 0xfffbffff;
+                    int num2 = (int)GameManager.FUN_2AC5C();
+                    Vector3Int param2 = default(Vector3Int);
+                    param2.x = (num2 * 3051 >> 15) - 1525;
+                    param2.y = -4577;
+                    num2 = (int)GameManager.FUN_2AC5C();
+                    param2.z = (num2 * 3051 >> 15) - 1525;
+                    LevelManager.instance.FUN_4AA24((ushort)GameManager.DAT_63FA4[GameManager.instance.DAT_1004], vTransform.position, param2).flags |= 33816576u;
+                    flags &= 4294705151u;
                 }
             }
             else
+            {
                 maxHalfHealth -= (ushort)param1;
+            }
         }
-
         return false;
+    }
+
+    public void FUN_2B834(HitDetection hit)
+    {
+        ulong num = (ulong)Utilities.FUN_2AD3C(new Vector3Int(physics1.X, physics1.Y, physics1.Z), hit.normal1);
+        uint num2 = ((uint)num >> 15) | ((uint)(num >> 32) << 17);
+        if ((int)num2 < 0)
+        {
+            Vector3Int v = Utilities.FUN_24210(vTransform.rotation, hit.normal1);
+            uint num3 = (uint)(-hit.distance);
+            uint num4 = (uint)((int)num3 + (int)num2 * -2);
+            int num5 = ((int)num3 >> 31) - ((int)(num2 * 2) >> 31) - ((num3 < num2 * 2) ? 1 : 0);
+            v.x = ((int)((uint)((long)(uint)v.x * (long)num4) >> 12) | (((int)((ulong)((long)(uint)v.x * (long)num4) >> 32) + v.x * num5 + (int)num4 * (v.x >> 31)) * 1048576));
+            v.y = ((int)((uint)((long)(uint)v.y * (long)num4) >> 12) | (((int)((ulong)((long)(uint)v.y * (long)num4) >> 32) + v.y * num5 + (int)num4 * (v.y >> 31)) * 1048576));
+            v.z = ((int)((uint)((long)(uint)v.z * (long)num4) >> 12) | (((int)((ulong)((long)(uint)v.z * (long)num4) >> 32) + v.z * num5 + (int)num4 * (v.z >> 31)) * 1048576));
+            FUN_2B1FC(v, hit.position);
+        }
     }
 
     public void FUN_2B4F8(BufferedBinaryReader reader)
     {
-        uint uVar1;
-        int iVar2;
-        uint uVar3;
-        Vector3Int local_58;
-        Vector3Int local_48;
-        Vector3Int local_30;
-        Vector3Int local_20;
-        Vector3Int auStack56;
-
-        uVar3 = 0;
-        local_48 = new Vector3Int(0, 0x2d00, 0);
-        local_58 = new Vector3Int(0, 0, 0);
-        local_30 = new Vector3Int();
-        uVar1 = 0;
-
+        uint num = 0u;
+        Vector3Int v = new Vector3Int(0, 11520, 0);
+        Vector3Int vector3Int = new Vector3Int(0, 0, 0);
+        Vector3Int vector3Int2 = default(Vector3Int);
+        uint num2 = 0u;
         do
         {
-            if (uVar1 == 0)
-                local_30.x = reader.ReadInt32(12);
-            else
-                local_30.x = reader.ReadInt32(0);
-
-            if ((uVar3 & 2) == 0)
-                local_30.y = reader.ReadInt32(16);
-            else
-                local_30.y = reader.ReadInt32(4);
-
-            if ((uVar3 & 4) == 0)
-                local_30.z = reader.ReadInt32(20);
-            else
-                local_30.z = reader.ReadInt32(8);
-
-            local_20 = new Vector3Int(0, 0, 0);
-            local_30 = Utilities.FUN_24148(vTransform, local_30);
-            auStack56 = new Vector3Int();
-            iVar2 = FUN_2CFBC(local_30, ref auStack56);
-
-            if (0 < local_30.y - iVar2)
+            if (num2 == 0)
             {
-                local_20.x = -physics1.X;
-
-                if (0 < physics1.X)
-                    local_20.x += 3;
-
-                local_20.x >>= 2;
-
-                if (2880 < local_20.x)
-                    local_20.x = 2880;
-
-                if (local_20.x < -2880)
-                    local_20.x = -2880;
-
-                local_20.z = -physics1.Z;
-
-                if (0 < physics1.Z)
-                    local_20.z += 3;
-
-                local_20.z >>= 2;
-
-                if (2880 < local_20.z)
-                    local_20.z = 2880;
-
-                local_20.y = -(local_30.y - iVar2);
-
-                if (local_20.z < -2880)
-                    local_20.z = -2880;
-
-                if (0 < physics1.Y)
-                    local_20.y -= physics1.Y >> 3;
-
-                int cop2r32 = local_30.x - vTransform.position.x >> 4;
-                int cop2r34 = local_30.y - vTransform.position.y >> 4;
-                int cop2r36 = local_30.z - vTransform.position.z >> 4;
-                Coprocessor.rotationMatrix.rt11 = (short)cop2r32;
-                Coprocessor.rotationMatrix.rt12 = (short)(cop2r32 >> 16);
-                Coprocessor.rotationMatrix.rt22 = (short)cop2r34;
-                Coprocessor.rotationMatrix.rt23 = (short)(cop2r34 >> 16);
-                Coprocessor.rotationMatrix.rt33 = (short)cop2r36;
-                Coprocessor.accumulator.ir1 = (short)(local_20.x >> 3);
-                Coprocessor.accumulator.ir2 = (short)(local_20.y >> 3);
-                Coprocessor.accumulator.ir3 = (short)(local_20.z >> 3);
-                Coprocessor.ExecuteOP(12, false);
-                local_48.x += local_20.x;
-                local_48.y += local_20.y;
-                local_48.z += local_20.z;
-                iVar2 = Coprocessor.mathsAccumulator.mac1;
-                local_58.x += iVar2 * 2;
-                iVar2 = Coprocessor.mathsAccumulator.mac2;
-                local_58.y += iVar2 * 2;
-                iVar2 = Coprocessor.mathsAccumulator.mac3;
-                local_58.z += iVar2 * 2;
+                vector3Int2.x = reader.ReadInt32(12);
             }
-
-            uVar3++;
-            uVar1 = uVar3 & 1;
-        } while ((int)uVar3 < 8);
-
-        local_58 = Utilities.FUN_2426C(vTransform.rotation,
-            new Matrix2x4(local_58.x, local_58.y, local_58.z, 0));
-        FUN_2AFF8(local_48, local_58);
+            else
+            {
+                vector3Int2.x = reader.ReadInt32(0);
+            }
+            if ((num & 2) == 0)
+            {
+                vector3Int2.y = reader.ReadInt32(16);
+            }
+            else
+            {
+                vector3Int2.y = reader.ReadInt32(4);
+            }
+            if ((num & 4) == 0)
+            {
+                vector3Int2.z = reader.ReadInt32(20);
+            }
+            else
+            {
+                vector3Int2.z = reader.ReadInt32(8);
+            }
+            Vector3Int vector3Int3 = new Vector3Int(0, 0, 0);
+            vector3Int2 = Utilities.FUN_24148(vTransform, vector3Int2);
+            Vector3Int normalVector = default(Vector3Int);
+            int num3 = FUN_2CFBC(vector3Int2, ref normalVector);
+            if (0 < vector3Int2.y - num3)
+            {
+                vector3Int3.x = -physics1.X;
+                if (0 < physics1.X)
+                {
+                    vector3Int3.x += 3;
+                }
+                vector3Int3.x >>= 2;
+                if (2880 < vector3Int3.x)
+                {
+                    vector3Int3.x = 2880;
+                }
+                if (vector3Int3.x < -2880)
+                {
+                    vector3Int3.x = -2880;
+                }
+                vector3Int3.z = -physics1.Z;
+                if (0 < physics1.Z)
+                {
+                    vector3Int3.z += 3;
+                }
+                vector3Int3.z >>= 2;
+                if (2880 < vector3Int3.z)
+                {
+                    vector3Int3.z = 2880;
+                }
+                vector3Int3.y = -(vector3Int2.y - num3);
+                if (vector3Int3.z < -2880)
+                {
+                    vector3Int3.z = -2880;
+                }
+                if (0 < physics1.Y)
+                {
+                    vector3Int3.y -= physics1.Y >> 3;
+                }
+                int num4 = vector3Int2.x - vTransform.position.x >> 4;
+                int num5 = vector3Int2.y - vTransform.position.y >> 4;
+                int num6 = vector3Int2.z - vTransform.position.z >> 4;
+                Coprocessor.rotationMatrix.rt11 = (short)num4;
+                Coprocessor.rotationMatrix.rt12 = (short)(num4 >> 16);
+                Coprocessor.rotationMatrix.rt22 = (short)num5;
+                Coprocessor.rotationMatrix.rt23 = (short)(num5 >> 16);
+                Coprocessor.rotationMatrix.rt33 = (short)num6;
+                Coprocessor.accumulator.ir1 = (short)(vector3Int3.x >> 3);
+                Coprocessor.accumulator.ir2 = (short)(vector3Int3.y >> 3);
+                Coprocessor.accumulator.ir3 = (short)(vector3Int3.z >> 3);
+                Coprocessor.ExecuteOP(12, lm: false);
+                v.x += vector3Int3.x;
+                v.y += vector3Int3.y;
+                v.z += vector3Int3.z;
+                num3 = Coprocessor.mathsAccumulator.mac1;
+                vector3Int.x += num3 * 2;
+                num3 = Coprocessor.mathsAccumulator.mac2;
+                vector3Int.y += num3 * 2;
+                num3 = Coprocessor.mathsAccumulator.mac3;
+                vector3Int.z += num3 * 2;
+            }
+            num++;
+            num2 = (num & 1);
+        }
+        while ((int)num < 8);
+        vector3Int = Utilities.FUN_2426C(vTransform.rotation, new Matrix2x4(vector3Int.x, vector3Int.y, vector3Int.z, 0));
+        FUN_2AFF8(v, vector3Int);
         physics2.X = physics2.X * 3968 >> 12;
         physics2.Y = physics2.Y * 3968 >> 12;
         physics2.Z = physics2.Z * 3968 >> 12;
@@ -2027,693 +2201,625 @@ public class VigObject : MonoBehaviour
 
     public uint FUN_33798(HitDetection param1, int param2)
     {
-        long lVar1;
-        uint uVar2;
-        uint uVar3;
-        uint uVar4;
-        Vehicle vVar5;
-        int iVar6;
-        long lVar7;
-        HitDetection auStack120;
-        Vector3Int auStack64;
-        Vector3Int local_38;
-        Vector3Int local_28;
-
+        uint result;
         if ((flags & 0x4000000) == 0)
         {
-            auStack120 = new HitDetection(null);
-            GameManager.instance.FUN_2FB70(this, param1, auStack120);
-            auStack64 = Utilities.FUN_24238(vTransform.rotation, auStack120.normal1);
-            uVar3 = 0;
-
-            if (0x800 < auStack64.z)
+            HitDetection hitDetection = new HitDetection(null);
+            GameManager.instance.FUN_2FB70(this, param1, hitDetection);
+            Vector3Int vector3Int = Utilities.FUN_24238(vTransform.rotation, hitDetection.normal1);
+            result = 0u;
+            if (2048 < vector3Int.z)
             {
-                iVar6 = vTransform.rotation.V02 * param2;
-                vVar5 = (Vehicle)param1.self;
-
-                if (iVar6 < 0)
-                    iVar6 += 31;
-
-                local_38 = new Vector3Int();
-                local_38.x = vVar5.physics1.X - (iVar6 >> 5);
-                local_38.y = vVar5.physics1.Y;
-                param2 = vTransform.rotation.V22 * param2;
-
-                if (param2 < 0)
-                    param2 += 31;
-
-                local_38.z = vVar5.physics1.Z - (param2 >> 5);
-                lVar7 = Utilities.FUN_2AD3C(local_38, auStack120.normal1);
-                uVar2 = (uint)lVar7 >> 11 | (uint)(lVar7 >> 32) << 21;
-                uVar3 = 0;
-
-                if ((int)uVar2 < 0)
+                int num = vTransform.rotation.V02 * param2;
+                Vehicle vehicle = (Vehicle)param1.self;
+                if (num < 0)
                 {
-                    uVar4 = (uint)(auStack120.normal2.x << 16 >> 16);
-                    uVar3 = (uint)-((int)uVar2 + auStack120.distance);
-                    iVar6 = -(uVar3 != 0 ? 1 : 0) - ((int)uVar2 + auStack120.distance >> 31);
-                    lVar1 = (long)((ulong)uVar4 * uVar3);
-                    local_28 = new Vector3Int();
-                    local_28.x = (int)((uint)lVar1 >> 12 |
-                                      (uint)(((int)((ulong)lVar1 >> 32) + (int)uVar4 * iVar6 +
-                                      (int)uVar3 * (auStack120.normal2.x << 16 >> 31))) * 0x100000);
-                    uVar4 = (uint)(auStack120.normal2.y << 16 >> 16);
-                    lVar1 = (long)((ulong)uVar4 * uVar3);
-                    local_28.y = (int)((uint)lVar1 >> 12 |
-                                      (uint)(((int)((ulong)lVar1 >> 32) + (int)uVar4 * iVar6 +
-                                      (int)uVar3 * (auStack120.normal2.y << 16 >> 31))) * 0x100000);
-                    uVar4 = (uint)(auStack120.normal2.z << 16 >> 16);
-                    lVar1 = (long)((ulong)uVar4 * uVar3);
-                    local_28.z = (int)((uint)lVar1 >> 12 |
-                                      (uint)(((int)((ulong)lVar1 >> 32) + (int)uVar4 * iVar6 +
-                                      (int)uVar3 * (auStack120.normal2.z << 16 >> 31))) * 0x100000);
-                    vVar5.FUN_2B1FC(local_28, auStack120.position);
-
-                    if (vVar5.id < 0)
-                        iVar6 = (int)(uVar2 + 0x1fff) >> 13;
-                    else
-                        iVar6 = (int)(uVar2 + 0x7fff) >> 15;
-
-                    vVar5.FUN_3A020(iVar6, auStack120.position, true);
-                    uVar3 = uVar2;
+                    num += 31;
+                }
+                Vector3Int v = default(Vector3Int);
+                v.x = vehicle.physics1.X - (num >> 5);
+                v.y = vehicle.physics1.Y;
+                param2 = vTransform.rotation.V22 * param2;
+                if (param2 < 0)
+                {
+                    param2 += 31;
+                }
+                v.z = vehicle.physics1.Z - (param2 >> 5);
+                long num2 = Utilities.FUN_2AD3C(v, hitDetection.normal1);
+                uint num3 = (uint)((int)((uint)num2 >> 11) | ((int)(num2 >> 32) << 21));
+                result = 0u;
+                if ((int)num3 < 0)
+                {
+                    uint num4 = (uint)(hitDetection.normal2.x << 16 >> 16);
+                    result = (uint)(-((int)num3 + hitDetection.distance));
+                    num = -((result != 0) ? 1 : 0) - ((int)num3 + hitDetection.distance >> 31);
+                    long num5 = (long)num4 * (long)result;
+                    Vector3Int v2 = default(Vector3Int);
+                    v2.x = ((int)((uint)num5 >> 12) | (((int)((ulong)num5 >> 32) + (int)num4 * num + (int)result * (hitDetection.normal2.x << 16 >> 31)) * 1048576));
+                    num4 = (uint)(hitDetection.normal2.y << 16 >> 16);
+                    num5 = (long)num4 * (long)result;
+                    v2.y = ((int)((uint)num5 >> 12) | (((int)((ulong)num5 >> 32) + (int)num4 * num + (int)result * (hitDetection.normal2.y << 16 >> 31)) * 1048576));
+                    num4 = (uint)(hitDetection.normal2.z << 16 >> 16);
+                    num5 = (long)num4 * (long)result;
+                    v2.z = ((int)((uint)num5 >> 12) | (((int)((ulong)num5 >> 32) + (int)num4 * num + (int)result * (hitDetection.normal2.z << 16 >> 31)) * 1048576));
+                    vehicle.FUN_2B1FC(v2, hitDetection.position);
+                    num = ((vehicle.id >= 0) ? ((int)(num3 + 32767) >> 15) : ((int)(num3 + 8191) >> 13));
+                    vehicle.FUN_3A020(num, hitDetection.position, param3: true);
+                    result = num3;
                 }
             }
         }
         else
-            uVar3 = 0;
-
-        return uVar3;
+        {
+            result = 0u;
+        }
+        return result;
     }
 
     public void FUN_33A28(uint param1)
     {
-        int iVar1;
-        int iVar2;
-        int iVar3;
-        BufferedBinaryReader brVar3;
-        short[] local_rec0 = new short[4];
-
-        brVar3 = vCollider.reader;
-        iVar2 = screen.x + brVar3.ReadInt32(4);
-
-        if (iVar2 < 0)
-            iVar2 += 0xffff;
-
-        local_rec0[0] = (short)(iVar2 >> 16);
-        iVar2 = screen.z + brVar3.ReadInt32(12);
-
-        if (iVar2 < 0)
-            iVar2 += 0xffff;
-
-        local_rec0[1] = (short)(iVar2 >> 16);
-        iVar2 = screen.x + brVar3.ReadInt32(16);
-        iVar1 = iVar2 + 0xffff;
-
-        if (iVar1 < 0)
-            iVar1 = iVar2 + 0x1fffe;
-
-        local_rec0[2] = (short)((iVar1 >> 16) - local_rec0[0]);
-        iVar2 = screen.z + brVar3.ReadInt32(24);
-        iVar3 = iVar2 + 0xffff;
-
-        if (iVar3 < 0)
-            iVar3 = iVar2 + 0x1fffe;
-
-        local_rec0[3] = (short)((iVar3 >> 16) - local_rec0[1]);
-        LevelManager.instance.FUN_359CC(local_rec0, param1);
+        short[] array = new short[4];
+        BufferedBinaryReader reader = vCollider.reader;
+        int num = screen.x + reader.ReadInt32(4);
+        if (num < 0)
+        {
+            num += 65535;
+        }
+        array[0] = (short)(num >> 16);
+        num = screen.z + reader.ReadInt32(12);
+        if (num < 0)
+        {
+            num += 65535;
+        }
+        array[1] = (short)(num >> 16);
+        num = screen.x + reader.ReadInt32(16);
+        int num2 = num + 65535;
+        if (num2 < 0)
+        {
+            num2 = num + 131070;
+        }
+        array[2] = (short)((num2 >> 16) - array[0]);
+        num = screen.z + reader.ReadInt32(24);
+        int num3 = num + 65535;
+        if (num3 < 0)
+        {
+            num3 = num + 131070;
+        }
+        array[3] = (short)((num3 >> 16) - array[1]);
+        LevelManager.instance.FUN_359CC(array, param1);
     }
 
     public void FUN_3A368()
     {
-        VigObject oVar1;
-        Vehicle vVar2;
-        int iVar3;
-
-        oVar1 = Utilities.FUN_2CD78(this);
-
-        if (oVar1 != null)
+        VigObject vigObject = Utilities.FUN_2CD78(this);
+        if (!(vigObject != null))
         {
-            iVar3 = 0;
-            vVar2 = (Vehicle)oVar1;
-
-            do
-            {
-                if (vVar2.weapons[iVar3] == this)
-                {
-                    vVar2.FUN_3A280((uint)iVar3);
-                    return;
-                }
-
-                iVar3++;
-            } while (iVar3 < 3);
+            return;
         }
+        int num = 0;
+        Vehicle vehicle = (Vehicle)vigObject;
+        while (!(vehicle.weapons[num] == this))
+        {
+            num++;
+            if (num >= 3)
+            {
+                return;
+            }
+        }
+        vehicle.FUN_3A280((uint)num);
     }
 
     public void FUN_3AC4C()
     {
-        int iVar1;
-
-        iVar1 = GameManager.instance.FUN_1DD9C();
-        GameManager.instance.FUN_1E188(iVar1, vData.sndList, 1);
+        int param = GameManager.instance.FUN_1DD9C();
+        GameManager.instance.FUN_1E188(param, vData.sndList, 1);
     }
 
     public void FUN_3BFC0()
     {
-        int iVar1;
-        int iVar2;
-        uint uVar3;
-        uint uVar4;
-        Vector3Int local_18;
-
-        iVar1 = physics1.X;
-        iVar2 = -iVar1;
-        physics1.X = iVar2;
+        int x = physics1.X;
+        int num = -x;
+        physics1.X = num;
         physics1.Z = -physics1.Z;
         physics1.Y = -physics1.Y;
-
-        if (0 < iVar1)
-            iVar2 += 63;
-
-        iVar1 = physics1.Y;
-        vTransform.position.x += iVar2 >> 6;
-
-        if (iVar1 < 0)
-            iVar1 += 63;
-
-        iVar2 = physics1.Z;
-        vTransform.position.y += iVar1 >> 6;
-
-        if (iVar2 < 0)
-            iVar2 += 63;
-
-        vTransform.position.z += iVar2 >> 6;
-        TileData tile = VigTerrain.instance.GetTileByPosition
-            ((uint)vTransform.position.x, (uint)vTransform.position.z);
-
-        if (tile.DAT_10[3] == 7)
+        if (0 < x)
         {
-            uVar3 = (uint)vTransform.position.x;
-            uVar4 = (uint)vTransform.position.z;
-            local_18 = new Vector3Int(-(int)uVar3, 0, -(int)uVar4);
-            local_18 = Utilities.VectorNormal(local_18);
-
+            num += 63;
+        }
+        x = physics1.Y;
+        vTransform.position.x += num >> 6;
+        if (x < 0)
+        {
+            x += 63;
+        }
+        num = physics1.Z;
+        vTransform.position.y += x >> 6;
+        if (num < 0)
+        {
+            num += 63;
+        }
+        vTransform.position.z += num >> 6;
+        TileData tileByPosition = VigTerrain.instance.GetTileByPosition((uint)vTransform.position.x, (uint)vTransform.position.z);
+        if (tileByPosition.DAT_10[3] == 7)
+        {
+            uint num2 = (uint)vTransform.position.x;
+            uint num3 = (uint)vTransform.position.z;
+            Vector3Int n = new Vector3Int((int)(0 - num2), 0, (int)(0 - num3));
+            n = Utilities.VectorNormal(n);
             do
             {
-                uVar3 += (uint)local_18.x;
-                uVar4 += (uint)local_18.z;
-                tile = VigTerrain.instance.GetTileByPosition(uVar3, uVar4);
-            } while (tile.DAT_10[3] == 7);
-
-            vTransform.position.x = (int)((uVar3 & 0xffff0000) + 0x8000);
-            vTransform.position.z = (int)((uVar4 & 0xffff0000) + 0x8000);
+                num2 = (uint)((int)num2 + n.x);
+                num3 = (uint)((int)num3 + n.z);
+                tileByPosition = VigTerrain.instance.GetTileByPosition(num2, num3);
+            }
+            while (tileByPosition.DAT_10[3] == 7);
+            vTransform.position.x = ((int)num2 & -65536) + 32768;
+            vTransform.position.z = ((int)num3 & -65536) + 32768;
         }
     }
 
     public int FUN_4205C()
     {
-        ushort uVar1;
-        short sVar2;
-        VigObject oVar3;
-        int iVar3;
-        Vehicle vVar4;
-        int iVar5;
-        Vector3Int v3Var6;
-        VigObject ppcVar7;
-        int iVar8;
-
-        iVar3 = 0;
-
-        if ((GameManager.instance.DAT_28 - DAT_19 & 3) == 0)
+        int result = 0;
+        if (((GameManager.instance.DAT_28 - DAT_19) & 3) == 0)
         {
-            vVar4 = (Vehicle)Utilities.FUN_2CD78(this);
-            iVar8 = 0;
-
+            Vehicle vehicle = (Vehicle)Utilities.FUN_2CD78(this);
+            int num = 0;
             do
             {
-                ppcVar7 = vVar4.weapons[iVar8];
-
-                if (ppcVar7 != null && ppcVar7.tags == -tags)
+                VigObject vigObject = vehicle.weapons[num];
+                if (vigObject != null && vigObject.tags == -tags && (!vigObject.GetType().IsSubclassOf(typeof(VigObject)) || vigObject.UpdateW(16, this) == 0))
                 {
-                    if (!ppcVar7.GetType().IsSubclassOf(typeof(VigObject)))
-                        iVar5 = 0;
-                    else
-                        iVar5 = (int)ppcVar7.UpdateW(16, this);
-
-                    if (iVar5 == 0)
+                    ushort num2 = vehicle.weapons[num].maxHalfHealth;
+                    if (GameManager.instance.gameMode == _GAME_MODE.Versus2)
                     {
-                        uVar1 = vVar4.weapons[iVar8].maxHalfHealth;
-
-                        if (uVar1 < 99)
-                            vVar4.weapons[iVar8].maxHalfHealth++;
+                        if (vehicle.weapons[num].tags == 7)
+                        {
+                            if (num2 < GameManager.specialLimit[(int)vehicle.vehicle])
+                            {
+                                vehicle.weapons[num].maxHalfHealth++;
+                            }
+                        }
+                        else if (num2 < 99)
+                        {
+                            vehicle.weapons[num].maxHalfHealth++;
+                        }
+                    }
+                    else if (num2 < 99)
+                    {
+                        vehicle.weapons[num].maxHalfHealth++;
                     }
                 }
-
-                iVar8++;
-            } while (iVar8 < 3);
-
-            sVar2 = (short)(maxHalfHealth - 1);
-            maxHalfHealth = (ushort)sVar2;
-
-            if (sVar2 == 0)
+                num++;
+            }
+            while (num < 3);
+            short num3 = (short)(maxHalfHealth - 1);
+            maxHalfHealth = (ushort)num3;
+            if (num3 == 0)
             {
-                iVar3 = GameManager.instance.FUN_1DD9C();
-                v3Var6 = GameManager.instance.FUN_2CE50(this);
-                GameManager.instance.FUN_1E628(iVar3, GameManager.instance.DAT_C2C, 45, v3Var6);
-                oVar3 = FUN_2CCBC();
-                GameManager.instance.FUN_307CC(oVar3);
-                iVar3 = -1;
+                result = GameManager.instance.FUN_1DD9C();
+                Vector3Int param = GameManager.instance.FUN_2CE50(this);
+                GameManager.instance.FUN_1E628(result, GameManager.instance.DAT_C2C, 45, param);
+                VigObject param2 = FUN_2CCBC();
+                GameManager.instance.FUN_307CC(param2);
+                result = -1;
             }
             else
-                iVar3 = 0;
+            {
+                result = 0;
+            }
         }
-
-        return iVar3;
+        return result;
     }
 
     private int FUN_4219C(ConfigContainer param1)
     {
-        int iVar1;
-        int iVar2;
-        int iVar3;
-        int iVar4;
-        int iVar5;
-        int iVar6;
-
-        iVar6 = param1.v3_1.x - screen.x;
-        iVar1 = param1.v3_1.y - screen.y;
-        iVar2 = param1.v3_1.z - screen.z;
-
+        int num = param1.v3_1.x - screen.x;
+        int num2 = param1.v3_1.y - screen.y;
+        int num3 = param1.v3_1.z - screen.z;
+        int num4;
+        int num5;
         if (-1 < tags)
         {
-            iVar3 = iVar6;
-
-            if (iVar6 < 0)
-                iVar3 = -iVar6;
-
-            iVar5 = iVar1;
-
-            if (iVar1 < 0)
-                iVar5 = -iVar1;
-
-            if (iVar5 < iVar3)
-                iVar5 = iVar3;
-
-            iVar3 = iVar2;
-
-            if (iVar2 < 0)
-                iVar3 = -iVar2;
-
-            if (iVar3 < iVar5)
-                iVar3 = iVar5;
-
-            if (iVar3 < 0x801)
+            num4 = num;
+            if (num < 0)
+            {
+                num4 = -num;
+            }
+            num5 = num2;
+            if (num2 < 0)
+            {
+                num5 = -num2;
+            }
+            if (num5 < num4)
+            {
+                num5 = num4;
+            }
+            num4 = num3;
+            if (num3 < 0)
+            {
+                num4 = -num3;
+            }
+            if (num4 < num5)
+            {
+                num4 = num5;
+            }
+            if (num4 < 2049)
+            {
                 return 1;
+            }
         }
-
-        iVar3 = iVar6;
-
-        if (iVar6 < 0)
-            iVar3 = iVar6 + 31;
-
-        iVar5 = iVar2;
-
-        if (iVar2 < 0)
-            iVar5 = iVar2 + 7;
-
-        screen.x += (iVar3 >> 5) + (iVar5 >> 3);
-
-        if (iVar1 < 0)
-            iVar1 += 15;
-
-        screen.y += iVar1 >> 4;
-
-        if (iVar2 < 0)
-            iVar2 += 31;
-
-        if (iVar6 < 0)
-            iVar6 += 7;
-
-        screen.z += (iVar2 >> 5) - (iVar6 >> 3);
+        num4 = num;
+        if (num < 0)
+        {
+            num4 = num + 31;
+        }
+        num5 = num3;
+        if (num3 < 0)
+        {
+            num5 = num3 + 7;
+        }
+        screen.x += (num4 >> 5) + (num5 >> 3);
+        if (num2 < 0)
+        {
+            num2 += 15;
+        }
+        screen.y += num2 >> 4;
+        if (num3 < 0)
+        {
+            num3 += 31;
+        }
+        if (num < 0)
+        {
+            num += 7;
+        }
+        screen.z += (num3 >> 5) - (num >> 3);
         vTransform.position = screen;
-        iVar4 = 0;
-
+        int result = 0;
         if (tags < 0)
-            iVar4 = FUN_4205C();
-
-        return iVar4;
+        {
+            result = FUN_4205C();
+        }
+        return result;
     }
 
     public int FUN_42330(int param1)
     {
-        int iVar1;
-        ConfigContainer ccVar1;
-        int iVar2;
-        Vector3Int v3Var3;
-
-        iVar1 = 1;
-
+        int num = 1;
         if ((flags & 0x1000000) != 0)
         {
-            iVar1 = FUN_4219C(CCDAT_74);
-
-            if (param1 < 0 || 0 < iVar1)
+            num = FUN_4219C(CCDAT_74);
+            if (param1 < 0 || 0 < num)
             {
-                iVar2 = GameManager.instance.FUN_1DD9C();
-                v3Var3 = GameManager.instance.FUN_2CE50(this);
-                GameManager.instance.FUN_1E628(iVar2, GameManager.instance.DAT_C2C, 49, v3Var3);
-                ccVar1 = CCDAT_74;
-                flags &= 0xfeffffff;
-                screen = ccVar1.v3_1;
+                int param2 = GameManager.instance.FUN_1DD9C();
+                Vector3Int param3 = GameManager.instance.FUN_2CE50(this);
+                GameManager.instance.FUN_1E628(param2, GameManager.instance.DAT_C2C, 49, param3);
+                ConfigContainer cCDAT_ = CCDAT_74;
+                flags &= 4278190079u;
+                screen = cCDAT_.v3_1;
                 vTransform.position = screen;
                 FUN_30BA8();
-                iVar1 = 0;
+                num = 0;
             }
         }
-
-        return iVar1;
+        return num;
     }
 
     public int FUN_42330(VigObject param1)
     {
-        int iVar1;
-        ConfigContainer ccVar1;
-        int iVar2;
-        Vector3Int v3Var3;
-
-        iVar1 = 1;
-
+        int num = 1;
         if ((flags & 0x1000000) != 0)
         {
-            iVar1 = FUN_4219C(CCDAT_74);
-
-            if (param1 != null || 0 < iVar1)
+            num = FUN_4219C(CCDAT_74);
+            if (param1 != null || 0 < num)
             {
-                iVar2 = GameManager.instance.FUN_1DD9C();
-                v3Var3 = GameManager.instance.FUN_2CE50(this);
-                GameManager.instance.FUN_1E628(iVar2, GameManager.instance.DAT_C2C, 49, v3Var3);
-                ccVar1 = CCDAT_74;
-                flags &= 0xfeffffff;
-                screen = ccVar1.v3_1;
+                int param2 = GameManager.instance.FUN_1DD9C();
+                Vector3Int param3 = GameManager.instance.FUN_2CE50(this);
+                GameManager.instance.FUN_1E628(param2, GameManager.instance.DAT_C2C, 49, param3);
+                ConfigContainer cCDAT_ = CCDAT_74;
+                flags &= 4278190079u;
+                screen = cCDAT_.v3_1;
                 vTransform.position = screen;
                 FUN_30BA8();
-                iVar1 = 0;
+                num = 0;
             }
         }
-
-        return iVar1;
+        return num;
     }
 
-    public uint FUN_42638(HitDetection param1, short param2, int param3)
+    public uint FUN_42638(HitDetection param1, short param2, int param3, int param4 = 11)
     {
-        int iVar1;
-        int iVar2;
-        VigObject oVar3;
-        Vehicle vVar3;
-        int iVar4;
-        Vector3Int local_18;
-
-        if (param1 != null)
+        if (param1 == null)
         {
-            if (param1.object2.type == 3)
-                return 0;
-
-            oVar3 = param1.self;
-            iVar1 = param3 << 16;
-
-            if (oVar3.type != 2) goto LAB_427B8;
-
-            vVar3 = (Vehicle)oVar3;
-            iVar4 = (maxHalfHealth << 11) / vVar3.DAT_A6;
-            iVar1 = physics1.Z * iVar4;
-            local_18 = new Vector3Int();
-
-            if (iVar1 < -0x80000)
-                local_18.x = -0x80000;
+            goto IL_0177;
+        }
+        if (param1.object2.type == 3)
+        {
+            return 0u;
+        }
+        VigObject self = param1.self;
+        int num = param3 << 16;
+        if (self.type == 8 && self.id > 0 && id > 0)
+        {
+            return 0u;
+        }
+        if (self.type == 2)
+        {
+            Vehicle vehicle = (Vehicle)self;
+            int num2 = (maxHalfHealth << param4) / vehicle.DAT_A6;
+            num = physics1.Z * num2;
+            Vector3Int v = default(Vector3Int);
+            if (num < -524288)
+            {
+                v.x = -524288;
+            }
             else
             {
-                local_18.x = 0x80000;
-
-                if (iVar1 < 0x80001)
-                    local_18.x = iVar1;
+                v.x = 524288;
+                if (num < 524289)
+                {
+                    v.x = num;
+                }
             }
-
-            iVar1 = physics1.W * iVar4;
-            local_18.y = -0x80000;
-
-            if (-0x80001 < iVar1)
+            num = physics1.W * num2;
+            v.y = -524288;
+            if (-524289 < num)
             {
-                local_18.y = 0x80000;
-
-                if (iVar1 < 0x80001)
-                    local_18.y = iVar1;
+                v.y = 524288;
+                if (num < 524289)
+                {
+                    v.y = num;
+                }
             }
-
-            iVar1 = physics2.X * iVar4;
-            local_18.z = -0x80000;
-
-            if (-0x80001 < iVar1)
+            num = physics2.X * num2;
+            v.z = -524288;
+            if (-524289 < num)
             {
-                local_18.z = 0x80000;
-
-                if (iVar1 < 0x80001)
-                    local_18.z = iVar1;
+                v.z = 524288;
+                if (num < 524289)
+                {
+                    v.z = num;
+                }
             }
-
-            vVar3.FUN_2B370(local_18, vTransform.position);
-
-            if (vVar3.id < 0)
-                GameManager.instance.FUN_15B00(~vVar3.id, 255, 2, 128);
-
-            iVar1 = param3 << 16;
-
-            if (vVar3.shield == 0) goto LAB_427B8;
-
-            param3 = -1;
+            vehicle.FUN_2B370(v, vTransform.position);
+            if (vehicle.id < 0)
+            {
+                GameManager.instance.FUN_15B00(~vehicle.id, byte.MaxValue, 2, 128);
+            }
+            num = param3 << 16;
+            if (vehicle.shield != 0)
+            {
+                param3 = -1;
+                goto IL_0177;
+            }
         }
-
-        iVar1 = param3 << 16;
-        LAB_427B8:
-
-        if (-1 < iVar1 >> 16)
+        goto IL_017c;
+    IL_0177:
+        num = param3 << 16;
+        goto IL_017c;
+    IL_017c:
+        if (-1 < num >> 16)
         {
-            iVar2 = GameManager.instance.FUN_1DD9C();
-            GameManager.instance.FUN_1E628(iVar2, GameManager.instance.DAT_C2C, iVar1 >> 16, vTransform.position);
+            int param5 = GameManager.instance.FUN_1DD9C();
+            GameManager.instance.FUN_1E628(param5, GameManager.instance.DAT_C2C, num >> 16, vTransform.position);
         }
-
         LevelManager.instance.FUN_4DE54(vTransform.position, (ushort)param2);
         LevelManager.instance.level.UpdateW(this, 18, 0);
         GameManager.instance.FUN_309A0(this);
-        return 0xffffffff;
+        return uint.MaxValue;
     }
 
     public ConfigContainer FUN_4AE5C(int param1)
     {
-        uint uVar1;
-
-        if (param1 == 7)
-            uVar1 = 0x801f;
-        else
-            uVar1 = (uint)param1 - 0x7ff0U & 0xffff;
-
-        return FUN_2C5F4((ushort)uVar1);
+        uint num = (uint)((param1 != 7) ? ((param1 - 32752) & 0xFFFF) : 32799);
+        return FUN_2C5F4((ushort)num);
     }
 
     public void FUN_4BAFC(Vector3Int position)
     {
-        position.x = position.x - screen.x;
-        position.z = position.z - screen.z;
-        position.y = position.y - screen.y;
-
+        position.x -= screen.x;
+        position.z -= screen.z;
+        position.y -= screen.y;
         vr.y = Utilities.Ratan2(position.x, position.z);
-        int iVar1 = Utilities.LeadingZeros(position.x);
-        int iVar2 = Utilities.LeadingZeros(position.z);
-
-        if (iVar1 < iVar2)
-            iVar2 = iVar1;
-
-        if (iVar2 < 18)
+        int num = Utilities.LeadingZeros(position.x);
+        int num2 = Utilities.LeadingZeros(position.z);
+        if (num < num2)
         {
-            uint uVar3 = 18 - (uint)iVar2;
-            position.x = position.x >> (int)(uVar3 & 31);
-            position.y = position.y >> (int)(uVar3 & 31);
-            position.z = position.z >> (int)(uVar3 & 31);
+            num2 = num;
         }
-
-        int iVar4 = (int)Utilities.SquareRoot(position.x * position.x + position.z * position.z);
-        vr.x = Utilities.Ratan2(-position.y, iVar4);
+        if (num2 < 18)
+        {
+            uint num3 = (uint)(18 - num2);
+            position.x >>= (int)(num3 & 0x1F);
+            position.y >>= (int)(num3 & 0x1F);
+            position.z >>= (int)(num3 & 0x1F);
+        }
+        int x = (int)Utilities.SquareRoot(position.x * position.x + position.z * position.z);
+        vr.x = Utilities.Ratan2(-position.y, x);
     }
 
     public void FUN_4C4F4()
     {
-        TileData tVar1;
-        int iVar2;
-        int iVar3;
-        Vector3Int local_60;
-        Vector3Int local_58;
-        Matrix3x3 local_48;
-        Matrix3x3 auStack40;
         VigTerrain terrain = GameManager.instance.terrain;
-        local_60 = new Vector3Int(); //not in original code
-
-        tVar1 = terrain.GetTileByPosition((uint)vTransform.position.x, (uint)vTransform.position.z);
-
-        if ((tVar1.flags & 4) == 0)
-            iVar2 = terrain.FUN_1B750((uint)vTransform.position.x, (uint)vTransform.position.z);
-        else
-            iVar2 = 0x2ff800;
-
+        Vector3Int param = default(Vector3Int);
+        int num = ((terrain.GetTileByPosition((uint)vTransform.position.x, (uint)vTransform.position.z).flags & 4) != 0) ? 3143680 : terrain.FUN_1B750((uint)vTransform.position.x, (uint)vTransform.position.z);
         vShadow.vTransform.position.x = vTransform.position.x;
         vShadow.vTransform.position.z = vTransform.position.z;
-
+        int num2;
         if (PDAT_74 != null)
         {
-            iVar3 = PDAT_74.FUN_2F710(iVar2, vTransform.position, ref local_60);
-
-            if (iVar3 != 0)
-                goto LAB_4C5B8;
-
-            if (PDAT_78 == null)
-                goto LAB_4C5C0;
-
-            iVar3 = PDAT_78.FUN_2F710(iVar2, vTransform.position, ref local_60);
-
-            if (iVar3 == 0)
-                goto LAB_4C5C0;
-
-            LAB_4C5B8:
-            vShadow.gameObject.layer = 0;
-            vShadow.vTransform.position.y = iVar3;
-            goto LAB_4C5D4;
+            num2 = PDAT_74.FUN_2F710(num, vTransform.position, ref param);
+            if (num2 != 0)
+            {
+                goto IL_0114;
+            }
+            if (!(PDAT_78 == null))
+            {
+                num2 = PDAT_78.FUN_2F710(num, vTransform.position, ref param);
+                if (num2 != 0)
+                {
+                    goto IL_0114;
+                }
+            }
         }
-
-        LAB_4C5C0:
         vShadow.gameObject.layer = 7;
-        vShadow.vTransform.position.y = iVar2;
-        local_60 = terrain.FUN_1BB50(vTransform.position.x, vTransform.position.z);
-        LAB_4C5D4:
+        vShadow.vTransform.position.y = num;
+        param = terrain.FUN_1BB50(vTransform.position.x, vTransform.position.z);
+        goto IL_018c;
+    IL_0114:
+        vShadow.gameObject.layer = 0;
+        vShadow.vTransform.position.y = num2;
+        goto IL_018c;
+    IL_018c:
         if ((vShadow.vMesh.DAT_00 & 8) == 0)
         {
-            local_48 = new Matrix3x3();
-            local_48.V00 = 0x1000;
-            local_48.V01 = 0;
-            local_48.V02 = 0;
-            local_48.V11 = 0;
-            local_48.V20 = 0;
-            local_48.V21 = 0;
-            local_48.V22 = 0x1000;
-
-            if (local_60.y == 0)
-                local_48.V10 = (short)(local_60.x * -16);
+            Matrix3x3 m = default(Matrix3x3);
+            m.V00 = 4096;
+            m.V01 = 0;
+            m.V02 = 0;
+            m.V11 = 0;
+            m.V20 = 0;
+            m.V21 = 0;
+            m.V22 = 4096;
+            if (param.y == 0)
+            {
+                m.V10 = (short)(param.x * -16);
+            }
             else
-                local_48.V10 = (short)((local_60.x * -4096) / local_60.y);
-
-            if (local_60.y == 0)
-                local_48.V12 = (short)(local_60.z * -16);
+            {
+                m.V10 = (short)(param.x * -4096 / param.y);
+            }
+            if (param.y == 0)
+            {
+                m.V12 = (short)(param.z * -16);
+            }
             else
-                local_48.V12 = (short)((local_60.z * -4096) / local_60.y);
-
-            local_58 = new Vector3Int();
-            local_58.x = vShadow.DAT_24;
-
+            {
+                m.V12 = (short)(param.z * -4096 / param.y);
+            }
+            Vector3Int v = default(Vector3Int);
+            v.x = vShadow.DAT_24;
             if (vTransform.rotation.V11 < 1)
-                local_58.x = -local_58.x;
-
-            local_58.y = 0;
-            local_58.z = vShadow.DAT_28;
-            auStack40 = new Matrix3x3();
-            Utilities.FUN_2449C(vTransform.rotation, local_58, ref auStack40);
-            vShadow.vTransform.rotation = Utilities.FUN_247C4(local_48, auStack40);
-            vShadow.eulerAngles = vShadow.vTransform.rotation.Matrix2Quaternion.eulerAngles; //not in the original code
-            vShadow.eulerAngles = new Vector3(vShadow.eulerAngles.x, transform.eulerAngles.y, vShadow.eulerAngles.z);
+            {
+                v.x = -v.x;
+            }
+            v.y = 0;
+            v.z = vShadow.DAT_28;
+            Matrix3x3 mout = default(Matrix3x3);
+            Utilities.FUN_2449C(vTransform.rotation, v, ref mout);
+            vShadow.vTransform.rotation = Utilities.FUN_247C4(m, mout);
+            vShadow.eulerAngles = vShadow.vTransform.rotation.Matrix2Quaternion.eulerAngles;
+            vShadow.eulerAngles = new Vector3(vShadow.eulerAngles.x, base.transform.eulerAngles.y, vShadow.eulerAngles.z);
         }
         else
         {
-            iVar2 = vShadow.DAT_24;
+            num = vShadow.DAT_24;
             vShadow.vTransform.rotation.V21 = 0;
             vShadow.vTransform.rotation.V20 = 0;
             vShadow.vTransform.rotation.V11 = 0;
             vShadow.vTransform.rotation.V02 = 0;
             vShadow.vTransform.rotation.V01 = 0;
-            vShadow.vTransform.rotation.V22 = (short)iVar2;
-            vShadow.vTransform.rotation.V00 = (short)iVar2;
-            vShadow.vTransform.rotation.V10 = (short)((-local_60.x * iVar2) / local_60.y);
-            vShadow.vTransform.rotation.V12 = (short)((-local_60.z * iVar2) / local_60.y);
+            vShadow.vTransform.rotation.V22 = (short)num;
+            vShadow.vTransform.rotation.V00 = (short)num;
+            vShadow.vTransform.rotation.V10 = (short)(-param.x * num / param.y);
+            vShadow.vTransform.rotation.V12 = (short)(-param.z * num / param.y);
         }
     }
 
     public void FUN_4C98C()
     {
-        VigMesh mVar1;
-
-        GameObject obj = new GameObject();
-        mVar1 = GameManager.instance.levelManager.xobfList[18].FUN_2CB74(obj, 92, true);
-        FUN_4C7E0(mVar1, obj);
+        GameObject gameObject = new GameObject();
+        VigMesh param = GameManager.instance.levelManager.xobfList[18].FUN_2CB74(gameObject, 92u, init: true);
+        FUN_4C7E0(param, gameObject);
     }
 
     public void FUN_4C9C8()
     {
-        VigMesh mVar1;
-
-        GameObject obj = new GameObject();
-        mVar1 = GameManager.instance.levelManager.xobfList[18].FUN_2CB74(obj, 93, true);
-        mVar1.DAT_00 |= 8;
-        FUN_4C7E0(mVar1, obj);
+        GameObject gameObject = new GameObject();
+        VigMesh vigMesh = GameManager.instance.levelManager.xobfList[18].FUN_2CB74(gameObject, 93u, init: true);
+        vigMesh.DAT_00 |= 8;
+        FUN_4C7E0(vigMesh, gameObject);
     }
 
-    public void FUN_4D8A8(XOBF_DB param1, ushort param2, VigObject param3)
+    public void FUN_4D8A8(XOBF_DB param1, ushort param2, VigObject param3, bool param4 = false)
     {
-        bool bVar1;
-        ushort uVar2;
-        VigMesh pcVar3;
-        int iVar4;
-        ConfigContainer puVar5;
-        VigTransform auStack40;
-
         if ((flags & 4) != 0)
+        {
             FUN_30C20();
-
+        }
         GameManager.instance.FUN_1FEB8(vMesh);
         GameManager.instance.FUN_307CC(child2);
-
         if (vLOD != null)
         {
             if (vLOD != vMesh)
+            {
                 GameManager.instance.FUN_1FEB8(vLOD);
-
+            }
             vLOD.ClearMeshData();
-            MeshFilter meshFilter = GetComponent<MeshFilter>();
-            MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
-
-            if (meshFilter != null)
-                DestroyImmediate(meshFilter, false);
-
-            if (meshRenderer != null)
-                DestroyImmediate(meshRenderer, false);
-
+            MeshFilter component = GetComponent<MeshFilter>();
+            MeshRenderer component2 = GetComponent<MeshRenderer>();
+            if (component != null)
+            {
+                UnityEngine.Object.DestroyImmediate(component, allowDestroyingAssets: false);
+            }
+            if (component2 != null)
+            {
+                UnityEngine.Object.DestroyImmediate(component2, allowDestroyingAssets: false);
+            }
             vLOD = null;
             DAT_6C = 0;
         }
-
-        puVar5 = param1.ini.configContainers[param2];
-        auStack40 = Utilities.FUN_2C77C(puVar5);
-        vTransform = Utilities.CompMatrixLV(vTransform, auStack40);
-        screen = vTransform.position;
-
-        if ((puVar5.flag & 0x7ff) == 0x7ff)
+        ConfigContainer configContainer;
+        ushort num;
+        if (param4)
+        {
+            num = (ushort)(param2 - 1);
+            List<ConfigContainer> configContainers;
+            ushort num2;
+            do
+            {
+                configContainers = param1.ini.configContainers;
+                num2 = num;
+                num = (ushort)(num2 - 1);
+            }
+            while (configContainers[num2].next != ushort.MaxValue);
+            num = (ushort)(num + 2);
+            screen = Vector3Int.zero;
+            vr = Vector3Int.zero;
+            ApplyTransformation();
+            do
+            {
+                configContainer = param1.ini.configContainers[num];
+                VigTransform m = Utilities.FUN_2C77C(configContainer);
+                vTransform = Utilities.CompMatrixLV(vTransform, m);
+                screen = vTransform.position;
+                num = param1.ini.configContainers[num].next;
+            }
+            while (num != param2 + 1);
+        }
+        else
+        {
+            configContainer = param1.ini.configContainers[param2];
+            VigTransform m = Utilities.FUN_2C77C(configContainer);
+            vTransform = Utilities.CompMatrixLV(vTransform, m);
+            screen = vTransform.position;
+        }
+        if ((configContainer.flag & 0x7FF) == 2047)
         {
             if (vMesh != null)
             {
                 vMesh.ClearMeshData();
-                MeshFilter meshFilter = GetComponent<MeshFilter>();
-                MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
-
-                if (meshFilter != null)
-                    DestroyImmediate(meshFilter, false);
-
-                if (meshRenderer != null)
-                    DestroyImmediate(meshRenderer, false);
+                MeshFilter component3 = GetComponent<MeshFilter>();
+                MeshRenderer component4 = GetComponent<MeshRenderer>();
+                if (component3 != null)
+                {
+                    UnityEngine.Object.DestroyImmediate(component3, allowDestroyingAssets: false);
+                }
+                if (component4 != null)
+                {
+                    UnityEngine.Object.DestroyImmediate(component4, allowDestroyingAssets: false);
+                }
             }
-
             vMesh = null;
         }
         else
@@ -2721,172 +2827,163 @@ public class VigObject : MonoBehaviour
             if (vMesh != null)
             {
                 vMesh.ClearMeshData();
-
-                MeshFilter meshFilter = GetComponent<MeshFilter>();
-                MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
-
-                if (meshFilter != null)
-                    DestroyImmediate(meshFilter, false);
-
-                if (meshRenderer != null)
-                    DestroyImmediate(meshRenderer, false);
+                MeshFilter component5 = GetComponent<MeshFilter>();
+                MeshRenderer component6 = GetComponent<MeshRenderer>();
+                if (component5 != null)
+                {
+                    UnityEngine.Object.DestroyImmediate(component5, allowDestroyingAssets: false);
+                }
+                if (component6 != null)
+                {
+                    UnityEngine.Object.DestroyImmediate(component6, allowDestroyingAssets: false);
+                }
             }
-
-            pcVar3 = param1.FUN_1FD18(gameObject, puVar5.flag & 0x7ffU, true);
-            vMesh = pcVar3;
+            VigMesh vigMesh = vMesh = param1.FUN_1FD18(base.gameObject, (uint)(configContainer.flag & 0x7FF), init: true);
         }
-
         vAnim = null;
         DAT_1A = (short)param2;
         child2 = param3;
-
-        if (param3 != null) {
+        if (param3 != null)
+        {
             param3.parent = this;
             Utilities.ParentChildren(this, this);
         }
-
-        if (puVar5.colliderID < 0)
+        if (configContainer.colliderID < 0)
+        {
             vCollider = null;
+        }
         else
-            vCollider = new VigCollider(param1.cbbList[puVar5.colliderID].buffer);
-
-        iVar4 = (int)FUN_2EC7C();
-
-        if (iVar4 == 0)
-            flags |= 0x20;
-
-        uVar2 = GameManager.instance.timer;
-        bVar1 = false;
-
+        {
+            vCollider = new VigCollider(param1.cbbList[configContainer.colliderID].buffer);
+        }
+        if (FUN_2EC7C() == 0)
+        {
+            flags |= 32u;
+        }
+        num = GameManager.instance.timer;
+        bool flag = false;
         if (param3 != null)
         {
             do
             {
                 if (param3.vAnim != null)
                 {
-                    param3.DAT_4A = uVar2;
-                    bVar1 = true;
+                    param3.DAT_4A = num;
+                    flag = true;
                 }
-
                 param3 = param3.child;
-            } while (param3 != null);
+            }
+            while (param3 != null);
         }
-
-        if (bVar1)
+        if (flag)
+        {
             FUN_30BF0();
-
-        flags &= 0xffff7fff;
+        }
+        flags &= 4294934527u;
         FUN_2D1DC();
-
         if (GetType().IsSubclassOf(typeof(VigObject)))
+        {
             UpdateW(9, 1);
+        }
     }
 
     public void FUN_4DB00(XOBF_DB param1, ushort param2)
     {
-        VigObject pcVar2;
-        VigObject ppcVar3;
-        ConfigContainer ccVar4;
-        VigTransform auStack48;
-
         if (GetType().IsSubclassOf(typeof(VigObject)))
-            UpdateW(9, 0);
-
-        ccVar4 = param1.ini.configContainers[param2];
-        auStack48 = GameManager.instance.FUN_2CEAC(this, ccVar4);
-        pcVar2 = param1.FUN_4D498(ccVar4.next, auStack48, id);
-
-        if (ccVar4.objID == 0xaaaa || ccVar4.objID == 0)
-            FUN_4D8A8(param1, param2, pcVar2);
-        else
         {
-            GameObject obj = new GameObject();
-            ppcVar3 = obj.AddComponent<Delay>();
-            ppcVar3.vData = param1;
-            ppcVar3.DAT_1A = (short)param2;
-            ppcVar3.PDAT_74 = this;
-            ppcVar3.child2 = pcVar2;
-            DAT_1A = (short)param2;
-            flags |= 0x8000;
-            GameManager.instance.FUN_30CB0(ppcVar3, ccVar4.objID);
+            UpdateW(9, 0);
         }
+        ConfigContainer configContainer = param1.ini.configContainers[param2];
+        VigTransform param3 = GameManager.instance.FUN_2CEAC(this, configContainer);
+        VigObject param4 = param1.FUN_4D498(configContainer.next, param3, id);
+        if (configContainer.objID == 43690 || configContainer.objID == 0)
+        {
+            FUN_4D8A8(param1, param2, param4);
+            return;
+        }
+        VigObject vigObject = new GameObject().AddComponent<Delay>();
+        vigObject.vData = param1;
+        vigObject.DAT_1A = (short)param2;
+        vigObject.PDAT_74 = this;
+        vigObject.child2 = param4;
+        DAT_1A = (short)param2;
+        flags |= 32768u;
+        GameManager.instance.FUN_30CB0(vigObject, configContainer.objID);
     }
 
     public uint FUN_4DC20()
     {
-        ushort uVar1;
-        uint uVar2;
-        ConfigContainer ccVar3;
-        VigConfig cVar4;
-
-        cVar4 = vData.ini;
-        uVar1 = cVar4.configContainers[DAT_1A].next;
-
+        VigConfig ini = vData.ini;
+        ushort num = ini.configContainers[DAT_1A].next;
+        uint num2;
         while (true)
         {
-            uVar2 = uVar1;
-
-            if (uVar2 == 0xffff)
-                return 0;
-
-            ccVar3 = cVar4.configContainers[(int)uVar2];
-
-            if ((uint)ccVar3.flag >> 12 == 15) break;
-
-            uVar1 = ccVar3.previous;
+            num2 = num;
+            if (num2 == 65535)
+            {
+                return 0u;
+            }
+            ConfigContainer configContainer = ini.configContainers[(int)num2];
+            if ((uint)configContainer.flag >> 12 == 15)
+            {
+                break;
+            }
+            num = configContainer.previous;
         }
+        return num2;
+    }
 
-        return uVar2;
+    public uint FindConfigParent()
+    {
+        VigConfig ini = vData.ini;
+        ushort num = (ushort)DAT_1A;
+        uint result = num;
+        for (int i = 0; i < ini.configContainers.Count; i++)
+        {
+            if (ini.configContainers[i].next == num)
+            {
+                result = (uint)i;
+                break;
+            }
+        }
+        return result;
     }
 
     public bool FUN_4DC94()
     {
-        uint uVar1;
-
-        uVar1 = FUN_4DC20();
-
-        if (uVar1 != 0)
-            FUN_4DB00(vData, (ushort)uVar1);
-
-        return uVar1 != 0;
+        uint num = FUN_4DC20();
+        if (num != 0)
+        {
+            FUN_4DB00(vData, (ushort)num);
+        }
+        return num != 0;
     }
 
     public int FUN_4DCD8()
     {
-        int configIndex = (DAT_1A << 3) - DAT_1A << 2;
-        int nextContainer = vData.ini.configContainers[configIndex / 0x1C].next;
-        int iVar1 = 0;
-
-        while (nextContainer != 0xffff)
+        int num = (DAT_1A << 3) - DAT_1A << 2;
+        int num2 = vData.ini.configContainers[num / 28].next;
+        int num3 = 0;
+        while (num2 != 65535)
         {
-            configIndex = (nextContainer << 3) - nextContainer << 2;
-            int flag = vData.ini.configContainers[configIndex / 0x1C].flag >> 12;
-
-            if (flag == 15)
+            num = (num2 << 3) - num2 << 2;
+            if (vData.ini.configContainers[num / 28].flag >> 12 == 15)
             {
-                nextContainer = vData.ini.configContainers[configIndex / 0x1C].next;
-                iVar1++;
+                num2 = vData.ini.configContainers[num / 28].next;
+                num3++;
             }
             else
             {
-                nextContainer = vData.ini.configContainers[configIndex / 0x1C].previous;
+                num2 = vData.ini.configContainers[num / 28].previous;
             }
         }
-
-        return iVar1;
+        return num3;
     }
 
-    public Throwaway FUN_4ECA0()
+    public Throwaway FUN_4ECA0(bool param1 = false)
     {
-        ushort uVar1;
-        VigObject oVar2;
-        VigTransform t0;
-        Throwaway tVar3;
-        int iVar4;
-        int iVar5;
-
-        oVar2 = Utilities.FUN_2CD78(this);
-        t0 = GameManager.instance.FUN_2CDF4(oVar2);
+        VigObject obj = Utilities.FUN_2CD78(this);
+        VigTransform vigTransform = GameManager.instance.FUN_2CDF4(obj);
         FUN_306FC();
         FUN_2CCBC();
         type = 8;
@@ -2895,119 +2992,130 @@ public class VigObject : MonoBehaviour
         PDAT_74 = null;
         CCDAT_74 = null;
         IDAT_74 = 0;
-        flags = flags & 0xffffbfff | 0x80;
-        tVar3 = Utilities.FUN_52188(this, typeof(Throwaway)) as Throwaway;
-        tVar3.state = _THROWAWAY_TYPE.Unspawnable;
-
-        if (tVar3.child2 != null)
-            tVar3.child2.parent = tVar3;
-
-        iVar4 = tVar3.vTransform.position.x;
-
-        if (iVar4 < 0)
-            iVar4 += 7;
-
-        iVar5 = tVar3.vTransform.position.y;
-        tVar3.physics1.Z = iVar4 >> 3;
-
-        if (iVar5 < 0)
-            iVar5 += 7;
-
-        iVar4 = tVar3.vTransform.position.z;
-        tVar3.physics1.W = iVar5 >> 3;
-
-        if (iVar4 < 0)
-            iVar4 += 7;
-
-        tVar3.physics2.X = iVar4 >> 3;
-        tVar3.vTransform = Utilities.CompMatrixLV(t0, tVar3.vTransform);
-        uVar1 = (ushort)GameManager.FUN_2AC5C();
-        tVar3.physics1.M0 = (short)(uVar1 & 0xff);
-        uVar1 = (ushort)GameManager.FUN_2AC5C();
-        tVar3.physics1.M1 = (short)(uVar1 & 0xff);
-        uVar1 = (ushort)GameManager.FUN_2AC5C();
-        tVar3.physics1.M2 = (short)(uVar1 & 0xff);
-        tVar3.screen = tVar3.vTransform.position;
-        tVar3.DAT_87 = 2;
-        Vector3Int v3 = Utilities.FUN_24094(t0.rotation, new Vector3Int(tVar3.physics1.Z, tVar3.physics1.W, tVar3.physics2.X));
-        tVar3.physics1.Z = v3.x;
-        tVar3.physics1.W = v3.y;
-        tVar3.physics2.X = v3.z;
-        tVar3.FUN_3066C();
-        return tVar3;
+        flags = (uint)(((int)flags & -16385) | 0x80);
+        Throwaway throwaway = Utilities.FUN_52188(this, typeof(Throwaway)) as Throwaway;
+        throwaway.state = _THROWAWAY_TYPE.Unspawnable;
+        if (throwaway.child2 != null)
+        {
+            throwaway.child2.parent = throwaway;
+        }
+        int num = throwaway.vTransform.position.x;
+        if (num < 0)
+        {
+            num += 7;
+        }
+        int num2 = throwaway.vTransform.position.y;
+        throwaway.physics1.Z = num >> 3;
+        if (num2 < 0)
+        {
+            num2 += 7;
+        }
+        num = throwaway.vTransform.position.z;
+        throwaway.physics1.W = num2 >> 3;
+        if (num < 0)
+        {
+            num += 7;
+        }
+        throwaway.physics2.X = num >> 3;
+        if (param1)
+        {
+            if (throwaway.physics1.Z > 4096)
+            {
+                throwaway.physics1.Z = 4096;
+            }
+            else if (throwaway.physics1.Z < -4096)
+            {
+                throwaway.physics1.Z = -4096;
+            }
+            if (throwaway.physics1.W > 4096)
+            {
+                throwaway.physics1.W = 4096;
+            }
+            else if (throwaway.physics1.W < -4096)
+            {
+                throwaway.physics1.W = -4096;
+            }
+            if (throwaway.physics2.X > 4096)
+            {
+                throwaway.physics2.X = 4096;
+            }
+            else if (throwaway.physics2.X < -4096)
+            {
+                throwaway.physics2.X = -4096;
+            }
+        }
+        throwaway.vTransform = Utilities.CompMatrixLV(vigTransform, throwaway.vTransform);
+        ushort num3 = (ushort)GameManager.FUN_2AC5C();
+        throwaway.physics1.M0 = (short)(num3 & 0xFF);
+        num3 = (ushort)GameManager.FUN_2AC5C();
+        throwaway.physics1.M1 = (short)(num3 & 0xFF);
+        num3 = (ushort)GameManager.FUN_2AC5C();
+        throwaway.physics1.M2 = (short)(num3 & 0xFF);
+        throwaway.screen = throwaway.vTransform.position;
+        throwaway.DAT_87 = 2;
+        Vector3Int vector3Int = Utilities.FUN_24094(vigTransform.rotation, new Vector3Int(throwaway.physics1.Z, throwaway.physics1.W, throwaway.physics2.X));
+        throwaway.physics1.Z = vector3Int.x;
+        throwaway.physics1.W = vector3Int.y;
+        throwaway.physics2.X = vector3Int.z;
+        throwaway.FUN_3066C();
+        return throwaway;
     }
 
     public void FUN_4EDFC()
     {
-        VigTuple tVar1;
-
         FUN_2D1DC();
-        tVar1 = GameManager.instance.FUN_30080(GameManager.instance.interObjs, this);
-        TDAT_74 = tVar1;
-        tVar1 = GameManager.instance.FUN_30080(GameManager.instance.DAT_10A8, this);
-        TDAT_78 = tVar1;
+        VigTuple vigTuple = TDAT_74 = GameManager.instance.FUN_30080(GameManager.instance.interObjs, this);
+        vigTuple = (TDAT_78 = GameManager.instance.FUN_30080(GameManager.instance.DAT_10A8, this));
     }
 
     public void FUN_4EE8C(List<VigTuple> param1)
     {
-        Tuple<List<VigTuple>, VigTuple> tuple;
-        tuple = new Tuple<List<VigTuple>, VigTuple>(param1, TDAT_74);
-        GameManager.instance.FUN_3094C(tuple);
+        Tuple<List<VigTuple>, VigTuple> param2 = new Tuple<List<VigTuple>, VigTuple>(param1, TDAT_74);
+        GameManager.instance.FUN_3094C(param2);
     }
 
     public bool FUN_2C7D0()
     {
-        ushort uVar1;
-        VigMesh mVar2;
-        int iVar3;
-        int iVar4;
-        List<ConfigContainer> ccVar5;
-
         if (vData != null)
         {
-            ccVar5 = vData.ini.configContainers;
-            uVar1 = ccVar5[(ushort)DAT_1A].next;
-
-            while(uVar1 != 0xffff)
+            List<ConfigContainer> configContainers = vData.ini.configContainers;
+            int index;
+            for (ushort num = configContainers[(ushort)DAT_1A].next; num != ushort.MaxValue; num = configContainers[index].previous)
             {
-                iVar4 = uVar1;
-
-                if (ccVar5[iVar4].flag >> 12 == 12)
+                index = num;
+                if (configContainers[index].flag >> 12 == 12)
                 {
-                    if ((ccVar5[iVar4].flag & 0x800) != 0)
-                        flags |= 0x1000;
-
-                    if ((ccVar5[iVar4].flag & 0x7ff) == 0x7ff)
+                    if ((configContainers[index].flag & 0x800) != 0)
+                    {
+                        flags |= 4096u;
+                    }
+                    if ((configContainers[index].flag & 0x7FF) == 2047)
+                    {
                         vLOD = null;
+                    }
+                    else if (((configContainers[index].flag ^ configContainers[(ushort)DAT_1A].flag) & 0x7FF) != 0)
+                    {
+                        VigMesh vigMesh = vLOD = vData.FUN_1FD18(base.gameObject, (uint)(configContainers[index].flag & 0x7FF), init: true);
+                    }
                     else
                     {
-                        if (((ccVar5[iVar4].flag ^ ccVar5[(ushort)DAT_1A].flag) & 0x7ff) == 0)
-                            vLOD = vMesh;
-                        else
-                        {
-                            mVar2 = vData.FUN_1FD18(gameObject, ccVar5[iVar4].flag & 0x7ffU, true);
-                            vLOD = mVar2;
-                        }
+                        vLOD = vMesh;
                     }
-
-                    iVar3 = ccVar5[iVar4].objID * 0x10000;
-
-                    if (ccVar5[iVar4].objID == 0)
-                        iVar3 = 0;
-
-                    iVar3 *= 255;
-
-                    if (iVar3 < 0)
-                        iVar3 += 255;
-
-                    DAT_6C = iVar3 >> 8;
+                    int num2 = configContainers[index].objID * 65536;
+                    if (configContainers[index].objID == 0)
+                    {
+                        num2 = DAT_58 * (short)LevelManager.instance.DAT_C18[0];
+                    }
+                    num2 *= GameManager.instance.DAT_898;
+                    if (num2 < 0)
+                    {
+                        num2 += 255;
+                    }
+                    DAT_6C = num2 >> 8;
                     return true;
                 }
-
-                uVar1 = (ushort)ccVar5[iVar4].previous;
             }
         }
-
         vLOD = null;
         DAT_6C = 0;
         return false;
@@ -3015,26 +3123,25 @@ public class VigObject : MonoBehaviour
 
     private ConfigContainer FUN_2C9A4()
     {
-        int configIndex = (DAT_1A << 3) - DAT_1A << 2;
-        short sVar1 = (short)vData.ini.configContainers[configIndex / 0x1C].next;
-        ConfigContainer container;
-
+        int num = (DAT_1A << 3) - DAT_1A << 2;
+        short num2 = (short)vData.ini.configContainers[num / 28].next;
+        ConfigContainer configContainer;
         while (true)
         {
-            if (sVar1 == -1)
+            if (num2 == -1)
+            {
                 return null;
-
-            configIndex = (sVar1 << 3) - sVar1 << 2;
-            configIndex = configIndex / 0x1C;
-            container = vData.ini.configContainers[configIndex];
-
-            if ((uint)container.flag >> 12 == 11)
+            }
+            num = (num2 << 3) - num2 << 2;
+            num /= 28;
+            configContainer = vData.ini.configContainers[num];
+            if ((uint)configContainer.flag >> 12 == 11)
+            {
                 break;
-
-            sVar1 = (short)container.previous;
+            }
+            num2 = (short)configContainer.previous;
         }
-
-        return container;
+        return configContainer;
     }
 
     public VigObject FUN_2CD04()
@@ -3046,526 +3153,424 @@ public class VigObject : MonoBehaviour
 
     private int FUN_2F16C(VigTransform param1, int param2, Vector3Int param3, ref Vector3Int param4)
     {
-        short sVar1;
-        long lVar2;
-        int puVar3;
-        int iVar4;
-        int iVar5;
-        uint uVar6;
-        int iVar7;
-        uint uVar8;
-        int iVar9;
-        int psVar9;
-        int psVar10;
-        int iVar11;
-        int iVar12;
-        uint uVar13;
-        uint uVar14;
-        Vector3Int local_60;
-        Vector3Int local_50;
-        Vector3Int local_40;
-        uint local_30;
-        int local_2c;
-
         if (vCollider != null)
         {
-            MemoryStream msCollider = new MemoryStream(vCollider.buffer);
-
-            using (BinaryReader brCollider = new BinaryReader(msCollider, Encoding.Default, true))
+            using (BinaryReader reader = new BinaryReader(new MemoryStream(vCollider.buffer), Encoding.Default, leaveOpen: true))
             {
-                local_60 = new Vector3Int(
-                    param3.x - param1.position.x,
-                    param3.y - param1.position.y,
-                    param3.z - param1.position.z);
-                sVar1 = brCollider.ReadInt16(0);
-                psVar10 = 0;
-
-                while(sVar1 != 0)
+                Vector3Int vector3Int = new Vector3Int(param3.x - param1.position.x, param3.y - param1.position.y, param3.z - param1.position.z);
+                short num = reader.ReadInt16(0);
+                for (int num2 = 0; num != 0; num = reader.ReadInt16(num2))
                 {
-                    if (brCollider.ReadUInt16(psVar10) == 1)
+                    int num4;
+                    if (reader.ReadUInt16(num2) == 1)
                     {
-                        local_50 = Utilities.FUN_2426C(param1.rotation, 
-                            new Matrix2x4(local_60.x, local_60.y, local_60.z, 0));
-                        psVar9 = psVar10 + 4;
-
-                        if (local_50.x < brCollider.ReadInt32(psVar9 + 12) && brCollider.ReadInt32(psVar10 + 4) < local_50.x && 
-                            local_50.z < brCollider.ReadInt32(psVar9 + 20) && brCollider.ReadInt32(psVar9 + 8) < local_50.z && 
-                            local_50.y < brCollider.ReadInt32(psVar9 + 16))
+                        Vector3Int v = Utilities.FUN_2426C(param1.rotation, new Matrix2x4(vector3Int.x, vector3Int.y, vector3Int.z, 0));
+                        int num3 = num2 + 4;
+                        if (v.x < reader.ReadInt32(num3 + 12) && reader.ReadInt32(num2 + 4) < v.x && v.z < reader.ReadInt32(num3 + 20) && reader.ReadInt32(num3 + 8) < v.z && v.y < reader.ReadInt32(num3 + 16))
                         {
-                            iVar12 = brCollider.ReadInt32(psVar9 + 4);
-
-                            if (local_50.y < iVar12 + 0x2800 && iVar12 - 0x5000 < local_50.y)
+                            num4 = reader.ReadInt32(num3 + 4);
+                            if (v.y < num4 + 10240 && num4 - 20480 < v.y)
                             {
-                                if (param1.position.y + iVar12 < param2)
-                                    goto LAB_2F2F0;
-
-                                psVar10 += 28;
-
-                                if (!(param2 + 0x10000 < param3.y))
-                                    goto LAB_2F568;
-                                
-                                LAB_2F2F0:
-                                param4 = new Vector3Int
-                                    (-param1.rotation.V01, -param1.rotation.V11, -param1.rotation.V21);
-                                local_50.y = brCollider.ReadInt32(psVar9 + 4);
-                                local_50 = Utilities.FUN_24094(param1.rotation, local_50);
-                                return param1.position.y + local_50.y;
+                                if (param1.position.y + num4 >= param2)
+                                {
+                                    num2 += 28;
+                                    if (param2 + 65536 >= param3.y)
+                                    {
+                                        continue;
+                                    }
+                                }
+                                param4 = new Vector3Int(-param1.rotation.V01, -param1.rotation.V11, -param1.rotation.V21);
+                                v.y = reader.ReadInt32(num3 + 4);
+                                v = Utilities.FUN_24094(param1.rotation, v);
+                                return param1.position.y + v.y;
                             }
                         }
-
-                        psVar10 += 28;
+                        num2 += 28;
+                        continue;
                     }
-                    else
+                    num4 = 2147418112;
+                    if (reader.ReadUInt16(num2) != 2)
                     {
-                        iVar12 = 0x7fff0000;
-
-                        if (brCollider.ReadUInt16(psVar10) == 2)
+                        continue;
+                    }
+                    uint num5 = 2147549184u;
+                    Utilities.SetRotMatrix(param1.rotation);
+                    Vector3Int vector3Int2 = default(Vector3Int);
+                    int num6 = 0;
+                    if (reader.ReadUInt16(num2 + 2) == 0)
+                    {
+                        goto IL_040d;
+                    }
+                    int num7 = 4;
+                    int num8 = num2 + num7;
+                    while (true)
+                    {
+                        Coprocessor.vector0.vx0 = reader.ReadInt16(num8);
+                        Coprocessor.vector0.vy0 = reader.ReadInt16(num8 + 2);
+                        Coprocessor.vector0.vz0 = reader.ReadInt16(num8 + 4);
+                        Coprocessor.ExecuteMVMVA(_MVMVA_MULTIPLY_MATRIX.Rotation, _MVMVA_MULTIPLY_VECTOR.V0, _MVMVA_TRANSLATION_VECTOR.None, 12, lm: false);
+                        uint num9 = (uint)((long)reader.ReadInt32(num8 + 8) * 4096L);
+                        int ir = Coprocessor.accumulator.ir1;
+                        uint num10 = (uint)((long)ir * (long)vector3Int.x);
+                        uint num11 = num9 - num10;
+                        int ir2 = Coprocessor.accumulator.ir3;
+                        uint num12 = (uint)((long)ir2 * (long)vector3Int.z);
+                        int num13 = (int)((ulong)((long)ir2 * (long)vector3Int.z) >> 32);
+                        ir2 = (int)(num11 - num12);
+                        int num14 = (int)((ulong)((long)reader.ReadInt32(num8 + 8) * 4096L) >> 32) - (int)((ulong)((long)ir * (long)vector3Int.x) >> 32) - ((num9 < num10) ? 1 : 0) - num13 - ((num11 < num12) ? 1 : 0);
+                        ir = Coprocessor.accumulator.ir2;
+                        if (ir < 0)
                         {
-                            uVar8 = 0x80010000;
-                            Utilities.SetRotMatrix(param1.rotation);
-                            local_40 = new Vector3Int(); //not in original code
-                            iVar9 = 0;
-
-                            if (brCollider.ReadUInt16(psVar10 + 2) != 0)
+                            ir = Coprocessor.accumulator.ir2;
+                            long num15 = Utilities.Divdi3(ir2, num14, ir, ir >> 31);
+                            if ((int)num5 < (int)num15)
                             {
-                                iVar11 = 4;
-                                puVar3 = psVar10 + iVar11;
-
-                                do
-                                {
-                                    Coprocessor.vector0.vx0 = brCollider.ReadInt16(puVar3);
-                                    Coprocessor.vector0.vy0 = brCollider.ReadInt16(puVar3 + 2);
-                                    Coprocessor.vector0.vz0 = brCollider.ReadInt16(puVar3 + 4);
-                                    Coprocessor.ExecuteMVMVA(_MVMVA_MULTIPLY_MATRIX.Rotation, _MVMVA_MULTIPLY_VECTOR.V0, _MVMVA_TRANSLATION_VECTOR.None, 12, false);
-                                    uVar13 = (uint)((long)brCollider.ReadInt32(puVar3 + 8) * 4096);
-                                    iVar4 = Coprocessor.accumulator.ir1;
-                                    uVar14 = (uint)((long)iVar4 * local_60.x);
-                                    uVar6 = uVar13 - uVar14;
-                                    iVar5 = Coprocessor.accumulator.ir3;
-                                    local_30 = (uint)((long)iVar5 * local_60.z);
-                                    local_2c = (int)((ulong)((long)iVar5 * local_60.z) >> 32);
-                                    iVar5 = (int)(uVar6 - local_30);
-                                    iVar7 = ((((int)((ulong)((long)brCollider.ReadInt32(puVar3 + 8) * 4096) >> 32) -
-                                               (int)((ulong)((long)iVar4 * local_60.x) >> 32)) -
-                                               (int)(uVar13 < uVar14 ? 1 : 0)) - local_2c) - (int)(uVar6 < local_30 ? 1 : 0);
-                                    iVar4 = Coprocessor.accumulator.ir2;
-
-                                    if (iVar4 < 0)
-                                    {
-                                        iVar4 = Coprocessor.accumulator.ir2;
-                                        lVar2 = Utilities.Divdi3(iVar5, iVar7, iVar4, iVar4 >> 31);
-
-                                        if ((int)uVar8 < (int)lVar2)
-                                        {
-                                            local_40 = new Vector3Int(
-                                                Coprocessor.accumulator.ir1,
-                                                Coprocessor.accumulator.ir2,
-                                                Coprocessor.accumulator.ir3);
-                                            uVar8 = (uint)lVar2;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        iVar4 = Coprocessor.accumulator.ir2;
-
-                                        if (iVar4 < 1)
-                                        {
-                                            if (iVar7 < 0)
-                                                goto LAB_2F54C;
-                                        }
-                                        else
-                                        {
-                                            iVar4 = Coprocessor.accumulator.ir2;
-                                            lVar2 = Utilities.Divdi3(iVar5, iVar7, iVar4, iVar4 >> 31);
-
-                                            if ((int)lVar2 < local_60.y)
-                                                goto LAB_2F54C;
-
-                                            if ((int)lVar2 < iVar12)
-                                                iVar12 = (int)lVar2;
-                                        }
-                                    }
-
-                                    iVar11 += 12;
-                                    iVar9++;
-                                    puVar3 = psVar10 + iVar11;
-                                } while (iVar9 < brCollider.ReadUInt16(psVar10 + 2));
+                                vector3Int2 = new Vector3Int(Coprocessor.accumulator.ir1, Coprocessor.accumulator.ir2, Coprocessor.accumulator.ir3);
+                                num5 = (uint)num15;
                             }
-
-                            if ((int)uVar8 < iVar12)
+                        }
+                        else
+                        {
+                            ir = Coprocessor.accumulator.ir2;
+                            if (ir < 1)
                             {
-                                iVar12 = (int)uVar8 + param1.position.y;
-
-                                if (iVar12 < param2 && param3.y - 0x2800 < iVar12 && 
-                                    iVar12 < param3.y + 0x5000 && local_40.y < -2048)
+                                if (num14 < 0)
                                 {
-                                    param4 = local_40;
-                                    return iVar12;
+                                    break;
                                 }
                             }
-
-                            LAB_2F54C:
-                            psVar10 += brCollider.ReadUInt16(psVar10 + 2) * 12 + 4;
+                            else
+                            {
+                                ir = Coprocessor.accumulator.ir2;
+                                long num15 = Utilities.Divdi3(ir2, num14, ir, ir >> 31);
+                                if ((int)num15 < vector3Int.y)
+                                {
+                                    break;
+                                }
+                                if ((int)num15 < num4)
+                                {
+                                    num4 = (int)num15;
+                                }
+                            }
+                        }
+                        num7 += 12;
+                        num6++;
+                        num8 = num2 + num7;
+                        if (num6 < reader.ReadUInt16(num2 + 2))
+                        {
+                            continue;
+                        }
+                        goto IL_040d;
+                    }
+                    goto IL_0468;
+                IL_040d:
+                    if ((int)num5 < num4)
+                    {
+                        num4 = (int)num5 + param1.position.y;
+                        if (num4 < param2 && param3.y - 10240 < num4 && num4 < param3.y + 20480 && vector3Int2.y < -2048)
+                        {
+                            param4 = vector3Int2;
+                            return num4;
                         }
                     }
-
-                    LAB_2F568:
-                    sVar1 = brCollider.ReadInt16(psVar10);
+                    goto IL_0468;
+                IL_0468:
+                    num2 += reader.ReadUInt16(num2 + 2) * 12 + 4;
                 }
             }
         }
-
         return 0;
     }
 
     private int FUN_2F16C(VigTransform param1, int param2, Vector3Int param3)
     {
-        short sVar1;
-        long lVar2;
-        int puVar3;
-        int iVar4;
-        int iVar5;
-        uint uVar6;
-        int iVar7;
-        uint uVar8;
-        int iVar9;
-        int psVar9;
-        int psVar10;
-        int iVar11;
-        int iVar12;
-        uint uVar13;
-        uint uVar14;
-        Vector3Int local_60;
-        Vector3Int local_50;
-        Vector3Int local_40;
-        uint local_30;
-        int local_2c;
-
         if (vCollider != null)
         {
-            MemoryStream msCollider = new MemoryStream(vCollider.buffer);
-
-            using (BinaryReader brCollider = new BinaryReader(msCollider, Encoding.Default, true))
+            using (BinaryReader reader = new BinaryReader(new MemoryStream(vCollider.buffer), Encoding.Default, leaveOpen: true))
             {
-                local_60 = new Vector3Int(
-                    param3.x - param1.position.x,
-                    param3.y - param1.position.y,
-                    param3.z - param1.position.z);
-                sVar1 = brCollider.ReadInt16(0);
-                psVar10 = 0;
-
-                while (sVar1 != 0)
+                Vector3Int vector3Int = new Vector3Int(param3.x - param1.position.x, param3.y - param1.position.y, param3.z - param1.position.z);
+                short num = reader.ReadInt16(0);
+                for (int num2 = 0; num != 0; num = reader.ReadInt16(num2))
                 {
-                    if (brCollider.ReadUInt16(psVar10) == 1)
+                    int num4;
+                    if (reader.ReadUInt16(num2) == 1)
                     {
-                        local_50 = Utilities.FUN_2426C(param1.rotation,
-                            new Matrix2x4(local_60.x, local_60.y, local_60.z, 0));
-                        psVar9 = psVar10 + 4;
-
-                        if (local_50.x < brCollider.ReadInt32(psVar9 + 12) && brCollider.ReadInt32(psVar10 + 4) < local_50.x &&
-                            local_50.z < brCollider.ReadInt32(psVar9 + 20) && brCollider.ReadInt32(psVar9 + 8) < local_50.z &&
-                            local_50.y < brCollider.ReadInt32(psVar9 + 16))
+                        Vector3Int v = Utilities.FUN_2426C(param1.rotation, new Matrix2x4(vector3Int.x, vector3Int.y, vector3Int.z, 0));
+                        int num3 = num2 + 4;
+                        if (v.x < reader.ReadInt32(num3 + 12) && reader.ReadInt32(num2 + 4) < v.x && v.z < reader.ReadInt32(num3 + 20) && reader.ReadInt32(num3 + 8) < v.z && v.y < reader.ReadInt32(num3 + 16))
                         {
-                            iVar12 = brCollider.ReadInt32(psVar9 + 4);
-
-                            if (local_50.y < iVar12 + 0x2800 && iVar12 - 0x5000 < local_50.y)
+                            num4 = reader.ReadInt32(num3 + 4);
+                            if (v.y < num4 + 10240 && num4 - 20480 < v.y)
                             {
-                                if (param1.position.y + iVar12 < param2)
-                                    goto LAB_2F2F0;
-
-                                psVar10 += 28;
-
-                                if (!(param2 + 0x10000 < param3.y))
-                                    goto LAB_2F568;
-
-                                LAB_2F2F0:
-                                local_50.y = brCollider.ReadInt32(psVar9 + 4);
-                                local_50 = Utilities.FUN_24094(param1.rotation, local_50);
-                                return param1.position.y + local_50.y;
+                                if (param1.position.y + num4 >= param2)
+                                {
+                                    num2 += 28;
+                                    if (param2 + 65536 >= param3.y)
+                                    {
+                                        continue;
+                                    }
+                                }
+                                v.y = reader.ReadInt32(num3 + 4);
+                                v = Utilities.FUN_24094(param1.rotation, v);
+                                return param1.position.y + v.y;
                             }
                         }
-
-                        psVar10 += 28;
+                        num2 += 28;
+                        continue;
                     }
-                    else
+                    num4 = 2147418112;
+                    if (reader.ReadUInt16(num2) != 2)
                     {
-                        iVar12 = 0x7fff0000;
-
-                        if (brCollider.ReadUInt16(psVar10) == 2)
+                        continue;
+                    }
+                    uint num5 = 2147549184u;
+                    Utilities.SetRotMatrix(param1.rotation);
+                    Vector3Int vector3Int2 = default(Vector3Int);
+                    int num6 = 0;
+                    if (reader.ReadUInt16(num2 + 2) == 0)
+                    {
+                        goto IL_03d7;
+                    }
+                    int num7 = 4;
+                    int num8 = num2 + num7;
+                    while (true)
+                    {
+                        Coprocessor.vector0.vx0 = reader.ReadInt16(num8);
+                        Coprocessor.vector0.vy0 = reader.ReadInt16(num8 + 2);
+                        Coprocessor.vector0.vz0 = reader.ReadInt16(num8 + 4);
+                        Coprocessor.ExecuteMVMVA(_MVMVA_MULTIPLY_MATRIX.Rotation, _MVMVA_MULTIPLY_VECTOR.V0, _MVMVA_TRANSLATION_VECTOR.None, 12, lm: false);
+                        uint num9 = (uint)((long)reader.ReadInt32(num8 + 8) * 4096L);
+                        int ir = Coprocessor.accumulator.ir1;
+                        uint num10 = (uint)((long)ir * (long)vector3Int.x);
+                        uint num11 = num9 - num10;
+                        int ir2 = Coprocessor.accumulator.ir3;
+                        uint num12 = (uint)((long)ir2 * (long)vector3Int.z);
+                        int num13 = (int)((ulong)((long)ir2 * (long)vector3Int.z) >> 32);
+                        ir2 = (int)(num11 - num12);
+                        int num14 = (int)((ulong)((long)reader.ReadInt32(num8 + 8) * 4096L) >> 32) - (int)((ulong)((long)ir * (long)vector3Int.x) >> 32) - ((num9 < num10) ? 1 : 0) - num13 - ((num11 < num12) ? 1 : 0);
+                        ir = Coprocessor.accumulator.ir2;
+                        if (ir < 0)
                         {
-                            uVar8 = 0x80010000;
-                            Utilities.SetRotMatrix(param1.rotation);
-                            local_40 = new Vector3Int(); //not in original code
-                            iVar9 = 0;
-
-                            if (brCollider.ReadUInt16(psVar10 + 2) != 0)
+                            ir = Coprocessor.accumulator.ir2;
+                            long num15 = Utilities.Divdi3(ir2, num14, ir, ir >> 31);
+                            if ((int)num5 < (int)num15)
                             {
-                                iVar11 = 4;
-                                puVar3 = psVar10 + iVar11;
-
-                                do
-                                {
-                                    Coprocessor.vector0.vx0 = brCollider.ReadInt16(puVar3);
-                                    Coprocessor.vector0.vy0 = brCollider.ReadInt16(puVar3 + 2);
-                                    Coprocessor.vector0.vz0 = brCollider.ReadInt16(puVar3 + 4);
-                                    Coprocessor.ExecuteMVMVA(_MVMVA_MULTIPLY_MATRIX.Rotation, _MVMVA_MULTIPLY_VECTOR.V0, _MVMVA_TRANSLATION_VECTOR.None, 12, false);
-                                    uVar13 = (uint)((long)brCollider.ReadInt32(puVar3 + 8) * 4096);
-                                    iVar4 = Coprocessor.accumulator.ir1;
-                                    uVar14 = (uint)((long)iVar4 * local_60.x);
-                                    uVar6 = uVar13 - uVar14;
-                                    iVar5 = Coprocessor.accumulator.ir3;
-                                    local_30 = (uint)((long)iVar5 * local_60.z);
-                                    local_2c = (int)((ulong)((long)iVar5 * local_60.z) >> 32);
-                                    iVar5 = (int)(uVar6 - local_30);
-                                    iVar7 = ((((int)((ulong)((long)brCollider.ReadInt32(puVar3 + 8) * 4096) >> 32) -
-                                               (int)((ulong)((long)iVar4 * local_60.x) >> 32)) -
-                                               (int)(uVar13 < uVar14 ? 1 : 0)) - local_2c) - (int)(uVar6 < local_30 ? 1 : 0);
-                                    iVar4 = Coprocessor.accumulator.ir2;
-
-                                    if (iVar4 < 0)
-                                    {
-                                        iVar4 = Coprocessor.accumulator.ir2;
-                                        lVar2 = Utilities.Divdi3(iVar5, iVar7, iVar4, iVar4 >> 31);
-
-                                        if ((int)uVar8 < (int)lVar2)
-                                        {
-                                            local_40 = new Vector3Int(
-                                                Coprocessor.accumulator.ir1,
-                                                Coprocessor.accumulator.ir2,
-                                                Coprocessor.accumulator.ir3);
-                                            uVar8 = (uint)lVar2;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        iVar4 = Coprocessor.accumulator.ir2;
-
-                                        if (iVar4 < 1)
-                                        {
-                                            if (iVar7 < 0)
-                                                goto LAB_2F54C;
-                                        }
-                                        else
-                                        {
-                                            iVar4 = Coprocessor.accumulator.ir2;
-                                            lVar2 = Utilities.Divdi3(iVar5, iVar7, iVar4, iVar4 >> 31);
-
-                                            if ((int)lVar2 < local_60.y)
-                                                goto LAB_2F54C;
-
-                                            if ((int)lVar2 < iVar12)
-                                                iVar12 = (int)lVar2;
-                                        }
-                                    }
-
-                                    iVar11 += 12;
-                                    iVar9++;
-                                    puVar3 = psVar10 + iVar11;
-                                } while (iVar9 < brCollider.ReadUInt16(psVar10 + 2));
+                                vector3Int2 = new Vector3Int(Coprocessor.accumulator.ir1, Coprocessor.accumulator.ir2, Coprocessor.accumulator.ir3);
+                                num5 = (uint)num15;
                             }
-
-                            if ((int)uVar8 < iVar12)
+                        }
+                        else
+                        {
+                            ir = Coprocessor.accumulator.ir2;
+                            if (ir < 1)
                             {
-                                iVar12 = (int)uVar8 + param1.position.y;
-
-                                if (iVar12 < param2 && param3.y - 0x2800 < iVar12 &&
-                                    iVar12 < param3.y + 0x5000 && local_40.y < -2048)
+                                if (num14 < 0)
                                 {
-                                    return iVar12;
+                                    break;
                                 }
                             }
-
-                            LAB_2F54C:
-                            psVar10 += brCollider.ReadUInt16(psVar10 + 2) * 12 + 4;
+                            else
+                            {
+                                ir = Coprocessor.accumulator.ir2;
+                                long num15 = Utilities.Divdi3(ir2, num14, ir, ir >> 31);
+                                if ((int)num15 < vector3Int.y)
+                                {
+                                    break;
+                                }
+                                if ((int)num15 < num4)
+                                {
+                                    num4 = (int)num15;
+                                }
+                            }
+                        }
+                        num7 += 12;
+                        num6++;
+                        num8 = num2 + num7;
+                        if (num6 < reader.ReadUInt16(num2 + 2))
+                        {
+                            continue;
+                        }
+                        goto IL_03d7;
+                    }
+                    goto IL_0429;
+                IL_03d7:
+                    if ((int)num5 < num4)
+                    {
+                        num4 = (int)num5 + param1.position.y;
+                        if (num4 < param2 && param3.y - 10240 < num4 && num4 < param3.y + 20480 && vector3Int2.y < -2048)
+                        {
+                            return num4;
                         }
                     }
-
-                    LAB_2F568:
-                    sVar1 = brCollider.ReadInt16(psVar10);
+                    goto IL_0429;
+                IL_0429:
+                    num2 += reader.ReadUInt16(num2 + 2) * 12 + 4;
                 }
             }
         }
-
         return 0;
     }
 
     private int FUN_2F5AC(VigTransform param1, int param2, Vector3Int param3, ref Vector3Int param4)
     {
-        int iVar1;
-        VigObject oVar2;
-        VigTransform MStack64;
-
-        oVar2 = child2;
-
-        do
+        VigObject vigObject = child2;
+        int num;
+        while (true)
         {
-            if (oVar2 == null)
-                return 0;
-
-            if (oVar2.vCollider == null)
+            if (vigObject == null)
             {
-                if ((oVar2.flags & 0x800) != 0)
+                return 0;
+            }
+            if (vigObject.vCollider == null)
+            {
+                if ((vigObject.flags & 0x800) != 0)
                 {
-                    MStack64 = Utilities.CompMatrixLV(param1, oVar2.vTransform);
-                    iVar1 = oVar2.FUN_2F5AC(MStack64, param2, param3, ref param4);
-
-                    if (iVar1 != 0)
-                        return iVar1;
+                    VigTransform param5 = Utilities.CompMatrixLV(param1, vigObject.vTransform);
+                    num = vigObject.FUN_2F5AC(param5, param2, param3, ref param4);
+                    if (num != 0)
+                    {
+                        return num;
+                    }
                 }
             }
             else
             {
-                MStack64 = Utilities.CompMatrixLV(param1, oVar2.vTransform);
-
-                if (0 < MStack64.rotation.V11 ||
-                    2048 < MStack64.rotation.V01 * vTransform.rotation.V01 +
-                           MStack64.rotation.V11 * vTransform.rotation.V11 +
-                           MStack64.rotation.V21 * vTransform.rotation.V21)
+                VigTransform param5 = Utilities.CompMatrixLV(param1, vigObject.vTransform);
+                if (0 < param5.rotation.V11 || 2048 < param5.rotation.V01 * vTransform.rotation.V01 + param5.rotation.V11 * vTransform.rotation.V11 + param5.rotation.V21 * vTransform.rotation.V21)
                 {
-                    iVar1 = oVar2.FUN_2F16C(MStack64, param2, param3, ref param4);
-
-                    if (iVar1 != 0)
-                        return iVar1;
+                    num = vigObject.FUN_2F16C(param5, param2, param3, ref param4);
+                    if (num != 0)
+                    {
+                        return num;
+                    }
                 }
-
-                if ((oVar2.flags & 0x800) != 0)
+                if ((vigObject.flags & 0x800) != 0)
                 {
-                    iVar1 = oVar2.FUN_2F5AC(MStack64, param2, param3, ref param4);
-
-                    if (iVar1 != 0)
-                        return iVar1;
+                    num = vigObject.FUN_2F5AC(param5, param2, param3, ref param4);
+                    if (num != 0)
+                    {
+                        break;
+                    }
                 }
             }
-
-            oVar2 = oVar2.child;
-        } while (true);
+            vigObject = vigObject.child;
+        }
+        return num;
     }
 
     private int FUN_2F710(int param1, Vector3Int param2, ref Vector3Int param3)
     {
-        int iVar1;
-
         if ((flags & 0x800) != 0)
         {
-            iVar1 = FUN_2F5AC(vTransform, param1, param2, ref param3);
-
-            if (iVar1 != 0)
-                return iVar1;
+            int num = FUN_2F5AC(vTransform, param1, param2, ref param3);
+            if (num != 0)
+            {
+                return num;
+            }
         }
-
         return FUN_2F16C(vTransform, param1, param2, ref param3);
     }
 
     public void FUN_305FC()
     {
         FUN_2D1DC();
-
         if ((flags & 4) != 0)
+        {
             GameManager.instance.FUN_30080(GameManager.instance.DAT_10A8, this);
-
+        }
         if ((flags & 0x80) != 0)
+        {
             GameManager.instance.FUN_30080(GameManager.instance.DAT_1088, this);
-
+        }
         GameManager.instance.FUN_30080(GameManager.instance.worldObjs, this);
     }
 
-    private void FUN_4C7E0(VigMesh param1, GameObject param2)
+    public void FUN_4C7AC(VigMesh param1, GameObject param2)
     {
-        short sVar1;
-        int iVar2;
-        VigShadow sVar3;
-        MemoryStream msVar4;
-        int iVar5;
-        bool bVar6;
-        int local_res0;
-        int local_res4;
-        int local_10;
-        int local_c;
-        int local_8;
-        int local_4;
+        VigShadow vigShadow = vShadow = Utilities.FUN_4C44C(param1, 65536, 65536, param2);
+    }
 
-        bVar6 = true;
-
+    public void FUN_4C7E0(VigMesh param1, GameObject param2)
+    {
+        bool flag = true;
         if (vCollider == null)
         {
-            local_4 = DAT_58;
-            local_res4 = local_4;
-            sVar3 = Utilities.FUN_4C44C(param1, local_4, local_res4, param2);
-            vShadow = sVar3;
+            int dAT_ = DAT_58;
+            int param3 = dAT_;
+            VigShadow vigShadow = vShadow = Utilities.FUN_4C44C(param1, dAT_, param3, param2);
+            return;
         }
-        else
+        using (BinaryReader binaryReader = new BinaryReader(new MemoryStream(vCollider.buffer), Encoding.Default, leaveOpen: true))
         {
-            msVar4 = new MemoryStream(vCollider.buffer);
-
-            using (BinaryReader reader = new BinaryReader(msVar4, Encoding.Default, true))
+            short num = binaryReader.ReadInt16(0);
+            int num2 = 0;
+            int num3 = 0;
+            int num4 = 0;
+            int dAT_ = 0;
+            int num5 = 0;
+            int param3 = 0;
+            while (true)
             {
-                sVar1 = reader.ReadInt16(0);
-                local_10 = 0;  // not in original code
-                local_c = 0;   // -||-
-                local_8 = 0;   // -||-
-                local_4 = 0;   // -||-
-                local_res0 = 0; // -||-
-                local_res4 = 0; // -||-
-
-                joined_r0x8004c820:
-                if (sVar1 != 0)
+                switch (num)
                 {
-                    if (sVar1 != 1) goto code_r0x8004c83c;
-
-                    if (bVar6)
-                    {
-                        local_10 = reader.ReadInt32(4);
-                        local_c = reader.ReadInt32(8);
-                        local_8 = reader.ReadInt32(12);
-                        local_4 = reader.ReadInt32(16);
-                        local_res0 = reader.ReadInt32(20);
-                        local_res4 = reader.ReadInt32(24);
-                        bVar6 = false;
-                        iVar5 = 28;
-                        reader.BaseStream.Seek(iVar5, SeekOrigin.Current);
-                        sVar1 = reader.ReadInt16(0);
-                        goto joined_r0x8004c820;
-                    }
-                    else
-                    {
-                        if (reader.ReadInt32(4) < local_10)
-                            local_10 = reader.ReadInt32(4); //not used?
-
-                        if (reader.ReadInt32(8) < local_c)
-                            local_c = reader.ReadInt32(8); //not used?
-
-                        if (reader.ReadInt32(12) < local_8)
-                            local_8 = reader.ReadInt32(12); //not used?
-
-                        if (local_4 < reader.ReadInt32(16))
-                            local_4 = reader.ReadInt32(16);
-
-                        if (local_res0 < reader.ReadInt32(20))
-                            local_res0 = reader.ReadInt32(20);
-
-                        if (local_res4 < reader.ReadInt32(24))
-                            local_res4 = reader.ReadInt32(24);
-
-                        iVar5 = 14;
-                        reader.BaseStream.Seek(iVar5, SeekOrigin.Current);
-                        sVar1 = reader.ReadInt16(0);
-                        goto joined_r0x8004c820;
-                    }
+                    case 1:
+                        if (flag)
+                        {
+                            num2 = binaryReader.ReadInt32(4);
+                            num3 = binaryReader.ReadInt32(8);
+                            num4 = binaryReader.ReadInt32(12);
+                            dAT_ = binaryReader.ReadInt32(16);
+                            num5 = binaryReader.ReadInt32(20);
+                            param3 = binaryReader.ReadInt32(24);
+                            flag = false;
+                            int num6 = 28;
+                            binaryReader.BaseStream.Seek(num6, SeekOrigin.Current);
+                            num = binaryReader.ReadInt16(0);
+                        }
+                        else
+                        {
+                            if (binaryReader.ReadInt32(4) < num2)
+                            {
+                                num2 = binaryReader.ReadInt32(4);
+                            }
+                            if (binaryReader.ReadInt32(8) < num3)
+                            {
+                                num3 = binaryReader.ReadInt32(8);
+                            }
+                            if (binaryReader.ReadInt32(12) < num4)
+                            {
+                                num4 = binaryReader.ReadInt32(12);
+                            }
+                            if (dAT_ < binaryReader.ReadInt32(16))
+                            {
+                                dAT_ = binaryReader.ReadInt32(16);
+                            }
+                            if (num5 < binaryReader.ReadInt32(20))
+                            {
+                                num5 = binaryReader.ReadInt32(20);
+                            }
+                            if (param3 < binaryReader.ReadInt32(24))
+                            {
+                                param3 = binaryReader.ReadInt32(24);
+                            }
+                            int num6 = 14;
+                            binaryReader.BaseStream.Seek(num6, SeekOrigin.Current);
+                            num = binaryReader.ReadInt16(0);
+                        }
+                        break;
+                    case 0:
+                        {
+                            VigShadow vigShadow = vShadow = Utilities.FUN_4C44C(param1, dAT_, param3, param2);
+                            return;
+                        }
+                    case 2:
+                        {
+                            int num6 = binaryReader.ReadUInt16(2) * 6 + 2;
+                            binaryReader.BaseStream.Seek(num6, SeekOrigin.Current);
+                            num = binaryReader.ReadInt16(0);
+                            break;
+                        }
                 }
-
-                sVar3 = Utilities.FUN_4C44C(param1, local_4, local_res4, param2);
-                vShadow = sVar3;
-                return;
-
-                code_r0x8004c83c:
-                if (sVar1 == 2)
-                {
-                    iVar5 = reader.ReadUInt16(2) * 6 + 2;
-                    reader.BaseStream.Seek(iVar5, SeekOrigin.Current);
-                    sVar1 = reader.ReadInt16(0);
-                }
-
-                goto joined_r0x8004c820;
             }
         }
     }

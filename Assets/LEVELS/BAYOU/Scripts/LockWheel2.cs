@@ -1,78 +1,57 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LockWheel2 : VigObject
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-    //FUN_1110 (BAYOU.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        VigTuple2 tVar1;
-        VigObject oVar1;
-        VigObject oVar2;
-        VigObject oVar3;
-
-        if (arg1 == 2)
-        {
-            FUN_30B78();
-            tags = 1;
-        }
-        else
-        {
-            if (arg1 < 3)
-            {
-                if (arg1 == 0)
-                {
-                    if (tags == 0)
-                    {
-                        GameManager.instance.DAT_DB0 -= 68;
-
-                        if (GameManager.instance.DAT_DB0 < 0x2d7800)
-                        {
-                            GameManager.instance.FUN_30CB0(this, 300);
-                            FUN_30BA8();
-                        }
-                    }
-                    else
-                    {
-                        GameManager.instance.DAT_DB0 += 68;
-
-                        if (0x2f3000 < GameManager.instance.DAT_DB0)
-                        {
-                            oVar3 = child;
-                            tVar1 = GameManager.instance.FUN_2FFD0(oVar3.id);
-
-                            if (tVar1 != null)
-                                LevelManager.instance.FUN_359CC(tVar1.array, 0x8f80);
-
-                            oVar3.ApplyTransformation();
-                            oVar3.tags = 0;
-                            oVar1 = oVar3.PDAT_74;
-                            oVar1.ApplyTransformation();
-                            oVar1.tags = 0;
-                            oVar2 = FUN_306FC();
-                            Destroy(oVar2);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                if (arg1 == 4)
-                    LevelManager.instance.level.flags &= 0xfeffffff;
-            }
-        }
-
-        return 0;
-    }
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		switch (arg1)
+		{
+		case 2:
+			FUN_30B78();
+			tags = 1;
+			break;
+		case 0:
+			if (tags == 0)
+			{
+				GameManager.instance.DAT_DB0 -= 68;
+				if (GameManager.instance.DAT_DB0 < 2979840)
+				{
+					GameManager.instance.FUN_30CB0(this, 300);
+					FUN_30BA8();
+				}
+				break;
+			}
+			GameManager.instance.DAT_DB0 += 68;
+			if (3092480 < GameManager.instance.DAT_DB0)
+			{
+				VigObject child = base.child;
+				VigTuple2 vigTuple = GameManager.instance.FUN_2FFD0(child.id);
+				if (vigTuple != null)
+				{
+					LevelManager.instance.FUN_359CC(vigTuple.array, 36736u);
+				}
+				child.ApplyTransformation();
+				child.tags = 0;
+				VigObject pDAT_ = child.PDAT_74;
+				pDAT_.ApplyTransformation();
+				pDAT_.tags = 0;
+				UnityEngine.Object.Destroy(FUN_306FC());
+			}
+			break;
+		case 4:
+			LevelManager.instance.level.flags &= 4278190079u;
+			break;
+		}
+		return 0u;
+	}
 }

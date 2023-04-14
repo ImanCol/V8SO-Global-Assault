@@ -1,9 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WheelChild : VigObject
 {
+    public Vector3 eulerAngles;
+
     protected override void Start()
     {
         base.Start();
@@ -12,8 +12,6 @@ public class WheelChild : VigObject
     protected override void Update()
     {
         base.Update();
-        transform.localEulerAngles += eulerAngles;
+        base.transform.localEulerAngles += eulerAngles;
     }
-
-    public Vector3 eulerAngles;
 }

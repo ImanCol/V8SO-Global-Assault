@@ -1,68 +1,52 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Ant4 : VigObject
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
+	private static Vector3Int DAT_120 = new Vector3Int(0, -1310720, 0);
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	private static Vector3Int DAT_12C = new Vector3Int(0, 0, 0);
 
-    //0x120 (ROUTE66.DLL)
-    private static Vector3Int DAT_120 = new Vector3Int(0, -0x140000, 0);
-    //0x12C (ROUTE66.DLL)
-    private static Vector3Int DAT_12C = new Vector3Int(0, 0, 0);
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-    public override uint OnCollision(HitDetection hit)
-    {
-        int iVar1;
-        VigObject oVar2;
-        Vehicle vVar2;
-        int iVar3;
-        Vector3Int local_20;
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-        oVar2 = hit.self;
+	public override uint OnCollision(HitDetection hit)
+	{
+		VigObject self = hit.self;
+		if (self.type == 2)
+		{
+			Vehicle vehicle = (Vehicle)self;
+			Vector3Int v = default(Vector3Int);
+			int num = (int)GameManager.FUN_2AC5C();
+			int num2 = num << 2;
+			num2 += num;
+			num2 <<= 11;
+			num2 >>= 15;
+			num2 -= 5120;
+			num = (int)GameManager.FUN_2AC5C();
+			v.x = vehicle.vTransform.position.x + num2;
+			v.z = vehicle.vTransform.position.z + (num << 2 << 11 >> 15) - 5120;
+			v.y = vehicle.vTransform.position.y;
+			vehicle.FUN_2B370(DAT_120, v);
+			vehicle.FUN_3A064(500, DAT_12C, param3: true);
+		}
+		return 0u;
+	}
 
-        if (oVar2.type == 2)
-        {
-            vVar2 = (Vehicle)oVar2;
-            local_20 = new Vector3Int();
-            iVar1 = (int)GameManager.FUN_2AC5C();
-            iVar3 = iVar1 << 2;
-            iVar3 += iVar1;
-            iVar3 <<= 11;
-            iVar3 >>= 15;
-            iVar3 -= 0x1400;
-            iVar1 = (int)GameManager.FUN_2AC5C();
-            local_20.x = vVar2.vTransform.position.x + iVar3;
-            local_20.z = (vVar2.vTransform.position.z + ((iVar1 << 2) << 11 >> 15)) - 0x1400;
-            local_20.y = vVar2.vTransform.position.y;
-            vVar2.FUN_2B370(DAT_120, local_20);
-            vVar2.FUN_3A064(500, DAT_12C, true);
-        }
-
-        return 0;
-    }
-
-    //FUN_2A78 (ROUTE66.DLL)
-    public override uint UpdateW(int arg1, VigObject arg2)
-    {
-        uint uVar1;
-
-        uVar1 = 0;
-
-        if (arg1 == 5)
-        {
-            GameManager.instance.FUN_309A0(this);
-            uVar1 = 0xffffffff;
-        }
-
-        return uVar1;
-    }
+	public override uint UpdateW(int arg1, VigObject arg2)
+	{
+		uint result = 0u;
+		if (arg1 == 5)
+		{
+			GameManager.instance.FUN_309A0(this);
+			result = uint.MaxValue;
+		}
+		return result;
+	}
 }

@@ -1,168 +1,140 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Reactor : VigObject
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-    public override uint OnCollision(HitDetection hit)
-    {
-        bool bVar6;
+	public override uint OnCollision(HitDetection hit)
+	{
+		if (hit.self.type != 8)
+		{
+			return 0u;
+		}
+		if (!FUN_32B90(hit.self.maxHalfHealth))
+		{
+			if (DAT_18 != 0)
+			{
+				GameManager.instance.FUN_1E30C(DAT_18, (maxFullHealth - maxHalfHealth) * 4999 / (int)maxFullHealth + 2298);
+			}
+			DAT_19 = (byte)((maxFullHealth - maxHalfHealth) * 5 / (int)maxFullHealth);
+		}
+		return 0u;
+	}
 
-        if (hit.self.type != 8)
-            return 0;
-
-        bVar6 = FUN_32B90(hit.self.maxHalfHealth);
-
-        if (!bVar6)
-        {
-            if (DAT_18 != 0)
-                GameManager.instance.FUN_1E30C(DAT_18, ((maxFullHealth - maxHalfHealth) * 4999) / maxFullHealth + 2298);
-
-            DAT_19 = (byte)(((maxFullHealth - maxHalfHealth) * 5) / maxFullHealth);
-        }
-
-        return 0;
-    }
-
-    //FUN_2D04 (NUCLEAR.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        VigTuple ppiVar2;
-        List<VigTuple> ppiVar3;
-        sbyte sVar4;
-        ForkLift3 ppcVar5;
-        int iVar6;
-        bool bVar6;
-        int iVar7;
-        VigObject oVar7;
-        Ballistic puVar8;
-
-        switch (arg1)
-        {
-            case 0:
-                if (arg2 != 0)
-                {
-                    iVar6 = (int)GameManager.instance.FUN_1E7A8(screen);
-
-                    if (iVar6 == 0)
-                    {
-                        if (DAT_18 == 0)
-                        {
-                            GameManager.instance.FUN_1DE78(0);
-                            DAT_18 = 0;
-                        }
-                    }
-                    else
-                    {
-                        if (DAT_18 == 0)
-                        {
-                            sVar4 = (sbyte)GameManager.instance.FUN_1DD9C();
-                            DAT_18 = sVar4;
-                            GameManager.instance.FUN_1E098(sVar4, vData.sndList, 0, (uint)iVar6, true);
-                            GameManager.instance.FUN_1E30C(DAT_18, ((maxFullHealth - maxHalfHealth) * 4999) / maxFullHealth + 2298);
-                        }
-                        else
-                            GameManager.instance.FUN_1E2C8(DAT_18, (uint)iVar6);
-                    }
-                }
-
-                child2.DAT_4A -= DAT_19;
-                break;
-            case 1:
-                DAT_19 = 0;
-                flags |= 0x80;
-                break;
-            case 2:
-                sVar4 = tags;
-                tags = (sbyte)(sVar4 + 1);
-
-                if (sVar4 == 0)
-                {
-                    ppiVar3 = GameManager.instance.worldObjs;
-
-                    for (int i = 0; i < ppiVar3.Count; i++)
-                    {
-                        ppiVar2 = ppiVar3[i];
-
-                        if (ppiVar2.vObject.type == 2 && ppiVar2.vObject.maxHalfHealth != 0)
-                            ((Vehicle)ppiVar2.vObject).FUN_39BC4();
-                    }
-
-                    ppcVar5 = LevelManager.instance.xobfList[42].ini.FUN_2C17C(27, typeof(ForkLift3), 8) as ForkLift3;
-                    Utilities.ParentChildren(ppcVar5, ppcVar5);
-                    ppcVar5.type = 8;
-                    ppcVar5.flags = 0x314;
-                    ppcVar5.screen = screen;
-                    ppcVar5.maxHalfHealth = 500;
-                    ppcVar5.FUN_3066C();
-                    ppcVar5.DAT_58 = ppcVar5.vCollider.reader.ReadInt32(16);
-                    UIManager.instance.FUN_4E338(new Color32(0xff, 0x80, 0x40, 24));
-                    GameManager.instance.FUN_30CB0(this, 60);
-                }
-                else
-                {
-                    if (sVar4 == 1)
-                    {
-                        iVar7 = 53;
-
-                        if (id == 98)
-                            iVar7 = 51;
-
-                        oVar7 = GameManager.instance.FUN_318D0(iVar7);
-                        oVar7.FUN_4DC94();
-                        iVar7 = 54;
-
-                        if (id == 98)
-                            iVar7 = 52;
-
-                        oVar7 = GameManager.instance.FUN_318D0(iVar7);
-                        oVar7.FUN_4DC94();
-                    }
-                }
-
-                break;
-            case 8:
-                bVar6 = FUN_32B90((uint)arg2);
-
-                if (!bVar6)
-                {
-                    if (DAT_18 != 0)
-                        GameManager.instance.FUN_1E30C(DAT_18, ((maxFullHealth - maxHalfHealth) * 4999) / maxFullHealth + 2298);
-
-                    DAT_19 = (byte)(((maxFullHealth - maxHalfHealth) * 5) / maxFullHealth);
-                }
-
-                break;
-            case 9:
-                if (arg2 != 0)
-                {
-                    FUN_30BA8();
-                    GameManager.instance.FUN_1DE78(DAT_18);
-                    iVar7 = GameManager.instance.FUN_1DD9C();
-                    GameManager.instance.FUN_1E14C(iVar7, LevelManager.instance.xobfList[42].sndList, 1);
-                    iVar7 = GameManager.instance.FUN_1DD9C();
-                    GameManager.instance.FUN_1E14C(iVar7, LevelManager.instance.xobfList[42].sndList, 2);
-                    UIManager.instance.FUN_4E338(new Color32(0xff, 0xff, 0x80, 8));
-                    puVar8 = LevelManager.instance.xobfList[42].ini.FUN_2C17C(33, typeof(Ballistic), 8) as Ballistic;
-                    puVar8.screen = screen;
-                    puVar8.flags = 0x24;
-                    puVar8.FUN_3066C();
-                    GameManager.instance.FUN_30CB0(this, 30);
-                }
-
-                break;
-        }
-
-        return 0;
-    }
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		switch (arg1)
+		{
+		case 0:
+			if (arg2 != 0)
+			{
+				int num = (int)GameManager.instance.FUN_1E7A8(screen);
+				if (num == 0)
+				{
+					if (DAT_18 == 0)
+					{
+						GameManager.instance.FUN_1DE78(0);
+						DAT_18 = 0;
+					}
+				}
+				else if (DAT_18 == 0)
+				{
+					sbyte param2 = DAT_18 = (sbyte)GameManager.instance.FUN_1DD9C();
+					GameManager.instance.FUN_1E098(param2, vData.sndList, 0, (uint)num, param5: true);
+					GameManager.instance.FUN_1E30C(DAT_18, (maxFullHealth - maxHalfHealth) * 4999 / (int)maxFullHealth + 2298);
+				}
+				else
+				{
+					GameManager.instance.FUN_1E2C8(DAT_18, (uint)num);
+				}
+			}
+			child2.DAT_4A -= DAT_19;
+			break;
+		case 1:
+			DAT_19 = 0;
+			flags |= 128u;
+			break;
+		case 2:
+			switch (tags++)
+			{
+			case 0:
+			{
+				List<VigTuple> worldObjs = GameManager.instance.worldObjs;
+				for (int i = 0; i < worldObjs.Count; i++)
+				{
+					VigTuple vigTuple = worldObjs[i];
+					if (vigTuple.vObject.type == 2 && vigTuple.vObject.maxHalfHealth != 0 && (vigTuple.vObject.flags & 0x4000000) == 0 && ((Vehicle)vigTuple.vObject).shield == 0)
+					{
+						((Vehicle)vigTuple.vObject).FUN_39BC4();
+					}
+				}
+				ForkLift3 forkLift = LevelManager.instance.xobfList[42].ini.FUN_2C17C(27, typeof(ForkLift3), 8u) as ForkLift3;
+				Utilities.ParentChildren(forkLift, forkLift);
+				forkLift.type = 8;
+				forkLift.flags = 788u;
+				forkLift.screen = screen;
+				forkLift.maxHalfHealth = 500;
+				forkLift.FUN_3066C();
+				forkLift.DAT_58 = forkLift.vCollider.reader.ReadInt32(16);
+				UIManager.instance.FUN_4E338(new Color32(byte.MaxValue, 128, 64, 24));
+				GameManager.instance.FUN_30CB0(this, 60);
+				break;
+			}
+			case 1:
+			{
+				int param = 53;
+				if (id == 98)
+				{
+					param = 51;
+				}
+				GameManager.instance.FUN_318D0(param).FUN_4DC94();
+				param = 54;
+				if (id == 98)
+				{
+					param = 52;
+				}
+				GameManager.instance.FUN_318D0(param).FUN_4DC94();
+				break;
+			}
+			}
+			break;
+		case 8:
+			if (!FUN_32B90((uint)arg2))
+			{
+				if (DAT_18 != 0)
+				{
+					GameManager.instance.FUN_1E30C(DAT_18, (maxFullHealth - maxHalfHealth) * 4999 / (int)maxFullHealth + 2298);
+				}
+				DAT_19 = (byte)((maxFullHealth - maxHalfHealth) * 5 / (int)maxFullHealth);
+			}
+			break;
+		case 9:
+			if (arg2 != 0)
+			{
+				FUN_30BA8();
+				GameManager.instance.FUN_1DE78(DAT_18);
+				int param = GameManager.instance.FUN_1DD9C();
+				GameManager.instance.FUN_1E14C(param, LevelManager.instance.xobfList[42].sndList, 1);
+				param = GameManager.instance.FUN_1DD9C();
+				GameManager.instance.FUN_1E14C(param, LevelManager.instance.xobfList[42].sndList, 2);
+				UIManager.instance.FUN_4E338(new Color32(byte.MaxValue, byte.MaxValue, 128, 8));
+				Ballistic obj = LevelManager.instance.xobfList[42].ini.FUN_2C17C(33, typeof(Ballistic), 8u) as Ballistic;
+				obj.screen = screen;
+				obj.flags = 36u;
+				obj.FUN_3066C();
+				GameManager.instance.FUN_30CB0(this, 30);
+			}
+			break;
+		}
+		return 0u;
+	}
 }

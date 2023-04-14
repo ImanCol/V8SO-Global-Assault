@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MGun : VigObject
@@ -14,103 +12,97 @@ public class MGun : VigObject
         base.Update();
     }
 
-    //FUN_42A64
     public override uint UpdateW(int arg1, VigObject arg2)
     {
-        sbyte sbVar1;
-        short sVar1;
-        Ballistic ppcVar2;
-        Bullet ppcVar3;
-        ushort uVar4;
-        int iVar5;
-        int iVar6;
-        Vector3Int local_18;
-
         switch (arg1)
         {
             case 1:
-                maxHalfHealth = 1280;
-                return 0;
+                base.maxHalfHealth = 1280;
+                return 0u;
             case 4:
-                iVar6 = maxHalfHealth - 64;
-                iVar5 = 0x500;
-
-                if (0x500 < iVar6)
-                    iVar5 = iVar6;
-
-                maxHalfHealth = (ushort)iVar5;
-                DAT_18 = 0;
-
-                if (tags != 0)
-                    tags--;
-
-                return 0;
-            case 12:
-                sbVar1 = (sbyte)(tags - 1);
-                tags = sbVar1;
-
-                if (sbVar1 != -1)
-                    return 0;
-
-                ppcVar2 = LevelManager.instance.xobfList[19].ini.FUN_2C17C(2, typeof(Ballistic), 8) as Ballistic;
-                ppcVar3 = LevelManager.instance.xobfList[19].ini.FUN_2C17C(210, typeof(Bullet), 8) as Bullet;
-                LevelManager.instance.FUN_42560(arg2, this, ppcVar3, ppcVar2);
-                ppcVar3.flags = 0x280;
-                uVar4 = 7;
-
-                if (((Vehicle)arg2).doubleDamage != 0)
-                    uVar4 = 14;
-
-                ppcVar3.maxHalfHealth = uVar4;
-                iVar5 = arg2.physics1.X;
-
-                if (iVar5 < 0)
-                    iVar5 += 127;
-
-                ppcVar3.physics1.Z = (iVar5 >> 7) + ppcVar3.vTransform.rotation.V02 * 4;
-                iVar5 = arg2.physics1.Y;
-
-                if (iVar5 < 0)
-                    iVar5 += 127;
-
-                ppcVar3.physics1.W = (iVar5 >> 7) + ppcVar3.vTransform.rotation.V12 * 4;
-                iVar5 = arg2.physics1.Z;
-
-                if (iVar5 < 0)
-                    iVar5 += 127;
-
-                ppcVar3.physics2.X = (iVar5 >> 7) + ppcVar3.vTransform.rotation.V22 * 4;
-                ppcVar3.physics2.M2 = 45;
-                ppcVar3.FUN_305FC();
-
-                if ((arg2.flags & 4) == 0)
-                    ppcVar2.FUN_30BF0();
-
-                iVar5 = DAT_18;
-
-                if (iVar5 == 0)
                 {
-                    sbVar1 = (sbyte)GameManager.instance.FUN_1DD9C();
-                    DAT_18 = sbVar1;
-                    iVar5 = sbVar1;
+                    int num = base.maxHalfHealth - 64;
+                    int num2 = 1280;
+                    if (1280 < num)
+                    {
+                        num2 = num;
+                    }
+                    base.maxHalfHealth = (ushort)num2;
+                    DAT_18 = 0;
+                    if (tags != 0)
+                    {
+                        tags--;
+                    }
+                    return 0u;
                 }
-
-                GameManager.instance.FUN_1E580(iVar5, GameManager.instance.DAT_C2C, 41, ppcVar3.screen);
-                tags = (sbyte)(maxHalfHealth >> 8);
-                maxHalfHealth += 32;
-                break;
+            case 12:
+                {
+                    if (--tags != -1)
+                    {
+                        return 0u;
+                    }
+                    Ballistic ballistic = LevelManager.instance.xobfList[19].ini.FUN_2C17C(2, typeof(Ballistic), 8u) as Ballistic;
+                    Bullet bullet = LevelManager.instance.xobfList[19].ini.FUN_2C17C(210, typeof(Bullet), 8u) as Bullet;
+                    LevelManager.instance.FUN_42560(arg2, this, bullet, ballistic);
+                    bullet.flags = 640u;
+                    ushort maxHalfHealth = 7;
+                    if (((Vehicle)arg2).doubleDamage != 0)
+                    {
+                        maxHalfHealth = 14;
+                    }
+                    bullet.maxHalfHealth = maxHalfHealth;
+                    int num2 = arg2.physics1.X;
+                    if (num2 < 0)
+                    {
+                        num2 += 127;
+                    }
+                    bullet.physics1.Z = (num2 >> 7) + bullet.vTransform.rotation.V02 * 4;
+                    num2 = arg2.physics1.Y;
+                    if (num2 < 0)
+                    {
+                        num2 += 127;
+                    }
+                    bullet.physics1.W = (num2 >> 7) + bullet.vTransform.rotation.V12 * 4;
+                    num2 = arg2.physics1.Z;
+                    if (num2 < 0)
+                    {
+                        num2 += 127;
+                    }
+                    bullet.physics2.X = (num2 >> 7) + bullet.vTransform.rotation.V22 * 4;
+                    bullet.physics2.M2 = 45;
+                    bullet.FUN_305FC();
+                    if ((arg2.flags & 4) == 0)
+                    {
+                        ballistic.FUN_30BF0();
+                    }
+                    num2 = DAT_18;
+                    if (num2 == 0)
+                    {
+                        num2 = (DAT_18 = (sbyte)GameManager.instance.FUN_1DD9C());
+                    }
+                    GameManager.instance.FUN_1E580(num2, GameManager.instance.DAT_C2C, 41, bullet.screen);
+                    tags = (sbyte)(base.maxHalfHealth >> 8);
+                    base.maxHalfHealth += 32;
+                    break;
+                }
             case 13:
-                local_18 = Utilities.FUN_24304(arg2.vTransform, ((Vehicle)arg2).target.vTransform.position);
-
-                if (0x7cffe < local_18.z - 1)
-                    return 0;
-
-                if (local_18.x < 0)
-                    local_18.x = -local_18.x;
-
-                return (uint)(local_18.x * 6 < local_18.z ? 1 : 0);
+                {
+                    Vector3Int vector3Int = Utilities.FUN_24304(arg2.vTransform, ((Vehicle)arg2).target.vTransform.position);
+                    if (511998 < vector3Int.z - 1)
+                    {
+                        return 0u;
+                    }
+                    if (vector3Int.x < 0)
+                    {
+                        vector3Int.x = -vector3Int.x;
+                    }
+                    if (vector3Int.x * 6 >= vector3Int.z)
+                    {
+                        return 0u;
+                    }
+                    return 1u;
+                }
         }
-
-        return 0;
+        return 0u;
     }
 }

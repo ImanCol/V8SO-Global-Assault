@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Empty : VigObject
 {
     protected override void Start()
@@ -14,56 +10,49 @@ public class Empty : VigObject
         base.Update();
     }
 
-    //FUN_49880
     public override uint UpdateW(int arg1, int arg2)
     {
-        uint uVar2;
-
-        switch (arg1)
+        if (arg1 == 0)
         {
-            case 0:
-                FUN_42330(arg2);
-                uVar2 = 0;
-                break;
-            default:
-                uVar2 = 0;
-                break;
+            FUN_42330(arg2);
+            return 0u;
         }
-
-        return uVar2;
+        return 0u;
     }
 
     public override uint UpdateW(int arg1, VigObject arg2)
     {
-        short sVar1;
-        uint uVar2;
-
-        switch (arg1)
+        uint result;
+        if (arg1 != 0)
         {
-            case 0:
-                FUN_42330(arg2);
-                uVar2 = 0;
-                break;
-            case 1:
-                maxHalfHealth = 6;
-                goto default;
-            default:
-                uVar2 = 0;
-                break;
-            case 12:
-                sVar1 = (short)(maxHalfHealth - 1);
-                maxHalfHealth = (ushort)sVar1;
-                uVar2 = 60;
-
-                if (sVar1 == 0)
+            if (arg1 != 1)
+            {
+                if (arg1 == 12)
                 {
-                    FUN_3A368();
-                    uVar2 = 60;
+                    short num = (short)(maxHalfHealth - 1);
+                    maxHalfHealth = (ushort)num;
+                    result = 60u;
+                    if (num == 0)
+                    {
+                        FUN_3A368();
+                        result = 60u;
+                    }
+                    goto IL_0046;
                 }
-
-                break;
+            }
+            else
+            {
+                maxHalfHealth = 6;
+            }
+            result = 0u;
         }
-
-        return uVar2;
+        else
+        {
+            FUN_42330(arg2);
+            result = 0u;
+        }
+        goto IL_0046;
+    IL_0046:
+        return result;
     }
 }

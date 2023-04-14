@@ -1,120 +1,103 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Tantrum2 : VigObject
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-    public override uint OnCollision(HitDetection hit)
-    {
-        short sVar2;
-        int iVar3;
-        uint uVar3;
-        Vector3Int v3Var3;
-        uint uVar5;
-        int iVar4;
-        Particle1 pVar4;
-        VigObject oVar4;
-        int iVar6;
-        VigObject oVar7;
-        Vehicle vVar7;
-        Vector3Int iStack24;
+	public override uint OnCollision(HitDetection hit)
+	{
+		uint result = 0u;
+		if (hit.object2.type != 3)
+		{
+			VigObject self = hit.self;
+			if (self.type != 3)
+			{
+				Particle1 particle = LevelManager.instance.FUN_4DE54(screen, 34);
+				particle.flags |= 1024u;
+				short z = (short)GameManager.FUN_2AC5C();
+				particle.vr.z = z;
+				particle.ApplyTransformation();
+				int param = GameManager.instance.FUN_1DD9C();
+				GameManager.instance.FUN_1E628(param, GameManager.instance.DAT_C2C, 66, screen);
+				if (self.type == 2)
+				{
+					Vehicle vehicle = (Vehicle)self;
+					Vector3Int v = default(Vector3Int);
+					v.x = physics1.Z << 4;
+					v.y = physics1.W << 4;
+					v.z = physics2.X << 4;
+					vehicle.FUN_2B370(v, vTransform.position);
+					if (vehicle.id < 0)
+					{
+						GameManager.instance.FUN_15ADC(~vehicle.id, 10);
+					}
+					if ((GameManager.FUN_2AC5C() & 7) == 0 && vehicle.shield == 0)
+					{
+						int num = (int)(GameManager.FUN_2AC5C() * 3) >> 15;
+						VigObject vigObject = vehicle.weapons[num];
+						if (vigObject != null && vigObject.tags < 8)
+						{
+							if (GameManager.instance.gameMode < _GAME_MODE.Versus2 || vehicle.id == -1)
+							{
+								if (GameManager.instance.gameMode >= _GAME_MODE.Versus2)
+								{
+									//ClientSend.DropWeapon(vigObject.tags);
+								}
+								Vector3Int param2 = GameManager.instance.FUN_2CE50(vigObject);
+								LevelManager.instance.FUN_4DE54(param2, 142);
+								vehicle.FUN_3A280((uint)num);
+							}
+							//else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && vehicle.id > 0)
+							else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && vehicle.id > 0)
+							{
+								//ClientSend.DropWeaponAI(vehicle.id, vigObject.tags);
+								Vector3Int param2 = GameManager.instance.FUN_2CE50(vigObject);
+								LevelManager.instance.FUN_4DE54(param2, 142);
+								vehicle.FUN_3A280((uint)num);
+							}
+						}
+					}
+				}
+				LevelManager.instance.FUN_309C8(this, 0);
+			}
+			result = uint.MaxValue;
+		}
+		return result;
+	}
 
-        uVar3 = 0;
-        oVar7 = hit.self;
-
-        if (oVar7.type != 3)
-        {
-            pVar4 = LevelManager.instance.FUN_4DE54(screen, 34);
-            pVar4.flags |= 0x400;
-            sVar2 = (short)GameManager.FUN_2AC5C();
-            pVar4.vr.z = sVar2;
-            pVar4.ApplyTransformation();
-            iVar3 = GameManager.instance.FUN_1DD9C();
-            GameManager.instance.FUN_1E628(iVar3, GameManager.instance.DAT_C2C, 66, screen);
-
-            if (oVar7.type == 2)
-            {
-                vVar7 = (Vehicle)oVar7;
-                iStack24 = new Vector3Int();
-                iStack24.x = physics1.Z << 4;
-                iStack24.y = physics1.W << 4;
-                iStack24.z = physics2.X << 4;
-                vVar7.FUN_2B370(iStack24, vTransform.position);
-
-                if (vVar7.id < 0)
-                    GameManager.instance.FUN_15ADC(~vVar7.id, 10);
-
-                uVar5 = GameManager.FUN_2AC5C();
-
-                if ((uVar5 & 7) == 0)
-                {
-                    iVar4 = (int)GameManager.FUN_2AC5C();
-                    iVar6 = iVar4 * 3 >> 15;
-                    oVar4 = vVar7.weapons[iVar6];
-
-                    if (oVar4 != null && oVar4.tags < 8)
-                    {
-                        v3Var3 = GameManager.instance.FUN_2CE50(oVar4);
-                        LevelManager.instance.FUN_4DE54(v3Var3, 142);
-                        vVar7.FUN_3A280((uint)iVar6);
-                    }
-                }
-            }
-
-            LevelManager.instance.FUN_309C8(this, 0);
-        }
-
-        uVar3 = 0xffffffff;
-        return uVar3;
-    }
-
-    //FUN_70 (WUNDER.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        short sVar1;
-        short sVar2;
-        int iVar3;
-        uint uVar3;
-        Particle1 pVar7;
-
-        if (arg1 == 0)
-        {
-            screen.x += physics1.Z;
-            screen.y += physics1.W;
-            screen.z += physics2.X;
-            vTransform.position.x = screen.x;
-            vTransform.position.y = screen.y;
-            vTransform.position.z = screen.z;
-            sVar1 = (short)(physics2.M2 - 1);
-            physics2.M2 = sVar1;
-
-            if (sVar1 == -1 || GameManager.instance.terrain.FUN_1B750((uint)screen.x, (uint)screen.z) < screen.y)
-            {
-                pVar7 = LevelManager.instance.FUN_4DE54(screen, 34);
-                sVar2 = (short)GameManager.FUN_2AC5C();
-                pVar7.vr.z = sVar2;
-                pVar7.ApplyTransformation();
-                iVar3 = GameManager.instance.FUN_1DD9C();
-                GameManager.instance.FUN_1E628(iVar3, GameManager.instance.DAT_C2C, 66, screen);
-                LevelManager.instance.FUN_309C8(this, 1);
-                uVar3 = 0;
-            }
-            else
-                uVar3 = 0;
-        }
-        else
-            uVar3 = 0;
-
-        return uVar3;
-    }
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		if (arg1 == 0)
+		{
+			screen.x += physics1.Z;
+			screen.y += physics1.W;
+			screen.z += physics2.X;
+			vTransform.position.x = screen.x;
+			vTransform.position.y = screen.y;
+			vTransform.position.z = screen.z;
+			short num = (short)(physics2.M2 - 1);
+			physics2.M2 = num;
+			if (num == -1 || GameManager.instance.terrain.FUN_1B750((uint)screen.x, (uint)screen.z) < screen.y)
+			{
+				Particle1 particle = LevelManager.instance.FUN_4DE54(screen, 34);
+				short z = (short)GameManager.FUN_2AC5C();
+				particle.vr.z = z;
+				particle.ApplyTransformation();
+				int param = GameManager.instance.FUN_1DD9C();
+				GameManager.instance.FUN_1E628(param, GameManager.instance.DAT_C2C, 66, screen);
+				LevelManager.instance.FUN_309C8(this, 1);
+				return 0u;
+			}
+			return 0u;
+		}
+		return 0u;
+	}
 }

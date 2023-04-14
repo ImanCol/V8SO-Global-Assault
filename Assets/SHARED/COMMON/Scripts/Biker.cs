@@ -1,149 +1,146 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Biker : VigObject
 {
-    //FUN_294 (STNTBIKE.DLL)
-    public static uint LoadDakota(Vehicle param1, int param2, int param3)
-    {
-        VigObject puVar1;
-        Vehicle vVar2;
-        ConfigContainer ccVar2;
+	private Vehicle vehicle;
 
-        if (param2 == 1)
-        {
-            puVar1 = param1.vData.ini.FUN_2C17C(1, typeof(Biker), 8);
-            Utilities.ParentChildren(puVar1, puVar1);
-            puVar1.flags |= 4;
-            ccVar2 = param1.FUN_2C5F4(0x8102);
-            Utilities.FUN_2CA94(param1, ccVar2, puVar1);
-            Utilities.ParentChildren(param1, puVar1);
-            puVar1.FUN_30B78();
-            return param1.FUN_367A4(param2, param3);
-        }
+	public static uint LoadDakota(Vehicle param1, int param2, int param3, bool param4)
+	{
+		if (param2 == 1)
+		{
+			Biker biker = param1.vData.ini.FUN_2C17C(1, typeof(Biker), 8u) as Biker;
+			Utilities.ParentChildren(biker, biker);
+			biker.flags |= 4u;
+			ConfigContainer cont = param1.FUN_2C5F4(33026);
+			Utilities.FUN_2CA94(param1, cont, biker);
+			Utilities.ParentChildren(param1, biker);
+			biker.FUN_30B78();
+			biker.vehicle = param1;
+			if (param4)
+			{
+				GameManager.instance.FUN_30CB0(biker, 0);
+				param1.FUN_367A4(param2, param3);
+			}
+		}
+		return 0u;
+	}
 
-        return 0;
-    }
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-    protected override void Start()
-    {
-        base.Start();
-    }
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		uint result;
+		if (arg1 == 0)
+		{
+			result = 0u;
+			if (arg2 != 0)
+			{
+				Vehicle vehicle = (Vehicle)Utilities.FUN_2CD78(this);
+				uint flags = base.flags;
+				int num = (vehicle.turning << 3) / 682 + 8;
+				base.flags = (flags | 4);
+				if (num == tags)
+				{
+					result = 0u;
+					if (num == 8)
+					{
+						byte dAT_ = DAT_19;
+						if (dAT_ == 0)
+						{
+							if (DAT_1A == 3)
+							{
+								return 0u;
+							}
+							if (0 < vehicle.physics1.Y)
+							{
+								if ((vehicle.flags & 0x10000000) != 0)
+								{
+									return 0u;
+								}
+								if ((flags & 0x1000000) != 0)
+								{
+									return 0u;
+								}
+								base.flags = (flags | 0x1000004);
+								FUN_2C124(3);
+								Utilities.ParentChildren(this, this);
+								return 0u;
+							}
+						}
+						else
+						{
+							DAT_19 = (byte)(dAT_ - 1);
+							if (dAT_ != 1)
+							{
+								return 0u;
+							}
+							FUN_2C124(2);
+							Utilities.ParentChildren(this, this);
+							GameManager.instance.FUN_30080(GameManager.instance.DAT_10A8, this);
+							base.flags &= 4278190079u;
+						}
+						result = 0u;
+					}
+				}
+				else
+				{
+					if (DAT_1A == 1)
+					{
+						if (num < tags)
+						{
+							GameManager.instance.FUN_2C0A0(child2);
+						}
+					}
+					else
+					{
+						FUN_2C124(1);
+						Utilities.ParentChildren(this, this);
+						GameManager.instance.FUN_300B8(GameManager.instance.DAT_10A8, this);
+					}
+					DAT_19 = 15;
+					tags = (sbyte)num;
+					GameManager.instance.FUN_2FEE8(this, (ushort)(child2.DAT_4A + num * 2));
+					result = 0u;
+				}
+			}
+		}
+		else
+		{
+			if (arg1 == 2 && GameManager.instance.experimentalDakota)
+			{
+				Biker2 obj = this.vehicle.vData.FUN_3C464(0, GameManager.vehicleConfigs[2], typeof(Biker2)) as Biker2;
+				obj.leader = this.vehicle;
+				obj.bikerID = 0;
+				obj.UpdateW(1, 1);
+				Biker2 obj2 = this.vehicle.vData.FUN_3C464(0, GameManager.vehicleConfigs[2], typeof(Biker2)) as Biker2;
+				obj2.leader = this.vehicle;
+				obj2.bikerID = 1;
+				obj2.UpdateW(1, 1);
+			}
+			result = 0u;
+		}
+		return result;
+	}
 
-    //FUN_A0 (STNTBIKE.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        byte bVar1;
-        uint uVar2;
-        Vehicle vVar3;
-        uint uVar4;
-        int iVar5;
-
-        if (arg1 == 0)
-        {
-            uVar2 = 0;
-
-            if (arg2 != 0)
-            {
-                vVar3 = (Vehicle)Utilities.FUN_2CD78(this);
-                uVar4 = flags;
-                iVar5 = (vVar3.turning << 3) / 682 + 8;
-                flags = uVar4 | 4;
-
-                if (iVar5 == tags)
-                {
-                    uVar2 = 0;
-
-                    if (iVar5 == 8)
-                    {
-                        bVar1 = DAT_19;
-
-                        if (bVar1 == 0)
-                        {
-                            if (DAT_1A == 3)
-                                return 0;
-
-                            if (0 < vVar3.physics1.Y)
-                            {
-                                if ((vVar3.flags & 0x10000000) != 0)
-                                    return 0;
-
-                                if ((uVar4 & 0x1000000) != 0)
-                                    return 0;
-
-                                flags = uVar4 | 0x1000004;
-                                FUN_2C124(3);
-                                Utilities.ParentChildren(this, this);
-                                return 0;
-                            }
-                        }
-                        else
-                        {
-                            DAT_19 = (byte)(bVar1 - 1);
-
-                            if (bVar1 != 1)
-                                return 0;
-
-                            FUN_2C124(2);
-                            Utilities.ParentChildren(this, this);
-                            GameManager.instance.FUN_30080(GameManager.instance.DAT_10A8, this);
-                            flags &= 0xfeffffff;
-                        }
-
-                        uVar2 = 0;
-                    }
-                }
-                else
-                {
-                    if (DAT_1A == 1)
-                    {
-                        if (iVar5 < tags)
-                            GameManager.instance.FUN_2C0A0(child2);
-                    }
-                    else
-                    {
-                        FUN_2C124(1);
-                        Utilities.ParentChildren(this, this);
-                        GameManager.instance.FUN_300B8(GameManager.instance.DAT_10A8, this);
-                    }
-
-                    DAT_19 = 15;
-                    tags = (sbyte)iVar5;
-                    GameManager.instance.FUN_2FEE8(this, (ushort)(child2.DAT_4A + iVar5 * 2));
-                    uVar2 = 0;
-                }
-            }
-        }
-        else
-            uVar2 = 0;
-
-        return uVar2;
-    }
-
-    public override uint UpdateW(int arg1, VigObject arg2)
-    {
-        uint uVar2;
-
-        uVar2 = 0;
-
-        if (arg1 == 5)
-        {
-            uVar2 = 0;
-
-            if (DAT_1A == 3)
-            {
-                FUN_2C124(2);
-                Utilities.ParentChildren(this, this);
-                uVar2 = 0xfffffffe;
-            }
-        }
-
-        return uVar2;
-    }
+	public override uint UpdateW(int arg1, VigObject arg2)
+	{
+		uint result = 0u;
+		if (arg1 == 5)
+		{
+			result = 0u;
+			if (DAT_1A == 3)
+			{
+				FUN_2C124(2);
+				Utilities.ParentChildren(this, this);
+				result = 4294967294u;
+			}
+		}
+		return result;
+	}
 }

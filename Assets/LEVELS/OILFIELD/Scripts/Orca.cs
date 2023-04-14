@@ -1,236 +1,208 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Orca : VigObject
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
+	public JUNC_DB DAT_84_2;
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-    public override uint OnCollision(HitDetection hit)
-    {
-        sbyte sVar2;
-        int iVar4;
-        Vehicle vVar13;
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-        if (hit.self.type != 2)
-            return 0;
+	public override uint OnCollision(HitDetection hit)
+	{
+		if (hit.self.type != 2)
+		{
+			return 0u;
+		}
+		Vehicle vehicle = (Vehicle)hit.self;
+		if (FUN_33798(hit, 7629) != 0)
+		{
+			vehicle.FUN_3A064(-13, vTransform.position, param3: true);
+		}
+		if (DAT_18 == 0)
+		{
+			sbyte param = DAT_18 = (sbyte)GameManager.instance.FUN_1DD9C();
+			GameManager.instance.FUN_1E580(param, GameManager.instance.DAT_C2C, 38, vTransform.position);
+			GameManager.instance.FUN_30CB0(this, 60);
+			return 0u;
+		}
+		return 0u;
+	}
 
-        vVar13 = (Vehicle)hit.self;
-        iVar4 = (int)FUN_33798(hit, 7629);
-
-        if (iVar4 != 0)
-            vVar13.FUN_3A064(-13, vTransform.position, true); //originally -3
-
-        if (DAT_18 == 0)
-        {
-            sVar2 = (sbyte)GameManager.instance.FUN_1DD9C();
-            DAT_18 = sVar2;
-            GameManager.instance.FUN_1E580(sVar2, GameManager.instance.DAT_C2C, 38, vTransform.position);
-            GameManager.instance.FUN_30CB0(this, 60);
-            return 0;
-        }
-
-        return 0;
-    }
-
-    public JUNC_DB DAT_84_2; //0x84
-
-    //FUN_2428 (OILFIELD.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        bool bVar1;
-        sbyte sVar2;
-        uint uVar3;
-        RSEG_DB piVar5;
-        JUNC_DB puVar6;
-        int iVar7;
-        JUNC_DB jVar7;
-        int iVar8;
-        int iVar9;
-        int iVar4;
-        int iVar10;
-        uint uVar12;
-        int iVar13;
-        Vehicle vVar14;
-
-        switch (arg1)
-        {
-            case 0:
-                if (tags != 3)
-                {
-                    iVar8 = physics2.X - vTransform.position.z;
-                    iVar13 = vTransform.position.y;
-                    iVar4 = physics1.Z - vTransform.position.x;
-
-                    if (tags != 0)
-                        iVar13 -= 0x32000;
-
-                    iVar13 = GameManager.instance.DAT_DB0 - iVar13;
-
-                    if (DAT_18 == 0 && tags == 0 && 0 < iVar13)
-                    {
-                        sVar2 = (sbyte)GameManager.instance.FUN_1DD9C();
-                        DAT_18 = sVar2;
-                        GameManager.instance.FUN_1E580(sVar2, GameManager.instance.DAT_C2C, 38, vTransform.position);
-                        GameManager.instance.FUN_30CB0(this, 60);
-                    }
-
-                    iVar7 = iVar8;
-
-                    if (iVar8 < 0)
-                        iVar7 = -iVar8;
-
-                    iVar9 = iVar4;
-
-                    if (iVar4 < 0)
-                        iVar9 = -iVar4;
-
-                    if (iVar7 < iVar9)
-                        iVar7 = iVar9;
-
-                    if (iVar7 < 0x10000)
-                    {
-                        uVar12 = (uint)GameManager.FUN_2AC5C();
-                        jVar7 = DAT_84_2;
-                        piVar5 = jVar7.DAT_1C[(int)(uVar12 & 1)];
-                        bVar1 = jVar7 == piVar5.DAT_00[0];
-                        DAT_19 = (byte)(bVar1 ? 1 : 0);
-                        puVar6 = piVar5.DAT_00[DAT_19];
-                        DAT_84_2 = puVar6;
-                        physics1.Z = puVar6.DAT_00.x;
-                        physics1.W = puVar6.DAT_00.y;
-                        physics2.X = puVar6.DAT_00.z;
-
-                        if ((uVar12 & 3) == 0)
-                            tags = (sbyte)(1 - tags);
-                    }
-
-                    iVar4 = Utilities.Ratan2(iVar4, iVar8);
-                    iVar8 = (iVar4 - (ushort)vr.y) * 0x100000 >> 20;
-                    iVar4 = -22;
-
-                    if (-23 < iVar8)
-                    {
-                        iVar4 = 22;
-
-                        if (iVar8 < 23)
-                            iVar4 = iVar8;
-                    }
-
-                    vr.y += (short)iVar4;
-                    iVar4 = (-iVar13 / 0x5000) * 56;
-                    iVar13 = -341;
-
-                    if (-342 < iVar4)
-                    {
-                        iVar13 = 341;
-
-                        if (iVar4 < 342)
-                            iVar13 = iVar4;
-                    }
-
-                    iVar13 -= vr.x;
-                    iVar4 = -5;
-
-                    if (-6 < iVar13)
-                    {
-                        iVar4 = 5;
-
-                        if (iVar13 < 6)
-                            iVar4 = iVar13;
-                    }
-
-                    vr.x += (short)iVar4;
-                    ApplyRotationMatrix();
-                    iVar13 = vTransform.rotation.V02 * 7629;
-
-                    if (iVar13 < 0)
-                        iVar13 += 4095;
-
-                    iVar4 = vTransform.rotation.V12 * 7629;
-                    vTransform.position.x += iVar13 >> 12;
-
-                    if (iVar4 < 0)
-                        iVar4 += 4095;
-
-                    iVar13 = vTransform.rotation.V22 * 7629;
-                    vTransform.position.y += iVar4 >> 12;
-
-                    if (iVar13 < 0)
-                        iVar13 += 4095;
-
-                    vTransform.position.z += iVar13 >> 12;
-                    return 0;
-                }
-
-                uVar12 = maxHalfHealth;
-                maxHalfHealth--;
-
-                if (uVar12 == 0)
-                {
-                    uVar3 = flags;
-                    tags = 0;
-                    flags = uVar3 & 0xffffffdf;
-                }
-                else
-                {
-                    if (uVar12 == 0x10)
-                    {
-                        iVar10 = GameManager.instance.FUN_1DD9C();
-                        GameManager.instance.FUN_1E580(iVar10, GameManager.instance.DAT_C2C, 38, vTransform.position);
-                        uVar3 = flags;
-                        flags = uVar3 & 0xffffffdf;
-                    }
-                }
-
-                iVar13 = (int)uVar12 - 16;
-
-                if (iVar13 < 0)
-                    iVar13 = -iVar13;
-
-                iVar4 = (16 - iVar13) * 227;
-
-                if (iVar4 < 0)
-                    iVar4 += 15;
-
-                vr.x = iVar4 >> 4;
-                ApplyRotationMatrix();
-                iVar4 = vTransform.rotation.V02 * 3814;
-
-                if (iVar4 < 0)
-                    iVar4 += 4095;
-
-                iVar8 = vTransform.rotation.V22 * 3814;
-                vTransform.position.x += iVar4 >> 12;
-
-                if (iVar8 < 0)
-                    iVar8 += 4095;
-
-                vTransform.position.z += iVar8 >> 12;
-                vTransform.position.y = GameManager.instance.DAT_DB0 + (16 - iVar13) * -0x780;
-                break;
-            case 1:
-                piVar5 = LevelManager.instance.FUN_518DC(screen, 16);
-                puVar6 = piVar5.DAT_00[0];
-                DAT_84_2 = puVar6;
-                physics1.Z = puVar6.DAT_00.x;
-                physics1.W = puVar6.DAT_00.y;
-                physics2.X = puVar6.DAT_00.z;
-                flags |= 0x10184;
-                break;
-            case 2:
-                DAT_18 = 0;
-                break;
-        }
-
-        return 0;
-    }
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		switch (arg1)
+		{
+		case 0:
+		{
+			uint num6;
+			int num2;
+			int num3;
+			int num;
+			if (tags != 3)
+			{
+				num = physics2.X - vTransform.position.z;
+				num2 = vTransform.position.y;
+				num3 = physics1.Z - vTransform.position.x;
+				if (tags != 0)
+				{
+					num2 -= 204800;
+				}
+				num2 = GameManager.instance.DAT_DB0 - num2;
+				if (DAT_18 == 0 && tags == 0 && 0 < num2)
+				{
+					sbyte param = DAT_18 = (sbyte)GameManager.instance.FUN_1DD9C();
+					GameManager.instance.FUN_1E580(param, GameManager.instance.DAT_C2C, 38, vTransform.position);
+					GameManager.instance.FUN_30CB0(this, 60);
+				}
+				int num4 = num;
+				if (num < 0)
+				{
+					num4 = -num;
+				}
+				int num5 = num3;
+				if (num3 < 0)
+				{
+					num5 = -num3;
+				}
+				if (num4 < num5)
+				{
+					num4 = num5;
+				}
+				if (num4 < 65536)
+				{
+					num6 = GameManager.FUN_2AC5C();
+					JUNC_DB dAT_84_ = DAT_84_2;
+					RSEG_DB rSEG_DB = dAT_84_.DAT_1C[num6 & 1];
+					DAT_19 = (byte)((dAT_84_ == rSEG_DB.DAT_00[0]) ? 1 : 0);
+					JUNC_DB jUNC_DB = DAT_84_2 = rSEG_DB.DAT_00[DAT_19];
+					physics1.Z = jUNC_DB.DAT_00.x;
+					physics1.W = jUNC_DB.DAT_00.y;
+					physics2.X = jUNC_DB.DAT_00.z;
+					if ((num6 & 3) == 0)
+					{
+						tags = (sbyte)(1 - tags);
+					}
+				}
+				num3 = Utilities.Ratan2(num3, num);
+				num = (num3 - (ushort)vr.y) * 1048576 >> 20;
+				num3 = -22;
+				if (-23 < num)
+				{
+					num3 = 22;
+					if (num < 23)
+					{
+						num3 = num;
+					}
+				}
+				vr.y += (short)num3;
+				num3 = -num2 / 20480 * 56;
+				num2 = -341;
+				if (-342 < num3)
+				{
+					num2 = 341;
+					if (num3 < 342)
+					{
+						num2 = num3;
+					}
+				}
+				num2 -= vr.x;
+				num3 = -5;
+				if (-6 < num2)
+				{
+					num3 = 5;
+					if (num2 < 6)
+					{
+						num3 = num2;
+					}
+				}
+				vr.x += (short)num3;
+				ApplyRotationMatrix();
+				num2 = vTransform.rotation.V02 * 7629;
+				if (num2 < 0)
+				{
+					num2 += 4095;
+				}
+				num3 = vTransform.rotation.V12 * 7629;
+				vTransform.position.x += num2 >> 12;
+				if (num3 < 0)
+				{
+					num3 += 4095;
+				}
+				num2 = vTransform.rotation.V22 * 7629;
+				vTransform.position.y += num3 >> 12;
+				if (num2 < 0)
+				{
+					num2 += 4095;
+				}
+				vTransform.position.z += num2 >> 12;
+				return 0u;
+			}
+			num6 = maxHalfHealth;
+			maxHalfHealth--;
+			switch (num6)
+			{
+			case 0u:
+			{
+				uint flags = base.flags;
+				tags = 0;
+				base.flags = (uint)((int)flags & -33);
+				break;
+			}
+			case 16u:
+			{
+				int param2 = GameManager.instance.FUN_1DD9C();
+				GameManager.instance.FUN_1E580(param2, GameManager.instance.DAT_C2C, 38, vTransform.position);
+				uint flags = base.flags;
+				base.flags = (uint)((int)flags & -33);
+				break;
+			}
+			}
+			num2 = (int)(num6 - 16);
+			if (num2 < 0)
+			{
+				num2 = -num2;
+			}
+			num3 = (16 - num2) * 227;
+			if (num3 < 0)
+			{
+				num3 += 15;
+			}
+			vr.x = num3 >> 4;
+			ApplyRotationMatrix();
+			num3 = vTransform.rotation.V02 * 3814;
+			if (num3 < 0)
+			{
+				num3 += 4095;
+			}
+			num = vTransform.rotation.V22 * 3814;
+			vTransform.position.x += num3 >> 12;
+			if (num < 0)
+			{
+				num += 4095;
+			}
+			vTransform.position.z += num >> 12;
+			vTransform.position.y = GameManager.instance.DAT_DB0 + (16 - num2) * -1920;
+			break;
+		}
+		case 1:
+		{
+			RSEG_DB rSEG_DB = LevelManager.instance.FUN_518DC(screen, 16);
+			JUNC_DB jUNC_DB = DAT_84_2 = rSEG_DB.DAT_00[0];
+			physics1.Z = jUNC_DB.DAT_00.x;
+			physics1.W = jUNC_DB.DAT_00.y;
+			physics2.X = jUNC_DB.DAT_00.z;
+			base.flags |= 65924u;
+			break;
+		}
+		case 2:
+			DAT_18 = 0;
+			break;
+		}
+		return 0u;
+	}
 }

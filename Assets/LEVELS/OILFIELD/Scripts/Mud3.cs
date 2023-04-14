@@ -1,138 +1,108 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Mud3 : VigObject
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
+	public int DAT_80_2;
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	public int DAT_84_2;
 
-    public int DAT_80_2; //0x80
-    public int DAT_84_2; //0x84
-    public Vehicle DAT_88; //0x88
-    public int DAT_8C; //0x8C
-    public Vector3Int[] DAT_90 = new Vector3Int[16]; //0x90
+	public Vehicle DAT_88;
 
-    //FUN_574 (OILFIELD.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        uint uVar1;
-        int iVar1;
-        int iVar2;
-        Wheel wVar2;
-        Vector3Int puVar3;
-        uint uVar4;
-        int unaff_s5;
-        Ballistic puVar5;
-        int iVar6;
-        Vehicle vVar7;
-        int iVar9;
-        int local_24;
-        VigTransform auStack88;
-        Vector3Int auStack48;
-        Vector3Int auStack40;
-        Vector3Int auStack56;
+	public int DAT_8C;
 
-        if (arg1 == 2)
-        {
-            if (tags == 0)
-            {
-                if (DAT_8C == 0)
-                {
-                    iVar1 = GameManager.instance.FUN_1DD9C();
-                    GameManager.instance.FUN_1E580(iVar1, LevelManager.instance.xobfList[42].sndList, 0, DAT_88.vTransform.position);
-                }
+	public Vector3Int[] DAT_90 = new Vector3Int[16];
 
-                unaff_s5 = 0; //not in the original code
-                iVar9 = 2;
-                auStack88 = DAT_88.FUN_2AE18();
-                iVar6 = DAT_8C;
-                vVar7 = DAT_88;
-                DAT_90[iVar6] = vVar7.vTransform.position;
-                DAT_8C = iVar6 + 1;
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-                do
-                {
-                    wVar2 = DAT_88.wheels[iVar9];
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-                    if (wVar2 != null)
-                    {
-                        auStack40 = Utilities.FUN_24148(auStack88, wVar2.vTransform.position);
-                        local_24 = 0;
-                        unaff_s5 = Utilities.FUN_29FC8(auStack40, out auStack56);
-
-                        if (0xe480 < unaff_s5)
-                        {
-                            puVar3 = GameManager.instance.FUN_2CE50(wVar2);
-                            auStack48 = GameManager.instance.terrain.FUN_1BB50(puVar3.x, puVar3.z);
-                            auStack48 = Utilities.VectorNormal(auStack48);
-                            uVar4 = GameManager.FUN_2AC5C();
-                            iVar1 = 17;
-
-                            if ((uVar4 & 1) != 0)
-                                iVar1 = 16;
-
-                            puVar5 = LevelManager.instance.xobfList[42].ini.FUN_2C17C((ushort)iVar1, typeof(Ballistic), 8) as Ballistic;
-                            puVar5.type = 7;
-                            puVar5.flags = 0x24;
-                            Utilities.FUN_2A85C(ref puVar5.vTransform.rotation, auStack56, auStack48);
-                            puVar5.vTransform.position.x = puVar3.x;
-                            puVar5.vTransform.position.z = puVar3.z;
-                            iVar1 = GameManager.instance.terrain.FUN_1B750((uint)puVar3.x, (uint)puVar3.z);
-                            puVar5.vTransform.position.y = iVar1;
-                            puVar5.FUN_305FC();
-                        }
-                    }
-
-                    iVar9++;
-                } while (iVar9 < 4);
-
-                if (DAT_8C < 16)
-                {
-                    if (unaff_s5 == 0)
-                        iVar2 = 60;
-                    else
-                    {
-                        iVar2 = 6;
-
-                        if (6 < 0x640000 / unaff_s5)
-                            iVar2 = 0x640000 / unaff_s5;
-                    }
-
-                    GameManager.instance.FUN_30CB0(this, iVar2);
-                    uVar1 = 0;
-                }
-                else
-                {
-                    DAT_88 = null;
-                    tags = 1;
-                    GameManager.instance.FUN_30CB0(this, 300);
-                    uVar1 = 0;
-                }
-            }
-            else
-            {
-                if (tags == 1)
-                {
-                    GameManager.instance.FUN_300B8(((Oilfield)LevelManager.instance.level).DAT_84_2[DAT_84_2], this);
-                    DAT_8C = 0;
-                    Destroy(gameObject);
-                    uVar1 = 0xffffffff;
-                }
-                else
-                    uVar1 = 0;
-            }
-        }
-        else
-            uVar1 = 0;
-
-        return uVar1;
-    }
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		if (arg1 == 2)
+		{
+			if (tags == 0)
+			{
+				if (DAT_8C == 0)
+				{
+					int param = GameManager.instance.FUN_1DD9C();
+					GameManager.instance.FUN_1E580(param, LevelManager.instance.xobfList[42].sndList, 0, DAT_88.vTransform.position);
+				}
+				int num = 0;
+				int num2 = 2;
+				VigTransform transform = DAT_88.FUN_2AE18();
+				int dAT_8C = DAT_8C;
+				Vehicle dAT_ = DAT_88;
+				DAT_90[dAT_8C] = dAT_.vTransform.position;
+				DAT_8C = dAT_8C + 1;
+				do
+				{
+					Wheel wheel = DAT_88.wheels[num2];
+					if (wheel != null)
+					{
+						num = Utilities.FUN_29FC8(Utilities.FUN_24148(transform, wheel.vTransform.position), out Vector3Int vout);
+						if (58496 < num)
+						{
+							Vector3Int vector3Int = GameManager.instance.FUN_2CE50(wheel);
+							Vector3Int n = GameManager.instance.terrain.FUN_1BB50(vector3Int.x, vector3Int.z);
+							n = Utilities.VectorNormal(n);
+							uint num3 = GameManager.FUN_2AC5C();
+							int param = 17;
+							if ((num3 & 1) != 0)
+							{
+								param = 16;
+							}
+							Ballistic obj = LevelManager.instance.xobfList[42].ini.FUN_2C17C((ushort)param, typeof(Ballistic), 8u) as Ballistic;
+							obj.type = 7;
+							obj.flags = 36u;
+							Utilities.FUN_2A85C(ref obj.vTransform.rotation, vout, n);
+							obj.vTransform.position.x = vector3Int.x;
+							obj.vTransform.position.z = vector3Int.z;
+							param = GameManager.instance.terrain.FUN_1B750((uint)vector3Int.x, (uint)vector3Int.z);
+							obj.vTransform.position.y = param;
+							obj.FUN_305FC();
+						}
+					}
+					num2++;
+				}
+				while (num2 < 4);
+				if (DAT_8C < 16)
+				{
+					int param2;
+					if (num == 0)
+					{
+						param2 = 60;
+					}
+					else
+					{
+						param2 = 6;
+						if (6 < 6553600 / num)
+						{
+							param2 = 6553600 / num;
+						}
+					}
+					GameManager.instance.FUN_30CB0(this, param2);
+					return 0u;
+				}
+				DAT_88 = null;
+				tags = 1;
+				GameManager.instance.FUN_30CB0(this, 300);
+				return 0u;
+			}
+			if (tags == 1)
+			{
+				GameManager.instance.FUN_300B8(((Oilfield)LevelManager.instance.level).DAT_84_2[DAT_84_2], this);
+				DAT_8C = 0;
+				UnityEngine.Object.Destroy(base.gameObject);
+				return uint.MaxValue;
+			}
+			return 0u;
+		}
+		return 0u;
+	}
 }

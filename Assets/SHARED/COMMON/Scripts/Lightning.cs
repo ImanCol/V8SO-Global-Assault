@@ -1,421 +1,385 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Lightning : VigObject
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
+	public static Vector3Int DAT_20 = new Vector3Int(0, 0, 0);
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-    //0x20 (EXCELSR.DLL)
-    public static Vector3Int DAT_20 = new Vector3Int(0, 0, 0);
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-    //FUN_8D0 (EXCELSR.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        if (arg1 == 0)
-            FUN_42330(arg2);
-        else
-        {
-            if (arg1 == 4)
-                GameManager.instance.DAT_1084--;
-        }
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		switch (arg1)
+		{
+		case 0:
+			FUN_42330(arg2);
+			break;
+		case 4:
+			GameManager.instance.DAT_1084--;
+			break;
+		case 10:
+			arg2 &= 0xFFFF;
+			if (arg2 == 16962)
+			{
+				Vehicle vehicle = Utilities.FUN_2CD78(this) as Vehicle;
+				if (vehicle == null || id != 0)
+				{
+					return 0u;
+				}
+				return CreateLightning(1, vehicle);
+			}
+			break;
+		}
+		return 0u;
+	}
 
-        return 0;
-    }
+	public override uint UpdateW(int arg1, VigObject arg2)
+	{
+		uint result;
+		switch (arg1)
+		{
+		case 1:
+			type = 3;
+			maxHalfHealth = 2;
+			flags |= 16384u;
+			result = 0u;
+			break;
+		case 0:
+			FUN_42330(arg2);
+			result = 0u;
+			break;
+		case 12:
+			result = CreateLightning(0, arg2);
+			break;
+		default:
+		{
+			result = 0u;
+			if (arg1 != 13 || GameManager.instance.DAT_1084 != 0)
+			{
+				break;
+			}
+			Vehicle vehicle = (Vehicle)arg2;
+			VigObject target = vehicle.target;
+			int num = vehicle.vTransform.position.x - target.vTransform.position.x;
+			if (num < 0)
+			{
+				num = -num;
+			}
+			result = 0u;
+			if (num >= 262144)
+			{
+				break;
+			}
+			num = vehicle.vTransform.position.y - target.vTransform.position.y;
+			if (num < 0)
+			{
+				num = -num;
+			}
+			result = 0u;
+			if (num < 262144)
+			{
+				num = vehicle.vTransform.position.z - target.vTransform.position.z;
+				if (num < 0)
+				{
+					num = -num;
+				}
+				result = (uint)(((262143 < num) ? 1 : 0) ^ 1);
+			}
+			break;
+		}
+		}
+		return result;
+	}
 
-    public override uint UpdateW(int arg1, VigObject arg2)
-    {
-        short sVar1;
-        short sVar2;
-        short sVar3;
-        sbyte sVar4;
-        int iVar5;
-        uint uVar5;
-        int iVar6;
-        ConfigContainer ccVar6;
-        Lightning2 puVar7;
-        int iVar8;
-        Lightning3 puVar9;
-        int iVar10;
-        ConfigContainer ccVar10;
-        VigObject oVar10;
-        List<VigTuple> ppiVar11;
-        int iVar12;
-        VigObject oVar12;
-        uint uVar13;
-        uint uVar14;
-        VigObject piVar16;
-        VigTuple ppiVar18;
-        VigObject piVar19;
-        VigObject piVar20;
-        Vector2Int v2Var21;
-        Lightning2 puVar22;
-        Vehicle vVar23;
-        int local_28;
-        Lightning2 local_24;
-        Vector3Int local_20;
-        Vector3Int local_40;
-        Vector3Int local_a4;
-        Vector3Int local_84;
-        Vector3Int local_78;
-        Vector3Int local_68;
-        Vector3Int auStack72;
-        Vector3Int auStack88;
-        VigTransform auStack184;
-
-        if (arg1 == 1)
-        {
-            type = 3;
-            maxHalfHealth = 2;
-            flags |= 0x4000;
-            uVar5 = 0;
-        }
-        else
-        {
-            if (arg1 == 0)
-            {
-                FUN_42330(arg2);
-                uVar5 = 0;
-            }
-            else
-            {
-                if (arg1 == 12)
-                {
-                    if (arg2.id < 0)
-                        local_28 = GameManager.instance.DAT_1128[~arg2.id];
-                    else
-                        local_28 = -1;
-
-                    piVar19 = null;
-                    GameManager.instance.DAT_1084++;
-                    iVar6 = GameManager.instance.FUN_1DD9C();
-                    GameManager.instance.FUN_1E188(iVar6, vData.sndList, 2);
-                    ccVar6 = FUN_2C5F4(0x8000);
-                    GameManager.instance.FUN_2CF00(out local_a4, this, ccVar6);
-                    ccVar6 = FUN_2C5F4(0x8001);
-                    GameManager.instance.FUN_2CF00(out local_84, this, ccVar6);
-                    local_78 = new Vector3Int();
-                    local_78.x = local_a4.x / 2 + local_84.x / 2;
-                    local_78.y = local_a4.y / 2 + local_84.y / 2;
-                    local_78.z = local_a4.z / 2 + local_84.z / 2;
-                    DAT_19 = 1;
-                    maxHalfHealth--;
-                    uVar5 = 0x7fff0000;
-
-                    if (GameManager.instance.worldObjs.Count > 0)
-                    {
-                        ppiVar11 = GameManager.instance.worldObjs;
-                        
-                        for (int i = 0; i < ppiVar11.Count; i++)
-                        {
-                            ppiVar18 = ppiVar11[i];
-                            piVar16 = ppiVar18.vObject;
-                            piVar20 = piVar19;
-                            uVar13 = uVar5;
-
-                            if (piVar16 == arg2 || piVar16.type != 2 || 
-                                (piVar16.flags & 0x4004000U) != 0x4000 || ((Vehicle)piVar16).shield != 0)
-                            {
-                                piVar19 = piVar20;
-                                uVar5 = uVar13;
-                            }
-                            else
-                            {
-                                if (0 < piVar16.id || GameManager.instance.DAT_1128[~piVar16.id] != local_28)
-                                {
-                                    local_68 = new Vector3Int();
-                                    local_68.x = piVar16.vTransform.position.x - local_78.x;
-                                    local_68.y = piVar16.vTransform.position.y - local_78.y;
-                                    local_68.z = piVar16.vTransform.position.z - local_78.z;
-                                    v2Var21 = Utilities.FUN_2A1C0(local_68);
-                                    uVar13 = (uint)v2Var21.x >> 16 | (uint)v2Var21.y << 16;
-                                    piVar20 = piVar16;
-
-                                    if ((int)uVar13 < (int)uVar5)
-                                    {
-                                        piVar19 = piVar20;
-                                        uVar5 = uVar13;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    puVar7 = vData.ini.FUN_2C17C(1, typeof(Lightning2), 8) as Lightning2;
-
-                    if (puVar7 != null)
-                    {
-                        arg2.tags = 3;
-
-                        if (piVar19 == null)
-                            local_68 = new Vector3Int(0, 0, 0);
-                        else
-                        {
-                            local_68 = new Vector3Int();
-                            local_68.x = piVar19.vTransform.position.x - local_78.x;
-                            local_68.y = piVar19.vTransform.position.y - local_78.y;
-                            local_68.z = piVar19.vTransform.position.z - local_78.z;
-                        }
-
-                        iVar10 = local_68.x;
-
-                        if (local_68.x < 0)
-                            iVar10 = local_68.x + 4095;
-
-                        sVar1 = arg2.vTransform.rotation.V00;
-                        iVar12 = local_68.y;
-
-                        if (local_68.y < 0)
-                            iVar12 = local_68.y + 4095;
-
-                        sVar2 = arg2.vTransform.rotation.V10;
-                        iVar8 = local_68.z;
-
-                        if (local_68.z < 0)
-                            iVar8 = local_68.z + 4095;
-
-                        sVar3 = arg2.vTransform.rotation.V20;
-                        iVar6 = 0x8000;
-                        puVar7.DAT_84 = this;
-
-                        if (0 < (iVar10 >> 12) * sVar1 + (iVar12 >> 12) * sVar2 + (iVar8 >> 12) * sVar3)
-                            iVar6 = 0x8001;
-
-                        local_24 = puVar7;
-                        ccVar10 = FUN_2C5F4((ushort)iVar6);
-                        puVar7.DAT_90 = ccVar10;
-                        auStack184 = GameManager.instance.FUN_2CEAC(this, ccVar10);
-                        auStack88 = Utilities.FUN_2426C(auStack184.rotation, 
-                            new Matrix2x4(local_68.x, local_68.y, local_68.z, 0));
-                        iVar12 = Utilities.FUN_29FC8(auStack88, out auStack72);
-                        iVar5 = iVar12 / 2;
-
-                        if (piVar19 == null || 0x70000 < iVar5)
-                        {
-                            iVar5 = 0x70000;
-                            puVar7.DAT_80 = null;
-                            puVar7.DAT_19 = 15;
-                        }
-                        else
-                        {
-                            puVar9 = vData.ini.FUN_2C17C(3, typeof(Lightning3), 8) as Lightning3;
-                            puVar9.type = 3;
-                            puVar9.flags |= 0x10;
-                            puVar7.DAT_19 = 40;
-                            puVar9.vTransform = GameManager.defaultTransform;
-                            puVar9.PDAT_74 = piVar19;
-                            puVar9.PDAT_78 = puVar7;
-                            Utilities.FUN_2CC48(piVar19, puVar9);
-                            Utilities.ParentChildren(piVar19, piVar19);
-                            puVar7.DAT_8C = puVar9;
-                            puVar9.FUN_30BF0();
-                            puVar7.DAT_80 = piVar19;
-                            piVar19.flags |= 0x4000000;
-                            piVar19.FUN_30BA8();
-                            iVar6 = ((Vehicle)piVar19).FUN_3B078(arg2, (ushort)DAT_1A, -100, 1);
-                            ((Vehicle)piVar19).FUN_3A020(iVar6, DAT_20, true);
-                        }
-
-                        oVar12 = vData.ini.FUN_2C17C(2, typeof(VigObject), 8);
-
-                        if (oVar12 != null)
-                        {
-                            oVar12.type = 3;
-                            oVar12.flags |= 0x10;
-                            oVar12.vTransform = GameManager.defaultTransform;
-                            Utilities.FUN_2CC48(puVar7, oVar12);
-                            Utilities.ParentChildren(puVar7, puVar7);
-                            oVar12.FUN_30BF0();
-                        }
-
-                        puVar7.vTransform.rotation = Utilities.FUN_2A724(auStack72);
-                        iVar12 = iVar5 * puVar7.vTransform.rotation.V02;
-
-                        if (iVar12 < 0)
-                            iVar12 += 0xffff;
-
-                        iVar8 = iVar5 * puVar7.vTransform.rotation.V12;
-                        puVar7.vTransform.rotation.V02 = (short)(iVar12 >> 16);
-
-                        if (iVar8 < 0)
-                            iVar8 += 0xffff;
-
-                        iVar12 = iVar5 * puVar7.vTransform.rotation.V22;
-                        puVar7.vTransform.rotation.V12 = (short)(iVar8 >> 16);
-
-                        if (iVar12 < 0)
-                            iVar12 += 0xffff;
-
-                        puVar7.vTransform.rotation.V22 = (short)(iVar12 >> 16);
-                        puVar7.vTransform.position = ccVar10.v3_1;
-                        puVar7.flags = 0x20;
-                        puVar7.state = _LIGHTNING2_TYPE.Type1;
-                        Utilities.FUN_2CC48(this, puVar7);
-                        Utilities.ParentChildren(this, this);
-                        puVar7.FUN_30B78();
-                        puVar7.FUN_30BF0();
-                        sVar4 = (sbyte)GameManager.instance.FUN_1DD9C();
-                        puVar7.DAT_18 = sVar4;
-                        GameManager.instance.FUN_1E580(sVar4, puVar7.vData.sndList, 3, local_a4, true);
-                        GameManager.instance.FUN_30CB0(puVar7, 180);
-                        oVar10 = puVar7.DAT_80;
-
-                        while(oVar10 != null)
-                        {
-                            uVar13 = 0xc40000;
-                            piVar19 = null;
-
-                            if (GameManager.instance.worldObjs != null)
-                            {
-                                ppiVar11 = GameManager.instance.worldObjs;
-
-                                for (int i = 0; i < ppiVar11.Count; i++)
-                                {
-                                    ppiVar18 = ppiVar11[i];
-                                    piVar16 = ppiVar18.vObject;
-                                    piVar20 = piVar19;
-                                    uVar14 = uVar13;
-
-                                    if (piVar16 == arg2 || piVar16.type != 2 || (piVar16.flags & 0x4004000U) != 0x4000)
-                                    {
-                                        piVar19 = piVar20;
-                                        uVar13 = uVar14;
-                                    }
-                                    else
-                                    {
-                                        if (((Vehicle)piVar16).shield == 0 && 
-                                            (0 < piVar16.id || GameManager.instance.DAT_1128[~piVar16.id] != local_28))
-                                        {
-                                            oVar10 = puVar7.DAT_80;
-                                            local_40 = new Vector3Int();
-                                            local_40.x = piVar16.vTransform.position.x - oVar10.vTransform.position.x;
-                                            local_40.y = piVar16.vTransform.position.y - oVar10.vTransform.position.y;
-                                            local_40.z = piVar16.vTransform.position.z - oVar10.vTransform.position.z;
-                                            v2Var21 = Utilities.FUN_2A1C0(local_40);
-                                            uVar14 = (uint)v2Var21.x >> 16 | (uint)v2Var21.y << 16;
-                                            piVar20 = piVar16;
-                                            uVar5 = uVar14;
-
-                                            if ((int)uVar14 < (int)uVar13)
-                                            {
-                                                piVar19 = piVar20;
-                                                uVar13 = uVar14;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            if (piVar19 == null) break;
-
-                            puVar22 = vData.ini.FUN_2C17C(1, typeof(Lightning2), 8) as Lightning2;
-
-                            if (puVar22 == null) break;
-
-                            oVar10 = puVar7.DAT_80;
-                            local_40 = new Vector3Int();
-                            local_40.x = piVar19.vTransform.position.x - oVar10.vTransform.position.x;
-                            local_40.y = piVar19.vTransform.position.y - oVar10.vTransform.position.y;
-                            local_40.z = piVar19.vTransform.position.z - oVar10.vTransform.position.z;
-                            oVar10 = puVar7.DAT_80;
-                            puVar7.DAT_88 = puVar22;
-                            puVar22.vTransform.position = oVar10.vTransform.position;
-                            puVar22.DAT_19 = 40;
-                            Utilities.FUN_29FC8(local_40, out local_20);
-                            puVar9 = vData.ini.FUN_2C17C(3, typeof(Lightning3), 8) as Lightning3;
-                            puVar9.type = 3;
-                            puVar9.flags |= 0x10;
-                            puVar9.vTransform = GameManager.FUN_2A39C();
-                            puVar9.vTransform.position = new Vector3Int(0, 0, 0);
-                            puVar9.PDAT_74 = piVar19;
-                            puVar9.PDAT_78 = local_24;
-                            Utilities.FUN_2CC48(piVar19, puVar9);
-                            Utilities.ParentChildren(piVar19, piVar19);
-                            puVar22.DAT_8C = puVar9;
-                            puVar9.FUN_30BF0();
-                            puVar22.DAT_80 = piVar19;
-                            piVar19.flags |= 0x4000000;
-                            piVar19.FUN_30BA8();
-                            iVar6 = ((Vehicle)piVar19).FUN_3B078(arg2, (ushort)DAT_1A, -100, 1);
-                            ((Vehicle)piVar19).FUN_3A020(iVar6, DAT_20, true);
-                            puVar22.vTransform.rotation = Utilities.FUN_2A724(local_20);
-                            iVar10 = iVar5 * puVar22.vTransform.rotation.V02;
-
-                            if (iVar10 < 0)
-                                iVar10 += 0xffff;
-
-                            iVar12 = iVar5 * puVar22.vTransform.rotation.V12;
-                            puVar22.vTransform.rotation.V02 = (short)(iVar10 >> 16);
-
-                            if (iVar12 < 0)
-                                iVar12 += 0xffff;
-
-                            iVar10 = iVar5 * puVar22.vTransform.rotation.V22;
-                            puVar22.vTransform.rotation.V12 = (short)(iVar12 >> 16);
-
-                            if (iVar10 < 0)
-                                iVar10 += 0xffff;
-
-                            puVar22.vTransform.rotation.V22 = (short)(iVar10 >> 16);
-                            puVar22.flags = 0x24;
-                            puVar22.FUN_3066C();
-                            oVar10 = puVar22.DAT_80;
-                            puVar7 = puVar22;
-                        }
-                    }
-
-                    uVar5 = 540;
-
-                    if (arg2.id < 0)
-                        uVar5 = 360;
-                }
-                else
-                {
-                    uVar5 = 0;
-
-                    if (arg1 == 13 && GameManager.instance.DAT_1084 == 0)
-                    {
-                        vVar23 = (Vehicle)arg2;
-                        oVar12 = vVar23.target;
-                        iVar10 = vVar23.vTransform.position.x - oVar12.vTransform.position.x;
-
-                        if (iVar10 < 0)
-                            iVar10 = -iVar10;
-
-                        uVar5 = 0;
-
-                        if (iVar10 < 0x40000)
-                        {
-                            iVar10 = vVar23.vTransform.position.y - oVar12.vTransform.position.y;
-
-                            if (iVar10 < 0)
-                                iVar10 = -iVar10;
-
-                            uVar5 = 0;
-
-                            if (iVar10 < 0x40000)
-                            {
-                                iVar10 = vVar23.vTransform.position.z - oVar12.vTransform.position.z;
-
-                                if (iVar10 < 0)
-                                    iVar10 = -iVar10;
-
-                                uVar5 = (0x3ffff < iVar10 ? 1U : 0) ^ 1;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return uVar5;
-    }
+	private uint CreateLightning(int arg1, VigObject arg2)
+	{
+		int num = (arg2.id >= 0) ? (-1) : GameManager.instance.DAT_1128[~arg2.id];
+		VigObject vigObject = null;
+		GameManager.instance.DAT_1084++;
+		if (arg1 == 0)
+		{
+			int param = GameManager.instance.FUN_1DD9C();
+			GameManager.instance.FUN_1E188(param, vData.sndList, 2);
+		}
+		ConfigContainer param2 = FUN_2C5F4(32768);
+		GameManager.instance.FUN_2CF00(out Vector3Int param3, this, param2);
+		param2 = FUN_2C5F4(32769);
+		GameManager.instance.FUN_2CF00(out Vector3Int param4, this, param2);
+		Vector3Int vector3Int = default(Vector3Int);
+		vector3Int.x = param3.x / 2 + param4.x / 2;
+		vector3Int.y = param3.y / 2 + param4.y / 2;
+		vector3Int.z = param3.z / 2 + param4.z / 2;
+		DAT_19 = 1;
+		maxHalfHealth--;
+		uint num2 = 2147418112u;
+		if (GameManager.instance.worldObjs.Count > 0)
+		{
+			List<VigTuple> worldObjs = GameManager.instance.worldObjs;
+			for (int i = 0; i < worldObjs.Count; i++)
+			{
+				VigObject vObject = worldObjs[i].vObject;
+				VigObject vigObject2 = vigObject;
+				uint num3 = num2;
+				if (vObject == arg2 || vObject.type != 2 || (vObject.flags & 0x4004000) != 16384 || ((Vehicle)vObject).shield != 0)
+				{
+					vigObject = vigObject2;
+					num2 = num3;
+				}
+				else if (0 < vObject.id || GameManager.instance.DAT_1128[~vObject.id] != num)
+				{
+					Vector3Int v = default(Vector3Int);
+					v.x = vObject.vTransform.position.x - vector3Int.x;
+					v.y = vObject.vTransform.position.y - vector3Int.y;
+					v.z = vObject.vTransform.position.z - vector3Int.z;
+					Vector2Int vector2Int = Utilities.FUN_2A1C0(v);
+					num3 = (uint)((int)((uint)vector2Int.x >> 16) | (vector2Int.y << 16));
+					vigObject2 = vObject;
+					if ((int)num3 < (int)num2)
+					{
+						vigObject = vigObject2;
+						num2 = num3;
+					}
+				}
+			}
+		}
+		Lightning2 lightning = vData.ini.FUN_2C17C(1, typeof(Lightning2), 8u) as Lightning2;
+		if (lightning != null)
+		{
+			arg2.tags = 3;
+			lightning.tags = (sbyte)arg1;
+			Vector3Int v;
+			if (vigObject == null)
+			{
+				v = new Vector3Int(0, 0, 0);
+			}
+			else
+			{
+				v = default(Vector3Int);
+				v.x = vigObject.vTransform.position.x - vector3Int.x;
+				v.y = vigObject.vTransform.position.y - vector3Int.y;
+				v.z = vigObject.vTransform.position.z - vector3Int.z;
+			}
+			int num4 = v.x;
+			if (v.x < 0)
+			{
+				num4 = v.x + 4095;
+			}
+			short v2 = arg2.vTransform.rotation.V00;
+			int num5 = v.y;
+			if (v.y < 0)
+			{
+				num5 = v.y + 4095;
+			}
+			short v3 = arg2.vTransform.rotation.V10;
+			int num6 = v.z;
+			if (v.z < 0)
+			{
+				num6 = v.z + 4095;
+			}
+			short v4 = arg2.vTransform.rotation.V20;
+			int param = 32768;
+			lightning.DAT_84 = this;
+			lightning.doubleDamage = (((Vehicle)arg2).doubleDamage != 0);
+			lightning.chainID = 1;
+			if (0 < (num4 >> 12) * v2 + (num5 >> 12) * v3 + (num6 >> 12) * v4)
+			{
+				param = 32769;
+			}
+			Lightning2 pDAT_ = lightning;
+			ConfigContainer configContainer = lightning.DAT_90 = FUN_2C5F4((ushort)param);
+			num5 = Utilities.FUN_29FC8(Utilities.FUN_2426C(GameManager.instance.FUN_2CEAC(this, configContainer).rotation, new Matrix2x4(v.x, v.y, v.z, 0)), out Vector3Int vout);
+			int num7 = num5 / 2;
+			if (vigObject == null || 458752 < num7)
+			{
+				num7 = 458752;
+				lightning.DAT_80 = null;
+				lightning.DAT_19 = 15;
+			}
+			else
+			{
+				Lightning3 lightning2 = vData.ini.FUN_2C17C(3, typeof(Lightning3), 8u) as Lightning3;
+				lightning2.type = 3;
+				lightning2.flags |= 16u;
+				lightning.DAT_19 = 40;
+				lightning2.vTransform = GameManager.defaultTransform;
+				lightning2.PDAT_74 = vigObject;
+				lightning2.PDAT_78 = lightning;
+				Utilities.FUN_2CC48(vigObject, lightning2);
+				Utilities.ParentChildren(vigObject, vigObject);
+				lightning.DAT_8C = lightning2;
+				lightning2.FUN_30BF0();
+				lightning.DAT_80 = vigObject;
+				vigObject.flags |= 67108864u;
+				((Vehicle)vigObject).DAT_F6 |= 512;
+				param = -100;
+				if (((Vehicle)arg2).doubleDamage != 0)
+				{
+					param = -200;
+				}
+				param = ((Vehicle)vigObject).FUN_3B078(arg2, (ushort)DAT_1A, param, 1u);
+				((Vehicle)vigObject).FUN_3A020(param, DAT_20, param3: true);
+			}
+			VigObject vigObject3 = vData.ini.FUN_2C17C(2, typeof(VigObject), 8u);
+			if (vigObject3 != null)
+			{
+				vigObject3.type = 3;
+				vigObject3.flags |= 16u;
+				vigObject3.vTransform = GameManager.defaultTransform;
+				Utilities.FUN_2CC48(lightning, vigObject3);
+				Utilities.ParentChildren(lightning, lightning);
+				vigObject3.FUN_30BF0();
+			}
+			lightning.vTransform.rotation = Utilities.FUN_2A724(vout);
+			lightning.vTransform.rotation.MatrixNormal();
+			num5 = num7 * lightning.vTransform.rotation.V02;
+			if (num5 < 0)
+			{
+				num5 += 65535;
+			}
+			num6 = num7 * lightning.vTransform.rotation.V12;
+			lightning.vTransform.rotation.V02 = (short)(num5 >> 16);
+			if (num6 < 0)
+			{
+				num6 += 65535;
+			}
+			num5 = num7 * lightning.vTransform.rotation.V22;
+			lightning.vTransform.rotation.V12 = (short)(num6 >> 16);
+			if (num5 < 0)
+			{
+				num5 += 65535;
+			}
+			lightning.vTransform.rotation.V22 = (short)(num5 >> 16);
+			lightning.vTransform.position = configContainer.v3_1;
+			lightning.flags = 32u;
+			lightning.state = _LIGHTNING2_TYPE.Type1;
+			Utilities.FUN_2CC48(this, lightning);
+			Utilities.ParentChildren(this, this);
+			lightning.FUN_30B78();
+			lightning.FUN_30BF0();
+			sbyte param5 = lightning.DAT_18 = (sbyte)GameManager.instance.FUN_1DD9C();
+			GameManager.instance.FUN_1E580(param5, lightning.vData.sndList, 3, param3, param5: true);
+			GameManager.instance.FUN_30CB0(lightning, 180);
+			VigObject dAT_ = lightning.DAT_80;
+			int num8 = 1;
+			while (dAT_ != null)
+			{
+				uint num3 = 12845056u;
+				vigObject = null;
+				Vector3Int v5;
+				if (GameManager.instance.worldObjs != null)
+				{
+					List<VigTuple> worldObjs = GameManager.instance.worldObjs;
+					for (int j = 0; j < worldObjs.Count; j++)
+					{
+						VigObject vObject = worldObjs[j].vObject;
+						VigObject vigObject2 = vigObject;
+						uint num9 = num3;
+						if (vObject == arg2 || vObject.type != 2 || (vObject.flags & 0x4004000) != 16384)
+						{
+							vigObject = vigObject2;
+							num3 = num9;
+						}
+						else if (((Vehicle)vObject).shield == 0 && (0 < vObject.id || GameManager.instance.DAT_1128[~vObject.id] != num))
+						{
+							dAT_ = lightning.DAT_80;
+							v5 = default(Vector3Int);
+							v5.x = vObject.vTransform.position.x - dAT_.vTransform.position.x;
+							v5.y = vObject.vTransform.position.y - dAT_.vTransform.position.y;
+							v5.z = vObject.vTransform.position.z - dAT_.vTransform.position.z;
+							Vector2Int vector2Int = Utilities.FUN_2A1C0(v5);
+							num9 = (uint)((int)((uint)vector2Int.x >> 16) | (vector2Int.y << 16));
+							vigObject2 = vObject;
+							num7 = (int)num9;
+							if ((int)num9 < (int)num3)
+							{
+								vigObject = vigObject2;
+								num3 = num9;
+							}
+						}
+					}
+				}
+				if (vigObject == null)
+				{
+					break;
+				}
+				Lightning2 lightning3 = vData.ini.FUN_2C17C(1, typeof(Lightning2), 8u) as Lightning2;
+				if (lightning3 == null)
+				{
+					break;
+				}
+				dAT_ = lightning.DAT_80;
+				v5 = default(Vector3Int);
+				v5.x = vigObject.vTransform.position.x - dAT_.vTransform.position.x;
+				v5.y = vigObject.vTransform.position.y - dAT_.vTransform.position.y;
+				v5.z = vigObject.vTransform.position.z - dAT_.vTransform.position.z;
+				dAT_ = lightning.DAT_80;
+				lightning.DAT_88 = lightning3;
+				lightning3.vTransform.position = dAT_.vTransform.position;
+				lightning3.DAT_19 = 40;
+				Utilities.FUN_29FC8(v5, out Vector3Int vout2);
+				Lightning3 lightning2 = vData.ini.FUN_2C17C(3, typeof(Lightning3), 8u) as Lightning3;
+				lightning2.type = 3;
+				lightning2.flags |= 16u;
+				lightning3.doubleDamage = (((Vehicle)arg2).doubleDamage != 0);
+				lightning3.chainID = num8 + 1;
+				lightning2.vTransform = GameManager.FUN_2A39C();
+				lightning2.vTransform.position = new Vector3Int(0, 0, 0);
+				lightning2.PDAT_74 = vigObject;
+				lightning2.PDAT_78 = pDAT_;
+				Utilities.FUN_2CC48(vigObject, lightning2);
+				Utilities.ParentChildren(vigObject, vigObject);
+				lightning3.DAT_8C = lightning2;
+				lightning2.FUN_30BF0();
+				lightning3.DAT_80 = vigObject;
+				vigObject.flags |= 67108864u;
+				((Vehicle)vigObject).DAT_F6 |= 512;
+				param = -100 >> num8;
+				if (((Vehicle)arg2).doubleDamage != 0)
+				{
+					param = -200 >> num8;
+				}
+				param = ((Vehicle)vigObject).FUN_3B078(arg2, (ushort)DAT_1A, param, 1u);
+				((Vehicle)vigObject).FUN_3A020(param, DAT_20, param3: true);
+				lightning3.vTransform.rotation = Utilities.FUN_2A724(vout2);
+				lightning3.vTransform.rotation.MatrixNormal();
+				num4 = num7 * lightning3.vTransform.rotation.V02;
+				if (num4 < 0)
+				{
+					num4 += 65535;
+				}
+				num5 = num7 * lightning3.vTransform.rotation.V12;
+				lightning3.vTransform.rotation.V02 = (short)(num4 >> 16);
+				if (num5 < 0)
+				{
+					num5 += 65535;
+				}
+				num4 = num7 * lightning3.vTransform.rotation.V22;
+				lightning3.vTransform.rotation.V12 = (short)(num5 >> 16);
+				if (num4 < 0)
+				{
+					num4 += 65535;
+				}
+				lightning3.vTransform.rotation.V22 = (short)(num4 >> 16);
+				lightning3.flags = 36u;
+				lightning3.FUN_3066C();
+				dAT_ = lightning3.DAT_80;
+				lightning = lightning3;
+				num8++;
+			}
+		}
+		num2 = 540u;
+		if (arg2.id < 0)
+		{
+			num2 = 600u;
+		}
+		return num2;
+	}
 }

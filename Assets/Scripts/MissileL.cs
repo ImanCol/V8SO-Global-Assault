@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,219 +13,261 @@ public class MissileL : VigObject
         base.Update();
     }
 
-    //FUN_44790
     public override uint UpdateW(int arg1, int arg2)
     {
-        short sVar1;
-        int iVar2;
-        Vehicle vVar2;
-        ConfigContainer ccVar2;
-        Afterburner ppcVar3;
-        Vehicle pcVar4;
-        Missile mVar5;
-        Vehicle vVar6;
-        Missile mVar6;
-        uint uVar7;
-        ushort uVar8;
-        ushort uVar9;
-        Matrix3x3 MStack32;
-
-        switch (arg1)
+        int param;
+        if (arg1 != 0)
         {
-            case 0:
-                FUN_42330(arg2);
-                uVar7 = 0;
-                break;
-            default:
-                uVar7 = 0;
-                break;
-            case 2:
-                vVar6 = Utilities.FUN_2CD78(this) as Vehicle;
-                mVar5 = FUN_445B0(vVar6, 188);
-                iVar2 = GameManager.instance.FUN_1DD9C();
-                GameManager.instance.FUN_1E580(iVar2, GameManager.instance.DAT_C2C, 51, mVar5.screen);
-                mVar5.flags |= 0x40000000;
-                uVar8 = 60;
-
-                if (vVar6.doubleDamage != 0)
-                    uVar8 = 120;
-
-                mVar5.maxHalfHealth = uVar8;
-                sVar1 = (short)(maxFullHealth - 1);
-                maxFullHealth = (ushort)sVar1;
-
-                if (sVar1 != 0)
-                    GameManager.instance.FUN_30CB0(this, 8);
-
-                MStack32 = GameManager.FUN_2A39C().rotation;
-                MStack32 = Utilities.RotMatrixY(maxFullHealth * 0x100 - 0x180, MStack32);
-                mVar5.vTransform.rotation = Utilities.MulMatrix(mVar5.vTransform.rotation, MStack32);
-                uVar7 = 120;
-                break;
-            case 10:
-                arg2 &= 0xfff;
-
-                if (arg2 == 0x444)
+            if (arg1 != 2)
+            {
+                if (arg1 != 10)
                 {
-                    if (1 < maxHalfHealth)
+                    return 0u;
+                }
+                arg2 &= 0xFFF;
+                if (arg2 == 1092)
+                {
+                    if (1 < base.maxHalfHealth)
                     {
-                        ppcVar3 = vData.ini.FUN_2C17C(186, typeof(Afterburner), 8) as Afterburner;
-                        pcVar4 = Utilities.FUN_2CD78(this) as Vehicle;
-                        ppcVar3.PDAT_78 = pcVar4;
-                        ppcVar3.id = 120;
-                        ccVar2 = FUN_2C5F4(0x8001);
-                        Utilities.FUN_2CA94(this, ccVar2, ppcVar3);
-                        ppcVar3.transform.parent = transform;
-                        ppcVar3.FUN_30B78();
-                        ppcVar3.FUN_30BF0();
-                        maxHalfHealth -= 2;
-                        pcVar4.FUN_39B50();
-                        return 240;
+                        Afterburner afterburner = vData.ini.FUN_2C17C(186, typeof(Afterburner), 8u) as Afterburner;
+                        Vehicle vehicle = (Vehicle)(afterburner.PDAT_78 = (Utilities.FUN_2CD78(this) as Vehicle));
+                        afterburner.id = 120;
+                        ConfigContainer cont = FUN_2C5F4(32769);
+                        Utilities.FUN_2CA94(this, cont, afterburner);
+                        afterburner.transform.parent = base.transform;
+                        afterburner.FUN_30B78();
+                        afterburner.FUN_30BF0();
+                        base.maxHalfHealth -= 2;
+                        vehicle.DAT_F6 |= 256;
+                        vehicle.FUN_39B50();
+                        return 240u;
+                    }
+                }
+                else if (arg2 == 1090)
+                {
+                    if (2 < base.maxHalfHealth)
+                    {
+                        base.maxHalfHealth -= 2;
+                        Vehicle vehicle2 = Utilities.FUN_2CD78(this) as Vehicle;
+                        Missile missile = FUN_445B0(vehicle2, 199);
+                        missile.DAT_84 = vehicle2;
+                        missile.flags |= 1090519040u;
+                        missile.maxHalfHealth = 60;
+                        if (vehicle2.doubleDamage != 0)
+                        {
+                            missile.maxHalfHealth = 120;
+                        }
+                        param = GameManager.instance.FUN_1DD9C();
+                        GameManager.instance.FUN_1E580(param, GameManager.instance.DAT_C2C, 67, missile.screen);
+                        return 120u;
                     }
                 }
                 else
                 {
-                    if (arg2 == 0x442)
+                    if (arg2 != 1091)
                     {
-                        if (1 < maxHalfHealth)
-                        {
-                            maxHalfHealth--;
-                            vVar2 = Utilities.FUN_2CD78(this) as Vehicle;
-                            mVar6 = FUN_445B0(vVar2, 199);
-                            mVar6.DAT_84 = vVar2;
-                            mVar6.flags |= 0x41000000;
-                            iVar2 = GameManager.instance.FUN_1DD9C();
-                            GameManager.instance.FUN_1E580(iVar2, GameManager.instance.DAT_C2C, 67, mVar6.screen);
-                            return 120;
-                        }
+                        return 0u;
                     }
-                    else
+                    if (1 < base.maxHalfHealth)
                     {
-                        if (arg2 != 0x443)
-                            return 0;
-
-                        if (1 < maxHalfHealth)
+                        ushort maxFullHealth = 4;
+                        if (base.maxHalfHealth < 4)
                         {
-                            uVar9 = 4;
-
-                            if (maxHalfHealth < 4)
-                                uVar9 = maxHalfHealth;
-
-                            maxFullHealth = uVar9;
-                            goto case 2;
+                            maxFullHealth = base.maxHalfHealth;
                         }
+                        base.maxFullHealth = maxFullHealth;
+                        goto IL_0029;
                     }
                 }
-
-                uVar7 = 0xffffffff;
-                break;
+                return uint.MaxValue;
+            }
+            goto IL_0029;
         }
-
-        return uVar7;
+        FUN_42330(arg2);
+        return 0u;
+    IL_0029:
+        Vehicle vehicle3 = Utilities.FUN_2CD78(this) as Vehicle;
+        Missile missile2 = FUN_445B0(vehicle3, 188);
+        param = GameManager.instance.FUN_1DD9C();
+        GameManager.instance.FUN_1E580(param, GameManager.instance.DAT_C2C, 51, missile2.screen);
+        missile2.flags |= 1073741824u;
+        ushort maxHalfHealth = 60;
+        if (vehicle3.doubleDamage != 0)
+        {
+            maxHalfHealth = 120;
+        }
+        missile2.maxHalfHealth = maxHalfHealth;
+        short num = (short)(base.maxFullHealth - 1);
+        base.maxFullHealth = (ushort)num;
+        if (num != 0)
+        {
+            GameManager.instance.FUN_30CB0(this, 8);
+        }
+        Matrix3x3 rotation = GameManager.FUN_2A39C().rotation;
+        rotation = Utilities.RotMatrixY(base.maxFullHealth * 256 - 384, rotation);
+        missile2.vTransform.rotation = Utilities.MulMatrix(missile2.vTransform.rotation, rotation);
+        return 120u;
     }
 
     public override uint UpdateW(int arg1, VigObject arg2)
     {
-        int iVar2;
-        int iVar6;
-        VigObject oVar6;
-        uint uVar7;
-        ushort uVar8;
-
         switch (arg1)
         {
             case 0:
                 FUN_42330(arg2);
-                uVar7 = 0;
-                break;
+                return 0u;
             case 1:
-                maxHalfHealth = 12;
-                flags |= 0x4000;
+                base.maxHalfHealth = 12;
+                flags |= 16384u;
+                if (vr.x <= 0)
+                {
+                    VigObject vigObject = new GameObject().AddComponent<VigObject>();
+                    vigObject.parent = this;
+                    child2 = vigObject;
+                    vigObject.transform.parent = base.transform;
+                    vigObject.vr = new Vector3Int(127, 0, 0);
+                    vigObject.ApplyRotationMatrix();
+                    vigObject.vData = vData;
+                }
                 goto default;
             default:
-                uVar7 = 0;
-                break;
+                return 0u;
             case 12:
-                oVar6 = FUN_445B0((Vehicle)arg2, 188);
-                uVar8 = 60;
-
-                if (((Vehicle)arg2).doubleDamage != 0)
-                    uVar8 = 120;
-
-                oVar6.maxHalfHealth = uVar8;
-                iVar2 = GameManager.instance.FUN_1DD9C();
-                GameManager.instance.FUN_1E580(iVar2, GameManager.instance.DAT_C2C, 51, oVar6.screen);
-                uVar7 = 90;
-                break;
+                {
+                    VigObject vigObject2 = FUN_445B0((Vehicle)arg2, 188);
+                    ushort maxHalfHealth = 60;
+                    if (((Vehicle)arg2).doubleDamage != 0)
+                    {
+                        maxHalfHealth = 120;
+                    }
+                    vigObject2.maxHalfHealth = maxHalfHealth;
+                    int param = GameManager.instance.FUN_1DD9C();
+                    GameManager.instance.FUN_1E580(param, GameManager.instance.DAT_C2C, 51, vigObject2.screen);
+                    return 90u;
+                }
             case 13:
-                iVar6 = Utilities.FUN_29F6C(arg2.screen, ((Vehicle)arg2).target.screen);
-                uVar7 = (uint)(0x3b5ffe < (uint)(iVar6 - 0x32001 ^ 1) ? 1 : 0);
-                break;
+                {
+                    int num4 = Utilities.FUN_29F6C(arg2.screen, ((Vehicle)arg2).target.screen);
+                    return (uint)(((3891198u < (uint)(num4 - 204801)) ? 1 : 0) ^ 1);
+                }
+            case 14:
+                if (((GameManager.instance.DAT_28 - (arg2.DAT_19 ^ 0x14)) & Mathf.Clamp(511 - (GameManager.instance.DAT_CC4 - 70) * 2, 0, 511)) == 0)
+                {
+                    List<VigTuple> worldObjs = GameManager.instance.worldObjs;
+                    int num = 0;
+                    for (int i = 0; i < worldObjs.Count; i++)
+                    {
+                        VigObject vObject = worldObjs[i].vObject;
+                        if ((vObject.type == 8 && (vObject.flags & 0x1000000) != 0 && vObject.DAT_80 == arg2) || (vObject.GetType() == typeof(Rocket) && ((Rocket)vObject).state == _ROCKET_TYPE.Bastion && vObject.DAT_80 == arg2))
+                        {
+                            num = 0;
+                            break;
+                        }
+                        if (vObject.type == 8 && vObject.DAT_84 == arg2)
+                        {
+                            num++;
+                        }
+                    }
+                    if (num >= 3)
+                    {
+                        return 1090u;
+                    }
+                    Vector3Int vector3Int = Utilities.FUN_24304(arg2.vTransform, ((Vehicle)arg2).target.vTransform.position);
+                    uint num2 = 0u;
+                    if (vector3Int.z < 2048000)
+                    {
+                        int num3 = (int)((long)Utilities.Ratan2(vector3Int.x, vector3Int.z) << 20) >> 20;
+                        if (num3 < 0)
+                        {
+                            num3 = -num3;
+                        }
+                        num2 = ((num3 < 461) ? 1u : 0u);
+                    }
+                    int num4 = Utilities.FUN_29F6C(arg2.screen, ((Vehicle)arg2).target.screen);
+                    if (num4 < 393216 && num2 == 0)
+                    {
+                        return 1090u;
+                    }
+                    if ((((Vehicle)arg2).DAT_F6 & 8) != 0)
+                    {
+                        return 1092u;
+                    }
+                    vector3Int = Utilities.FUN_24304(arg2.vTransform, ((Vehicle)arg2).target.vTransform.position);
+                    num2 = 0u;
+                    if (vector3Int.z < 1327104)
+                    {
+                        int num3 = (int)((long)Utilities.Ratan2(vector3Int.x, vector3Int.z) << 20) >> 20;
+                        if (num3 < 0)
+                        {
+                            num3 = -num3;
+                        }
+                        num2 = ((num3 < 446) ? 1u : 0u);
+                    }
+                    if (num2 != 0)
+                    {
+                        return 1091u;
+                    }
+                }
+                return 0u;
         }
-
-        return uVar7;
     }
 
     private Missile FUN_445B0(Vehicle param1, short param2)
     {
-        Missile ppcVar2;
-        int iVar3;
-        VigObject pcVar4;
-        int iVar5;
-        Vector3Int local_18;
-
-        ppcVar2 = LevelManager.instance.FUN_42408(param1, this, (ushort)param2, typeof(Missile), null) as Missile;
-        local_18 = new Vector3Int(
-            ppcVar2.vTransform.rotation.V01 << 5,
-            ppcVar2.vTransform.rotation.V11 << 5,
-            ppcVar2.vTransform.rotation.V21 << 5);
-        ppcVar2.flags = 0x20000084;
-        ppcVar2.FUN_305FC();
-        iVar5 = param1.physics1.X;
-
-        if (iVar5 < 0)
-            iVar5 += 127;
-
-        iVar3 = ppcVar2.vTransform.rotation.V01 * 1750;
-
-        if (iVar3 < 0)
-            iVar3 += 4095;
-
-        ppcVar2.physics1.Z = (iVar5 >> 7) - (iVar3 >> 12);
-        iVar5 = param1.physics1.Y;
-
-        if (iVar5 < 0)
-            iVar5 += 127;
-
-        iVar3 = ppcVar2.vTransform.rotation.V11 * 1750;
-
-        if (iVar3 < 0)
-            iVar3 += 4095;
-
-        ppcVar2.physics1.W = (iVar5 >> 7) - (iVar3 >> 12);
-        iVar5 = param1.physics1.Z;
-
-        if (iVar5 < 0)
-            iVar5 += 127;
-
-        iVar3 = ppcVar2.vTransform.rotation.V21 * 1750;
-
-        if (iVar3 < 0)
-            iVar3 += 4095;
-
-        ppcVar2.physics2.X = (iVar5 >> 7) - (iVar3 >> 12);
-        pcVar4 = param1.target;
-
+        Missile missile = (!(child2 == null)) ? (LevelManager.instance.FUN_42408(param1, child2, (ushort)param2, typeof(Missile), null) as Missile) : (LevelManager.instance.FUN_42408(param1, this, (ushort)param2, typeof(Missile), null) as Missile);
+        Vector3Int v = new Vector3Int(missile.vTransform.rotation.V01 << 5, missile.vTransform.rotation.V11 << 5, missile.vTransform.rotation.V21 << 5);
+        missile.flags = 536871044u;
+        missile.FUN_305FC();
+        int num = param1.physics1.X;
+        if (num < 0)
+        {
+            num += 127;
+        }
+        int num2 = missile.vTransform.rotation.V01 * 1750;
+        if (num2 < 0)
+        {
+            num2 += 4095;
+        }
+        missile.physics1.Z = (num >> 7) - (num2 >> 12);
+        num = param1.physics1.Y;
+        if (num < 0)
+        {
+            num += 127;
+        }
+        num2 = missile.vTransform.rotation.V11 * 1750;
+        if (num2 < 0)
+        {
+            num2 += 4095;
+        }
+        missile.physics1.W = (num >> 7) - (num2 >> 12);
+        num = param1.physics1.Z;
+        if (num < 0)
+        {
+            num += 127;
+        }
+        num2 = missile.vTransform.rotation.V21 * 1750;
+        if (num2 < 0)
+        {
+            num2 += 4095;
+        }
+        missile.physics2.X = (num >> 7) - (num2 >> 12);
+        VigObject dAT_ = param1.target;
         if (param1.target == null)
-            pcVar4 = param1;
-
-        ppcVar2.DAT_84 = pcVar4;
-        param1.FUN_2B370(local_18, ppcVar2.screen);
+        {
+            dAT_ = param1;
+        }
+        missile.DAT_84 = dAT_;
+        param1.FUN_2B370(v, missile.screen);
         maxHalfHealth--;
-
+        missile.physics2.Z = 7834;
+        if (GameManager.instance.gameMode == _GAME_MODE.Versus2)
+        {
+            missile.physics2.Z = 15258;
+        }
         if (maxHalfHealth == 0)
+        {
             FUN_3A368();
-
-        return ppcVar2;
+        }
+        return missile;
     }
 }

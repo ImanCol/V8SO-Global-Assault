@@ -1,35 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class BridgeS : VigObject
+public class BridgeS : Destructible
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-    //FUN_452C (STEELMIL.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        RSEG_DB rVar1;
+	public override uint OnCollision(HitDetection hit)
+	{
+		return base.OnCollision(hit);
+	}
 
-        if (arg1 == 8)
-            FUN_32B90((uint)arg2);
-        else
-        {
-            if (arg1 == 9 && arg2 != 0)
-            {
-                rVar1 = LevelManager.instance.FUN_518DC(screen, -1);
-                rVar1.DAT_08 = 0xffff;
-            }
-        }
-
-        return 0;
-    }
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		if (arg1 == 9 && arg2 != 0)
+		{
+			LevelManager.instance.FUN_518DC(screen, -1).DAT_08 = ushort.MaxValue;
+			if (id == 112)
+			{
+				LevelManager.instance.FUN_359FC(screen.x, screen.z, 0u);
+			}
+		}
+		return 0u;
+	}
 }

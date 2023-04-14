@@ -1,99 +1,138 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GondStation : Destructible
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
+	private static byte[] ai_collider = new byte[32]
+	{
+		1,
+		0,
+		0,
+		0,
+		15,
+		66,
+		253,
+		255,
+		222,
+		134,
+		253,
+		255,
+		38,
+		111,
+		255,
+		255,
+		242,
+		189,
+		0,
+		0,
+		35,
+		121,
+		0,
+		0,
+		0,
+		142,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0
+	};
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-    public override uint OnCollision(HitDetection hit)
-    {
-        uint uVar1;
-        VigObject oVar3;
-        VigObject puVar4;
-        OLYMPIC oVar5;
-        VigCamera cVar5;
-        int iVar6;
-        VigObject oVar7;
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-        puVar4 = hit.self;
-        oVar5 = (OLYMPIC)LevelManager.instance.level;
+	public override uint OnCollision(HitDetection hit)
+	{
+		VigObject self = hit.self;
+		OLYMPIC oLYMPIC = (OLYMPIC)LevelManager.instance.level;
+		if ((hit.object1.id == 1 || (hit.object1.id == 2 && self.id >= 0)) && self.type == 2 && (self.flags & 0x4000) != 0 && (self.flags & 0x4000000) == 0 && oLYMPIC.DAT_D2 != 0)
+		{
+			uint num = (uint)vr.y >> 31;
+			if (oLYMPIC.DAT_D0 == 0)
+			{
+				num ^= 1;
+			}
+			VigObject vigObject = oLYMPIC.DAT_B0[num];
+			vigObject.DAT_80 = self;
+			((Vehicle)self).state = _VEHICLE_TYPE.Gondola;
+			self.PDAT_78 = vigObject;
+			self.flags = (uint)(((int)self.flags & -9) | 0x6000020);
+			self.physics1.X = (vigObject.vTransform.position.x - self.vTransform.position.x) * 4;
+			self.physics1.Y = (vigObject.vTransform.position.y - (self.vTransform.position.y - 65536)) * 4;
+			self.physics1.Z = (vigObject.vTransform.position.z - self.vTransform.position.z) * 4;
+			GameManager.instance.FUN_1E2C8(self.DAT_18, 0u);
+			GameManager.instance.FUN_30CB0(self, 32);
+			oLYMPIC.DAT_D2 = 1200;
+			self.FUN_30BA8();
+			self.FUN_30B78();
+			VigCamera vCamera = ((Vehicle)self).vCamera;
+			if (vCamera == null)
+			{
+				return 0u;
+			}
+			vCamera.FUN_30BA8();
+			vCamera.FUN_30B78();
+			return 0u;
+		}
+		if ((hit.self.type != 2 || hit.object1 == this) && hit.self.type != 8)
+		{
+			return 0u;
+		}
+		VigObject self2 = hit.self;
+		int param = 10;
+		if (self2.type != 2)
+		{
+			param = self2.maxHalfHealth;
+		}
+		hit.object1.FUN_32B90((uint)param);
+		return 0u;
+	}
 
-        if (hit.object1.id == 1 && puVar4.type == 2 && 
-            (puVar4.flags & 0x4000) != 0 && oVar5.DAT_D2 != 0)
-        {
-            uVar1 = (uint)vr.y >> 31;
-
-            if (oVar5.DAT_D0 == 0)
-                uVar1 ^= 1;
-
-            oVar3 = oVar5.DAT_B0[uVar1];
-            oVar3.DAT_80 = puVar4;
-            ((Vehicle)puVar4).state = _VEHICLE_TYPE.Gondola;
-            puVar4.PDAT_78 = oVar3;
-            puVar4.flags = puVar4.flags & 0xfffffff7 | 0x6000020;
-            puVar4.physics1.X = (oVar3.vTransform.position.x - puVar4.vTransform.position.x) * 4;
-            puVar4.physics1.Y = (oVar3.vTransform.position.y - (puVar4.vTransform.position.y - 0x10000)) * 4;
-            puVar4.physics1.Z = (oVar3.vTransform.position.z - puVar4.vTransform.position.z) * 4;
-            GameManager.instance.FUN_1E2C8(puVar4.DAT_18, 0);
-            GameManager.instance.FUN_30CB0(puVar4, 32);
-            oVar5.DAT_D2 = 0x4b0;
-            puVar4.FUN_30BA8();
-            puVar4.FUN_30B78();
-            cVar5 = ((Vehicle)puVar4).vCamera;
-
-            if (cVar5 == null)
-                return 0;
-
-            cVar5.FUN_30BA8();
-            cVar5.FUN_30B78();
-            return 0;
-        }
-
-        if ((hit.self.type != 2 || hit.object1 == this) &&
-            hit.self.type != 8)
-            return 0;
-
-        oVar7 = hit.self;
-        iVar6 = 10;
-
-        if (oVar7.type != 2)
-            iVar6 = oVar7.maxHalfHealth;
-
-        hit.object1.FUN_32B90((uint)iVar6);
-        return 0;
-    }
-
-    //FUN_1B28 (OLYMPIC.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        OLYMPIC oVar1;
-
-        if (arg1 < 4)
-        {
-            if (arg1 == 1)
-            {
-                oVar1 = (OLYMPIC)LevelManager.instance.level;
-                OLYMPIC.FUN_CCC(oVar1.DAT_80_2, oVar1.pole1M, this);
-            }
-        }
-        else
-        {
-            if (arg1 == 8)
-            {
-                FUN_32B90((uint)arg2);
-                return 0;
-            }
-        }
-
-        return base.UpdateW(arg1, arg2);
-    }
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		switch (arg1)
+		{
+		case 1:
+		{
+			OLYMPIC oLYMPIC = (OLYMPIC)LevelManager.instance.level;
+			OLYMPIC.FUN_CCC(oLYMPIC.DAT_80_2, oLYMPIC.pole1M, this);
+			VigObject vigObject = new GameObject().AddComponent<VigObject>();
+			vigObject.id = 2;
+			vigObject.type = 3;
+			vigObject.DAT_1A = 100;
+			vigObject.vData = vData;
+			vigObject.vCollider = new VigCollider(ai_collider);
+			Utilities.FUN_2CC48(this, vigObject);
+			vigObject.transform.parent = base.transform;
+			vigObject.screen = new Vector3Int(-59000, 112262, -206838);
+			vigObject.ApplyTransformation();
+			break;
+		}
+		case 8:
+			return 0u;
+		case 9:
+			if (arg2 == 1)
+			{
+				VigObject vigObject = new GameObject().AddComponent<VigObject>();
+				vigObject.id = 2;
+				vigObject.type = 3;
+				vigObject.DAT_1A = 100;
+				vigObject.vData = vData;
+				vigObject.vCollider = new VigCollider(ai_collider);
+				Utilities.FUN_2CC48(this, vigObject);
+				vigObject.transform.parent = base.transform;
+				vigObject.screen = new Vector3Int(-59000, 112262, -206838);
+				vigObject.ApplyTransformation();
+			}
+			break;
+		}
+		return base.UpdateW(arg1, arg2);
+	}
 }

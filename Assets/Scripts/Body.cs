@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum _BODY_TYPE
 {
-    Default, 
+    Default,
     Collector,  //FUN_25C (GRBLDER.DLL)
     Ant, //FUN_20F0 (ROUTE66.DLL)
     Trailer //FUN_1314 (TRUCK.DLL)
@@ -12,6 +12,8 @@ public enum _BODY_TYPE
 
 public class Body : VigObject
 {
+    public _BODY_TYPE state;
+
     protected override void Start()
     {
         base.Start();
@@ -22,130 +24,105 @@ public class Body : VigObject
         base.Update();
     }
 
-    public _BODY_TYPE state;
-
     public override uint UpdateW(int arg1, int arg2)
     {
-        short sVar1;
-        Vector3Int v3Var2;
-        int iVar3;
-
         switch (state)
         {
             case _BODY_TYPE.Collector:
-                if (arg1 == 0)
-                {
-                    sVar1 = 32;
-
-                    if (tags == 0)
-                        sVar1 = -32;
-
-                    vr.x += sVar1;
-
-                    if (arg2 != 0)
-                        ApplyTransformation();
-                }
-                else
-                {
-                    if (arg1 == 2)
-                    {
-                        if ((flags & 0x80) == 0)
-                        {
-                            GameManager.instance.FUN_30CB0(this, 31);
-                            FUN_30B78();
-                        }
-                        else
-                        {
-                            ApplyTransformation();
-                            iVar3 = 1 - tags;
-                            tags = (sbyte)iVar3;
-
-                            if (((iVar3 * 0x1000000 >> 24 ^ id) & 1) == 0)
-                                FUN_30BA8();
-                            else
-                                GameManager.instance.FUN_30CB0(this, 31);
-
-                            v3Var2 = GameManager.instance.FUN_2CE50(this);
-                            LevelManager.instance.FUN_4DE54(v3Var2, 13);
-                        }
-                    }
-                }
-                
-                break;
-
-            case _BODY_TYPE.Trailer:
                 switch (arg1)
                 {
-                    case 1:
-                        this.FUN_A0();
-                        break;
+                    case 0:
+                        {
+                            short num2 = 32;
+                            if (tags == 0)
+                            {
+                                num2 = -32;
+                            }
+                            vr.x += num2;
+                            if (arg2 != 0)
+                            {
+                                ApplyTransformation();
+                            }
+                            break;
+                        }
+                    case 2:
+                        {
+                            if ((flags & 0x80) == 0)
+                            {
+                                GameManager.instance.FUN_30CB0(this, 31);
+                                FUN_30B78();
+                                break;
+                            }
+                            ApplyTransformation();
+                            int num = 1 - tags;
+                            tags = (sbyte)num;
+                            if ((((num * 16777216 >> 24) ^ id) & 1) == 0)
+                            {
+                                FUN_30BA8();
+                            }
+                            else
+                            {
+                                GameManager.instance.FUN_30CB0(this, 31);
+                            }
+                            Vector3Int param = GameManager.instance.FUN_2CE50(this);
+                            LevelManager.instance.FUN_4DE54(param, 13);
+                            break;
+                        }
                 }
-
+                break;
+            case _BODY_TYPE.Trailer:
+                if (arg1 == 1)
+                {
+                    this.FUN_A0();
+                }
                 break;
         }
-
-        return 0;
+        return 0u;
     }
 
     public override uint UpdateW(int arg1, VigObject arg2)
     {
-        short sVar1;
-        VigObject oVar2;
-        uint uVar3;
-        int iVar4;
-        VigObject oVar4;
-
-        switch (state)
+        if (state == _BODY_TYPE.Ant && arg1 == 5)
         {
-            case _BODY_TYPE.Ant:
-                if (arg1 == 5)
+            VigObject vigObject = Utilities.FUN_2CDB0(this);
+            uint flags = vigObject.flags;
+            vigObject.flags = (uint)((int)flags & -33);
+            if ((flags & 0x1000000) != 0)
+            {
+                vigObject.flags = (uint)((int)flags & -16777249);
+                if (vigObject.maxHalfHealth < 50)
                 {
-                    oVar2 = Utilities.FUN_2CDB0(this);
-                    uVar3 = oVar2.flags;
-                    oVar2.flags = uVar3 & 0xffffffdf;
-
-                    if ((uVar3 & 0x1000000) != 0)
-                    {
-                        oVar2.flags = uVar3 & 0xfeffffdf;
-
-                        if (oVar2.maxHalfHealth < 50)
-                        {
-                            oVar2.FUN_30BA8();
-                            oVar2.FUN_30C68();
-                            oVar2.FUN_4DC94();
-                            return 0xfffffffe;
-                        }
-
-                        oVar2.FUN_2C124_2(16);
-                        Utilities.ParentChildren(oVar2, oVar2);
-                        oVar4 = oVar2.child2.child2.child2;
-
-                        while (oVar4 != null && oVar4.id != 1)
-                            oVar4 = oVar4.child;
-
-                        ((Ant)oVar2).DAT_8C = oVar4;
-                        ((Body)oVar4.child2).state = _BODY_TYPE.Ant;
-                        iVar4 = oVar2.physics1.X;
-
-                        if (0xffff < iVar4)
-                            return 0xfffffffe;
-
-                        oVar2 = oVar2.child2;
-
-                        if (iVar4 < 0)
-                            iVar4 += 15;
-
-                        sVar1 = (short)(iVar4 >> 4);
-                        oVar2.vTransform.rotation.V22 = sVar1;
-                        oVar2.vTransform.rotation.V11 = sVar1;
-                        oVar2.vTransform.rotation.V00 = sVar1;
-                        return 0xfffffffe;
-                    }
+                    vigObject.FUN_30BA8();
+                    vigObject.FUN_30C68();
+                    vigObject.FUN_4DC94();
+                    return 4294967294u;
                 }
-
-                break;
+                vigObject.FUN_2C124_2(16);
+                Utilities.ParentChildren(vigObject, vigObject);
+                VigObject vigObject2 = vigObject.child2.child2.child2;
+                while (vigObject2 != null && vigObject2.id != 1)
+                {
+                    vigObject2 = vigObject2.child;
+                }
+                ((Ant)vigObject).DAT_8C = vigObject2;
+                ((Body)vigObject2.child2).state = _BODY_TYPE.Ant;
+                int num = vigObject.physics1.X;
+                if (65535 < num)
+                {
+                    return 4294967294u;
+                }
+                vigObject = vigObject.child2;
+                if (num < 0)
+                {
+                    num += 15;
+                }
+                short num2 = (short)(num >> 4);
+                vigObject.vTransform.rotation.V22 = num2;
+                vigObject.vTransform.rotation.V11 = num2;
+                vigObject.vTransform.rotation.V00 = num2;
+                return 4294967294u;
+            }
         }
-
-        return 0;
+        return 0u;
     }
 }

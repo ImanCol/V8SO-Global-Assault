@@ -1,144 +1,121 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
 public class XRTP_DB : MonoBehaviour
 {
-    public List<Material> timFarList;
-    public Vector3[] V3_DAT_0C; //0x0C
-    public Color32[] C32_DAT_0C; //0x0C
-    public Vector3[] V3_DAT_10; //0x10
-    public Color32[] C32_DAT_10; //0x10
-    public int DAT_14; //0x14
-    public int DAT_18; //0x18
-    public int DAT_1C; //0x1C
-    public int DAT_20; //0x20
-    public int DAT_24; //0x24
-    public int DAT_28; //0x28
-    public ushort DAT_2C; //0x2C
-    public short DAT_2E; //0x2E
-    public short DAT_30; //0x30
+	public List<Material> timFarList;
 
-    private string prefabPath;
-    private string prefabName;
-    private string apsolutePath;
+	public Vector3[] V3_DAT_0C;
 
-    private void Reset()
-    {
-#if UNITY_EDITOR
-        prefabName = name;
-        prefabPath = Application.dataPath.Remove(Application.dataPath.Length - 6, 6)
-            + Path.GetDirectoryName(AssetDatabase.GetAssetPath(gameObject));
-        prefabPath = prefabPath.Replace("\\", "/");
-#endif
-    }
+	public Color32[] C32_DAT_0C;
 
-    //76B8 (LOAD.DLL)
-    public void LoadDB(string assetPath)
-    {
-        ushort uVar2;
-        short sVar3;
-        int iVar4;
-        int uVar5;
-        int iVar6;
-        short local_21c;
-        MemoryStream auStack536;
+	public Vector3[] V3_DAT_10;
 
-        LevelManager levelManager = GameObject.FindObjectOfType<LevelManager>();
-        string relativePath = prefabPath;
+	public Color32[] C32_DAT_10;
 
-        if (prefabPath.StartsWith(Application.dataPath))
-            relativePath = "Assets" + prefabPath.Substring(Application.dataPath.Length);
+	public int DAT_14;
 
-        using (BinaryReader reader = new BinaryReader(File.Open(assetPath, FileMode.Open)))
-        {
-            levelManager.xrtpList.Add(this);
-            uVar5 = reader.ReadInt32BE();
-            DAT_24 = uVar5;
-            uVar5 = reader.ReadInt32BE();
-            DAT_28 = uVar5;
-            uVar5 = reader.ReadUInt16BE();
-            DAT_1C = uVar5;
-            uVar2 = reader.ReadUInt16BE();
-            DAT_2C = uVar2;
-            DAT_14 = 0;
-            V3_DAT_0C = null;
-            V3_DAT_10 = null;
+	public int DAT_18;
 
-            if (DAT_1C < 16)
-                DAT_1C = 48;
+	public int DAT_1C;
 
-            iVar4 = DAT_28 >> 8;
-            iVar6 = DAT_24 >> 8;
-            sVar3 = (short)(int)Utilities.SquareRoot(iVar4 * iVar4 + iVar6 * iVar6);
-            iVar4 = DAT_24;
-            DAT_30 = (short)(sVar3 - 128);
+	public int DAT_20;
 
-            if (iVar4 < 0)
-                iVar4 += 255;
+	public int DAT_24;
 
-            iVar6 = DAT_28;
+	public int DAT_28;
 
-            if (iVar6 < 0)
-                iVar6 += 255;
+	public ushort DAT_2C;
 
-            iVar4 = (iVar4 >> 8) * (iVar6 >> 8);
+	public short DAT_2E;
 
-            if (iVar4 < 0)
-                iVar4 += 127;
+	public short DAT_30;
 
-            DAT_2E = (short)(iVar4 >> 7);
+	private string prefabPath;
 
-            if (12 < reader.BaseStream.Length)
-            {
-                long begin = reader.BaseStream.Position;
-                iVar6 = 0;
-                timFarList = new List<Material>();
-                Utilities.SetFarColor(levelManager.DAT_DDC.r, levelManager.DAT_DDC.g, levelManager.DAT_DDC.b);
+	private string prefabName;
 
-                for (int i = 0; i < 16; i++)
-                {
-                    reader.BaseStream.Seek(begin, SeekOrigin.Begin);
-                    auStack536 = new MemoryStream();
+	private string apsolutePath;
 
-                    using (BinaryWriter writer = new BinaryWriter(auStack536, Encoding.Default, true))
-                    {
-                        writer.Write(reader.ReadBytes(16));
-                        local_21c = reader.ReadInt16();
-                        writer.Write(local_21c);
-                        writer.Write(reader.ReadInt16());
-                        Utilities.FUN_18C54(reader, local_21c, writer, iVar6);
-                        writer.Write(reader.ReadBytes((int)(reader.BaseStream.Length - reader.BaseStream.Position)));
-                        writer.BaseStream.Seek(0, SeekOrigin.Begin);
-                    }
+	private void Reset()
+	{
+	}
 
-                    using (BinaryReader reader2 = new BinaryReader(auStack536, Encoding.Default, true))
-                    {
-                        string bmpApsolute = prefabPath + "/" + prefabName + "_FAR" + i.ToString().PadLeft(2, '0') + ".bmp";
-                        string bmpRelative = relativePath + "/" + prefabName + "_FAR" + i.ToString().PadLeft(2, '0') + ".bmp";
-                        string matPath = relativePath + "/" + prefabName + "_FAR" + i.ToString().PadLeft(2, '0') + ".mat";
-                        reader2.ReadInt32();
-                        IMP_TIM.LoadTIM(reader2, bmpApsolute);
-#if UNITY_EDITOR
-                        AssetDatabase.Refresh();
-                        Material newMaterial = new Material(AssetDatabase.LoadAssetAtPath(relativePath + "/default.mat", typeof(Material)) as Material);
-                        newMaterial.mainTexture = AssetDatabase.LoadAssetAtPath(bmpRelative, typeof(Texture2D)) as Texture2D;
-                        Utilities.SaveObjectToFile(newMaterial, matPath);
-                        timFarList.Add(newMaterial);
-#endif
-                    }
-
-                    iVar6 += 0x100;
-                }
-            }
-
-#if UNITY_EDITOR
-            EditorUtility.SetDirty(gameObject);
-            EditorUtility.SetDirty(levelManager.gameObject);
-#endif
-        }
-    }
+	public void LoadDB(string assetPath)
+	{
+		LevelManager levelManager = UnityEngine.Object.FindObjectOfType<LevelManager>();
+		string text = prefabPath;
+		if (prefabPath.StartsWith(Application.dataPath))
+		{
+			text = "Assets" + prefabPath.Substring(Application.dataPath.Length);
+		}
+		using (BinaryReader binaryReader = new BinaryReader(File.Open(assetPath, FileMode.Open)))
+		{
+			levelManager.xrtpList.Add(this);
+			int num = DAT_24 = binaryReader.ReadInt32BE();
+			num = (DAT_28 = binaryReader.ReadInt32BE());
+			num = (DAT_1C = binaryReader.ReadUInt16BE());
+			ushort num2 = DAT_2C = binaryReader.ReadUInt16BE();
+			DAT_14 = 0;
+			V3_DAT_0C = null;
+			V3_DAT_10 = null;
+			if (DAT_1C < 16)
+			{
+				DAT_1C = 48;
+			}
+			int num3 = DAT_28 >> 8;
+			int num4 = DAT_24 >> 8;
+			short num5 = (short)Utilities.SquareRoot(num3 * num3 + num4 * num4);
+			num3 = DAT_24;
+			DAT_30 = (short)(num5 - 128);
+			if (num3 < 0)
+			{
+				num3 += 255;
+			}
+			num4 = DAT_28;
+			if (num4 < 0)
+			{
+				num4 += 255;
+			}
+			num3 = (num3 >> 8) * (num4 >> 8);
+			if (num3 < 0)
+			{
+				num3 += 127;
+			}
+			DAT_2E = (short)(num3 >> 7);
+			if (12 < binaryReader.BaseStream.Length)
+			{
+				long position = binaryReader.BaseStream.Position;
+				num4 = 0;
+				timFarList = new List<Material>();
+				Utilities.SetFarColor(levelManager.DAT_DDC.r, levelManager.DAT_DDC.g, levelManager.DAT_DDC.b);
+				for (int i = 0; i < 16; i++)
+				{
+					binaryReader.BaseStream.Seek(position, SeekOrigin.Begin);
+					MemoryStream memoryStream = new MemoryStream();
+					using (BinaryWriter binaryWriter = new BinaryWriter(memoryStream, Encoding.Default, leaveOpen: true))
+					{
+						binaryWriter.Write(binaryReader.ReadBytes(16));
+						short num6 = binaryReader.ReadInt16();
+						binaryWriter.Write(num6);
+						binaryWriter.Write(binaryReader.ReadInt16());
+						Utilities.FUN_18C54(binaryReader, num6, binaryWriter, num4);
+						binaryWriter.Write(binaryReader.ReadBytes((int)(binaryReader.BaseStream.Length - binaryReader.BaseStream.Position)));
+						binaryWriter.BaseStream.Seek(0L, SeekOrigin.Begin);
+					}
+					using (BinaryReader binaryReader2 = new BinaryReader(memoryStream, Encoding.Default, leaveOpen: true))
+					{
+						string path = prefabPath + "/" + prefabName + "_FAR" + i.ToString().PadLeft(2, '0') + ".bmp";
+						string text2 = text + "/" + prefabName + "_FAR" + i.ToString().PadLeft(2, '0') + ".bmp";
+						string text3 = text + "/" + prefabName + "_FAR" + i.ToString().PadLeft(2, '0') + ".mat";
+						binaryReader2.ReadInt32();
+						IMP_TIM.LoadTIM(binaryReader2, path);
+					}
+					num4 += 256;
+				}
+			}
+		}
+	}
 }

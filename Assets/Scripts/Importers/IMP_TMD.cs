@@ -1,403 +1,337 @@
-﻿using System.IO;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class IMP_TMD
 {
-    public static Mesh LoadAsset(string assetPath, Material[] collection, MeshRenderer renderer)
-    {
-        Mesh mesh = new Mesh();
-
-        using (BinaryReader reader = new BinaryReader(File.Open(assetPath, FileMode.Open)))
-        {
-            int vertElements = reader.ReadInt32();
-            int vertOffset = reader.ReadInt32();
-            int normalElements = reader.ReadInt32();
-            int normalOffset = reader.ReadInt32();
-            int faceElements = reader.ReadInt32();
-            int faceOffset = reader.ReadInt32();
-            short scale = reader.ReadInt16();
-            short unknown1 = reader.ReadInt16();
-
-            List<Vector3> verticesList = new List<Vector3>();
-            List<Vector3> normalsList = new List<Vector3>();
-            List<Vector2> uvsList = new List<Vector2>();
-            List<Color32> colorsList = new List<Color32>();
-            List<List<int>> indicesList = new List<List<int>>();
-            List<int> materialIDs = new List<int>();
-
-            indicesList.Add(new List<int>());
-            materialIDs.Add(0);
-
-            for (int i = 0, j = 0; i < faceElements; i++)
-            {
-                byte R8 = reader.ReadByte();
-                byte G8 = reader.ReadByte();
-                byte B8 = reader.ReadByte();
-                byte A = 0;
-                int header = reader.ReadByte();
-
-                if (R8 == 255 && G8 == 255 && B8 == 255)
-                    A = 255;
-
-                if (R8 == 128 && G8 == 128 && B8 == 128)
-                    A = 255;
-
-                if (header == 4)
-                {
-                    verticesList.AddRange(GetVertices(reader, 3, vertOffset));
-                    normalsList.AddRange(GetNormalsByIndex(reader, 3, normalOffset, reader.ReadInt16()));
-                    uvsList.AddRange(GetEmptyUVs(3));
-                    indicesList[0].Add(j * 3 + 0);
-                    indicesList[0].Add(j * 3 + 1);
-                    indicesList[0].Add(j * 3 + 2);
-                    j++;
-
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-
-                    //reader.BaseStream.Seek(8, SeekOrigin.Current);
-                }
-                else if (header == 5)
-                {
-                    verticesList.AddRange(GetVertices(reader, 3, vertOffset));
-                    normalsList.AddRange(GetEmptyNormals(3));
-                    reader.ReadInt16(); //unknown
-                    uvsList.AddRange(GetUVs(reader, 3, collection));
-                    int submashID = reader.ReadInt16() + 1;
-
-                    if (!materialIDs.Contains(submashID))
-                    {
-                        materialIDs.Add(submashID);
-                        indicesList.Add(new List<int>());
-                        mesh.subMeshCount++;
-                    }
-
-                    indicesList[materialIDs.IndexOf(submashID)].Add(j * 3 + 0);
-                    indicesList[materialIDs.IndexOf(submashID)].Add(j * 3 + 1);
-                    indicesList[materialIDs.IndexOf(submashID)].Add(j * 3 + 2);
-                    j++;
-
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-                }
-                else if (header == 6)
-                {
-                    verticesList.AddRange(GetVertices(reader, 3, vertOffset));
-                    normalsList.AddRange(GetEmptyNormals(3));
-                    uvsList.AddRange(GetEmptyUVs(3));
-                    reader.ReadInt16(); //always 0x3F00?
-                    indicesList[0].Add(j * 3 + 0);
-                    indicesList[0].Add(j * 3 + 1);
-                    indicesList[0].Add(j * 3 + 2);
-                    j++;
-
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-
-                    //reader.BaseStream.Seek(8, SeekOrigin.Current);
-                }
-                else if (header == 8)
-                {
-                    verticesList.AddRange(GetVertices(reader, 3, vertOffset));
-                    normalsList.AddRange(GetNormals(reader, 3, normalOffset));
-                    uvsList.AddRange(GetEmptyUVs(3));
-                    indicesList[0].Add(j * 3 + 0);
-                    indicesList[0].Add(j * 3 + 1);
-                    indicesList[0].Add(j * 3 + 2);
-                    j++;
-
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-
-                    //reader.BaseStream.Seek(12, SeekOrigin.Current);
-                }
-                else if (header == 9)
-                {
-                    verticesList.AddRange(GetVertices(reader, 3, vertOffset));
-                    normalsList.AddRange(GetNormals(reader, 3, normalOffset));
-                    uvsList.AddRange(GetUVs(reader, 3, collection));
-                    int submashID = reader.ReadInt16() + 1;
-
-                    if (!materialIDs.Contains(submashID))
-                    {
-                        materialIDs.Add(submashID);
-                        indicesList.Add(new List<int>());
-                        mesh.subMeshCount++;
-                    }
-                    
-                    indicesList[materialIDs.IndexOf(submashID)].Add(j * 3 + 0);
-                    indicesList[materialIDs.IndexOf(submashID)].Add(j * 3 + 1);
-                    indicesList[materialIDs.IndexOf(submashID)].Add(j * 3 + 2);
-                    j++;
-
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-                }
-                else if (header == 11)
-                {
-                    verticesList.AddRange(GetVertices(reader, 3, vertOffset));
-                    normalsList.AddRange(GetNormals(reader, 3, normalOffset));
-                    uvsList.AddRange(GetUVsByIndex(reader, 3, collection, 3));
-                    int submashID = 3 + 1;
-
-                    if (!materialIDs.Contains(submashID))
-                    {
-                        materialIDs.Add(submashID);
-                        indicesList.Add(new List<int>());
-                        mesh.subMeshCount++;
-                    }
-
-                    indicesList[materialIDs.IndexOf(submashID)].Add(j * 3 + 0);
-                    indicesList[materialIDs.IndexOf(submashID)].Add(j * 3 + 1);
-                    indicesList[materialIDs.IndexOf(submashID)].Add(j * 3 + 2);
-                    j++;
-
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-                }
-                else if (header == 12)
-                {
-                    verticesList.AddRange(GetVertices(reader, 3, vertOffset));
-                    normalsList.AddRange(GetNormals(reader, 3, normalOffset));
-                    uvsList.AddRange(GetEmptyUVs(3));
-                    reader.ReadInt16(); //unknown
-                    reader.ReadInt16(); //always 0x8080 (changes in game)
-                    reader.ReadInt32(); //always 0?
-                    indicesList[0].Add(j * 3 + 0);
-                    indicesList[0].Add(j * 3 + 1);
-                    indicesList[0].Add(j * 3 + 2);
-                    j++;
-
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-                    
-                    //reader.BaseStream.Seek(20, SeekOrigin.Current);
-                }
-                else if (header == 28)
-                {
-                    /*verticesList.AddRange(GetVertices(reader, 3, vertOffset));
-                    normalsList.AddRange(GetNormals(reader, 3, normalOffset));
-                    uvsList.AddRange(GetEmptyUVs(3));
-                    reader.ReadInt16(); //unknown
-                    reader.ReadInt16(); //always 0x8080 (changes in game)
-                    reader.ReadInt32(); //always 0?
-                    indicesList[0].Add(j * 3 + 0);
-                    indicesList[0].Add(j * 3 + 1);
-                    indicesList[0].Add(j * 3 + 2);
-                    j++;
-
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-                    colorsList.Add(new Color32(R8, G8, B8, A));*/
-
-                    reader.BaseStream.Seek(20, SeekOrigin.Current);
-                }
-                else if (header == 31)
-                {
-                    verticesList.AddRange(GetVertices(reader, 3, vertOffset));
-                    normalsList.AddRange(GetEmptyNormals(3));
-                    reader.ReadInt16(); //unknown
-                    uvsList.AddRange(GetUVs(reader, 3, collection));
-                    int submashID = reader.ReadByte() + 1;
-                    reader.ReadByte(); //always 0x40?
-
-                    if (!materialIDs.Contains(submashID))
-                    {
-                        materialIDs.Add(submashID);
-                        indicesList.Add(new List<int>());
-                        mesh.subMeshCount++;
-                    }
-
-                    indicesList[materialIDs.IndexOf(submashID)].Add(j * 3 + 0);
-                    indicesList[materialIDs.IndexOf(submashID)].Add(j * 3 + 1);
-                    indicesList[materialIDs.IndexOf(submashID)].Add(j * 3 + 2);
-                    j++;
-
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-                    colorsList.Add(new Color32(R8, G8, B8, A));
-
-                    //reader.BaseStream.Seek(20, SeekOrigin.Current);
-                }
-                else
-                {
-                    Debug.LogError("Unkown header detected! Stream Position: " + reader.BaseStream.Position);
-                    return null;
-                }
-            }
-
-            mesh.SetVertices(verticesList);
-            mesh.SetColors(colorsList);
-            mesh.SetNormals(normalsList);
-            mesh.SetUVs(0, uvsList);
-
-            for (int i = 0; i < indicesList.Count; i++)
-                 mesh.SetTriangles(indicesList[i], i);
-
-            Material[] materials = new Material[materialIDs.Count];
-
-            for (int i = 0; i < materialIDs.Count; i++)
-                materials[i] = collection[materialIDs[i]];
-
-            renderer.sharedMaterials = materials;
-
-            Debug.Log("Generated polys: " + mesh.triangles.Length);
-        }
-
-        return mesh;
-    }
-
-    private static List<Vector3> GetVertices(BinaryReader reader, int numIndices, long vertPosition)
-    {
-        List<Vector3> output = new List<Vector3>();
-        List<int> indices = new List<int>();
-        int tFactor = GameManager.instance.translateFactor2;
-
-        for (int i = 0; i < numIndices; i++)
-            indices.Add(reader.ReadInt16());
-
-        long returnPosition = reader.BaseStream.Position;
-
-        for (int v = 0; v < numIndices; v++)
-        {
-            reader.BaseStream.Seek(vertPosition, SeekOrigin.Begin);
-            reader.BaseStream.Seek(indices[v] * 8, SeekOrigin.Current);
-
-            float vert_x = (float)(reader.ReadInt16() << 8) / tFactor;
-            float vert_y = -(float)(reader.ReadInt16() << 8) / tFactor;
-            float vert_z = (float)(reader.ReadInt16() << 8) / tFactor;
-
-            output.Add(new Vector3(vert_x, vert_y, vert_z));
-        }
-
-        reader.BaseStream.Seek(returnPosition, SeekOrigin.Begin);
-        return output;
-    }
-
-    private static List<Vector3> GetNormals(BinaryReader reader, int numIndices, long normalPosition)
-    {
-        List<Vector3> output = new List<Vector3>();
-        List<int> indices = new List<int>();
-        int tFactor = GameManager.instance.translateFactor2;
-
-        for (int i = 0; i < numIndices; i++)
-            indices.Add(reader.ReadInt16());
-
-        long returnPosition = reader.BaseStream.Position;
-
-        for (int n = 0; n < numIndices; n++)
-        {
-            reader.BaseStream.Seek(normalPosition, SeekOrigin.Begin);
-            reader.BaseStream.Seek(indices[n] * 8, SeekOrigin.Current);
-
-            float normal_x = (float)(reader.ReadInt16() << 8) / tFactor;
-            float normal_y = -(float)(reader.ReadInt16() << 8) / tFactor;
-            float normal_z = (float)(reader.ReadInt16() << 8) / tFactor;
-
-            output.Add(new Vector3(normal_x, normal_y, normal_z));
-        }
-
-        reader.BaseStream.Seek(returnPosition, SeekOrigin.Begin);
-        return output;
-    }
-
-    private static List<Vector3> GetNormalsByIndex(BinaryReader reader, int numIndices, long normalPosition, int index)
-    {
-        List<Vector3> output = new List<Vector3>();
-        List<int> indices = new List<int>();
-        int tFactor = GameManager.instance.translateFactor2;
-
-        for (int i = 0; i < numIndices; i++)
-            indices.Add(index);
-
-        long returnPosition = reader.BaseStream.Position;
-
-        for (int n = 0; n < numIndices; n++)
-        {
-            reader.BaseStream.Seek(normalPosition, SeekOrigin.Begin);
-            reader.BaseStream.Seek(indices[n] * 8, SeekOrigin.Current);
-
-            float normal_x = (float)(reader.ReadInt16() << 8) / tFactor;
-            float normal_y = -(float)(reader.ReadInt16() << 8) / tFactor;
-            float normal_z = (float)(reader.ReadInt16() << 8) / tFactor;
-
-            output.Add(new Vector3(normal_x, normal_y, normal_z));
-        }
-
-        reader.BaseStream.Seek(returnPosition, SeekOrigin.Begin);
-        return output;
-    }
-
-    private static List<Vector2> GetUVs(BinaryReader reader, int numIndices, Material[] materials)
-    {
-        List<Vector2> output = new List<Vector2>();
-        long returnPosition = reader.BaseStream.Position;
-
-        reader.BaseStream.Seek(numIndices * 4 - 2, SeekOrigin.Current);
-        int materialID = reader.ReadByte() + 1;
-        reader.BaseStream.Seek(returnPosition, SeekOrigin.Begin);
-
-        for (int i = 0; i < numIndices; i++)
-        {
-            float uv_x = (float)reader.ReadByte() / (materials[materialID].mainTexture.width - 1);
-            float uv_y = 1f - (float)reader.ReadByte() / (materials[materialID].mainTexture.height - 1);
-
-            output.Add(new Vector2(uv_x, uv_y));
-            reader.ReadInt16(); //skip
-        }
-
-        reader.BaseStream.Seek(-2, SeekOrigin.Current);
-        return output;
-    }
-
-    private static List<Vector2> GetUVsByIndex(BinaryReader reader, int numIndices, Material[] materials, int index)
-    {
-        List<Vector2> output = new List<Vector2>();
-        long returnPosition = reader.BaseStream.Position;
-
-        int materialID = index + 1;
-        reader.BaseStream.Seek(returnPosition, SeekOrigin.Begin);
-
-        for (int i = 0; i < numIndices; i++)
-        {
-            float uv_x = (float)reader.ReadByte() / (materials[materialID].mainTexture.width - 1);
-            float uv_y = 1f - (float)reader.ReadByte() / (materials[materialID].mainTexture.height - 1);
-
-            output.Add(new Vector2(uv_x, uv_y));
-            reader.ReadInt16(); //skip
-        }
-        
-        return output;
-    }
-
-    private static List<Vector3> GetEmptyNormals(int numIndices)
-    {
-        List<Vector3> output = new List<Vector3>();
-        Vector3 empty = new Vector3(0, 0, 0);
-
-        for (int i = 0; i < numIndices; i++)
-            output.Add(empty);
-
-        return output;
-    }
-
-    private static List<Vector2> GetEmptyUVs(int numIndices)
-    {
-        List<Vector2> output = new List<Vector2>();
-        Vector2 empty = new Vector2(0, 0);
-
-        for (int i = 0; i < numIndices; i++)
-            output.Add(empty);
-
-        return output;
-    }
+	public static Mesh LoadAsset(string assetPath, Material[] collection, MeshRenderer renderer)
+	{
+		Mesh mesh = new Mesh();
+		using (BinaryReader binaryReader = new BinaryReader(File.Open(assetPath, FileMode.Open)))
+		{
+			binaryReader.ReadInt32();
+			int num = binaryReader.ReadInt32();
+			binaryReader.ReadInt32();
+			int num2 = binaryReader.ReadInt32();
+			int num3 = binaryReader.ReadInt32();
+			binaryReader.ReadInt32();
+			binaryReader.ReadInt16();
+			binaryReader.ReadInt16();
+			List<Vector3> list = new List<Vector3>();
+			List<Vector3> list2 = new List<Vector3>();
+			List<Vector2> list3 = new List<Vector2>();
+			List<Color32> list4 = new List<Color32>();
+			List<List<int>> list5 = new List<List<int>>();
+			List<int> list6 = new List<int>();
+			list5.Add(new List<int>());
+			list6.Add(0);
+			int i = 0;
+			int num4 = 0;
+			for (; i < num3; i++)
+			{
+				byte b = binaryReader.ReadByte();
+				byte b2 = binaryReader.ReadByte();
+				byte b3 = binaryReader.ReadByte();
+				byte a = 0;
+				int num5 = binaryReader.ReadByte();
+				if (b == byte.MaxValue && b2 == byte.MaxValue && b3 == byte.MaxValue)
+				{
+					a = byte.MaxValue;
+				}
+				if (b == 128 && b2 == 128 && b3 == 128)
+				{
+					a = byte.MaxValue;
+				}
+				switch (num5)
+				{
+				case 4:
+					list.AddRange(GetVertices(binaryReader, 3, num));
+					list2.AddRange(GetNormalsByIndex(binaryReader, 3, num2, binaryReader.ReadInt16()));
+					list3.AddRange(GetEmptyUVs(3));
+					list5[0].Add(num4 * 3);
+					list5[0].Add(num4 * 3 + 1);
+					list5[0].Add(num4 * 3 + 2);
+					num4++;
+					list4.Add(new Color32(b, b2, b3, a));
+					list4.Add(new Color32(b, b2, b3, a));
+					list4.Add(new Color32(b, b2, b3, a));
+					break;
+				case 5:
+				{
+					list.AddRange(GetVertices(binaryReader, 3, num));
+					list2.AddRange(GetEmptyNormals(3));
+					binaryReader.ReadInt16();
+					list3.AddRange(GetUVs(binaryReader, 3, collection));
+					int item2 = binaryReader.ReadInt16() + 1;
+					if (!list6.Contains(item2))
+					{
+						list6.Add(item2);
+						list5.Add(new List<int>());
+						mesh.subMeshCount++;
+					}
+					list5[list6.IndexOf(item2)].Add(num4 * 3);
+					list5[list6.IndexOf(item2)].Add(num4 * 3 + 1);
+					list5[list6.IndexOf(item2)].Add(num4 * 3 + 2);
+					num4++;
+					list4.Add(new Color32(b, b2, b3, a));
+					list4.Add(new Color32(b, b2, b3, a));
+					list4.Add(new Color32(b, b2, b3, a));
+					break;
+				}
+				case 6:
+					list.AddRange(GetVertices(binaryReader, 3, num));
+					list2.AddRange(GetEmptyNormals(3));
+					list3.AddRange(GetEmptyUVs(3));
+					binaryReader.ReadInt16();
+					list5[0].Add(num4 * 3);
+					list5[0].Add(num4 * 3 + 1);
+					list5[0].Add(num4 * 3 + 2);
+					num4++;
+					list4.Add(new Color32(b, b2, b3, a));
+					list4.Add(new Color32(b, b2, b3, a));
+					list4.Add(new Color32(b, b2, b3, a));
+					break;
+				case 8:
+					list.AddRange(GetVertices(binaryReader, 3, num));
+					list2.AddRange(GetNormals(binaryReader, 3, num2));
+					list3.AddRange(GetEmptyUVs(3));
+					list5[0].Add(num4 * 3);
+					list5[0].Add(num4 * 3 + 1);
+					list5[0].Add(num4 * 3 + 2);
+					num4++;
+					list4.Add(new Color32(b, b2, b3, a));
+					list4.Add(new Color32(b, b2, b3, a));
+					list4.Add(new Color32(b, b2, b3, a));
+					break;
+				case 9:
+				{
+					list.AddRange(GetVertices(binaryReader, 3, num));
+					list2.AddRange(GetNormals(binaryReader, 3, num2));
+					list3.AddRange(GetUVs(binaryReader, 3, collection));
+					int item4 = binaryReader.ReadInt16() + 1;
+					if (!list6.Contains(item4))
+					{
+						list6.Add(item4);
+						list5.Add(new List<int>());
+						mesh.subMeshCount++;
+					}
+					list5[list6.IndexOf(item4)].Add(num4 * 3);
+					list5[list6.IndexOf(item4)].Add(num4 * 3 + 1);
+					list5[list6.IndexOf(item4)].Add(num4 * 3 + 2);
+					num4++;
+					list4.Add(new Color32(b, b2, b3, a));
+					list4.Add(new Color32(b, b2, b3, a));
+					list4.Add(new Color32(b, b2, b3, a));
+					break;
+				}
+				case 11:
+				{
+					list.AddRange(GetVertices(binaryReader, 3, num));
+					list2.AddRange(GetNormals(binaryReader, 3, num2));
+					list3.AddRange(GetUVsByIndex(binaryReader, 3, collection, 3));
+					int item3 = 4;
+					if (!list6.Contains(item3))
+					{
+						list6.Add(item3);
+						list5.Add(new List<int>());
+						mesh.subMeshCount++;
+					}
+					list5[list6.IndexOf(item3)].Add(num4 * 3);
+					list5[list6.IndexOf(item3)].Add(num4 * 3 + 1);
+					list5[list6.IndexOf(item3)].Add(num4 * 3 + 2);
+					num4++;
+					list4.Add(new Color32(b, b2, b3, a));
+					list4.Add(new Color32(b, b2, b3, a));
+					list4.Add(new Color32(b, b2, b3, a));
+					break;
+				}
+				case 12:
+					list.AddRange(GetVertices(binaryReader, 3, num));
+					list2.AddRange(GetNormals(binaryReader, 3, num2));
+					list3.AddRange(GetEmptyUVs(3));
+					binaryReader.ReadInt16();
+					binaryReader.ReadInt16();
+					binaryReader.ReadInt32();
+					list5[0].Add(num4 * 3);
+					list5[0].Add(num4 * 3 + 1);
+					list5[0].Add(num4 * 3 + 2);
+					num4++;
+					list4.Add(new Color32(b, b2, b3, a));
+					list4.Add(new Color32(b, b2, b3, a));
+					list4.Add(new Color32(b, b2, b3, a));
+					break;
+				case 28:
+					binaryReader.BaseStream.Seek(20L, SeekOrigin.Current);
+					break;
+				case 31:
+				{
+					list.AddRange(GetVertices(binaryReader, 3, num));
+					list2.AddRange(GetEmptyNormals(3));
+					binaryReader.ReadInt16();
+					list3.AddRange(GetUVs(binaryReader, 3, collection));
+					int item = binaryReader.ReadByte() + 1;
+					binaryReader.ReadByte();
+					if (!list6.Contains(item))
+					{
+						list6.Add(item);
+						list5.Add(new List<int>());
+						mesh.subMeshCount++;
+					}
+					list5[list6.IndexOf(item)].Add(num4 * 3);
+					list5[list6.IndexOf(item)].Add(num4 * 3 + 1);
+					list5[list6.IndexOf(item)].Add(num4 * 3 + 2);
+					num4++;
+					list4.Add(new Color32(b, b2, b3, a));
+					list4.Add(new Color32(b, b2, b3, a));
+					list4.Add(new Color32(b, b2, b3, a));
+					break;
+				}
+				default:
+					UnityEngine.Debug.LogError("Unkown header detected! Stream Position: " + binaryReader.BaseStream.Position.ToString());
+					return null;
+				}
+			}
+			mesh.SetVertices(list);
+			mesh.SetColors(list4);
+			mesh.SetNormals(list2);
+			mesh.SetUVs(0, list3);
+			for (int j = 0; j < list5.Count; j++)
+			{
+				mesh.SetTriangles(list5[j], j);
+			}
+			Material[] array = new Material[list6.Count];
+			for (int k = 0; k < list6.Count; k++)
+			{
+				array[k] = collection[list6[k]];
+			}
+			renderer.sharedMaterials = array;
+			UnityEngine.Debug.Log("Generated polys: " + mesh.triangles.Length.ToString());
+			return mesh;
+		}
+	}
+
+	private static List<Vector3> GetVertices(BinaryReader reader, int numIndices, long vertPosition)
+	{
+		List<Vector3> list = new List<Vector3>();
+		List<int> list2 = new List<int>();
+		int translateFactor = GameManager.instance.translateFactor2;
+		for (int i = 0; i < numIndices; i++)
+		{
+			list2.Add(reader.ReadInt16());
+		}
+		long position = reader.BaseStream.Position;
+		for (int j = 0; j < numIndices; j++)
+		{
+			reader.BaseStream.Seek(vertPosition, SeekOrigin.Begin);
+			reader.BaseStream.Seek(list2[j] * 8, SeekOrigin.Current);
+			float x = (float)(reader.ReadInt16() << 8) / (float)translateFactor;
+			float y = (0f - (float)(reader.ReadInt16() << 8)) / (float)translateFactor;
+			float z = (float)(reader.ReadInt16() << 8) / (float)translateFactor;
+			list.Add(new Vector3(x, y, z));
+		}
+		reader.BaseStream.Seek(position, SeekOrigin.Begin);
+		return list;
+	}
+
+	private static List<Vector3> GetNormals(BinaryReader reader, int numIndices, long normalPosition)
+	{
+		List<Vector3> list = new List<Vector3>();
+		List<int> list2 = new List<int>();
+		int translateFactor = GameManager.instance.translateFactor2;
+		for (int i = 0; i < numIndices; i++)
+		{
+			list2.Add(reader.ReadInt16());
+		}
+		long position = reader.BaseStream.Position;
+		for (int j = 0; j < numIndices; j++)
+		{
+			reader.BaseStream.Seek(normalPosition, SeekOrigin.Begin);
+			reader.BaseStream.Seek(list2[j] * 8, SeekOrigin.Current);
+			float x = (float)(reader.ReadInt16() << 8) / (float)translateFactor;
+			float y = (0f - (float)(reader.ReadInt16() << 8)) / (float)translateFactor;
+			float z = (float)(reader.ReadInt16() << 8) / (float)translateFactor;
+			list.Add(new Vector3(x, y, z));
+		}
+		reader.BaseStream.Seek(position, SeekOrigin.Begin);
+		return list;
+	}
+
+	private static List<Vector3> GetNormalsByIndex(BinaryReader reader, int numIndices, long normalPosition, int index)
+	{
+		List<Vector3> list = new List<Vector3>();
+		List<int> list2 = new List<int>();
+		int translateFactor = GameManager.instance.translateFactor2;
+		for (int i = 0; i < numIndices; i++)
+		{
+			list2.Add(index);
+		}
+		long position = reader.BaseStream.Position;
+		for (int j = 0; j < numIndices; j++)
+		{
+			reader.BaseStream.Seek(normalPosition, SeekOrigin.Begin);
+			reader.BaseStream.Seek(list2[j] * 8, SeekOrigin.Current);
+			float x = (float)(reader.ReadInt16() << 8) / (float)translateFactor;
+			float y = (0f - (float)(reader.ReadInt16() << 8)) / (float)translateFactor;
+			float z = (float)(reader.ReadInt16() << 8) / (float)translateFactor;
+			list.Add(new Vector3(x, y, z));
+		}
+		reader.BaseStream.Seek(position, SeekOrigin.Begin);
+		return list;
+	}
+
+	private static List<Vector2> GetUVs(BinaryReader reader, int numIndices, Material[] materials)
+	{
+		List<Vector2> list = new List<Vector2>();
+		long position = reader.BaseStream.Position;
+		reader.BaseStream.Seek(numIndices * 4 - 2, SeekOrigin.Current);
+		int num = reader.ReadByte() + 1;
+		reader.BaseStream.Seek(position, SeekOrigin.Begin);
+		for (int i = 0; i < numIndices; i++)
+		{
+			float x = (float)(int)reader.ReadByte() / (float)(materials[num].mainTexture.width - 1);
+			float y = 1f - (float)(int)reader.ReadByte() / (float)(materials[num].mainTexture.height - 1);
+			list.Add(new Vector2(x, y));
+			reader.ReadInt16();
+		}
+		reader.BaseStream.Seek(-2L, SeekOrigin.Current);
+		return list;
+	}
+
+	private static List<Vector2> GetUVsByIndex(BinaryReader reader, int numIndices, Material[] materials, int index)
+	{
+		List<Vector2> list = new List<Vector2>();
+		long position = reader.BaseStream.Position;
+		int num = index + 1;
+		reader.BaseStream.Seek(position, SeekOrigin.Begin);
+		for (int i = 0; i < numIndices; i++)
+		{
+			float x = (float)(int)reader.ReadByte() / (float)(materials[num].mainTexture.width - 1);
+			float y = 1f - (float)(int)reader.ReadByte() / (float)(materials[num].mainTexture.height - 1);
+			list.Add(new Vector2(x, y));
+			reader.ReadInt16();
+		}
+		return list;
+	}
+
+	private static List<Vector3> GetEmptyNormals(int numIndices)
+	{
+		List<Vector3> list = new List<Vector3>();
+		Vector3 item = new Vector3(0f, 0f, 0f);
+		for (int i = 0; i < numIndices; i++)
+		{
+			list.Add(item);
+		}
+		return list;
+	}
+
+	private static List<Vector2> GetEmptyUVs(int numIndices)
+	{
+		List<Vector2> list = new List<Vector2>();
+		Vector2 item = new Vector2(0f, 0f);
+		for (int i = 0; i < numIndices; i++)
+		{
+			list.Add(item);
+		}
+		return list;
+	}
 }

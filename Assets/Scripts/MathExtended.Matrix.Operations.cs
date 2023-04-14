@@ -7,128 +7,156 @@ namespace MathExtended.Matrices
         public void Multiply(Matrix Matrix)
         {
             if (Columns != Matrix.Rows)
+            {
                 throw new InvalidOperationException("Cannot multiply matrices of different sizes.");
-            var _result = new double[Rows, Matrix.Columns];
-            for (int _row = 0; _row < Rows; _row++)
-                for (int _col = 0; _col < Matrix.Columns; _col++)
+            }
+            double[,] array = new double[Rows, Matrix.Columns];
+            for (int i = 0; i < Rows; i++)
+            {
+                for (int j = 0; j < Matrix.Columns; j++)
                 {
-                    double _sum = 0;
-                    for (int i = 0; i < Columns; i++)
-                        _sum += _matrix[_row, i] * Matrix[i + 1, _col + 1];
-                    _result[_row, _col] = _sum;
+                    double num = 0.0;
+                    for (int k = 0; k < Columns; k++)
+                    {
+                        num += _matrix[i, k] * Matrix[k + 1, j + 1];
+                    }
+                    array[i, j] = num;
                 }
-            _matrix = _result;
+            }
+            _matrix = array;
         }
 
         public void HadamardProduct(Matrix Matrix)
         {
             if (Columns != Matrix.Columns || Rows != Matrix.Rows)
+            {
                 throw new InvalidOperationException("Cannot multiply matrices of different sizes.");
-            for (int _row = 0; _row < Rows; _row++)
-                for (int _col = 0; _col < Columns; _col++)
+            }
+            for (int i = 0; i < Rows; i++)
+            {
+                for (int j = 0; j < Columns; j++)
                 {
-                    _matrix[_row, _col] *= Matrix[_row + 1, _col + 1];
+                    _matrix[i, j] *= Matrix[i + 1, j + 1];
                 }
+            }
         }
 
         public void Multiply(double Scalar)
         {
-            for (int _row = 0; _row < _matrix.GetLength(0); _row++)
-                for (int _col = 0; _col < _matrix.GetLength(1); _col++)
+            for (int i = 0; i < _matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < _matrix.GetLength(1); j++)
                 {
-                    _matrix[_row, _col] *= Scalar;
+                    _matrix[i, j] *= Scalar;
                 }
+            }
         }
 
         public void Add(Matrix Matrix)
         {
             if (Rows != Matrix.Rows || Columns != Matrix.Columns)
+            {
                 throw new InvalidOperationException("Cannot add matrices of different sizes.");
-            for (int _row = 0; _row < _matrix.GetLength(0); _row++)
-                for (int _col = 0; _col < _matrix.GetLength(1); _col++)
+            }
+            for (int i = 0; i < _matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < _matrix.GetLength(1); j++)
                 {
-                    _matrix[_row, _col] += Matrix[_row + 1, _col + 1];
+                    _matrix[i, j] += Matrix[i + 1, j + 1];
                 }
+            }
         }
 
         public void Sub(Matrix Matrix)
         {
             if (Rows != Matrix.Rows || Columns != Matrix.Columns)
+            {
                 throw new InvalidOperationException("Cannot sub matrices of different sizes.");
-            for (int _row = 0; _row < _matrix.GetLength(0); _row++)
-                for (int _col = 0; _col < _matrix.GetLength(1); _col++)
+            }
+            for (int i = 0; i < _matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < _matrix.GetLength(1); j++)
                 {
-                    _matrix[_row, _col] -= Matrix[_row + 1, _col + 1];
+                    _matrix[i, j] -= Matrix[i + 1, j + 1];
                 }
+            }
         }
 
         public void Inverse()
         {
             if (!IsSquare)
-                throw new InvalidOperationException("Only square matrices can be inverted.");
-            int dimension = Rows;
-            var result = _matrix.Clone() as double[,];
-            var identity = _matrix.Clone() as double[,];
-            //make identity matrix
-            for (int _row = 0; _row < dimension; _row++)
-                for (int _col = 0; _col < dimension; _col++)
-                {
-                    identity[_row, _col] = (_row == _col) ? 1.0 : 0.0;
-                }
-            //invert
-            for (int i = 0; i < dimension; i++)
             {
-                double temporary = result[i, i];
-                for (int j = 0; j < dimension; j++)
+                throw new InvalidOperationException("Only square matrices can be inverted.");
+            }
+            int rows = Rows;
+            double[,] array = _matrix.Clone() as double[,];
+            double[,] array2 = _matrix.Clone() as double[,];
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < rows; j++)
                 {
-                    result[i, j] = result[i, j] / temporary;
-                    identity[i, j] = identity[i, j] / temporary;
+                    array2[i, j] = ((i == j) ? 1.0 : 0.0);
                 }
-                for (int k = 0; k < dimension; k++)
+            }
+            for (int k = 0; k < rows; k++)
+            {
+                double num = array[k, k];
+                for (int l = 0; l < rows; l++)
                 {
-                    if (i != k)
+                    array[k, l] /= num;
+                    array2[k, l] /= num;
+                }
+                for (int m = 0; m < rows; m++)
+                {
+                    if (k != m)
                     {
-                        temporary = result[k, i];
-                        for (int n = 0; n < dimension; n++)
+                        num = array[m, k];
+                        for (int n = 0; n < rows; n++)
                         {
-                            result[k, n] = result[k, n] - temporary * result[i, n];
-                            identity[k, n] = identity[k, n] - temporary * identity[i, n];
+                            array[m, n] -= num * array[k, n];
+                            array2[m, n] -= num * array2[k, n];
                         }
                     }
                 }
             }
-            _matrix = identity;
+            _matrix = array2;
         }
 
         public void Transpose()
         {
-            var _result = new double[Columns, Rows];
-            for (int _row = 0; _row < _matrix.GetLength(0); _row++)
-                for (int _col = 0; _col < _matrix.GetLength(1); _col++)
+            double[,] array = new double[Columns, Rows];
+            for (int i = 0; i < _matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < _matrix.GetLength(1); j++)
                 {
-                    _result[_col, _row] = _matrix[_row, _col];
+                    array[j, i] = _matrix[i, j];
                 }
-            _matrix = _result;
+            }
+            _matrix = array;
         }
 
         public void Map(Func<double, double> func)
         {
-            for (int _row = 0; _row < _matrix.GetLength(0); _row++)
-                for (int _col = 0; _col < _matrix.GetLength(1); _col++)
+            for (int i = 0; i < _matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < _matrix.GetLength(1); j++)
                 {
-                    _matrix[_row, _col] = func(_matrix[_row, _col]);
+                    _matrix[i, j] = func(_matrix[i, j]);
                 }
+            }
         }
 
         public void Randomize(double lowest, double highest)
         {
-            Random _random = new Random();
-            double _diff = highest - lowest;
-            for (int _row = 0; _row < _matrix.GetLength(0); _row++)
-                for (int _col = 0; _col < _matrix.GetLength(1); _col++)
+            Random random = new Random();
+            double num = highest - lowest;
+            for (int i = 0; i < _matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < _matrix.GetLength(1); j++)
                 {
-                    _matrix[_row, _col] = (_random.NextDouble() * _diff) + lowest;
+                    _matrix[i, j] = random.NextDouble() * num + lowest;
                 }
+            }
         }
 
         public void Randomize()
@@ -138,13 +166,15 @@ namespace MathExtended.Matrices
 
         public Matrix Duplicate()
         {
-            var _result = new Matrix(Rows, Columns);
-            for (int row = 0; row < Rows; row++)
-                for (int col = 0; col < Columns; col++)
+            Matrix matrix = new Matrix(Rows, Columns);
+            for (int i = 0; i < Rows; i++)
+            {
+                for (int j = 0; j < Columns; j++)
                 {
-                    _result[row + 1, col + 1] = _matrix[row, col];
+                    matrix[i + 1, j + 1] = _matrix[i, j];
                 }
-            return _result;
+            }
+            return matrix;
         }
     }
 }

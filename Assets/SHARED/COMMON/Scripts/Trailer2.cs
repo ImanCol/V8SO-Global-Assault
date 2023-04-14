@@ -1,10 +1,18 @@
 using System.IO;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Trailer2 : Destructible
 {
+    public Vector3Int DAT_A8;
+
+    public Vector3Int DAT_B4;
+
+    public Vehicle DAT_C0;
+
+    public Wheel[] DAT_C4 = new Wheel[2];
+
+    public short id2;
+
     protected override void Start()
     {
         base.Start();
@@ -17,650 +25,641 @@ public class Trailer2 : Destructible
 
     public override uint OnCollision(HitDetection hit)
     {
-        return FUN_440(hit);
+        if (DAT_C0 == null || ((DAT_C0.flags | flags) & 0x4000000) == 0)
+        {
+            return FUN_440(hit);
+        }
+        return 0u;
     }
-
-    public Vector3Int DAT_A8; //0xA8
-    public Vector3Int DAT_B4; //0xB4
-    public Vehicle DAT_C0; //0xC0
-    public Wheel[] DAT_C4 = new Wheel[2]; //0xC4
 
     public override uint UpdateW(int arg1, int arg2)
     {
-        uint uVar1;
-        Vehicle vVar2;
-
+        uint result;
         switch (arg1)
         {
             case 0:
-                FUN_484();
-                uVar1 = 0;
+                //if (GameManager.instance.gameMode < _GAME_MODE.Versus2 || id2 == -1 || (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && id2 > 0))
+                if (GameManager.instance.gameMode < _GAME_MODE.Versus2 || id2 == -1 || (GameManager.instance.gameMode > _GAME_MODE.Versus2 && id2 > 0))
+                {
+                    FUN_484();
+                }
+                if (GameManager.instance.gameMode >= _GAME_MODE.Versus2 && id2 == -1)
+                {
+                    //ClientSend.TrailerTransform(ref vTransform);
+                }
+                //else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && id2 > 0)
+                else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && id2 > 0)
+                {
+                    //ClientSend.TrailerTransformAI(id2, ref vTransform);
+                }
+                result = 0u;
                 break;
             default:
-                uVar1 = 0;
+                result = 0u;
                 break;
             case 2:
                 FUN_4DC94();
-                uVar1 = 0;
+                if (GameManager.instance.gameMode >= _GAME_MODE.Versus2 && id2 == -1)
+                {
+                    //ClientSend.TrailerDetach();
+                }
+                //else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && id2 > 0)
+                else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && id2 > 0)
+                {
+                    //ClientSend.TrailerDetachAI(id2);
+                }
+                result = 0u;
                 break;
             case 8:
-                FUN_32B90((uint)arg2);
-                uVar1 = 0;
+                if (DAT_C0 == null || ((DAT_C0.flags | flags) & 0x4000000) == 0)
+                {
+                    if (GameManager.instance.gameMode < _GAME_MODE.Versus2 || id2 == -1)
+                    {
+                        if (FUN_32B90((uint)arg2) && GameManager.instance.gameMode >= _GAME_MODE.Versus2)
+                        {
+                            //ClientSend.TrailerDetach();
+                        }
+                    }
+                    //else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && id2 > 0 && FUN_32B90((uint)arg2))
+                    else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && id2 > 0 && FUN_32B90((uint)arg2))
+                    {
+                        //ClientSend.TrailerDetachAI(id2);
+                    }
+                }
+                result = 0u;
                 break;
             case 9:
-                uVar1 = 0;
-
+                result = 0u;
                 if (arg2 != 0)
                 {
-                    vVar2 = DAT_C0;
-
-                    if (vVar2 != null)
-                        vVar2.DAT_A6 -= DAT_A6;
-
+                    Vehicle dAT_C = DAT_C0;
+                    if (dAT_C != null)
+                    {
+                        dAT_C.DAT_A6 -= DAT_A6;
+                    }
                     GameManager.instance.FUN_309A0(this);
-                    uVar1 = 0xffffffff;
+                    result = uint.MaxValue;
                 }
-
                 break;
         }
-
-        return uVar1;
+        return result;
     }
 
     private uint FUN_440(HitDetection param1)
     {
         if (DAT_C0 == null)
         {
-            FUN_32CF0(param1);
-            return 0;
+            if (GameManager.instance.gameMode < _GAME_MODE.Versus2 || id2 == -1)
+            {
+                if (FUN_32CF0(param1) && GameManager.instance.gameMode == _GAME_MODE.Versus2)
+                {
+                    //ClientSend.TrailerDetach();
+                }
+            }
+            //else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && id2 > 0 && FUN_32CF0(param1))
+            else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && id2 > 0 && FUN_32CF0(param1))
+            {
+                //ClientSend.TrailerDetachAI(id2);
+            }
+            return 0u;
         }
-        else
-            return (uint)DAT_C0.FUN_3B424(this, param1);
+        return (uint)DAT_C0.FUN_3B424(this, param1);
     }
 
     private void FUN_484()
     {
-        bool bVar2;
-        long lVar3;
-        long lVar4;
-        long lVar5;
-        uint uVar7;
-        int iVar8;
-        uint uVar9;
-        uint uVar10;
-        int iVar11;
-        Wheel wVar11;
-        uint uVar12;
-        int iVar13;
-        uint uVar14;
-        uint uVar16;
-        int iVar17;
-        BufferedBinaryReader brVar17;
-        int iVar18;
-        Wheel wVar18;
-        Vehicle vVar18;
-        uint uVar19;
-        uint uVar22;
-        Vector3Int local_168;
-        Vector3Int local_158;
-        Vector3Int local_128;
-        Vector3Int local_118;
-        Vector3Int local_100;
-        Vector3Int local_f0;
-        Vector3Int local_e0;
-        Vector3Int local_d0;
-        Vector3Int local_c0;
-        Vector3Int local_b0;
-        Vector3Int local_a0;
-        Vector3Int local_80;
-        Vector3Int local_70;
-        Vector3Int local_68;
-        Vector3Int local_58;
-        TileData local_48;
-        uint local_28;
-        int local_24;
-        int local_20;
-        VigTransform auStack328;
-        Vector3Int auStack272;
-        Vector3Int auStack144;
-
-        vVar18 = DAT_C0;
-
-        if (vVar18 == null)
+        Vehicle dAT_C = DAT_C0;
+        if (dAT_C == null)
         {
-            vCollider.reader.Seek(4, SeekOrigin.Current);
+            vCollider.reader.Seek(4L, SeekOrigin.Current);
             FUN_2B4F8(vCollider.reader);
-            vCollider.reader.Seek(-4, SeekOrigin.Current);
+            vCollider.reader.Seek(-4L, SeekOrigin.Current);
             physics1.X = physics1.X * 4032 >> 12;
             physics1.Y = physics1.Y * 4032 >> 12;
             physics1.Z = physics1.Z * 4032 >> 12;
         }
-        else
+        else if (((dAT_C.flags | flags) & 0x4000000) == 0)
         {
-            if (((vVar18.flags | flags) & 0x4000000) == 0)
+            if ((dAT_C.flags & 0x4000) != 0)
             {
-                if ((vVar18.flags & 0x4000) != 0)
+                VigTransform transform = FUN_2AEAC();
+                Vector3Int vector3Int = Utilities.FUN_24148(dAT_C.vTransform, DAT_B4);
+                Vector3Int vector3Int2 = Utilities.FUN_24304(vTransform, vector3Int);
+                Vector3Int vector3Int3 = Utilities.FUN_24148(transform, DAT_A8);
+                vector3Int3.x = (vector3Int2.x - DAT_A8.x) * 128 - vector3Int3.x;
+                if (vector3Int3.x < 0)
                 {
-                    auStack328 = FUN_2AEAC();
-                    auStack272 = Utilities.FUN_24148(vVar18.vTransform, DAT_B4);
-                    local_100 = Utilities.FUN_24304(vTransform, auStack272);
-                    local_f0 = Utilities.FUN_24148(auStack328, DAT_A8);
-                    local_f0.x = (local_100.x - DAT_A8.x) * 128 - local_f0.x;
-
-                    if (local_f0.x < 0)
-                        local_f0.x += 7;
-
-                    local_158 = new Vector3Int();
-                    local_158.x = local_f0.x >> 3;
-                    local_f0.y = (local_100.y - DAT_A8.y) * 128 - local_f0.y;
-
-                    if (local_f0.y < 0)
-                        local_f0.y += 7;
-
-                    local_158.y = local_f0.y >> 3;
-                    local_f0.z = (local_100.z - DAT_A8.z) * 128 - local_f0.z;
-
-                    if (local_f0.z < 0)
-                        local_f0.z += 7;
-
-                    local_158.z = local_f0.z >> 3;
-                    iVar17 = local_158.x;
-
-                    if (local_158.x < 0)
-                        iVar17 = -local_158.x;
-
-                    local_e0 = local_158;
-
-                    if (iVar17 < 0xee681)
+                    vector3Int3.x += 7;
+                }
+                Vector3Int vector3Int4 = default(Vector3Int);
+                vector3Int4.x = vector3Int3.x >> 3;
+                vector3Int3.y = (vector3Int2.y - DAT_A8.y) * 128 - vector3Int3.y;
+                if (vector3Int3.y < 0)
+                {
+                    vector3Int3.y += 7;
+                }
+                vector3Int4.y = vector3Int3.y >> 3;
+                vector3Int3.z = (vector3Int2.z - DAT_A8.z) * 128 - vector3Int3.z;
+                if (vector3Int3.z < 0)
+                {
+                    vector3Int3.z += 7;
+                }
+                vector3Int4.z = vector3Int3.z >> 3;
+                int num = vector3Int4.x;
+                if (vector3Int4.x < 0)
+                {
+                    num = -vector3Int4.x;
+                }
+                Vector3Int vector3Int5 = vector3Int4;
+                if (num < 976513)
+                {
+                    num = vector3Int4.y;
+                    if (vector3Int4.y < 0)
                     {
-                        iVar17 = local_158.y;
-
-                        if (local_158.y < 0)
-                            iVar17 = -local_158.y;
-
-                        if (iVar17 < 0xee681)
+                        num = -vector3Int4.y;
+                    }
+                    if (num < 976513)
+                    {
+                        num = vector3Int4.z;
+                        if (vector3Int4.z < 0)
                         {
-                            iVar17 = local_158.z;
-
-                            if (local_158.z < 0)
-                                iVar17 = -local_158.z;
-
-                            if (iVar17 < 0xee681 && vVar18.wheelsType != _WHEELS.Air &&
-                                vVar18.wheelsType != _WHEELS.Sea)
+                            num = -vector3Int4.z;
+                        }
+                        if (num < 976513 && dAT_C.wheelsType != _WHEELS.Air && dAT_C.wheelsType != _WHEELS.Sea)
+                        {
+                            vector3Int4 = vector3Int5;
+                            Coprocessor.rotationMatrix.rt11 = (short)(DAT_A8.x >> 3);
+                            Coprocessor.rotationMatrix.rt12 = (short)(DAT_A8.x >> 3 >> 16);
+                            Coprocessor.rotationMatrix.rt22 = (short)(DAT_A8.y >> 3);
+                            Coprocessor.rotationMatrix.rt23 = (short)(DAT_A8.y >> 3 >> 16);
+                            Coprocessor.rotationMatrix.rt33 = (short)(DAT_A8.z >> 3);
+                            vector3Int3.x >>= 6;
+                            num = -32768;
+                            if (-32769 < vector3Int3.x)
                             {
-                                local_158 = local_e0;
-                                Coprocessor.rotationMatrix.rt11 = (short)(DAT_A8.x >> 3);
-                                Coprocessor.rotationMatrix.rt12 = (short)(DAT_A8.x >> 3 >> 16);
-                                Coprocessor.rotationMatrix.rt22 = (short)(DAT_A8.y >> 3);
-                                Coprocessor.rotationMatrix.rt23 = (short)(DAT_A8.y >> 3 >> 16);
-                                Coprocessor.rotationMatrix.rt33 = (short)(DAT_A8.z >> 3);
-                                local_f0.x >>= 6;
-                                iVar17 = -0x8000;
-
-                                if (-0x8001 < local_f0.x)
+                                num = 32767;
+                                if (vector3Int3.x < 32768)
                                 {
-                                    iVar17 = 0x7fff;
-
-                                    if (local_f0.x < 0x8000)
-                                        iVar17 = local_f0.x;
+                                    num = vector3Int3.x;
                                 }
-
-                                local_f0.y >>= 6;
-                                iVar8 = -0x8000;
-
-                                if (-0x8001 < local_f0.y)
-                                {
-                                    iVar8 = 0x7fff;
-
-                                    if (local_f0.y < 0x8000)
-                                        iVar8 = local_f0.y;
-                                }
-
-                                local_f0.z >>= 6;
-                                iVar13 = -0x8000;
-
-                                if (-0x8001 < local_f0.z)
-                                {
-                                    iVar13 = 0x7fff;
-
-                                    if (local_f0.z < 0x8000)
-                                        iVar13 = local_f0.z;
-                                }
-
-                                Coprocessor.accumulator.ir1 = (short)iVar17;
-                                Coprocessor.accumulator.ir2 = (short)iVar8;
-                                Coprocessor.accumulator.ir3 = (short)iVar13;
-                                Coprocessor.ExecuteOP(12, false);
-                                local_168 = new Vector3Int(
-                                    Coprocessor.mathsAccumulator.mac1,
-                                    Coprocessor.mathsAccumulator.mac2,
-                                    Coprocessor.mathsAccumulator.mac3);
-                                local_d0 = Utilities.FUN_24094(vTransform.rotation, local_e0);
-                                local_d0.x = -local_d0.x;
-                                local_d0.y = -local_d0.y;
-                                local_d0.z = -local_d0.z;
-                                vVar18.FUN_2B370(local_d0, auStack272);
-                                local_118 = new Vector3Int();
-                                local_118.x = vVar18.vTransform.rotation.V02;
-                                local_118.y = vVar18.vTransform.rotation.V12;
-                                local_118.z = vVar18.vTransform.rotation.V22;
-                                local_118 = Utilities.FUN_24238(vTransform.rotation, local_118);
-
-                                if (local_118.z < 0)
-                                    vVar18.physics2.Y += local_118.x * -4;
-
-                                uVar10 = 0;
-
-                                if (vTransform.rotation.V11 < 0)
-                                {
-                                    brVar17 = vCollider.reader;
-                                    uVar7 = 0;
-
-                                    do
-                                    {
-                                        local_c0 = new Vector3Int();
-
-                                        if (uVar7 == 0)
-                                            local_c0.x = brVar17.ReadInt32(4);
-                                        else
-                                            local_c0.x = brVar17.ReadInt32(16);
-
-                                        if ((uVar10 & 4) == 0)
-                                            local_c0.y = brVar17.ReadInt32(8);
-                                        else
-                                            local_c0.y = brVar17.ReadInt32(20);
-
-                                        if ((uVar10 & 2) == 0)
-                                            local_c0.z = brVar17.ReadInt32(12);
-                                        else
-                                            local_c0.z = brVar17.ReadInt32(24);
-
-                                        local_c0 = Utilities.FUN_24148(vVar18.vTransform, local_c0);
-                                        iVar8 = FUN_2CFBC(local_c0);
-
-                                        if (0 < local_c0.y - iVar8)
-                                        {
-                                            iVar13 = -physics1.X;
-
-                                            if (0 < physics1.X)
-                                                iVar13 += 3;
-
-                                            iVar13 >>= 2;
-                                            local_b0 = new Vector3Int();
-
-                                            if (iVar13 < -2880)
-                                                local_b0.x = -2880;
-                                            else
-                                            {
-                                                local_b0.x = 2880;
-
-                                                if (iVar13 < 2881)
-                                                    local_b0.x = iVar13;
-                                            }
-
-                                            iVar13 = -physics1.Z;
-
-                                            if (0 < physics1.Z)
-                                                iVar13 += 3;
-
-                                            iVar13 >>= 2;
-
-                                            if (iVar13 < -2880)
-                                                local_b0.z = -2880;
-                                            else
-                                            {
-                                                local_b0.z = 2880;
-
-                                                if (iVar13 < 2881)
-                                                    local_b0.z = iVar13;
-                                            }
-
-                                            local_b0.y = -(local_c0.y - iVar8);
-
-                                            if (0 < vVar18.physics1.Y)
-                                                local_b0.y -= vVar18.physics1.Y >> 2;
-
-                                            Coprocessor.rotationMatrix.rt11 = (short)(vTransform.position.x >> 3);
-                                            Coprocessor.rotationMatrix.rt12 = (short)(vTransform.position.x >> 3 >> 16);
-                                            Coprocessor.rotationMatrix.rt22 = (short)(vTransform.position.y >> 3);
-                                            Coprocessor.rotationMatrix.rt23 = (short)(vTransform.position.y >> 3 >> 16);
-                                            Coprocessor.rotationMatrix.rt33 = (short)(vTransform.position.z >> 3);
-                                            Coprocessor.accumulator.ir1 = (short)(local_b0.x >> 3);
-                                            Coprocessor.accumulator.ir2 = (short)(local_b0.y >> 3);
-                                            Coprocessor.accumulator.ir3 = (short)(local_b0.z >> 3);
-                                            Coprocessor.ExecuteOP(12, false);
-                                            local_158.x += local_b0.x;
-                                            local_158.y += local_b0.y;
-                                            local_158.z += local_b0.z;
-                                            iVar8 = Coprocessor.mathsAccumulator.mac1;
-                                            local_168.x += iVar8;
-                                            iVar8 = Coprocessor.mathsAccumulator.mac2;
-                                            local_168.y += iVar8;
-                                            iVar8 = Coprocessor.mathsAccumulator.mac3;
-                                            local_168.z += iVar8;
-                                        }
-
-                                        uVar10++;
-                                        uVar7 = uVar10 & 1;
-                                    } while ((int)uVar10 < 8);
-
-                                    local_168 = Utilities.FUN_2426C(vVar18.vTransform.rotation,
-                                        new Matrix2x4(local_168.x, local_168.y, local_168.z, 0));
-                                    iVar17 = 0;
-
-                                    do
-                                    {
-                                        wVar11 = DAT_C4[iVar17];
-                                        iVar13 = wVar11.physics2.Z;
-                                        wVar11.screen.y = wVar11.physics1.Y;
-                                        iVar8 = iVar13;
-
-                                        if (iVar13 < 0)
-                                            iVar8 = iVar13 + 63;
-
-                                        iVar13 -= iVar8 >> 6;
-                                        wVar11.physics2.Z = iVar13;
-
-                                        if (wVar11.physics2.Y != 0)
-                                        {
-                                            if (iVar13 < 0)
-                                                iVar13 += 4095;
-
-                                            iVar8 = (iVar13 >> 12) * wVar11.physics2.Y;
-
-                                            if (iVar8 < 0)
-                                                iVar8 += 0x7ffff;
-
-                                            wVar11.vr.x -= iVar8 >> 19;
-                                        }
-
-                                        wVar11.ApplyTransformation();
-                                        iVar17++;
-                                    } while (iVar17 < 2);
-                                }
-                                else
-                                {
-                                    local_70 = new Vector3Int();
-                                    local_a0 = new Vector3Int();
-
-                                    do
-                                    {
-                                        wVar18 = DAT_C4[uVar10];
-                                        local_a0.x = wVar18.screen.x;
-                                        local_a0.y = wVar18.screen.y + wVar18.physics2.X;
-                                        local_a0.z = wVar18.screen.z;
-                                        local_68 = Utilities.FUN_24148(auStack328, local_a0);
-                                        auStack144 = Utilities.FUN_24148(vTransform, local_a0);
-                                        auStack144.y = FUN_2CFBC(auStack144, ref local_70, out local_48);
-                                        local_80 = Utilities.FUN_24304(vTransform, auStack144);
-                                        local_80.y -= wVar18.physics2.X;
-
-                                        if (local_80.y < wVar18.physics1.Y)
-                                        {
-                                            uVar19 = (uint)(local_70.x << 16 >> 16);
-                                            uVar7 = (uint)physics1.X;
-                                            lVar3 = (long)((ulong)uVar19 * uVar7);
-                                            uVar16 = (uint)(local_70.y << 16 >> 16);
-                                            uVar9 = (uint)physics1.Y;
-                                            lVar4 = (long)((ulong)uVar16 * uVar9);
-                                            uVar22 = (uint)lVar4;
-                                            uVar12 = (uint)(local_70.z << 16 >> 16);
-                                            uVar14 = (uint)physics1.Z;
-                                            lVar5 = (long)((ulong)uVar12 * uVar14);
-                                            local_28 = (uint)lVar5;
-                                            local_20 = (int)uVar19 * ((int)uVar7 >> 31);
-                                            local_24 = (int)((ulong)lVar5 >> 32) + (int)uVar12 * ((int)uVar14 >> 31) +
-                                                       (int)uVar14 * ((int)((uint)local_70.z << 16) >> 31);
-                                            uVar14 = (uint)lVar3 + uVar22;
-                                            uVar12 = uVar14 + local_28;
-                                            iVar8 = (int)((ulong)lVar3 >> 32) + local_20 +
-                                                    (int)uVar7 * ((int)((uint)local_70.x << 16) >> 31) +
-                                                    (int)((ulong)lVar4 >> 32) + (int)uVar16 * ((int)uVar9 >> 31) +
-                                                    (int)uVar9 * ((int)((uint)local_70.y << 16) >> 31) +
-                                                    (uVar14 < uVar22 ? 1 : 0) + local_24 + (uVar12 < local_28 ? 1 : 0);
-                                            iVar17 = FUN_1BC0(uVar12, iVar8, 0, 0);
-
-                                            if (iVar17 < 1)
-                                            {
-                                                uVar12 += 0x7fff;
-                                                iVar8 += (uVar12 < 0x7fff ? 1 : 0);
-                                            }
-
-                                            uVar7 = uVar12 >> 15 | (uint)iVar8 << 17;
-                                            local_58 = Utilities.FUN_24210(vTransform.rotation, local_70);
-                                            iVar17 = -local_58.x * (int)uVar7;
-
-                                            if (iVar17 < 0)
-                                                iVar17 += 4095;
-
-                                            iVar8 = 0;
-
-                                            if (local_a0.x - local_80.x < 0)
-                                                iVar8 = local_a0.x - local_80.x;
-
-                                            iVar13 = -local_58.z * (int)uVar7;
-
-                                            if (iVar13 < 0)
-                                                iVar13 += 4095;
-
-                                            local_b0 = new Vector3Int();
-                                            local_b0.z = 0;
-
-                                            if (local_a0.z - local_80.z < 0)
-                                                local_b0.z = local_a0.z - local_80.z;
-
-                                            local_b0.z = (iVar13 >> 12) - local_b0.z;
-                                            iVar13 = wVar18.physics1.X;
-
-                                            if (wVar18.physics1.X < local_80.y)
-                                                iVar13 = local_80.y;
-
-                                            if (wVar18.physics1.X < local_80.y || wVar18.screen.y < local_80.y)
-                                            {
-                                                local_b0.y = (local_80.y - wVar18.screen.y) * wVar18.physics1.M7;
-
-                                                if (local_b0.y < 0)
-                                                    local_b0.y += 31;
-
-                                                local_b0.y >>= 5;
-                                            }
-                                            else
-                                                local_b0.y = (local_80.y - wVar18.screen.y) * 16;
-
-                                            local_b0.y = ((wVar18.physics1.Y - iVar13) * wVar18.physics1.M6 * 128) / local_58.y + local_b0.y;
-                                            wVar18.screen.y = local_80.y;
-
-                                            if (local_48 == null || local_48.DAT_10[0] == 0)
-                                                iVar13 = local_b0.y * -2;
-                                            else
-                                            {
-                                                iVar11 = -local_b0.y * (0x100 - local_48.DAT_10[0]);
-                                                iVar13 = iVar11 >> 7;
-
-                                                if (iVar11 < 0)
-                                                    iVar13 = iVar11 + 127 >> 7;
-                                            }
-
-                                            iVar11 = local_68.x;
-
-                                            if (local_68.x < 0)
-                                                iVar11 = local_68.x + 31;
-
-                                            local_b0.x = -(iVar11 >> 5);
-
-                                            if (iVar11 >> 5 < 1)
-                                                bVar2 = iVar13 < local_b0.x;
-                                            else
-                                            {
-                                                iVar13 = -iVar13;
-                                                bVar2 = local_b0.x < iVar13;
-                                            }
-
-                                            if (bVar2)
-                                                local_b0.x = iVar13;
-
-                                            local_b0.x = ((iVar17 >> 12) - iVar8) + local_b0.x;
-                                            Coprocessor.rotationMatrix.rt11 = (short)(local_a0.x >> 3);
-                                            Coprocessor.rotationMatrix.rt12 = (short)(local_a0.x >> 3 >> 16);
-                                            Coprocessor.rotationMatrix.rt22 = (short)(local_a0.y >> 3);
-                                            Coprocessor.rotationMatrix.rt23 = (short)(local_a0.y >> 3 >> 16);
-                                            Coprocessor.rotationMatrix.rt33 = (short)(local_a0.z >> 3);
-                                            iVar17 = local_b0.x >> 3;
-
-                                            if (iVar17 < -0x8000)
-                                                iVar8 = -0x8000;
-                                            else
-                                            {
-                                                iVar8 = 0x7fff;
-
-                                                if (iVar17 < 0x8000)
-                                                    iVar8 = iVar17;
-                                            }
-
-                                            iVar17 = local_b0.y >> 3;
-
-                                            if (iVar17 < -0x8000)
-                                                iVar13 = -0x8000;
-                                            else
-                                            {
-                                                iVar13 = 0x7fff;
-
-                                                if (iVar17 < 0x8000)
-                                                    iVar13 = iVar17;
-                                            }
-
-                                            iVar17 = local_b0.z >> 3;
-
-                                            if (iVar17 < -0x8000)
-                                                iVar11 = -0x8000;
-                                            else
-                                            {
-                                                iVar11 = 0x7fff;
-
-                                                if (iVar17 < 0x8000)
-                                                    iVar11 = iVar17;
-                                            }
-
-                                            Coprocessor.accumulator.ir1 = (short)iVar8;
-                                            Coprocessor.accumulator.ir2 = (short)iVar13;
-                                            Coprocessor.accumulator.ir3 = (short)iVar11;
-                                            Coprocessor.ExecuteOP(12, false);
-                                            local_158.x += local_b0.x;
-                                            local_158.y += local_b0.y;
-                                            local_158.z += local_b0.z;
-                                            iVar17 = Coprocessor.mathsAccumulator.mac1;
-                                            local_168.x += iVar17;
-                                            iVar17 = Coprocessor.mathsAccumulator.mac2;
-                                            local_168.y += iVar17;
-                                            iVar17 = Coprocessor.mathsAccumulator.mac3;
-                                            local_168.z += iVar17;
-                                        }
-                                        else
-                                            wVar18.screen.y = wVar18.physics1.Y;
-
-                                        iVar17 = local_68.z * wVar18.physics2.Y;
-                                        wVar18.physics2.Z = local_68.z;
-
-                                        if (iVar17 < 0)
-                                            iVar17 += 0x7ffff;
-
-                                        wVar18.vr.x -= iVar17 >> 19;
-                                        uVar10++;
-                                        wVar18.ApplyTransformation();
-                                    } while ((int)uVar10 < 2);
-
-                                    local_158 = Utilities.FUN_24094(vTransform.rotation, local_158);
-                                }
-
-                                local_158.y += GameManager.instance.gravityFactor;
-                                FUN_2AFF8(local_158, local_168);
-                                iVar17 = physics2.X;
-                                iVar18 = iVar17;
-
-                                if (iVar17 < 0)
-                                    iVar18 = iVar17 + 31;
-
-                                iVar8 = physics2.Y;
-                                physics2.X = iVar17 - (iVar18 >> 5);
-                                iVar18 = iVar8;
-
-                                if (iVar8 < 0)
-                                    iVar18 = iVar8 + 31;
-
-                                iVar17 = physics2.Z;
-                                physics2.Y = iVar8 - (iVar18 >> 5);
-                                iVar18 = iVar17;
-
-                                if (iVar17 < 0)
-                                    iVar18 = iVar17 + 31;
-
-                                physics2.Z = iVar17 - (iVar18 >> 5);
-                                return;
                             }
+                            vector3Int3.y >>= 6;
+                            int num2 = -32768;
+                            if (-32769 < vector3Int3.y)
+                            {
+                                num2 = 32767;
+                                if (vector3Int3.y < 32768)
+                                {
+                                    num2 = vector3Int3.y;
+                                }
+                            }
+                            vector3Int3.z >>= 6;
+                            int num3 = -32768;
+                            if (-32769 < vector3Int3.z)
+                            {
+                                num3 = 32767;
+                                if (vector3Int3.z < 32768)
+                                {
+                                    num3 = vector3Int3.z;
+                                }
+                            }
+                            Coprocessor.accumulator.ir1 = (short)num;
+                            Coprocessor.accumulator.ir2 = (short)num2;
+                            Coprocessor.accumulator.ir3 = (short)num3;
+                            Coprocessor.ExecuteOP(12, lm: false);
+                            Vector3Int v = new Vector3Int(Coprocessor.mathsAccumulator.mac1, Coprocessor.mathsAccumulator.mac2, Coprocessor.mathsAccumulator.mac3);
+                            Vector3Int v2 = Utilities.FUN_24094(vTransform.rotation, vector3Int5);
+                            v2.x = -v2.x;
+                            v2.y = -v2.y;
+                            v2.z = -v2.z;
+                            dAT_C.FUN_2B370(v2, vector3Int);
+                            Vector3Int v3 = default(Vector3Int);
+                            v3.x = dAT_C.vTransform.rotation.V02;
+                            v3.y = dAT_C.vTransform.rotation.V12;
+                            v3.z = dAT_C.vTransform.rotation.V22;
+                            v3 = Utilities.FUN_24238(vTransform.rotation, v3);
+                            if (v3.z < 0)
+                            {
+                                dAT_C.physics2.Y += v3.x * -4;
+                            }
+                            uint num4 = 0u;
+                            if (vTransform.rotation.V11 < 0)
+                            {
+                                BufferedBinaryReader reader = vCollider.reader;
+                                uint num5 = 0u;
+                                do
+                                {
+                                    Vector3Int v4 = default(Vector3Int);
+                                    if (num5 == 0)
+                                    {
+                                        v4.x = reader.ReadInt32(4);
+                                    }
+                                    else
+                                    {
+                                        v4.x = reader.ReadInt32(16);
+                                    }
+                                    if ((num4 & 4) == 0)
+                                    {
+                                        v4.y = reader.ReadInt32(8);
+                                    }
+                                    else
+                                    {
+                                        v4.y = reader.ReadInt32(20);
+                                    }
+                                    if ((num4 & 2) == 0)
+                                    {
+                                        v4.z = reader.ReadInt32(12);
+                                    }
+                                    else
+                                    {
+                                        v4.z = reader.ReadInt32(24);
+                                    }
+                                    v4 = Utilities.FUN_24148(dAT_C.vTransform, v4);
+                                    num2 = FUN_2CFBC(v4);
+                                    if (0 < v4.y - num2)
+                                    {
+                                        num3 = -physics1.X;
+                                        if (0 < physics1.X)
+                                        {
+                                            num3 += 3;
+                                        }
+                                        num3 >>= 2;
+                                        Vector3Int vector3Int6 = default(Vector3Int);
+                                        if (num3 < -2880)
+                                        {
+                                            vector3Int6.x = -2880;
+                                        }
+                                        else
+                                        {
+                                            vector3Int6.x = 2880;
+                                            if (num3 < 2881)
+                                            {
+                                                vector3Int6.x = num3;
+                                            }
+                                        }
+                                        num3 = -physics1.Z;
+                                        if (0 < physics1.Z)
+                                        {
+                                            num3 += 3;
+                                        }
+                                        num3 >>= 2;
+                                        if (num3 < -2880)
+                                        {
+                                            vector3Int6.z = -2880;
+                                        }
+                                        else
+                                        {
+                                            vector3Int6.z = 2880;
+                                            if (num3 < 2881)
+                                            {
+                                                vector3Int6.z = num3;
+                                            }
+                                        }
+                                        vector3Int6.y = -(v4.y - num2);
+                                        if (0 < dAT_C.physics1.Y)
+                                        {
+                                            vector3Int6.y -= dAT_C.physics1.Y >> 2;
+                                        }
+                                        Coprocessor.rotationMatrix.rt11 = (short)(vTransform.position.x >> 3);
+                                        Coprocessor.rotationMatrix.rt12 = (short)(vTransform.position.x >> 3 >> 16);
+                                        Coprocessor.rotationMatrix.rt22 = (short)(vTransform.position.y >> 3);
+                                        Coprocessor.rotationMatrix.rt23 = (short)(vTransform.position.y >> 3 >> 16);
+                                        Coprocessor.rotationMatrix.rt33 = (short)(vTransform.position.z >> 3);
+                                        Coprocessor.accumulator.ir1 = (short)(vector3Int6.x >> 3);
+                                        Coprocessor.accumulator.ir2 = (short)(vector3Int6.y >> 3);
+                                        Coprocessor.accumulator.ir3 = (short)(vector3Int6.z >> 3);
+                                        Coprocessor.ExecuteOP(12, lm: false);
+                                        vector3Int4.x += vector3Int6.x;
+                                        vector3Int4.y += vector3Int6.y;
+                                        vector3Int4.z += vector3Int6.z;
+                                        num2 = Coprocessor.mathsAccumulator.mac1;
+                                        v.x += num2;
+                                        num2 = Coprocessor.mathsAccumulator.mac2;
+                                        v.y += num2;
+                                        num2 = Coprocessor.mathsAccumulator.mac3;
+                                        v.z += num2;
+                                    }
+                                    num4++;
+                                    num5 = (num4 & 1);
+                                }
+                                while ((int)num4 < 8);
+                                v = Utilities.FUN_2426C(dAT_C.vTransform.rotation, new Matrix2x4(v.x, v.y, v.z, 0));
+                                num = 0;
+                                do
+                                {
+                                    Wheel wheel = DAT_C4[num];
+                                    num3 = wheel.physics2.Z;
+                                    wheel.screen.y = wheel.physics1.Y;
+                                    num2 = num3;
+                                    if (num3 < 0)
+                                    {
+                                        num2 = num3 + 63;
+                                    }
+                                    num3 -= num2 >> 6;
+                                    wheel.physics2.Z = num3;
+                                    if (wheel.physics2.Y != 0)
+                                    {
+                                        if (num3 < 0)
+                                        {
+                                            num3 += 4095;
+                                        }
+                                        num2 = (num3 >> 12) * wheel.physics2.Y;
+                                        if (num2 < 0)
+                                        {
+                                            num2 += 524287;
+                                        }
+                                        wheel.vr.x -= num2 >> 19;
+                                    }
+                                    wheel.ApplyTransformation();
+                                    num++;
+                                }
+                                while (num < 2);
+                            }
+                            else
+                            {
+                                Vector3Int normalVector = default(Vector3Int);
+                                Vector3Int v5 = default(Vector3Int);
+                                do
+                                {
+                                    Wheel wheel2 = DAT_C4[num4];
+                                    v5.x = wheel2.screen.x;
+                                    v5.y = wheel2.screen.y + wheel2.physics2.X;
+                                    v5.z = wheel2.screen.z;
+                                    Vector3Int vector3Int7 = Utilities.FUN_24148(transform, v5);
+                                    Vector3Int vector3Int8 = Utilities.FUN_24148(vTransform, v5);
+                                    vector3Int8.y = FUN_2CFBC(vector3Int8, ref normalVector, out TileData normalTile);
+                                    Vector3Int vector3Int9 = Utilities.FUN_24304(vTransform, vector3Int8);
+                                    vector3Int9.y -= wheel2.physics2.X;
+                                    if (vector3Int9.y < wheel2.physics1.Y)
+                                    {
+                                        uint num6 = (uint)(normalVector.x << 16 >> 16);
+                                        uint num5 = (uint)physics1.X;
+                                        long num7 = (long)num6 * (long)num5;
+                                        uint num8 = (uint)(normalVector.y << 16 >> 16);
+                                        uint y = (uint)physics1.Y;
+                                        long num9 = (long)num8 * (long)y;
+                                        uint num10 = (uint)num9;
+                                        uint num11 = (uint)(normalVector.z << 16 >> 16);
+                                        uint z = (uint)physics1.Z;
+                                        long num12 = (long)num11 * (long)z;
+                                        uint num13 = (uint)num12;
+                                        int num14 = (int)num6 * ((int)num5 >> 31);
+                                        int num15 = (int)((ulong)num12 >> 32) + (int)num11 * ((int)z >> 31) + (int)z * (normalVector.z << 16 >> 31);
+                                        z = (uint)((int)num7 + (int)num10);
+                                        num11 = z + num13;
+                                        num2 = (int)((ulong)num7 >> 32) + num14 + (int)num5 * (normalVector.x << 16 >> 31) + (int)((ulong)num9 >> 32) + (int)num8 * ((int)y >> 31) + (int)y * (normalVector.y << 16 >> 31) + ((z < num10) ? 1 : 0) + num15 + ((num11 < num13) ? 1 : 0);
+                                        num = FUN_1BC0(num11, num2, 0u, 0);
+                                        if (num < 1)
+                                        {
+                                            num11 += 32767;
+                                            num2 += ((num11 < 32767) ? 1 : 0);
+                                        }
+                                        num5 = (uint)((int)(num11 >> 15) | (num2 << 17));
+                                        Vector3Int vector3Int10 = Utilities.FUN_24210(vTransform.rotation, normalVector);
+                                        num = -vector3Int10.x * (int)num5;
+                                        if (num < 0)
+                                        {
+                                            num += 4095;
+                                        }
+                                        num2 = 0;
+                                        if (v5.x - vector3Int9.x < 0)
+                                        {
+                                            num2 = v5.x - vector3Int9.x;
+                                        }
+                                        num3 = -vector3Int10.z * (int)num5;
+                                        if (num3 < 0)
+                                        {
+                                            num3 += 4095;
+                                        }
+                                        Vector3Int vector3Int6 = default(Vector3Int);
+                                        vector3Int6.z = 0;
+                                        if (v5.z - vector3Int9.z < 0)
+                                        {
+                                            vector3Int6.z = v5.z - vector3Int9.z;
+                                        }
+                                        vector3Int6.z = (num3 >> 12) - vector3Int6.z;
+                                        num3 = wheel2.physics1.X;
+                                        if (wheel2.physics1.X < vector3Int9.y)
+                                        {
+                                            num3 = vector3Int9.y;
+                                        }
+                                        if (wheel2.physics1.X < vector3Int9.y || wheel2.screen.y < vector3Int9.y)
+                                        {
+                                            vector3Int6.y = (vector3Int9.y - wheel2.screen.y) * wheel2.physics1.M7;
+                                            if (vector3Int6.y < 0)
+                                            {
+                                                vector3Int6.y += 31;
+                                            }
+                                            vector3Int6.y >>= 5;
+                                        }
+                                        else
+                                        {
+                                            vector3Int6.y = (vector3Int9.y - wheel2.screen.y) * 16;
+                                        }
+                                        vector3Int6.y = (wheel2.physics1.Y - num3) * wheel2.physics1.M6 * 128 / vector3Int10.y + vector3Int6.y;
+                                        wheel2.screen.y = vector3Int9.y;
+                                        int num16;
+                                        if (normalTile == null || normalTile.DAT_10[0] == 0)
+                                        {
+                                            num3 = vector3Int6.y * -2;
+                                        }
+                                        else
+                                        {
+                                            num16 = -vector3Int6.y * (256 - normalTile.DAT_10[0]);
+                                            num3 = num16 >> 7;
+                                            if (num16 < 0)
+                                            {
+                                                num3 = num16 + 127 >> 7;
+                                            }
+                                        }
+                                        num16 = vector3Int7.x;
+                                        if (vector3Int7.x < 0)
+                                        {
+                                            num16 = vector3Int7.x + 31;
+                                        }
+                                        vector3Int6.x = -(num16 >> 5);
+                                        bool flag;
+                                        if (num16 >> 5 < 1)
+                                        {
+                                            flag = (num3 < vector3Int6.x);
+                                        }
+                                        else
+                                        {
+                                            num3 = -num3;
+                                            flag = (vector3Int6.x < num3);
+                                        }
+                                        if (flag)
+                                        {
+                                            vector3Int6.x = num3;
+                                        }
+                                        vector3Int6.x = (num >> 12) - num2 + vector3Int6.x;
+                                        Coprocessor.rotationMatrix.rt11 = (short)(v5.x >> 3);
+                                        Coprocessor.rotationMatrix.rt12 = (short)(v5.x >> 3 >> 16);
+                                        Coprocessor.rotationMatrix.rt22 = (short)(v5.y >> 3);
+                                        Coprocessor.rotationMatrix.rt23 = (short)(v5.y >> 3 >> 16);
+                                        Coprocessor.rotationMatrix.rt33 = (short)(v5.z >> 3);
+                                        num = vector3Int6.x >> 3;
+                                        if (num < -32768)
+                                        {
+                                            num2 = -32768;
+                                        }
+                                        else
+                                        {
+                                            num2 = 32767;
+                                            if (num < 32768)
+                                            {
+                                                num2 = num;
+                                            }
+                                        }
+                                        num = vector3Int6.y >> 3;
+                                        if (num < -32768)
+                                        {
+                                            num3 = -32768;
+                                        }
+                                        else
+                                        {
+                                            num3 = 32767;
+                                            if (num < 32768)
+                                            {
+                                                num3 = num;
+                                            }
+                                        }
+                                        num = vector3Int6.z >> 3;
+                                        if (num < -32768)
+                                        {
+                                            num16 = -32768;
+                                        }
+                                        else
+                                        {
+                                            num16 = 32767;
+                                            if (num < 32768)
+                                            {
+                                                num16 = num;
+                                            }
+                                        }
+                                        Coprocessor.accumulator.ir1 = (short)num2;
+                                        Coprocessor.accumulator.ir2 = (short)num3;
+                                        Coprocessor.accumulator.ir3 = (short)num16;
+                                        Coprocessor.ExecuteOP(12, lm: false);
+                                        vector3Int4.x += vector3Int6.x;
+                                        vector3Int4.y += vector3Int6.y;
+                                        vector3Int4.z += vector3Int6.z;
+                                        num = Coprocessor.mathsAccumulator.mac1;
+                                        v.x += num;
+                                        num = Coprocessor.mathsAccumulator.mac2;
+                                        v.y += num;
+                                        num = Coprocessor.mathsAccumulator.mac3;
+                                        v.z += num;
+                                    }
+                                    else
+                                    {
+                                        wheel2.screen.y = wheel2.physics1.Y;
+                                    }
+                                    num = vector3Int7.z * wheel2.physics2.Y;
+                                    wheel2.physics2.Z = vector3Int7.z;
+                                    if (num < 0)
+                                    {
+                                        num += 524287;
+                                    }
+                                    wheel2.vr.x -= num >> 19;
+                                    num4++;
+                                    wheel2.ApplyTransformation();
+                                }
+                                while ((int)num4 < 2);
+                                vector3Int4 = Utilities.FUN_24094(vTransform.rotation, vector3Int4);
+                            }
+                            vector3Int4.y += GameManager.instance.gravityFactor;
+                            FUN_2AFF8(vector3Int4, v, noflip: true);
+                            num = physics2.X;
+                            int num17 = num;
+                            if (num < 0)
+                            {
+                                num17 = num + 31;
+                            }
+                            num2 = physics2.Y;
+                            physics2.X = num - (num17 >> 5);
+                            num17 = num2;
+                            if (num2 < 0)
+                            {
+                                num17 = num2 + 31;
+                            }
+                            num = physics2.Z;
+                            physics2.Y = num2 - (num17 >> 5);
+                            num17 = num;
+                            if (num < 0)
+                            {
+                                num17 = num + 31;
+                            }
+                            physics2.Z = num - (num17 >> 5);
+                            return;
                         }
                     }
                 }
-
-                DAT_C0 = null;
-                type = 4;
-                id = 0;
-                GameManager.instance.FUN_30CB0(this, 300);
-                vVar18.DAT_A6 -= DAT_A6;
             }
-            else
+            DAT_C0 = null;
+            type = 4;
+            id = 0;
+            GameManager.instance.FUN_30CB0(this, 300);
+            dAT_C.DAT_A6 -= DAT_A6;
+        }
+        else if ((dAT_C.flags & 0x4000) == 0)
+        {
+            DAT_C0 = null;
+            type = 4;
+            id = 0;
+            GameManager.instance.FUN_30CB0(this, 300);
+            dAT_C.DAT_A6 -= DAT_A6;
+        }
+        else
+        {
+            flags ^= 67108864u;
+            Vector3Int v6 = default(Vector3Int);
+            v6.x = DAT_B4.x - DAT_A8.x;
+            v6.y = DAT_B4.y - DAT_A8.y;
+            v6.z = DAT_B4.z - DAT_A8.z;
+            vTransform = dAT_C.vTransform;
+            vTransform.position = Utilities.FUN_24148(dAT_C.vTransform, v6);
+            physics1.X = dAT_C.physics1.X;
+            physics1.Y = dAT_C.physics1.Y;
+            physics1.Z = dAT_C.physics1.Z;
+            physics2.X = dAT_C.physics2.X;
+            physics2.Y = dAT_C.physics2.Y;
+            physics2.Z = dAT_C.physics2.Z;
+            uint num4 = flags;
+            if (((num4 ^ dAT_C.flags) & 0x4000000) != 0)
             {
-                flags ^= 0x4000000;
-                local_128 = new Vector3Int();
-                local_128.x = DAT_B4.x - DAT_A8.x;
-                local_128.y = DAT_B4.y - DAT_A8.y;
-                local_128.z = DAT_B4.z - DAT_A8.z;
-                vTransform = vVar18.vTransform;
-                vTransform.position = Utilities.FUN_24148(vVar18.vTransform, local_128);
-                physics1.X = vVar18.physics1.X;
-                physics1.Y = vVar18.physics1.Y;
-                physics1.Z = vVar18.physics1.Z;
-                physics2.X = vVar18.physics2.X;
-                physics2.Y = vVar18.physics2.Y;
-                physics2.Z = vVar18.physics2.Z;
-                uVar10 = flags;
-
-                if (((uVar10 ^ vVar18.flags) & 0x4000000) != 0)
-                {
-                    flags = uVar10 ^ 0x4000000;
-                    uVar10 = flags;
-                }
-
-                if (((uVar10 ^ vVar18.flags) & 2) != 0)
-                    flags = uVar10 ^ 2;
+                flags = (num4 ^ 0x4000000);
+                num4 = flags;
+            }
+            if (((num4 ^ dAT_C.flags) & 2) != 0)
+            {
+                flags = (num4 ^ 2);
             }
         }
     }
 
-    //FUN_1BC0 (TRUCK.DLL)
     private int FUN_1BC0(uint param1, int param2, uint param3, int param4)
     {
-        int iVar1;
-
-        iVar1 = 0;
-
+        int result = 0;
         if (param4 <= param2)
         {
-            iVar1 = 2;
-
+            result = 2;
             if (param2 <= param4)
             {
                 if (param1 < param3)
-                    iVar1 = 0;
+                {
+                    result = 0;
+                }
                 else
                 {
-                    iVar1 = 2;
-
+                    result = 2;
                     if (param1 <= param3)
-                        iVar1 = 1;
+                    {
+                        result = 1;
+                    }
                 }
             }
         }
-
-        return iVar1;
+        return result;
     }
 }

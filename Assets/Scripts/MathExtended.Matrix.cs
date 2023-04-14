@@ -8,10 +8,11 @@ namespace MathExtended.Matrices
     {
         private double[,] _matrix;
 
-        public int Rows { get { return _matrix.GetLength(0); } }
-        public int Columns { get { return _matrix.GetLength(1); } }
+        public int Rows => _matrix.GetLength(0);
 
-        public bool IsSquare => (Rows == Columns);
+        public int Columns => _matrix.GetLength(1);
+
+        public bool IsSquare => Rows == Columns;
 
         public double this[int row, int column]
         {
@@ -19,7 +20,6 @@ namespace MathExtended.Matrices
             {
                 return _matrix[row - 1, column - 1];
             }
-
             set
             {
                 _matrix[row - 1, column - 1] = value;
@@ -31,27 +31,25 @@ namespace MathExtended.Matrices
             _matrix = new double[Rows, Columns];
         }
 
-        /// <summary>
-        /// Square Matrix constructor; Creates matrox of size m*x
-        /// </summary>
-        /// <param name="m"></param>
-        public Matrix(int m) : this(m, m) { }
+        public Matrix(int m)
+            : this(m, m)
+        {
+        }
 
         public override string ToString()
         {
-            var sb = new StringBuilder();
-            sb.Append("[");
-            for (int row = 0; row < Rows; row++)
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("[");
+            for (int i = 0; i < Rows; i++)
             {
-                for (int col = 0; col < Columns; col++)
+                for (int j = 0; j < Columns; j++)
                 {
-                    sb.Append($"{_matrix[row, col]:N2}").Append(" ");
+                    stringBuilder.Append($"{_matrix[i, j]:N2}").Append(" ");
                 }
-                sb.Append(";");
+                stringBuilder.Append(";");
             }
-            sb.Append("]");
-            return sb.ToString();
+            stringBuilder.Append("]");
+            return stringBuilder.ToString();
         }
-
     }
 }

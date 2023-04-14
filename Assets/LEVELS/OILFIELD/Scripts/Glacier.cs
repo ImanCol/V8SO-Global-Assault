@@ -1,244 +1,224 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Glacier : Destructible
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
+	public static Vector3Int DAT_F8 = new Vector3Int(0, 0, 0);
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	public static int[] DAT_29D0 = new int[3]
+	{
+		20,
+		21,
+		19
+	};
 
-    public override uint OnCollision(HitDetection hit)
-    {
-        int iVar1;
-        Vehicle vVar3;
-        int iVar4;
-        bool bVar7;
-        Vector3Int local_18;
+	public Vector3Int DAT_A8;
 
-        if (hit.self.type == 2 && tags == 1)
-        {
-            vVar3 = (Vehicle)hit.self;
-            iVar4 = (16 << 11) / vVar3.DAT_A6;
-            iVar1 = physics1.X * iVar4;
-            local_18 = new Vector3Int();
+	public int DAT_B4;
 
-            if (iVar1 < -0x80000)
-                local_18.x = -0x80000;
-            else
-            {
-                local_18.x = 0x80000;
+	public int DAT_B8;
 
-                if (iVar1 < 0x80001)
-                    local_18.x = iVar1;
-            }
+	public int DAT_BC;
 
-            iVar1 = physics1.Y * iVar4;
-            local_18.y = -0x80000;
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-            if (-0x80001 < iVar1)
-            {
-                local_18.y = 0x80000;
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-                if (iVar1 < 0x80001)
-                    local_18.y = iVar1;
-            }
+	public override uint OnCollision(HitDetection hit)
+	{
+		if (hit.self.type == 2 && tags == 1)
+		{
+			Vehicle vehicle = (Vehicle)hit.self;
+			int num = 32768 / vehicle.DAT_A6;
+			int num2 = physics1.X * num;
+			Vector3Int v = default(Vector3Int);
+			if (num2 < -524288)
+			{
+				v.x = -524288;
+			}
+			else
+			{
+				v.x = 524288;
+				if (num2 < 524289)
+				{
+					v.x = num2;
+				}
+			}
+			num2 = physics1.Y * num;
+			v.y = -524288;
+			if (-524289 < num2)
+			{
+				v.y = 524288;
+				if (num2 < 524289)
+				{
+					v.y = num2;
+				}
+			}
+			num2 = physics1.Z * num;
+			v.z = -524288;
+			if (-524289 < num2)
+			{
+				v.z = 524288;
+				if (num2 < 524289)
+				{
+					v.z = num2;
+				}
+			}
+			vehicle.FUN_2B370(v, vTransform.position);
+			if (vehicle.id < 0)
+			{
+				GameManager.instance.FUN_15B00(~vehicle.id, byte.MaxValue, 2, 128);
+			}
+			vehicle.FUN_3A064(-180, vTransform.position, param3: true);
+		}
+		else if (hit.self.type == 4 && hit.self.GetType() == typeof(Orca))
+		{
+			FUN_4DC94();
+			return 4294967294u;
+		}
+		if (FUN_32CF0(hit))
+		{
+			return 4294967294u;
+		}
+		return 0u;
+	}
 
-            iVar1 = physics1.Z * iVar4;
-            local_18.z = -0x80000;
-
-            if (-0x80001 < iVar1)
-            {
-                local_18.z = 0x80000;
-
-                if (iVar1 < 0x80001)
-                    local_18.z = iVar1;
-            }
-
-            vVar3.FUN_2B370(local_18, vTransform.position);
-
-            if (vVar3.id < 0)
-                GameManager.instance.FUN_15B00(~vVar3.id, 255, 2, 128);
-
-            vVar3.FUN_3A064(-180, vTransform.position, true);
-        }
-        else
-        {
-            if (hit.self.type == 4 && hit.self.GetType() == typeof(Orca))
-            {
-                FUN_4DC94();
-                return 0xfffffffe;
-            }
-        }
-
-        bVar7 = FUN_32CF0(hit);
-        
-        if (bVar7)
-            return 0xfffffffe;
-
-        return 0;
-    }
-
-    //0xF8 (OILFIELD.DLL)
-    public static Vector3Int DAT_F8 = new Vector3Int(0, 0, 0);
-    //0x29D0 (OILFIELD.DLL)
-    public static int[] DAT_29D0 = new int[] { 20, 21, 19 };
-
-    public Vector3Int DAT_A8; //0xA8
-    public int DAT_B4; //0xB4
-    public int DAT_B8; //0xB8
-    public int DAT_BC; //0xBC
-
-    //FUN_1D34 (OILFIELD.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        sbyte sVar1;
-        uint uVar2;
-        int iVar3;
-        ConfigContainer ccVar3;
-        GlacierSmall ppcVar4;
-        int iVar5;
-        bool bVar7;
-        int iVar7;
-        Oilfield lVar7;
-        VigObject oVar7;
-
-        switch (arg1)
-        {
-            case 0:
-                iVar7 = physics1.X;
-
-                if (iVar7 < 0)
-                    iVar7 += 127;
-
-                iVar5 = physics1.Z;
-                vTransform.position.x += iVar7 >> 7;
-
-                if (iVar5 < 0)
-                    iVar5 += 127;
-
-                iVar7 = DAT_BC + DAT_B8;
-                DAT_BC = iVar7;
-                vTransform.position.z += iVar5 >> 7;
-                vr.y = iVar7 >> 16;
-                ApplyRotationMatrix();
-                iVar7 = vTransform.position.x - DAT_A8.x;
-
-                if (iVar7 < 0)
-                    iVar7 = -iVar7;
-
-                if (0xffff < iVar7)
-                    return 0;
-
-                iVar7 = vTransform.position.z - DAT_A8.z;
-
-                if (iVar7 < 0)
-                    iVar7 = -iVar7;
-
-                if (0xffff < iVar7)
-                    return 0;
-
-                if ((sbyte)DAT_19 == -95)
-                    uVar2 = flags & 0xfeffffff;
-                else
-                {
-                    if ((sbyte)DAT_19 != -90) goto LAB_1E80;
-
-                    uVar2 = flags | 0x1000000;
-                }
-
-                flags = uVar2;
-
-                LAB_1E80:
-                if ((flags & 0x1000000) == 0)
-                    sVar1 = (sbyte)(DAT_19 + 1);
-                else
-                    sVar1 = (sbyte)(DAT_19 - 1);
-
-                DAT_19 = (byte)sVar1;
-                oVar7 = GameManager.instance.FUN_30250(GameManager.instance.DAT_1078, DAT_19);
-                DAT_A8 = oVar7.screen;
-                iVar7 = oVar7.vr.y * 0x10000;
-                iVar5 = iVar7 - DAT_BC;
-                DAT_B4 = iVar7;
-                DAT_B8 = iVar5;
-
-                if (iVar5 < 0)
-                {
-                    DAT_B8 = iVar5 + 0x10000000;
-                    DAT_BC -= 0x10000000;
-                }
-
-                DAT_B8 /= 600;
-                physics1.X = ((DAT_A8.x - vTransform.position.x) * 128) / 600;
-                physics1.Z = ((DAT_A8.z - vTransform.position.z) * 128) / 600;
-                FUN_30BA8();
-                tags = 0;
-                GameManager.instance.FUN_30CB0(this, 600);
-                return 0;
-            case 1:
-                type = 4;
-                flags |= 0x10000;
-                DAT_19 = (byte)id;
-                DAT_A8 = screen;
-                iVar3 = GameManager.instance.DAT_DB0;
-                DAT_BC = vr.y << 16;
-                vTransform.position.y = iVar3;
-                break;
-            case 2:
-                tags = 1;
-                FUN_30B78();
-                return 0;
-            case 8:
-                bVar7 = FUN_32B90((uint)arg2);
-
-                if (bVar7)
-                    return 0xfffffffe;
-
-                break;
-            case 9:
-                iVar7 = 0;
-
-                if (arg2 != 0)
-                {
-                    do
-                    {
-                        ccVar3 = FUN_2C5F4((ushort)(iVar7 - 0x8000 & 0xffff));
-                        ppcVar4 = vData.ini.FUN_2C17C((ushort)DAT_29D0[iVar7], typeof(GlacierSmall), 8) as GlacierSmall;
-                        ppcVar4.vTransform = GameManager.instance.FUN_2CEAC(this, ccVar3);
-                        ppcVar4.flags |= 0x80;
-                        ppcVar4.physics1.X = (ppcVar4.vTransform.position.x - vTransform.position.x) * 2;
-                        iVar7++;
-                        ppcVar4.physics1.Z = (ppcVar4.vTransform.position.z - vTransform.position.z) * 2;
-                        iVar5 = (int)GameManager.FUN_2AC5C();
-                        GameManager.instance.FUN_30CB0(ppcVar4, (iVar5 * 420 >> 15) + 480);
-                        ppcVar4.FUN_305FC();
-                    } while (iVar7 < 3);
-
-                    LevelManager.instance.FUN_4AAC0(0xfe780000, vTransform.position, DAT_F8);
-                    lVar7 = (Oilfield)LevelManager.instance.level;
-                    iVar5 = lVar7.DAT_A0_2 + 1;
-                    lVar7.DAT_9C--;
-                    lVar7.DAT_A0_2 = iVar5;
-
-                    if (iVar5 == 3)
-                    {
-                        //FUN_326B0
-                    }
-
-                    GameManager.instance.FUN_309A0(this);
-                    return 0;
-                }
-
-                break;
-        }
-
-        return 0;
-    }
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		sbyte b;
+		VigObject vigObject;
+		int num;
+		int num2;
+		switch (arg1)
+		{
+		case 0:
+		{
+			num = physics1.X;
+			if (num < 0)
+			{
+				num += 127;
+			}
+			num2 = physics1.Z;
+			vTransform.position.x += num >> 7;
+			if (num2 < 0)
+			{
+				num2 += 127;
+			}
+			num = (DAT_BC += DAT_B8);
+			vTransform.position.z += num2 >> 7;
+			vr.y = num >> 16;
+			ApplyRotationMatrix();
+			num = vTransform.position.x - DAT_A8.x;
+			if (num < 0)
+			{
+				num = -num;
+			}
+			if (65535 < num)
+			{
+				return 0u;
+			}
+			num = vTransform.position.z - DAT_A8.z;
+			if (num < 0)
+			{
+				num = -num;
+			}
+			if (65535 < num)
+			{
+				return 0u;
+			}
+			uint flags;
+			if ((sbyte)DAT_19 == -95)
+			{
+				flags = (uint)((int)base.flags & -16777217);
+			}
+			else
+			{
+				if ((sbyte)DAT_19 != -90)
+				{
+					goto IL_015a;
+				}
+				flags = (base.flags | 0x1000000);
+			}
+			base.flags = flags;
+			goto IL_015a;
+		}
+		case 1:
+		{
+			type = 4;
+			base.flags |= 65536u;
+			DAT_19 = (byte)id;
+			DAT_A8 = screen;
+			int dAT_DB = GameManager.instance.DAT_DB0;
+			DAT_BC = vr.y << 16;
+			vTransform.position.y = dAT_DB;
+			break;
+		}
+		case 2:
+			tags = 1;
+			FUN_30B78();
+			return 0u;
+		case 8:
+			if (FUN_32B90((uint)arg2))
+			{
+				return 4294967294u;
+			}
+			break;
+		case 9:
+			{
+				num = 0;
+				if (arg2 != 0)
+				{
+					do
+					{
+						ConfigContainer param = FUN_2C5F4((ushort)((num - 32768) & 0xFFFF));
+						GlacierSmall glacierSmall = vData.ini.FUN_2C17C((ushort)DAT_29D0[num], typeof(GlacierSmall), 8u) as GlacierSmall;
+						glacierSmall.vTransform = GameManager.instance.FUN_2CEAC(this, param);
+						glacierSmall.flags |= 128u;
+						glacierSmall.physics1.X = (glacierSmall.vTransform.position.x - vTransform.position.x) * 2;
+						num++;
+						glacierSmall.physics1.Z = (glacierSmall.vTransform.position.z - vTransform.position.z) * 2;
+						num2 = (int)GameManager.FUN_2AC5C();
+						GameManager.instance.FUN_30CB0(glacierSmall, (num2 * 420 >> 15) + 480);
+						glacierSmall.FUN_305FC();
+					}
+					while (num < 3);
+					LevelManager.instance.FUN_4AAC0(4269277184u, vTransform.position, DAT_F8);
+					Oilfield obj = (Oilfield)LevelManager.instance.level;
+					num2 = obj.DAT_A0_2 + 1;
+					obj.DAT_9C--;
+					obj.DAT_A0_2 = num2;
+					GameManager.instance.FUN_309A0(this);
+					return 0u;
+				}
+				break;
+			}
+			IL_015a:
+			b = (((base.flags & 0x1000000) != 0) ? ((sbyte)(DAT_19 - 1)) : ((sbyte)(DAT_19 + 1)));
+			DAT_19 = (byte)b;
+			vigObject = GameManager.instance.FUN_30250(GameManager.instance.DAT_1078, DAT_19);
+			DAT_A8 = vigObject.screen;
+			num = vigObject.vr.y * 65536;
+			num2 = num - DAT_BC;
+			DAT_B4 = num;
+			DAT_B8 = num2;
+			if (num2 < 0)
+			{
+				DAT_B8 = num2 + 268435456;
+				DAT_BC -= 268435456;
+			}
+			DAT_B8 /= 600;
+			physics1.X = (DAT_A8.x - vTransform.position.x) * 128 / 600;
+			physics1.Z = (DAT_A8.z - vTransform.position.z) * 128 / 600;
+			FUN_30BA8();
+			tags = 0;
+			GameManager.instance.FUN_30CB0(this, 600);
+			return 0u;
+		}
+		return 0u;
+	}
 }

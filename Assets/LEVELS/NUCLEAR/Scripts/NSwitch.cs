@@ -1,212 +1,169 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class NSwitch : VigObject
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-    public override uint OnCollision(HitDetection hit)
-    {
-        VigObject ppcVar4;
-        int iVar5;
-        int iVar6;
-        VigObject oVar6;
-        XOBF_DB dbVar6;
-        int iVar7;
+	public override uint OnCollision(HitDetection hit)
+	{
+		if (hit.self.type == 2 && (flags & 0x1000000) == 0 && tags != 0)
+		{
+			VigObject vigObject = GameManager.instance.FUN_31950(113);
+			if (vigObject == null || (vigObject.flags & 0x1000000) != 0)
+			{
+				vigObject = GameManager.instance.FUN_31950(114);
+				if (vigObject == null || (vigObject.flags & 0x1000000) != 0)
+				{
+					vigObject = null;
+				}
+			}
+			int param;
+			XOBF_DB vData;
+			int param2;
+			if (tags == 1)
+			{
+				param = GameManager.instance.FUN_1DD9C();
+				vData = base.vData;
+				param2 = 6;
+			}
+			else
+			{
+				param = GameManager.instance.FUN_1DD9C();
+				vData = base.vData;
+				param2 = 5;
+			}
+			GameManager.instance.FUN_1E580(param, vData.sndList, param2, vTransform.position);
+			if (vigObject != null && vigObject.GetType().IsSubclassOf(typeof(VigObject)))
+			{
+				vigObject.UpdateW(20, tags);
+			}
+			VigObject vigObject2 = child2;
+			if (vigObject2 != null)
+			{
+				while (vigObject2.id != tags)
+				{
+					vigObject2 = vigObject2.child;
+					if (!(vigObject2 != null))
+					{
+						break;
+					}
+				}
+				if (vigObject2 != null)
+				{
+					vigObject2.flags |= 2u;
+					vigObject2.FUN_30C20();
+				}
+			}
+			int num = (int)GameManager.FUN_2AC5C();
+			GameManager.instance.FUN_30CB0(this, (num * 300 >> 15) + 600);
+			tags = 0;
+			return 0u;
+		}
+		if (hit.self.type != 8)
+		{
+			return 0u;
+		}
+		FUN_32B90(hit.self.maxHalfHealth);
+		return 0u;
+	}
 
-        if (hit.self.type == 2 && (flags & 0x1000000) == 0 && tags != 0)
-        {
-            ppcVar4 = GameManager.instance.FUN_31950(113);
-
-            if (ppcVar4 == null || (ppcVar4.flags & 0x1000000) != 0)
-            {
-                ppcVar4 = GameManager.instance.FUN_31950(114);
-
-                if (ppcVar4 == null || (ppcVar4.flags & 0x1000000) != 0)
-                    ppcVar4 = null;
-            }
-
-            if (tags == 1)
-            {
-                iVar5 = GameManager.instance.FUN_1DD9C();
-                dbVar6 = vData;
-                iVar7 = 6;
-            }
-            else
-            {
-                iVar5 = GameManager.instance.FUN_1DD9C();
-                dbVar6 = vData;
-                iVar7 = 5;
-            }
-
-            GameManager.instance.FUN_1E580(iVar5, dbVar6.sndList, iVar7, vTransform.position);
-
-            if (ppcVar4 != null)
-            {
-                if (ppcVar4.GetType().IsSubclassOf(typeof(VigObject)))
-                    ppcVar4.UpdateW(20, tags);
-            }
-
-            oVar6 = child2;
-
-            if (oVar6 != null)
-            {
-                do
-                {
-                    if (oVar6.id == tags) break;
-
-                    oVar6 = oVar6.child;
-                } while (oVar6 != null);
-
-                if (oVar6 != null)
-                {
-                    oVar6.flags |= 2;
-                    oVar6.FUN_30C20();
-                }
-            }
-
-            iVar6 = (int)GameManager.FUN_2AC5C();
-            GameManager.instance.FUN_30CB0(this, (iVar6 * 300 >> 15) + 600);
-            tags = 0;
-            return 0;
-        }
-
-        if (hit.self.type != 8)
-            return 0;
-
-        FUN_32B90(hit.self.maxHalfHealth);
-        return 0;
-    }
-
-    //FUN_1564 (NUCLEAR.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        sbyte sVar1;
-        sbyte sVar2;
-        byte bVar3;
-        int iVar6;
-        VigObject oVar6;
-
-        switch (arg1)
-        {
-            default:
-                return 0;
-            case 1:
-                tags = 2;
-                bVar3 = (byte)GameManager.FUN_2AC5C();
-                oVar6 = child2;
-                DAT_19 = (byte)(bVar3 & 1);
-
-                while (oVar6 != null)
-                {
-                    oVar6.type = 3;
-                    oVar6.flags = oVar6.flags & 0xfffffffb | 2;
-                    oVar6 = oVar6.child;
-                }
-
-                flags &= 0xfffffffb;
-                iVar6 = (int)GameManager.FUN_2AC5C();
-                iVar6 = iVar6 * 180 >> 15;
-                break;
-            case 2:
-                flags &= 0xfeffffff;
-                oVar6 = GameManager.instance.FUN_31950(113);
-
-                if (oVar6 == null || (oVar6.flags & 0x1000000) != 0)
-                {
-                    oVar6 = GameManager.instance.FUN_31950(114);
-
-                    if (oVar6 == null || (oVar6.flags & 0x1000000) != 0)
-                    {
-                        oVar6 = child2;
-
-                        if (oVar6 != null)
-                        {
-                            do
-                            {
-                                if (oVar6.id == tags)
-                                {
-                                    oVar6.flags |= 2;
-                                    oVar6.FUN_30C20();
-                                }
-
-                                oVar6 = oVar6.child;
-                            } while (oVar6 != null);
-
-                            tags = 0;
-                            return 0;
-                        }
-
-                        tags = 0;
-                        return 0;
-                    }
-                }
-
-                sVar1 = tags;
-
-                if (sVar1 == 0)
-                {
-                    bVar3 = (byte)(DAT_19 ^ 1);
-                    DAT_19 = bVar3;
-
-                    if (bVar3 == 0)
-                        sVar2 = 2;
-                    else
-                        sVar2 = 1;
-
-                    tags = sVar2;
-                    oVar6 = child2;
-
-                    while (oVar6 != null)
-                    {
-                        if (oVar6.id == tags)
-                        {
-                            oVar6.flags &= 0xfffffffd;
-                            oVar6.FUN_30BF0();
-                        }
-
-                        oVar6 = oVar6.child;
-                    }
-                }
-                else
-                {
-                    if (-1 < sVar1 && sVar1 < 3)
-                    {
-                        oVar6 = child2;
-
-                        while (oVar6 != null)
-                        {
-                            if (oVar6.id == tags)
-                            {
-                                oVar6.flags |= 2;
-                                oVar6.FUN_30C20();
-                            }
-
-                            oVar6 = oVar6.child;
-                        }
-
-                        tags = 0;
-                    }
-                }
-
-                iVar6 = (int)GameManager.FUN_2AC5C();
-                iVar6 = (iVar6 * 300 >> 15) + 600;
-                break;
-            case 8:
-                FUN_32B90((uint)arg2);
-                return 0;
-        }
-
-        GameManager.instance.FUN_30CB0(this, iVar6);
-        return 0;
-    }
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		int num;
+		switch (arg1)
+		{
+		default:
+			return 0u;
+		case 1:
+		{
+			base.tags = 2;
+			byte b2 = (byte)GameManager.FUN_2AC5C();
+			VigObject vigObject = child2;
+			DAT_19 = (byte)(b2 & 1);
+			while (vigObject != null)
+			{
+				vigObject.type = 3;
+				vigObject.flags = (uint)(((int)vigObject.flags & -5) | 2);
+				vigObject = vigObject.child;
+			}
+			flags &= 4294967291u;
+			num = (int)GameManager.FUN_2AC5C();
+			num = num * 180 >> 15;
+			break;
+		}
+		case 2:
+		{
+			flags &= 4278190079u;
+			VigObject vigObject = GameManager.instance.FUN_31950(113);
+			if (vigObject == null || (vigObject.flags & 0x1000000) != 0)
+			{
+				vigObject = GameManager.instance.FUN_31950(114);
+				if (vigObject == null || (vigObject.flags & 0x1000000) != 0)
+				{
+					vigObject = child2;
+					if (vigObject != null)
+					{
+						do
+						{
+							if (vigObject.id == base.tags)
+							{
+								vigObject.flags |= 2u;
+								vigObject.FUN_30C20();
+							}
+							vigObject = vigObject.child;
+						}
+						while (vigObject != null);
+						base.tags = 0;
+						return 0u;
+					}
+					base.tags = 0;
+					return 0u;
+				}
+			}
+			sbyte tags = base.tags;
+			if (tags == 0)
+			{
+				sbyte b = base.tags = (sbyte)(((DAT_19 ^= 1) != 0) ? 1 : 2);
+				vigObject = child2;
+				while (vigObject != null)
+				{
+					if (vigObject.id == base.tags)
+					{
+						vigObject.flags &= 4294967293u;
+						vigObject.FUN_30BF0();
+					}
+					vigObject = vigObject.child;
+				}
+			}
+			else if (-1 < tags && tags < 3)
+			{
+				vigObject = child2;
+				while (vigObject != null)
+				{
+					if (vigObject.id == base.tags)
+					{
+						vigObject.flags |= 2u;
+						vigObject.FUN_30C20();
+					}
+					vigObject = vigObject.child;
+				}
+				base.tags = 0;
+			}
+			num = (int)GameManager.FUN_2AC5C();
+			num = (num * 300 >> 15) + 600;
+			break;
+		}
+		case 8:
+			FUN_32B90((uint)arg2);
+			return 0u;
+		}
+		GameManager.instance.FUN_30CB0(this, num);
+		return 0u;
+	}
 }
