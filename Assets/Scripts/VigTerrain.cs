@@ -3,9 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Unity.Rendering;
-using UnityEditor.Rendering;
-using UnityEngine.Rendering;
 
 public static class RectTransformExtensions
 {
