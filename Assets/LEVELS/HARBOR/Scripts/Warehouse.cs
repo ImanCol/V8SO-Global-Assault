@@ -43,7 +43,7 @@ public class Warehouse : VigObject
 								vehicle.FUN_3E32C(_WHEELS.Sea, 500);
 								if (GameManager.instance.gameMode == _GAME_MODE.Versus2)
 								{
-									//ClientSend.Pickup(8, 0, 0);
+									ClientSend.Pickup(8, 0, 0);
 								}
 							}
 							//else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && vehicle.id > 0)

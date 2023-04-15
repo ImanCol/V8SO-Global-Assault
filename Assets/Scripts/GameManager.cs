@@ -11330,7 +11330,7 @@ public class GameManager : MonoBehaviour
                 vehicles[0] = 17;
                 break;
         }
-        //ClientSend.NotReady(0L);
+        ClientSend.NotReady(0L);
         //Demo.instance.readyLabel.gameObject.SetActive(value: true);
         //Demo.instance.notReadyLabel.gameObject.SetActive(value: false);
         //Demo.instance.SetupPlaceholders();
@@ -11339,7 +11339,7 @@ public class GameManager : MonoBehaviour
     public void SetStage()
     {
         map = stageDropdown.value + 1;
-        //ClientSend.Map(0L);
+        ClientSend.Map(0L);
     }
 
     public void SetDithering()
@@ -11365,7 +11365,7 @@ public class GameManager : MonoBehaviour
         {
             DAT_1030[i] = b;
         }
-        //ClientSend.Lives(playerSpawns, 0L);
+        ClientSend.Lives(playerSpawns, 0L);
     }
 
     public void SetGameMode()
@@ -11423,7 +11423,7 @@ public class GameManager : MonoBehaviour
                 DAT_1030[3] = 0;
                 break;
         }
-        //ClientSend.Mode(0L);
+        ClientSend.Mode(0L);
     }
 
     public void SetDamage()
@@ -11431,21 +11431,21 @@ public class GameManager : MonoBehaviour
         int value = damageDropdown.value;
         DAT_C80[0] = (sbyte)value;
         DAT_C80[1] = (sbyte)value;
-        //ClientSend.Damage(0L);
+        ClientSend.Damage(0L);
     }
 
     public void SetDifficulty()
     {
         int value = difficultyDropdown.value;
         DAT_C6E = (byte)value;
-        //ClientSend.Difficulty(0L);
+        ClientSend.Difficulty(0L);
     }
 
     public void SetOnlineDamage()
     {
         int value = onlineDmgDropdown.value;
         DAT_C6E = (byte)value;
-        //ClientSend.Difficulty(0L);
+        ClientSend.Difficulty(0L);
     }
 
     public void SetDrawPlayer()
@@ -11493,11 +11493,11 @@ public class GameManager : MonoBehaviour
         this.ready = ready;
         if (ready)
         {
-            //ClientSend.Ready(0L);
+            ClientSend.Ready(0L);
         }
         else
         {
-            //ClientSend.NotReady(0L);
+            ClientSend.NotReady(0L);
         }
     }
 
@@ -11587,7 +11587,7 @@ public class GameManager : MonoBehaviour
         SetDriver();
         SetDPAD();
         SetAutoTarget();
-        //ClientSend.Ready(0L);
+        ClientSend.Ready(0L);
         if (isHost)
         {
             SetMultiplayerMode();
@@ -11608,7 +11608,7 @@ public class GameManager : MonoBehaviour
             //	DiscordController.instance.discord.RunCallbacks();
             //}
             RandomizeEnemies(2);
-            //ClientSend.Load();
+            ClientSend.Load();
         }
         for (short num = 1; num <= 6; num = (short)(num + 1))
         {
@@ -13206,7 +13206,7 @@ public class GameManager : MonoBehaviour
                         {
                             networkEnemies.Add((Vehicle)x);
                             enemiesDictionary[x.id] = (Vehicle)x;
-                            //ClientSend.SpawnAI(x.id, (byte)((Vehicle)x).vehicle, flags);
+                            ClientSend.SpawnAI(x.id, (byte)((Vehicle)x).vehicle, flags);
                         }
                     }
                 }
@@ -13690,7 +13690,7 @@ public class GameManager : MonoBehaviour
                 //playerObjects[0] = FUN_3208C(-1, ~DiscordController.GetMemberId());
                 playerObjects[0].FUN_3066C();
                 LevelManager.instance.FUN_3D94(playerObjects[0]);
-                //ClientSend.Spawn();
+                ClientSend.Spawn();
             }
             return;
         }
@@ -14308,7 +14308,7 @@ public class GameManager : MonoBehaviour
                 short num2 = param2.DAT_1A = (short)((!flag) ? DAT_63FA4[num] : 5);
                 if (gameMode >= _GAME_MODE.Versus2)
                 {
-                    //ClientSend.SpawnPickup(param2.id, param2.tags, DAT_63FA4[num], param2.parent != null);
+                    ClientSend.SpawnPickup(param2.id, param2.tags, DAT_63FA4[num], param2.parent != null);
                 }
                 vigObject = param2.FUN_31DDC();
                 vigObject.flags |= 16777216u;
@@ -14581,7 +14581,7 @@ public class GameManager : MonoBehaviour
             paused = !paused;
             if (gameMode >= _GAME_MODE.Versus2)
             {
-                //ClientSend.Pause();
+                ClientSend.Pause();
             }
         }
         if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha1))
@@ -14784,20 +14784,20 @@ public class GameManager : MonoBehaviour
         {
             return;
         }
-        //ClientSend.Transform(ref playerObjects[0].vTransform);
-        //ClientSend.Physics(ref playerObjects[0].physics1, ref playerObjects[0].physics2);
-        //ClientSend.Control(playerObjects[0]);
-        //ClientSend.Status(playerObjects[0]);
-        //ClientSend.RandomNumber(DAT_63A64, DAT_63A68);
+        ClientSend.Transform(ref playerObjects[0].vTransform);
+        ClientSend.Physics(ref playerObjects[0].physics1, ref playerObjects[0].physics2);
+        ClientSend.Control(playerObjects[0]);
+        ClientSend.Status(playerObjects[0]);
+        ClientSend.RandomNumber(DAT_63A64, DAT_63A68);
         //if (gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner())
         if (gameMode > _GAME_MODE.Versus2)
         {
             for (int n = 0; n < networkEnemies.Count; n++)
             {
-                //ClientSend.TransformAI(networkEnemies[n].id, ref networkEnemies[n].vTransform);
-                //ClientSend.PhysicsAI(networkEnemies[n].id, ref networkEnemies[n].physics1, ref networkEnemies[n].physics2);
-                //ClientSend.ControlAI(networkEnemies[n]);
-                //ClientSend.StatusAI(networkEnemies[n]);
+                ClientSend.TransformAI(networkEnemies[n].id, ref networkEnemies[n].vTransform);
+                ClientSend.PhysicsAI(networkEnemies[n].id, ref networkEnemies[n].physics1, ref networkEnemies[n].physics2);
+                ClientSend.ControlAI(networkEnemies[n]);
+                ClientSend.StatusAI(networkEnemies[n]);
             }
         }
     }
