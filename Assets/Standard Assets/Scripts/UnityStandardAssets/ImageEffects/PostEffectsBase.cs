@@ -3,15 +3,17 @@ using UnityEngine;
 
 namespace UnityStandardAssets.ImageEffects
 {
+	// Token: 0x02000003 RID: 3
 	[ExecuteInEditMode]
 	[RequireComponent(typeof(Camera))]
 	public class PostEffectsBase : MonoBehaviour
 	{
+		// Token: 0x06000009 RID: 9 RVA: 0x00002B88 File Offset: 0x00000D88
 		protected Material CheckShaderAndCreateMaterial(Shader s, Material m2Create)
 		{
 			if (!s)
 			{
-				UnityEngine.Debug.Log("Missing shader in " + this.ToString());
+				Debug.Log("Missing shader in " + this.ToString());
 				base.enabled = false;
 				return null;
 			}
@@ -22,7 +24,7 @@ namespace UnityStandardAssets.ImageEffects
 			if (!s.isSupported)
 			{
 				this.NotSupported();
-				UnityEngine.Debug.Log(string.Concat(new string[]
+				Debug.Log(string.Concat(new string[]
 				{
 					"The shader ",
 					s.ToString(),
@@ -41,11 +43,12 @@ namespace UnityStandardAssets.ImageEffects
 			return null;
 		}
 
+		// Token: 0x0600000A RID: 10 RVA: 0x00002C40 File Offset: 0x00000E40
 		protected Material CreateMaterial(Shader s, Material m2Create)
 		{
 			if (!s)
 			{
-				UnityEngine.Debug.Log("Missing shader in " + this.ToString());
+				Debug.Log("Missing shader in " + this.ToString());
 				return null;
 			}
 			if (m2Create && m2Create.shader == s && s.isSupported)
@@ -65,34 +68,37 @@ namespace UnityStandardAssets.ImageEffects
 			return null;
 		}
 
+		// Token: 0x0600000B RID: 11 RVA: 0x00002CB1 File Offset: 0x00000EB1
 		private void OnEnable()
 		{
 			this.isSupported = true;
 		}
 
-        [Obsolete]
-        protected bool CheckSupport()
+		// Token: 0x0600000C RID: 12 RVA: 0x00002CBA File Offset: 0x00000EBA
+		protected bool CheckSupport()
 		{
 			return this.CheckSupport(false);
 		}
 
+		// Token: 0x0600000D RID: 13 RVA: 0x00002CC3 File Offset: 0x00000EC3
 		public virtual bool CheckResources()
 		{
-			UnityEngine.Debug.LogWarning("CheckResources () for " + this.ToString() + " should be overwritten.");
+			Debug.LogWarning("CheckResources () for " + this.ToString() + " should be overwritten.");
 			return this.isSupported;
 		}
 
+		// Token: 0x0600000E RID: 14 RVA: 0x00002CE5 File Offset: 0x00000EE5
 		protected void Start()
 		{
 			this.CheckResources();
 		}
 
-        [Obsolete]
-        protected bool CheckSupport(bool needDepth)
+		// Token: 0x0600000F RID: 15 RVA: 0x00002CF0 File Offset: 0x00000EF0
+		protected bool CheckSupport(bool needDepth)
 		{
 			this.isSupported = true;
 			this.supportHDRTextures = SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.ARGBHalf);
-			this.supportDX11 = (SystemInfo.graphicsShaderLevel >= 50 && SystemInfo.supportsComputeShaders);
+			this.supportDX11 = SystemInfo.graphicsShaderLevel >= 50 && SystemInfo.supportsComputeShaders;
 			if (!SystemInfo.supportsImageEffects || !SystemInfo.supportsRenderTextures)
 			{
 				this.NotSupported();
@@ -110,8 +116,8 @@ namespace UnityStandardAssets.ImageEffects
 			return true;
 		}
 
-        [Obsolete]
-        protected bool CheckSupport(bool needDepth, bool needHdr)
+		// Token: 0x06000010 RID: 16 RVA: 0x00002D67 File Offset: 0x00000F67
+		protected bool CheckSupport(bool needDepth, bool needHdr)
 		{
 			if (!this.CheckSupport(needDepth))
 			{
@@ -125,19 +131,22 @@ namespace UnityStandardAssets.ImageEffects
 			return true;
 		}
 
+		// Token: 0x06000011 RID: 17 RVA: 0x00002D88 File Offset: 0x00000F88
 		public bool Dx11Support()
 		{
 			return this.supportDX11;
 		}
 
+		// Token: 0x06000012 RID: 18 RVA: 0x00002D90 File Offset: 0x00000F90
 		protected void ReportAutoDisable()
 		{
-			UnityEngine.Debug.LogWarning("The image effect " + this.ToString() + " has been disabled as it's not supported on the current platform.");
+			Debug.LogWarning("The image effect " + this.ToString() + " has been disabled as it's not supported on the current platform.");
 		}
 
+		// Token: 0x06000013 RID: 19 RVA: 0x00002DAC File Offset: 0x00000FAC
 		private bool CheckShader(Shader s)
 		{
-			UnityEngine.Debug.Log(string.Concat(new string[]
+			Debug.Log(string.Concat(new string[]
 			{
 				"The shader ",
 				s.ToString(),
@@ -153,12 +162,14 @@ namespace UnityStandardAssets.ImageEffects
 			return false;
 		}
 
+		// Token: 0x06000014 RID: 20 RVA: 0x00002E04 File Offset: 0x00001004
 		protected void NotSupported()
 		{
 			base.enabled = false;
 			this.isSupported = false;
 		}
 
+		// Token: 0x06000015 RID: 21 RVA: 0x00002E14 File Offset: 0x00001014
 		protected void DrawBorder(RenderTexture dest, Material material)
 		{
 			RenderTexture.active = dest;
@@ -168,76 +179,79 @@ namespace UnityStandardAssets.ImageEffects
 			for (int i = 0; i < material.passCount; i++)
 			{
 				material.SetPass(i);
-				float y;
-				float y2;
+				float num;
+				float num2;
 				if (flag)
 				{
-					y = 1f;
-					y2 = 0f;
+					num = 1f;
+					num2 = 0f;
 				}
 				else
 				{
-					y = 0f;
-					y2 = 1f;
+					num = 0f;
+					num2 = 1f;
 				}
-				float x = 0f;
-				float x2 = 0f + 1f / ((float)dest.width * 1f);
-				float y3 = 0f;
-				float y4 = 1f;
+				float num3 = 0f;
+				float num4 = 0f + 1f / ((float)dest.width * 1f);
+				float num5 = 0f;
+				float num6 = 1f;
 				GL.Begin(7);
-				GL.TexCoord2(0f, y);
-				GL.Vertex3(x, y3, 0.1f);
-				GL.TexCoord2(1f, y);
-				GL.Vertex3(x2, y3, 0.1f);
-				GL.TexCoord2(1f, y2);
-				GL.Vertex3(x2, y4, 0.1f);
-				GL.TexCoord2(0f, y2);
-				GL.Vertex3(x, y4, 0.1f);
-				float x3 = 1f - 1f / ((float)dest.width * 1f);
-				x2 = 1f;
-				y3 = 0f;
-				y4 = 1f;
-				GL.TexCoord2(0f, y);
-				GL.Vertex3(x3, y3, 0.1f);
-				GL.TexCoord2(1f, y);
-				GL.Vertex3(x2, y3, 0.1f);
-				GL.TexCoord2(1f, y2);
-				GL.Vertex3(x2, y4, 0.1f);
-				GL.TexCoord2(0f, y2);
-				GL.Vertex3(x3, y4, 0.1f);
-				float x4 = 0f;
-				x2 = 1f;
-				y3 = 0f;
-				y4 = 0f + 1f / ((float)dest.height * 1f);
-				GL.TexCoord2(0f, y);
-				GL.Vertex3(x4, y3, 0.1f);
-				GL.TexCoord2(1f, y);
-				GL.Vertex3(x2, y3, 0.1f);
-				GL.TexCoord2(1f, y2);
-				GL.Vertex3(x2, y4, 0.1f);
-				GL.TexCoord2(0f, y2);
-				GL.Vertex3(x4, y4, 0.1f);
-				float x5 = 0f;
-				x2 = 1f;
-				y3 = 1f - 1f / ((float)dest.height * 1f);
-				y4 = 1f;
-				GL.TexCoord2(0f, y);
-				GL.Vertex3(x5, y3, 0.1f);
-				GL.TexCoord2(1f, y);
-				GL.Vertex3(x2, y3, 0.1f);
-				GL.TexCoord2(1f, y2);
-				GL.Vertex3(x2, y4, 0.1f);
-				GL.TexCoord2(0f, y2);
-				GL.Vertex3(x5, y4, 0.1f);
+				GL.TexCoord2(0f, num);
+				GL.Vertex3(num3, num5, 0.1f);
+				GL.TexCoord2(1f, num);
+				GL.Vertex3(num4, num5, 0.1f);
+				GL.TexCoord2(1f, num2);
+				GL.Vertex3(num4, num6, 0.1f);
+				GL.TexCoord2(0f, num2);
+				GL.Vertex3(num3, num6, 0.1f);
+				float num7 = 1f - 1f / ((float)dest.width * 1f);
+				num4 = 1f;
+				num5 = 0f;
+				num6 = 1f;
+				GL.TexCoord2(0f, num);
+				GL.Vertex3(num7, num5, 0.1f);
+				GL.TexCoord2(1f, num);
+				GL.Vertex3(num4, num5, 0.1f);
+				GL.TexCoord2(1f, num2);
+				GL.Vertex3(num4, num6, 0.1f);
+				GL.TexCoord2(0f, num2);
+				GL.Vertex3(num7, num6, 0.1f);
+				float num8 = 0f;
+				num4 = 1f;
+				num5 = 0f;
+				num6 = 0f + 1f / ((float)dest.height * 1f);
+				GL.TexCoord2(0f, num);
+				GL.Vertex3(num8, num5, 0.1f);
+				GL.TexCoord2(1f, num);
+				GL.Vertex3(num4, num5, 0.1f);
+				GL.TexCoord2(1f, num2);
+				GL.Vertex3(num4, num6, 0.1f);
+				GL.TexCoord2(0f, num2);
+				GL.Vertex3(num8, num6, 0.1f);
+				float num9 = 0f;
+				num4 = 1f;
+				num5 = 1f - 1f / ((float)dest.height * 1f);
+				num6 = 1f;
+				GL.TexCoord2(0f, num);
+				GL.Vertex3(num9, num5, 0.1f);
+				GL.TexCoord2(1f, num);
+				GL.Vertex3(num4, num5, 0.1f);
+				GL.TexCoord2(1f, num2);
+				GL.Vertex3(num4, num6, 0.1f);
+				GL.TexCoord2(0f, num2);
+				GL.Vertex3(num9, num6, 0.1f);
 				GL.End();
 			}
 			GL.PopMatrix();
 		}
 
+		// Token: 0x0400001F RID: 31
 		protected bool supportHDRTextures = true;
 
+		// Token: 0x04000020 RID: 32
 		protected bool supportDX11;
 
+		// Token: 0x04000021 RID: 33
 		protected bool isSupported = true;
 	}
 }

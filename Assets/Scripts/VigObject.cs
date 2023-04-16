@@ -483,7 +483,6 @@ public struct VigTransform
     public Vector3Int position;
 }
 
-
 public class VigObject : MonoBehaviour
 {
     public uint flags;
@@ -2031,15 +2030,14 @@ public class VigObject : MonoBehaviour
         if (GameManager.instance.gameMode >= _GAME_MODE.Versus2)
         {
             int num = GameManager.instance.networkObjs.IndexOf(this);
-            //if (DiscordController.IsOwner())
-            //{
-            //	if (num != -1 && (flags & 0x8000) == 0 && maxHalfHealth < param1)
-            //	{
-            //		ClientSend.ObjectDestroyed(num);
-            //	}
-            //}
-            //else if (num != -1)
-            if (num != -1)
+            if (DiscordController.IsOwner())
+            {
+                if (num != -1 && (flags & 0x8000) == 0 && maxHalfHealth < param1)
+                {
+                    ClientSend.ObjectDestroyed(num);
+                }
+            }
+            else if (num != -1)
             {
                 return false;
             }

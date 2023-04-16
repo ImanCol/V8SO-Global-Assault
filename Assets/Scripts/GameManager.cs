@@ -122,71 +122,70 @@ public class BSP
 
 public class GameManager : MonoBehaviour
 {
+
+    #region DEBUG_MENU
     public void SetDriver()
     {
-        switch (this.driverDropdown.value)
+        int index = driverDropdown.value;
+
+        switch (index)
         {
             case 0:
-                this.vehicles[0] = 0;
+                vehicles[0] = 0;
                 break;
             case 1:
-                this.vehicles[0] = 1;
+                vehicles[0] = 1;
                 break;
             case 2:
-                this.vehicles[0] = 2;
+                vehicles[0] = 2;
                 break;
             case 3:
-                this.vehicles[0] = 3;
+                vehicles[0] = 3;
                 break;
             case 4:
-                this.vehicles[0] = 4;
+                vehicles[0] = 4;
                 break;
             case 5:
-                this.vehicles[0] = 5;
+                vehicles[0] = 5;
                 break;
             case 6:
-                this.vehicles[0] = 6;
+                vehicles[0] = 6;
                 break;
             case 7:
-                this.vehicles[0] = 7;
+                vehicles[0] = 7;
                 break;
             case 8:
-                this.vehicles[0] = 8;
+                vehicles[0] = 8;
                 break;
             case 9:
-                this.vehicles[0] = 9;
+                vehicles[0] = 9;
                 break;
             case 10:
-                this.vehicles[0] = 10;
+                vehicles[0] = 10;
                 break;
             case 11:
-                this.vehicles[0] = 11;
+                vehicles[0] = 11;
                 break;
             case 12:
-                this.vehicles[0] = 12;
+                vehicles[0] = 12;
                 break;
             case 13:
-                this.vehicles[0] = 13;
+                vehicles[0] = 13;
                 break;
             case 14:
-                this.vehicles[0] = 14;
+                vehicles[0] = 14;
                 break;
             case 15:
-                this.vehicles[0] = 15;
+                vehicles[0] = 15;
                 break;
             case 16:
-                this.vehicles[0] = 16;
+                vehicles[0] = 16;
                 break;
             case 17:
-                this.vehicles[0] = 17;
+                vehicles[0] = 17;
                 break;
         }
-        ClientSend.NotReady(0L);
-        //Demo.instance.readyLabel.gameObject.SetActive(true);
-        //Demo.instance.notReadyLabel.gameObject.SetActive(false);
-        //Demo.instance.SetupPlaceholders();
     }
-
 
     public void SetStage()
     {
@@ -476,19 +475,50 @@ public class GameManager : MonoBehaviour
         List<int> list = new List<int>(playable);
         survival = new List<int>();
         int num = playable.Count - players;
+
         for (int i = 0; i < num; i++)
         {
-            int index;
             do
             {
-                index = UnityEngine.Random.Range(0, list.Count);
-            }
-            while (list[index] == vehicles[0] || list[index] == vehicles[1]);
-            survival.Add(list[index]);
-            list.RemoveAt(index);
+                int random = UnityEngine.Random.Range(0, list.Count);
+
+                if (list[random] != vehicles[0])
+                {
+                    survival.Add(list[random]);
+                    list.RemoveAt(random);
+                    break;
+                }
+            } while (true);
         }
+
+
+        //for (int i = 0; i < num; i++)
+        //{
+        //    int index;
+        //    do
+        //    {
+        //        index = UnityEngine.Random.Range(0, list.Count);
+        //    }
+        //    while (list[index] == vehicles[0] || list[index] == vehicles[1]);
+        //    survival.Add(list[index]);
+        //    list.RemoveAt(index);
+        //}
         //for (int j = 0; j < 6; j++)
-        for (int j = 0; j < 4; j++)
+
+
+        int playerammount = 4;
+
+        if (players == 1)
+        {
+            playerammount = 4;
+        }
+        else if (players == 2)
+        {
+            playerammount = 6;
+        }
+        Debug.Log(players);
+
+        for (int j = 0; j < playerammount; j++)
         {
             if (gameMode == _GAME_MODE.Arcade)
             {
@@ -571,7 +601,7 @@ public class GameManager : MonoBehaviour
             DiscordController.instance.SetLobbyMetadata("level", Demo.mapNames[this.map - 1]);
             while (DiscordController.instance.pendingCallbacks)
             {
-                //DiscordController.instance.discord.RunCallbacks();
+                DiscordController.instance.discord.RunCallbacks();
             }
             this.RandomizeEnemies(2);
             ClientSend.Load();
@@ -595,7 +625,7 @@ public class GameManager : MonoBehaviour
         UnityEngine.Object.Destroy(base.gameObject);
         SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
-
+    #endregion
     public void FUN_17F34(int param1, int param2)
     {
         this.DAT_DA0 = param2;
@@ -3613,10 +3643,10 @@ public class GameManager : MonoBehaviour
             {
                 DiscordController.instance.DisconnectNetwork2();
             }
-            //while (DiscordController.instance.pendingCallbacks)
-            //{
-            //	//DiscordController.instance.discord.RunCallbacks();
-            //}
+            while (DiscordController.instance.pendingCallbacks)
+            {
+            	DiscordController.instance.discord.RunCallbacks();
+            }
             this.LoadDebug();
         }
         this.FUN_3827C(this.playerObjects[0], this.DAT_F00);
@@ -3651,7 +3681,7 @@ public class GameManager : MonoBehaviour
             UIManager.instance.feedbackRect.gameObject.SetActive(this.noHUD);
         }
     }
-private void LoadReboot()
+    private void LoadReboot()
     {
         totalSpawns = DAT_1030[0] + DAT_1030[1] + DAT_1030[2] + DAT_1030[3];
         DontDestroyOnLoad(this.gameObject);

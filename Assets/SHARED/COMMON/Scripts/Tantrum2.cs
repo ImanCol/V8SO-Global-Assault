@@ -55,8 +55,7 @@ public class Tantrum2 : VigObject
 								LevelManager.instance.FUN_4DE54(param2, 142);
 								vehicle.FUN_3A280((uint)num);
 							}
-							//else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && vehicle.id > 0)
-							else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && vehicle.id > 0)
+							else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && vehicle.id > 0)
 							{
 								ClientSend.DropWeaponAI(vehicle.id, vigObject.tags);
 								Vector3Int param2 = GameManager.instance.FUN_2CE50(vigObject);

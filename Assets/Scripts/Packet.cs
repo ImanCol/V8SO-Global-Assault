@@ -4,134 +4,144 @@ using System.Text;
 
 public class Packet : IDisposable
 {
+	private List<byte> buffer;
+
+	private byte[] readableBuffer;
+
+	private int readPos;
+
+	private bool disposed;
+
 	public Packet()
 	{
-		this.buffer = new List<byte>();
-		this.readPos = 0;
+		buffer = new List<byte>();
+		readPos = 0;
 	}
 
 	public Packet(int _id)
 	{
-		this.buffer = new List<byte>();
-		this.readPos = 0;
-		this.Write(_id);
+		buffer = new List<byte>();
+		readPos = 0;
+		Write(_id);
 	}
 
 	public Packet(byte[] _data)
 	{
-		this.buffer = new List<byte>();
-		this.readPos = 0;
-		this.SetBytes(_data);
+		buffer = new List<byte>();
+		readPos = 0;
+		SetBytes(_data);
 	}
 
 	public void SetBytes(byte[] _data)
 	{
-		this.Write(_data);
-		this.readableBuffer = this.buffer.ToArray();
+		Write(_data);
+		readableBuffer = buffer.ToArray();
 	}
 
 	public void WriteLength()
 	{
-		this.buffer.InsertRange(0, BitConverter.GetBytes(this.buffer.Count));
+		buffer.InsertRange(0, BitConverter.GetBytes(buffer.Count));
 	}
 
 	public void InsertInt(int _value)
 	{
-		this.buffer.InsertRange(0, BitConverter.GetBytes(_value));
+		buffer.InsertRange(0, BitConverter.GetBytes(_value));
 	}
 
 	public byte[] ToArray()
 	{
-		this.readableBuffer = this.buffer.ToArray();
-		return this.readableBuffer;
+		readableBuffer = buffer.ToArray();
+		return readableBuffer;
 	}
 
 	public int Length()
 	{
-		return this.buffer.Count;
+		return buffer.Count;
 	}
 
 	public int UnreadLength()
 	{
-		return this.Length() - this.readPos;
+		return Length() - readPos;
 	}
 
 	public void Reset(bool _shouldReset = true)
 	{
 		if (_shouldReset)
 		{
-			this.buffer.Clear();
-			this.readableBuffer = null;
-			this.readPos = 0;
-			return;
+			buffer.Clear();
+			readableBuffer = null;
+			readPos = 0;
 		}
-		this.readPos -= 4;
+		else
+		{
+			readPos -= 4;
+		}
 	}
 
 	public void Write(byte _value)
 	{
-		this.buffer.Add(_value);
+		buffer.Add(_value);
 	}
 
 	public void Write(sbyte _value)
 	{
-		this.buffer.Add((byte)_value);
+		buffer.Add((byte)_value);
 	}
 
 	public void Write(byte[] _value)
 	{
-		this.buffer.AddRange(_value);
+		buffer.AddRange(_value);
 	}
 
 	public void Write(short _value)
 	{
-		this.buffer.AddRange(BitConverter.GetBytes(_value));
+		buffer.AddRange(BitConverter.GetBytes(_value));
 	}
 
 	public void Write(ushort _value)
 	{
-		this.buffer.AddRange(BitConverter.GetBytes(_value));
+		buffer.AddRange(BitConverter.GetBytes(_value));
 	}
 
 	public void Write(int _value)
 	{
-		this.buffer.AddRange(BitConverter.GetBytes(_value));
+		buffer.AddRange(BitConverter.GetBytes(_value));
 	}
 
 	public void Write(uint _value)
 	{
-		this.buffer.AddRange(BitConverter.GetBytes(_value));
+		buffer.AddRange(BitConverter.GetBytes(_value));
 	}
 
 	public void Write(long _value)
 	{
-		this.buffer.AddRange(BitConverter.GetBytes(_value));
+		buffer.AddRange(BitConverter.GetBytes(_value));
 	}
 
 	public void Write(float _value)
 	{
-		this.buffer.AddRange(BitConverter.GetBytes(_value));
+		buffer.AddRange(BitConverter.GetBytes(_value));
 	}
 
 	public void Write(bool _value)
 	{
-		this.buffer.AddRange(BitConverter.GetBytes(_value));
+		buffer.AddRange(BitConverter.GetBytes(_value));
 	}
 
 	public void Write(string _value)
 	{
-		this.Write(_value.Length);
-		this.buffer.AddRange(Encoding.ASCII.GetBytes(_value));
+		Write(_value.Length);
+		buffer.AddRange(Encoding.ASCII.GetBytes(_value));
 	}
 
 	public byte ReadByte(bool _moveReadPos = true)
 	{
-		if (this.buffer.Count > this.readPos)
+		if (buffer.Count > readPos)
 		{
-			byte result = this.readableBuffer[this.readPos];
+			byte result = readableBuffer[readPos];
 			if (_moveReadPos)
 			{
-				this.readPos++;
+				readPos++;
 			}
 			return result;
 		}
@@ -140,12 +150,12 @@ public class Packet : IDisposable
 
 	public sbyte ReadSByte(bool _moveReadPos = true)
 	{
-		if (this.buffer.Count > this.readPos)
+		if (buffer.Count > readPos)
 		{
-			sbyte result = (sbyte)this.readableBuffer[this.readPos];
+			sbyte result = (sbyte)readableBuffer[readPos];
 			if (_moveReadPos)
 			{
-				this.readPos++;
+				readPos++;
 			}
 			return result;
 		}
@@ -154,12 +164,12 @@ public class Packet : IDisposable
 
 	public byte[] ReadBytes(int _length, bool _moveReadPos = true)
 	{
-		if (this.buffer.Count > this.readPos)
+		if (buffer.Count > readPos)
 		{
-			byte[] result = this.buffer.GetRange(this.readPos, _length).ToArray();
+			byte[] result = buffer.GetRange(readPos, _length).ToArray();
 			if (_moveReadPos)
 			{
-				this.readPos += _length;
+				readPos += _length;
 			}
 			return result;
 		}
@@ -168,12 +178,12 @@ public class Packet : IDisposable
 
 	public short ReadShort(bool _moveReadPos = true)
 	{
-		if (this.buffer.Count > this.readPos)
+		if (buffer.Count > readPos)
 		{
-			short result = BitConverter.ToInt16(this.readableBuffer, this.readPos);
+			short result = BitConverter.ToInt16(readableBuffer, readPos);
 			if (_moveReadPos)
 			{
-				this.readPos += 2;
+				readPos += 2;
 			}
 			return result;
 		}
@@ -182,12 +192,12 @@ public class Packet : IDisposable
 
 	public ushort ReadUShort(bool _moveReadPos = true)
 	{
-		if (this.buffer.Count > this.readPos)
+		if (buffer.Count > readPos)
 		{
-			ushort result = BitConverter.ToUInt16(this.readableBuffer, this.readPos);
+			ushort result = BitConverter.ToUInt16(readableBuffer, readPos);
 			if (_moveReadPos)
 			{
-				this.readPos += 2;
+				readPos += 2;
 			}
 			return result;
 		}
@@ -196,12 +206,12 @@ public class Packet : IDisposable
 
 	public int ReadInt(bool _moveReadPos = true)
 	{
-		if (this.buffer.Count > this.readPos)
+		if (buffer.Count > readPos)
 		{
-			int result = BitConverter.ToInt32(this.readableBuffer, this.readPos);
+			int result = BitConverter.ToInt32(readableBuffer, readPos);
 			if (_moveReadPos)
 			{
-				this.readPos += 4;
+				readPos += 4;
 			}
 			return result;
 		}
@@ -210,12 +220,12 @@ public class Packet : IDisposable
 
 	public uint ReadUInt(bool _moveReadPos = true)
 	{
-		if (this.buffer.Count > this.readPos)
+		if (buffer.Count > readPos)
 		{
-			uint result = BitConverter.ToUInt32(this.readableBuffer, this.readPos);
+			uint result = BitConverter.ToUInt32(readableBuffer, readPos);
 			if (_moveReadPos)
 			{
-				this.readPos += 4;
+				readPos += 4;
 			}
 			return result;
 		}
@@ -224,12 +234,12 @@ public class Packet : IDisposable
 
 	public long ReadLong(bool _moveReadPos = true)
 	{
-		if (this.buffer.Count > this.readPos)
+		if (buffer.Count > readPos)
 		{
-			long result = BitConverter.ToInt64(this.readableBuffer, this.readPos);
+			long result = BitConverter.ToInt64(readableBuffer, readPos);
 			if (_moveReadPos)
 			{
-				this.readPos += 8;
+				readPos += 8;
 			}
 			return result;
 		}
@@ -238,12 +248,12 @@ public class Packet : IDisposable
 
 	public float ReadFloat(bool _moveReadPos = true)
 	{
-		if (this.buffer.Count > this.readPos)
+		if (buffer.Count > readPos)
 		{
-			float result = BitConverter.ToSingle(this.readableBuffer, this.readPos);
+			float result = BitConverter.ToSingle(readableBuffer, readPos);
 			if (_moveReadPos)
 			{
-				this.readPos += 4;
+				readPos += 4;
 			}
 			return result;
 		}
@@ -252,12 +262,12 @@ public class Packet : IDisposable
 
 	public bool ReadBool(bool _moveReadPos = true)
 	{
-		if (this.buffer.Count > this.readPos)
+		if (buffer.Count > readPos)
 		{
-			bool result = BitConverter.ToBoolean(this.readableBuffer, this.readPos);
+			bool result = BitConverter.ToBoolean(readableBuffer, readPos);
 			if (_moveReadPos)
 			{
-				this.readPos++;
+				readPos++;
 			}
 			return result;
 		}
@@ -266,49 +276,39 @@ public class Packet : IDisposable
 
 	public string ReadString(bool _moveReadPos = true)
 	{
-		string result;
 		try
 		{
-			int num = this.ReadInt(true);
-			string @string = Encoding.ASCII.GetString(this.readableBuffer, this.readPos, num);
+			int num = ReadInt();
+			string @string = Encoding.ASCII.GetString(readableBuffer, readPos, num);
 			if (_moveReadPos && @string.Length > 0)
 			{
-				this.readPos += num;
+				readPos += num;
 			}
-			result = @string;
+			return @string;
 		}
 		catch
 		{
 			throw new Exception("Could not read value of type 'string'!");
 		}
-		return result;
 	}
 
 	protected virtual void Dispose(bool _disposing)
 	{
-		if (!this.disposed)
+		if (!disposed)
 		{
 			if (_disposing)
 			{
-				this.buffer = null;
-				this.readableBuffer = null;
-				this.readPos = 0;
+				buffer = null;
+				readableBuffer = null;
+				readPos = 0;
 			}
-			this.disposed = true;
+			disposed = true;
 		}
 	}
 
 	public void Dispose()
 	{
-		this.Dispose(true);
+		Dispose(_disposing: true);
 		GC.SuppressFinalize(this);
 	}
-
-	private List<byte> buffer;
-
-	private byte[] readableBuffer;
-
-	private int readPos;
-
-	private bool disposed;
 }

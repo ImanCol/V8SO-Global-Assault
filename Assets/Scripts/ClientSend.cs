@@ -1,5 +1,4 @@
 using UnityEngine;
-using V2UnityDiscordIntercept;
 
 public class ClientSend : MonoBehaviour
 {
@@ -8,11 +7,11 @@ public class ClientSend : MonoBehaviour
 		_packet.WriteLength();
 		if (userId == 0L)
 		{
-			//DiscordController.instance.SendNetworkMessage(0, _packet.ToArray());
+			DiscordController.instance.SendNetworkMessage(0, _packet.ToArray());
 		}
 		else
 		{
-			//DiscordController.instance.SendNetworkMessageToUser(userId, 0, _packet.ToArray());
+			DiscordController.instance.SendNetworkMessageToUser(userId, 0, _packet.ToArray());
 		}
 	}
 
@@ -21,11 +20,11 @@ public class ClientSend : MonoBehaviour
 		_packet.WriteLength();
 		if (userId == 0L)
 		{
-			//DiscordController.instance.SendNetworkMessage(1, _packet.ToArray());
+			DiscordController.instance.SendNetworkMessage(1, _packet.ToArray());
 		}
 		else
 		{
-			//DiscordController.instance.SendNetworkMessageToUser(userId, 1, _packet.ToArray());
+			DiscordController.instance.SendNetworkMessageToUser(userId, 1, _packet.ToArray());
 		}
 	}
 
@@ -33,9 +32,7 @@ public class ClientSend : MonoBehaviour
 	{
 		using (Packet packet = new Packet(1))
 		{
-			//packet.Write(DiscordController.instance.userManager.GetCurrentUser().Username);
-			packet.Write(Plugin.Username);
-			Plugin.Client.SendTCPData(packet, 0L);
+			packet.Write(DiscordController.instance.userManager.GetCurrentUser().Username);
 			SendTCPData(packet, 0L);
 		}
 	}
@@ -44,7 +41,7 @@ public class ClientSend : MonoBehaviour
 	{
 		using (Packet packet = new Packet(2))
 		{
-			//packet.Write(DiscordController.instance.userManager.GetCurrentUser().Username);
+			packet.Write(DiscordController.instance.userManager.GetCurrentUser().Username);
 			packet.Write(GameManager.instance.ready);
 			packet.Write(GameManager.instance.vehicles[0]);
 			SendTCPData(packet, userId);

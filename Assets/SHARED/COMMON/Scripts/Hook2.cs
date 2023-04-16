@@ -77,8 +77,7 @@ public class Hook2 : VigObject
 							ClientSend.Pickup(16, 0, 0);
 						}
 					}
-					//else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && DAT_80.id > 0)
-					else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DAT_80.id > 0)
+					else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && DAT_80.id > 0)
 					{
 						((Vehicle)DAT_80).FUN_3E32C(_WHEELS.Ground, 0);
 						ClientSend.PickupAI(DAT_80.id, 16, 0, 0);
