@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Rewired;
+//using Rewired;
 
 public enum _CONTROLLER_TYPE
 {
@@ -108,7 +108,7 @@ public class InputManager : MonoBehaviour
 
     public _CONTROLLER_STEERING[] controllerSteerings;
 
-    private Player player;
+    //private Player player;
 
     private void Awake()
     {
