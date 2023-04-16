@@ -3596,17 +3596,16 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (this.inMenu)
+        if (inDebug) return;
+        if (Input.GetButton("Exit"))
         {
-            return;
-        }
-        if (this.inDebug)
+            LoadDebug();
+            FUN_3827C(playerObjects[0], DAT_F00);
+        };
+        if (Input.GetButton("Reset"))
         {
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
-            {
-                Application.Quit();
-            }
-            return;
+            LoadReboot();
+
         }
         if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
         {
@@ -3652,7 +3651,14 @@ public class GameManager : MonoBehaviour
             UIManager.instance.feedbackRect.gameObject.SetActive(this.noHUD);
         }
     }
-
+private void LoadReboot()
+    {
+        totalSpawns = DAT_1030[0] + DAT_1030[1] + DAT_1030[2] + DAT_1030[3];
+        DontDestroyOnLoad(this.gameObject);
+        print(this);
+        SceneManager.LoadScene(map, LoadSceneMode.Single);
+        print("Reboot");
+    }
     private void FixedUpdate()
     {
         if (this.inDebug || this.inMenu)
