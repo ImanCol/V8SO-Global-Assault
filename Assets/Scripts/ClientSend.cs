@@ -1,4 +1,5 @@
 using UnityEngine;
+using V2UnityDiscordIntercept;
 
 public class ClientSend : MonoBehaviour
 {
@@ -33,6 +34,8 @@ public class ClientSend : MonoBehaviour
 		using (Packet packet = new Packet(1))
 		{
 			//packet.Write(DiscordController.instance.userManager.GetCurrentUser().Username);
+			packet.Write(Plugin.Username);
+			Plugin.Client.SendTCPData(packet, 0L);
 			SendTCPData(packet, 0L);
 		}
 	}

@@ -10,9 +10,9 @@ scopes = {
 	"last_search.CC326D59" = "Load"
 	"OpenInspectorPreview.CC326D59" = "1"
 	"currentGroup.CC326D59" = "menu"
-	"last_search.DD2EEDCB" = "skybox"
+	"last_search.DD2EEDCB" = "Install"
 	"OpenInspectorPreview.DD2EEDCB" = "0"
-	"currentGroup.DD2EEDCB" = "all"
+	"currentGroup.DD2EEDCB" = "settings"
 }
 providers = {
 	expression = {

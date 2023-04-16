@@ -811,7 +811,7 @@ public class Vehicle : VigObject
                 FUN_3E32C(param, 500);
                 if (GameManager.instance.gameMode > _GAME_MODE.Versus2)
                 {
-                    //ClientSend.PickupAI(id, type, 0, 0);
+                    ClientSend.PickupAI(id, type, 0, 0);
                 }
             }
             if (id > 0)
@@ -1017,13 +1017,13 @@ public class Vehicle : VigObject
                             FUN_3E32C(_WHEELS.Air, 500);
                             if (GameManager.instance.gameMode == _GAME_MODE.Versus2)
                             {
-                                //ClientSend.Pickup(7, 0, 0);
+                                ClientSend.Pickup(7, 0, 0);
                             }
                         }
                         else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && id > 0)
                         {
                             FUN_3E32C(_WHEELS.Air, 500);
-                            //ClientSend.PickupAI(id, 7, 0, 0);
+                            ClientSend.PickupAI(id, 7, 0, 0);
                         }
                         break;
                 }
@@ -2089,12 +2089,12 @@ public class Vehicle : VigObject
                                 FUN_3A3D4(pDAT_2);
                                 if (GameManager.instance.gameMode >= _GAME_MODE.Versus2 && id == -1)
                                 {
-                                    //ClientSend.Pickup(num, pDAT_2.maxHalfHealth, weapons[weaponSlot].tags);
+                                    ClientSend.Pickup(num, pDAT_2.maxHalfHealth, weapons[weaponSlot].tags);
                                 }
                                 //else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && id > 0)
                                 else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && id > 0)
                                 {
-                                    //ClientSend.PickupAI(id, num, pDAT_2.maxHalfHealth, weapons[weaponSlot].tags);
+                                    ClientSend.PickupAI(id, num, pDAT_2.maxHalfHealth, weapons[weaponSlot].tags);
                                 }
                             }
                             break;
@@ -2833,14 +2833,14 @@ public class Vehicle : VigObject
                     FUN_3E32C(_WHEELS.Air, 500);
                     if (GameManager.instance.gameMode == _GAME_MODE.Versus2)
                     {
-                        //ClientSend.Pickup(7, 0, 0);
+                        ClientSend.Pickup(7, 0, 0);
                     }
                 }
                 //else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && id > 0)
                 else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && id > 0)
                 {
                     FUN_3E32C(_WHEELS.Air, 500);
-                    //ClientSend.PickupAI(id, 7, 0, 0);
+                    ClientSend.PickupAI(id, 7, 0, 0);
                 }
                 return 0u;
             }
@@ -4190,7 +4190,7 @@ public class Vehicle : VigObject
                     FUN_3E32C(_WHEELS.Ground, 0);
                     if (GameManager.instance.gameMode == _GAME_MODE.Versus2)
                     {
-                        //ClientSend.Pickup(16, 0, 0);
+                        ClientSend.Pickup(16, 0, 0);
                     }
                 }
             }
@@ -4198,7 +4198,7 @@ public class Vehicle : VigObject
             else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && id > 0)
             {
                 FUN_3E32C(_WHEELS.Ground, 0);
-                //ClientSend.PickupAI(id, 16, 0, 0);
+                ClientSend.PickupAI(id, 16, 0, 0);
             }
         }
         _003C_003Ec__DisplayClass105_.local_b0 = Utilities.FUN_2426C(vTransform.rotation, new Matrix2x4(_003C_003Ec__DisplayClass105_.local_b0.x, _003C_003Ec__DisplayClass105_.local_b0.y, _003C_003Ec__DisplayClass105_.local_b0.z, 0));
@@ -5725,12 +5725,12 @@ public class Vehicle : VigObject
             {
                 if (GameManager.instance.gameMode >= _GAME_MODE.Versus2 && base.id == -1)
                 {
-                    //ClientSend.Totaled();
+                    ClientSend.Totaled();
                 }
                 else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && base.id > 0)
                 {
                     GameManager.instance.networkEnemies.Remove(this);
-                    //ClientSend.TotaledAI(base.id);
+                    ClientSend.TotaledAI(base.id);
                 }
                 if (id < 0)
                 {
@@ -6077,14 +6077,14 @@ public class Vehicle : VigObject
                     FUN_3E32C(_WHEELS.Ground, 0);
                     if (GameManager.instance.gameMode == _GAME_MODE.Versus2)
                     {
-                        //ClientSend.Pickup(16, 0, 0);
+                        ClientSend.Pickup(16, 0, 0);
                     }
                 }
                 //else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && id > 0)
                 else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && id > 0)
                 {
                     FUN_3E32C(_WHEELS.Ground, 0);
-                    //ClientSend.PickupAI(id, 16, 0, 0);
+                    ClientSend.PickupAI(id, 16, 0, 0);
                 }
             }
             if (body[0] == null)
@@ -6296,12 +6296,12 @@ public class Vehicle : VigObject
         {
             if (GameManager.instance.gameMode >= _GAME_MODE.Versus2 && id == -1)
             {
-                //ClientSend.Destroyed();
+                ClientSend.Destroyed();
             }
             else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && id > 0)
             {
                 GameManager.instance.networkEnemies.Remove(this);
-                //ClientSend.DestroyedAI(id);
+                ClientSend.DestroyedAI(id);
             }
             if (GameManager.instance.gameMode != _GAME_MODE.Survival && GameManager.instance.gameMode != _GAME_MODE.Survival2)
             {
@@ -6335,11 +6335,11 @@ public class Vehicle : VigObject
         {
             if (GameManager.instance.gameMode >= _GAME_MODE.Versus2 && id == -1)
             {
-                //ClientSend.Wrecked();
+                ClientSend.Wrecked();
             }
             else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && id > 0)
             {
-                //ClientSend.WreckedAI(id);
+                ClientSend.WreckedAI(id);
             }
             GameManager.instance.FUN_30CB0(this, 300);
             state = _VEHICLE_TYPE.Wrecked;
@@ -6976,7 +6976,7 @@ public class Vehicle : VigObject
                 DAT_B6[weaponSlot] = (short)vigObject.UpdateW(10, num);
                 if (DAT_B6[weaponSlot] != 0 && GameManager.instance.gameMode > _GAME_MODE.Versus2)
                 {
-                    //ClientSend.ComboAI(id, (ushort)num, vigObject.tags);
+                    ClientSend.ComboAI(id, (ushort)num, vigObject.tags);
                 }
             }
         }
@@ -7779,7 +7779,7 @@ public class Vehicle : VigObject
                 FUN_3E32C(_WHEELS.Ground, 0);
                 if (GameManager.instance.gameMode >= _GAME_MODE.Versus2)
                 {
-                    //ClientSend.Pickup(16, 0, 0);
+                    ClientSend.Pickup(16, 0, 0);
                 }
             }
         }
@@ -7880,7 +7880,7 @@ public class Vehicle : VigObject
                     {
                         if (GameManager.instance.gameMode >= _GAME_MODE.Versus2)
                         {
-                            //ClientSend.Combo((ushort)num3, 7);
+                            ClientSend.Combo((ushort)num3, 7);
                         }
                         vigObject.UpdateW(0, this);
                         param2 = GameManager.instance.FUN_1DD9C();
@@ -7918,7 +7918,7 @@ public class Vehicle : VigObject
                         {
                             if (GameManager.instance.gameMode >= _GAME_MODE.Versus2)
                             {
-                                //ClientSend.Combo((ushort)num3, vigObject.tags);
+                                ClientSend.Combo((ushort)num3, vigObject.tags);
                             }
                             param2 = GameManager.instance.FUN_1DD9C();
                             int param3 = 47;
@@ -7979,12 +7979,12 @@ public class Vehicle : VigObject
         short num = (short)(vigObject.GetType().IsSubclassOf(typeof(VigObject)) ? ((short)vigObject.UpdateW(12, this)) : 0);
         if (GameManager.instance.gameMode >= _GAME_MODE.Versus2 && id == -1)
         {
-            //ClientSend.Weapon(vigObject.tags);
+            ClientSend.Weapon(vigObject.tags);
         }
         //else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && id > 0)
         else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && id > 0)
         {
-            //ClientSend.WeaponAI(id, vigObject.tags);
+            ClientSend.WeaponAI(id, vigObject.tags);
         }
         if (vigObject.maxHalfHealth != 0)
         {

@@ -474,19 +474,24 @@ MonoBehaviour:
   drawRoads: 0
   playMusic: 0
   inDebug: 1
+  inMenu: 0
   autoTarget: 0
+  ready: 0
   max: 0
   terrainHeight: 0
   offsetFactor: 0
   offsetStart: 0
   angleOffset: 0
-  driverDropdown: {fileID: 0}
-  stageDropdown: {fileID: 0}
+  aspectRatioScale: 0
+  driverDropdown: {fileID: 1791082649404616485}
+  stageDropdown: {fileID: 1791082649404616589}
   ditheringDropdown: {fileID: 0}
   gameModeDropdown: {fileID: 0}
-  screenModeDropdown: {fileID: 0}
-  damageDropdown: {fileID: 0}
-  difficultyDropdown: {fileID: 0}
+  mpModeDropdown: {fileID: 1791082649404616556}
+  damageDropdown: {fileID: 1791082649404616469}
+  difficultyDropdown: {fileID: 1791082649404616472}
+  onlineDmgDropdown: {fileID: 1791082649404616503}
+  livesDropdown: {fileID: 1791082649404616517}
   drawPlayerToggle: {fileID: 0}
   drawObjectsToggle: {fileID: 0}
   drawTerrainToggle: {fileID: 0}
@@ -496,24 +501,18 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  disableDpadToggle: {fileID: 0}
-  disableAutoTarget: {fileID: 0}
+  disableDpadToggle: {fileID: 1791082649404616528}
+  disableAutoTarget: {fileID: 1791082649404616481}
+  enableExperimentalDakota: {fileID: 0}
   spawnsRect: {fileID: 0}
   playable: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f0000001000000011000000
   survival: 
   currentSpawn: 0
   wrenchCount: 0
+  lowHealth: 0
   totalSpawns: 0
   aiMin: 0
   aiMax: 0
-  inMenu: 0
-  ready: 0
-  aspectRatioScale: 0
-  mpModeDropdown: {fileID: 0}
-  onlineDmgDropdown: {fileID: 0}
-  livesDropdown: {fileID: 0}
-  enableExperimentalDakota: {fileID: 0}
-  lowHealth: 0
   spawns: 0
   paused: 0
   noAI: 0
@@ -1042,6 +1041,7 @@ GameObject:
   - component: {fileID: 1791082647559122344}
   - component: {fileID: 507362848}
   - component: {fileID: 479902876}
+  - component: {fileID: 1791082647559122347}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: 
@@ -3616,6 +3616,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1791082647559122347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791082647508790554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41e4fd2ff834bf547b8ac1064879a5d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneLoaded: 0
+  pendingCallbacks: 0
 --- !u!20 &1791082647827557804
 Camera:
   m_ObjectHideFlags: 0

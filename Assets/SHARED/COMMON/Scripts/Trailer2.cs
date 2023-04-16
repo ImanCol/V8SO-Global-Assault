@@ -45,12 +45,12 @@ public class Trailer2 : Destructible
                 }
                 if (GameManager.instance.gameMode >= _GAME_MODE.Versus2 && id2 == -1)
                 {
-                    //ClientSend.TrailerTransform(ref vTransform);
+                    ClientSend.TrailerTransform(ref vTransform);
                 }
                 //else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && id2 > 0)
                 else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && id2 > 0)
                 {
-                    //ClientSend.TrailerTransformAI(id2, ref vTransform);
+                    ClientSend.TrailerTransformAI(id2, ref vTransform);
                 }
                 result = 0u;
                 break;
@@ -61,12 +61,12 @@ public class Trailer2 : Destructible
                 FUN_4DC94();
                 if (GameManager.instance.gameMode >= _GAME_MODE.Versus2 && id2 == -1)
                 {
-                    //ClientSend.TrailerDetach();
+                    ClientSend.TrailerDetach();
                 }
                 //else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && id2 > 0)
                 else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && id2 > 0)
                 {
-                    //ClientSend.TrailerDetachAI(id2);
+                    ClientSend.TrailerDetachAI(id2);
                 }
                 result = 0u;
                 break;
@@ -77,13 +77,13 @@ public class Trailer2 : Destructible
                     {
                         if (FUN_32B90((uint)arg2) && GameManager.instance.gameMode >= _GAME_MODE.Versus2)
                         {
-                            //ClientSend.TrailerDetach();
+                            ClientSend.TrailerDetach();
                         }
                     }
                     //else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && id2 > 0 && FUN_32B90((uint)arg2))
                     else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && id2 > 0 && FUN_32B90((uint)arg2))
                     {
-                        //ClientSend.TrailerDetachAI(id2);
+                        ClientSend.TrailerDetachAI(id2);
                     }
                 }
                 result = 0u;
@@ -113,13 +113,13 @@ public class Trailer2 : Destructible
             {
                 if (FUN_32CF0(param1) && GameManager.instance.gameMode == _GAME_MODE.Versus2)
                 {
-                    //ClientSend.TrailerDetach();
+                    ClientSend.TrailerDetach();
                 }
             }
             //else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && id2 > 0 && FUN_32CF0(param1))
             else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && id2 > 0 && FUN_32CF0(param1))
             {
-                //ClientSend.TrailerDetachAI(id2);
+                ClientSend.TrailerDetachAI(id2);
             }
             return 0u;
         }

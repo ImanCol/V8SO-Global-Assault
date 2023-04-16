@@ -129,14 +129,13 @@ public class Shell : VigObject
                             vehicle.FUN_3E32C(_WHEELS.Ground, 0);
                             if (GameManager.instance.gameMode == _GAME_MODE.Versus2)
                             {
-                                //ClientSend.Pickup(16, 0, 0);
+                                ClientSend.Pickup(16, 0, 0);
                             }
                         }
-                        //else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && vehicle.id > 0)
-                        else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && vehicle.id > 0)
+                        else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && vehicle.id > 0)
                         {
                             vehicle.FUN_3E32C(_WHEELS.Ground, 0);
-                            //ClientSend.PickupAI(vehicle.id, 16, 0, 0);
+                            ClientSend.PickupAI(vehicle.id, 16, 0, 0);
                         }
                         break;
                     }

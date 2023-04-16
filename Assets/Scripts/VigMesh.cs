@@ -89,7 +89,7 @@ public class VigMesh : MonoBehaviour
 
     private BufferedBinaryReader brVar13;
 
-    private MeshRenderer renderer;
+    private new MeshRenderer renderer;
 
     private static uint[] DAT_22FEC = new uint[64]
     {

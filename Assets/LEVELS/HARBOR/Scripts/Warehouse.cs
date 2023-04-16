@@ -46,11 +46,10 @@ public class Warehouse : VigObject
 									ClientSend.Pickup(8, 0, 0);
 								}
 							}
-							//else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && vehicle.id > 0)
-							else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && vehicle.id > 0)
+							else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && vehicle.id > 0)
 							{
 								vehicle.FUN_3E32C(_WHEELS.Sea, 500);
-								//ClientSend.PickupAI(vehicle.id, 8, 0, 0);
+								ClientSend.PickupAI(vehicle.id, 8, 0, 0);
 							}
 						}
 						HitDetection hitDetection = new HitDetection(null);

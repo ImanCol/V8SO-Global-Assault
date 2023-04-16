@@ -1,3 +1,5 @@
+using System;
+
 public enum ServerPackets
 {
 	joined = 1,

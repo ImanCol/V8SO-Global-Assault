@@ -7,7 +7,7 @@ public class StatsPanel : MonoBehaviour
 {
 	public _STATS_TYPE state;
 
-	public Camera camera;
+	public new Camera camera;
 
 	public Image panel;
 

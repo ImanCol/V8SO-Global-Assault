@@ -96,8 +96,7 @@ public class Pickup : VigObject
                         {
                             vehicle.FUN_3A0C0(num2);
                         }
-                        //else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && vehicle.id > 0)
-                        else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && vehicle.id > 0)
+                        else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && vehicle.id > 0)
                         {
                             vehicle.FUN_3A0C0(num2);
                         }
@@ -157,8 +156,7 @@ public class Pickup : VigObject
                         {
                             vehicle.FUN_3E32C(param2, 500);
                         }
-                        //else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && vehicle.id > 0)
-                        else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && vehicle.id > 0)
+                        else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && vehicle.id > 0)
                         {
                             vehicle.FUN_3E32C(param2, 500);
                         }
@@ -178,12 +176,11 @@ public class Pickup : VigObject
                         }
                         if (GameManager.instance.gameMode >= _GAME_MODE.Versus2 && vehicle.id == -1)
                         {
-                            //ClientSend.Pickup((int)num, 0, 0);
+                            ClientSend.Pickup((int)num, 0, 0);
                         }
-                        //else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && vehicle.id > 0)
-                        else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && vehicle.id > 0)
-                        {//
-                         //ClientSend.PickupAI(vehicle.id, (int)num, 0, 0);
+                        else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && vehicle.id > 0)
+                        {
+                         ClientSend.PickupAI(vehicle.id, (int)num, 0, 0);
                         }
                         return 4294967294u;
                     IL_0204:
@@ -209,12 +206,11 @@ public class Pickup : VigObject
                         }
                         if (GameManager.instance.gameMode >= _GAME_MODE.Versus2 && vehicle.id == -1)
                         {
-                            //ClientSend.Pickup((int)num, 0, 0);
+                            ClientSend.Pickup((int)num, 0, 0);
                         }
-                        //else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && vehicle.id > 0)
-                        else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && vehicle.id > 0)
+                        else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && vehicle.id > 0)
                         {
-                            //ClientSend.PickupAI(vehicle.id, (int)num, 0, 0);
+                            ClientSend.PickupAI(vehicle.id, (int)num, 0, 0);
                         }
                         return 4294967294u;
                     IL_01f5:
@@ -262,12 +258,11 @@ public class Pickup : VigObject
                                     }
                                     if (GameManager.instance.gameMode >= _GAME_MODE.Versus2 && vehicle.id == -1)
                                     {
-                                        //ClientSend.Pickup((int)num, vigObject2.maxHalfHealth, tags);
+                                        ClientSend.Pickup((int)num, vigObject2.maxHalfHealth, tags);
                                     }
-                                    //else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && vehicle.id > 0)
-                                    else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && vehicle.id > 0)
+                                    else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && vehicle.id > 0)
                                     {
-                                        //ClientSend.PickupAI(vehicle.id, (int)num, vigObject2.maxHalfHealth, tags);
+                                        ClientSend.PickupAI(vehicle.id, (int)num, vigObject2.maxHalfHealth, tags);
                                     }
                                 }
                             }

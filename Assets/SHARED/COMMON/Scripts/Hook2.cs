@@ -74,14 +74,14 @@ public class Hook2 : VigObject
 						((Vehicle)DAT_80).FUN_3E32C(_WHEELS.Ground, 0);
 						if (GameManager.instance.gameMode == _GAME_MODE.Versus2)
 						{
-							//ClientSend.Pickup(16, 0, 0);
+							ClientSend.Pickup(16, 0, 0);
 						}
 					}
 					//else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && DAT_80.id > 0)
 					else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DAT_80.id > 0)
 					{
 						((Vehicle)DAT_80).FUN_3E32C(_WHEELS.Ground, 0);
-						//ClientSend.PickupAI(DAT_80.id, 16, 0, 0);
+						ClientSend.PickupAI(DAT_80.id, 16, 0, 0);
 					}
 				}
 				tags = (DAT_18 = (sbyte)GameManager.instance.FUN_1DD9C());

@@ -59,7 +59,7 @@ public class Collector : VigObject
 						{
 							if (GameManager.instance.gameMode >= _GAME_MODE.Versus2)
 							{
-								//ClientSend.DropWeapon(vehicle.weapons[0].tags);
+								ClientSend.DropWeapon(vehicle.weapons[0].tags);
 							}
 							vehicle.weapons[0].FUN_3A368();
 							return 0u;
@@ -67,7 +67,7 @@ public class Collector : VigObject
 						//if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && vehicle.id > 0)
 						if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && vehicle.id > 0)
 						{
-							//ClientSend.DropWeaponAI(vehicle.id, vehicle.weapons[0].tags);
+							ClientSend.DropWeaponAI(vehicle.id, vehicle.weapons[0].tags);
 							vehicle.weapons[0].FUN_3A368();
 							return 0u;
 						}
