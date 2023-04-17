@@ -6,8 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/DEBUG-Original.unity
-    guid: de2dba6cb4316ad4aa93bf257ccf4d9d
+    path: Assets/DEBUG.unity
+    guid: 99a2fad2b34903d4386fc3b5a87f20d7
+  - enabled: 0
+    path: Assets/DEBUG2.unity
+    guid: f487d6f372fd1ff4eb7ce1bd8ffcdd8e
   - enabled: 1
     path: Assets/DEBUG-Online.unity
     guid: 10435b57e01bea847a31ea181ca40223
@@ -35,6 +38,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/LEVELS/HARBOR/HARBOR.unity
     guid: 6b99b4cac82465d488792cf7c4860ac3
-  m_configObjects:
-    com.unity.addressableassets: {fileID: 11400000, guid: 4119d9bae22ea2f46a06279ea2bce6d1,
-      type: 2}
+  m_configObjects: {}

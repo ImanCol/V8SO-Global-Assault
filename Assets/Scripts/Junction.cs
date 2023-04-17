@@ -20,7 +20,6 @@ struct MyVertex
     }
 }
 
-
 public class Junction : MonoBehaviour
 {
     private struct JunctionJob : IJob

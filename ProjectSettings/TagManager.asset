@@ -8,11 +8,11 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Terrain
+  - 
   - Water
   - UI
-  - Road
-  - Shadow
+  - 
+  - 
   - Reticle
   - 
   - 
@@ -38,6 +38,6 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Default
+  - name: "Default"
     uniqueID: 0
     locked: 0
