@@ -491,7 +491,6 @@ public class GameManager : MonoBehaviour
             } while (true);
         }
 
-
         //for (int i = 0; i < num; i++)
         //{
         //    int index;
@@ -505,18 +504,22 @@ public class GameManager : MonoBehaviour
         //}
         //for (int j = 0; j < 6; j++)
 
-
         int playerammount = 4;
 
         if (players == 1)
         {
             playerammount = 4;
+            Debug.Log("Singleplayer Iniciado");
         }
         else if (players == 2)
         {
             playerammount = 6;
+            Debug.Log("Multiplayer Iniciado");
         }
-        Debug.Log(players);
+
+        Debug.Log("Jugadores-Capacidad: " + playable.Capacity);
+        Debug.Log("Jugadores-Cantidad: " + playable.Count);
+        
 
         for (int j = 0; j < playerammount; j++)
         {

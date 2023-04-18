@@ -5335,6 +5335,7 @@ public class Vehicle : VigObject
 			while (num2 < 6);
 			if (GameManager.instance.DAT_CC4 >= 70)
 			{
+				Debug.Log("HOOOOOOOOOT");
 				DAT_F6 |= 1024;
 				b = 100;
 			}
@@ -6471,9 +6472,10 @@ public class Vehicle : VigObject
 		if (0 < id || _GAME_MODE.Unk1 < GameManager.instance.gameMode || GameManager.instance.gameMode == _GAME_MODE.Versus)
 		{
 			GameManager.instance.DAT_CC4++;
-			if (GameManager.instance.DAT_CC4 == 70 && GameManager.instance.DAT_C6E == 2)
+			if (GameManager.instance.DAT_CC4 == 1 && GameManager.instance.DAT_C6E == 2)
 			{
 				FUN_38398();
+				Debug.Log("Approaching HOOOOOOOOOOOT!");
 				IEnumerator routine = UIManager.instance.Printf("Approaching Hotrod!");
 				UIManager.instance.StopAllCoroutines();
 				UIManager.instance.StartCoroutine(routine);
