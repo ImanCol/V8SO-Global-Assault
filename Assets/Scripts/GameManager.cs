@@ -404,14 +404,14 @@ public class GameManager : MonoBehaviour
     public void SetDifficulty()
     {
         int value = this.difficultyDropdown.value;
-        this.DAT_C6E = (byte)value;
+        this.difficultyMode = (byte)value;
         ClientSend.Difficulty(0L);
     }
 
     public void SetOnlineDamage()
     {
         int value = this.onlineDmgDropdown.value;
-        this.DAT_C6E = (byte)value;
+        this.difficultyMode = (byte)value;
         ClientSend.Difficulty(0L);
     }
 
@@ -2146,13 +2146,13 @@ public class GameManager : MonoBehaviour
         {
             num2 = 6;
         }
-        while (this.DAT_C6E != 0 || this.spawns != 30 || this.DAT_CC4 > 30)
+        while (this.difficultyMode != 0 || this.spawns != 30 || this.EnemyKill > 30)
         {
-            if (this.DAT_C6E == 1 && this.spawns == 70 && this.DAT_CC4 <= 70)
+            if (this.difficultyMode == 1 && this.spawns == 70 && this.EnemyKill <= 70)
             {
                 return;
             }
-            if (this.spawns == 70 && this.DAT_CC4 < 70)
+            if (this.spawns == 70 && this.EnemyKill < 70)
             {
                 return;
             }
@@ -2254,7 +2254,7 @@ public class GameManager : MonoBehaviour
         if ((this.DAT_40 & 4096) == 0)
         {
             num3 = 1;
-            if (this.DAT_C6E != 0)
+            if (this.difficultyMode != 0)
             {
                 num3 = 2;
             }
@@ -2279,7 +2279,7 @@ public class GameManager : MonoBehaviour
         }
         if (this.gameMode == _GAME_MODE.Survival || this.gameMode == _GAME_MODE.Survival2)
         {
-            num3 += this.DAT_CC4 / 25;
+            num3 += this.EnemyKill / 25;
         }
         List<VigTuple> list = this.worldObjs;
         for (int j = 0; j < list.Count; j++)
@@ -2559,13 +2559,13 @@ public class GameManager : MonoBehaviour
         if (this.gameMode == _GAME_MODE.Survival)
         {
             int num12;
-            if (this.DAT_CC4 <= 80)
+            if (this.EnemyKill <= 80)
             {
-                num12 = this.DAT_CC4 % 70;
+                num12 = this.EnemyKill % 70;
             }
             else
             {
-                num12 = this.DAT_CC4;
+                num12 = this.EnemyKill;
             }
             int num13 = num12 * 2;
             int k = num13;
@@ -2609,13 +2609,13 @@ public class GameManager : MonoBehaviour
             if (this.gameMode == _GAME_MODE.Survival2 && DiscordController.IsOwner())
             {
                 int num12;
-                if (this.DAT_CC4 <= 80)
+                if (this.EnemyKill <= 80)
                 {
-                    num12 = this.DAT_CC4 % 70;
+                    num12 = this.EnemyKill % 70;
                 }
                 else
                 {
-                    num12 = this.DAT_CC4;
+                    num12 = this.EnemyKill;
                 }
                 int num13 = num12 * 2;
                 int k = num13;
@@ -2744,16 +2744,16 @@ public class GameManager : MonoBehaviour
             }
             if ((this.gameMode == _GAME_MODE.Survival || this.gameMode == _GAME_MODE.Survival2) && this.DAT_C74 == 0)
             {
-                if (this.DAT_C6E == 0)
+                if (this.difficultyMode == 0)
                 {
-                    if (this.DAT_CC4 == 30)
+                    if (this.EnemyKill == 30)
                     {
                         this.playerObjects[0].vCamera.flags |= 33554432u;
                         this.DAT_C74 = 1;
                         UIManager.instance.GoodJob();
                     }
                 }
-                else if (this.DAT_C6E == 1 && this.DAT_CC4 == 70)
+                else if (this.difficultyMode == 1 && this.EnemyKill == 70)
                 {
                     this.playerObjects[0].vCamera.flags |= 33554432u;
                     this.DAT_C74 = 1;
@@ -3329,7 +3329,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            num = (int)this.DAT_C6E;
+            num = (int)this.difficultyMode;
         }
         int num2 = ~num + 3;
         while (num2 != -1)
@@ -3854,7 +3854,7 @@ public class GameManager : MonoBehaviour
             }
             UIManager.instance.RefreshFlares(this.DAT_28);
             UIManager.instance.RefreshCameras();
-            UIManager.instance.RefreshDestroyed(this.DAT_CC4);
+            UIManager.instance.RefreshDestroyed(this.EnemyKill);
         }
         for (int k = 0; k < this.DAT_1088_tmp.Count; k++)
         {
@@ -5477,7 +5477,7 @@ public class GameManager : MonoBehaviour
                 goto IL_7C;
             }
         }
-        else if (this.DAT_CC4 >= 70)
+        else if (this.EnemyKill >= 70)
         {
             num = param2 + 21;
             goto IL_7C;
@@ -16428,7 +16428,7 @@ public class GameManager : MonoBehaviour
 
     public bool DAT_83B;
 
-    public byte DAT_C6E;
+    public byte difficultyMode;
 
     public sbyte[] DAT_C80;
 
@@ -16572,7 +16572,7 @@ public class GameManager : MonoBehaviour
 
     public int DAT_C74;
 
-    public int DAT_CC4;
+    public int EnemyKill;
 
     public byte DAT_898;
 

@@ -9,6 +9,12 @@ public class DiscordController : MonoBehaviour
 	// Token: 0x06000739 RID: 1849 RVA: 0x000542F4 File Offset: 0x000524F4
 	private void Start()
 	{
+		
+    #if UNITY_EDITOR
+        Debug.Log("Ejecutando en el editor de Unity");
+    #else
+        Debug.Log("Ejecutando en la Build");
+    #endif
 		discord = new Discord.Discord(814993856163479584L, 0uL);
 		this.activityManager = this.discord.GetActivityManager();
 		Activity activity = new Activity
@@ -46,6 +52,7 @@ public class DiscordController : MonoBehaviour
 	// Token: 0x0600073B RID: 1851 RVA: 0x000097B9 File Offset: 0x000079B9
 	private void Update()
 	{
+		
 		if (this.sceneLoaded)
 		{
 			this.discord.RunCallbacks();
@@ -59,6 +66,8 @@ public class DiscordController : MonoBehaviour
 	}
 
 	// Token: 0x0600073D RID: 1853 RVA: 0x000543BC File Offset: 0x000525BC
+#if UNITY_EDITOR
+#else
 	private void OnApplicationQuit()
 	{
 		this.DisconnectNetwork2();
@@ -81,6 +90,7 @@ public class DiscordController : MonoBehaviour
 			this.discord.RunCallbacks();
 		}
 	}
+#endif
 
 	// Token: 0x0600073E RID: 1854 RVA: 0x00054418 File Offset: 0x00052618
 	public void CreateLobby(string lobbyName)

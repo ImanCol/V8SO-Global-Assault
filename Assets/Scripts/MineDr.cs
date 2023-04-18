@@ -173,7 +173,7 @@ public class MineDr : VigObject
                     break;
                 }
             case 14:
-                if (((GameManager.instance.DAT_28 - (arg2.DAT_19 ^ 0x14)) & Mathf.Clamp(127 - (GameManager.instance.DAT_CC4 - 70), 0, 127)) == 0)
+                if (((GameManager.instance.DAT_28 - (arg2.DAT_19 ^ 0x14)) & Mathf.Clamp(127 - (GameManager.instance.EnemyKill - 70), 0, 127)) == 0)
                 {
                     if (((Vehicle)((Vehicle)arg2).target).wheelsType != 0)
                     {

@@ -5294,7 +5294,7 @@ public class Vehicle : VigObject
 		for (uint num = next; num != 65535; num = next)
 		{
 			ConfigContainer configContainer = vData.ini.configContainers[(int)num];
-			if ((uint)(configContainer.objID - 256) < 4u && GameManager.instance.DAT_CC4 >= 30)
+			if ((uint)(configContainer.objID - 256) < 4u && GameManager.instance.EnemyKill >= 30)
 			{
 				VigObject vigObject = vData.ini.FUN_2C17C((ushort)num, typeof(VigObject), 8u);
 				Utilities.FUN_2CA94(this, configContainer, vigObject);
@@ -5308,7 +5308,7 @@ public class Vehicle : VigObject
 		}
 		int num2 = 0;
 		byte b = 0;
-		if (GameManager.instance.DAT_CC4 >= 30)
+		if (GameManager.instance.EnemyKill >= 30)
 		{
 			b = 50;
 			do
@@ -5333,7 +5333,7 @@ public class Vehicle : VigObject
 				num2++;
 			}
 			while (num2 < 6);
-			if (GameManager.instance.DAT_CC4 >= 70)
+			if (GameManager.instance.EnemyKill >= 70)
 			{
 				Debug.Log("HOOOOOOOOOT");
 				DAT_F6 |= 1024;
@@ -6414,7 +6414,7 @@ public class Vehicle : VigObject
 			num3 = (uint)((int)num3 >> ((GameManager.DAT_63F60[num2 & 7] & 0xF) << 1));
 		}
 		num3 &= 3;
-		num2 = (uint)(((sbyte)GameManager.instance.DAT_C6E + 1) * (GameManager.instance.DAT_C80[0] + 1) + 1);
+		num2 = (uint)(((sbyte)GameManager.instance.difficultyMode + 1) * (GameManager.instance.DAT_C80[0] + 1) + 1);
 		bool result = false;
 		if (num2 != 0)
 		{
@@ -6471,8 +6471,8 @@ public class Vehicle : VigObject
 		while (num < 2);
 		if (0 < id || _GAME_MODE.Unk1 < GameManager.instance.gameMode || GameManager.instance.gameMode == _GAME_MODE.Versus)
 		{
-			GameManager.instance.DAT_CC4++;
-			if (GameManager.instance.DAT_CC4 == 1 && GameManager.instance.DAT_C6E == 2)
+			GameManager.instance.EnemyKill++;
+			if (GameManager.instance.EnemyKill == 1 && GameManager.instance.difficultyMode == 2)
 			{
 				FUN_38398();
 				Debug.Log("Approaching HOOOOOOOOOOOT!");
@@ -7982,7 +7982,7 @@ public class Vehicle : VigObject
 		{
 			if (0 < id && (vigObject.flags & 0x4000000) == 0)
 			{
-				int num2 = ((DAT_F6 & 2) != 0) ? ((2 - GameManager.instance.DAT_C6E) * 32) : ((2 - GameManager.instance.DAT_C6E) * 64);
+				int num2 = ((DAT_F6 & 2) != 0) ? ((2 - GameManager.instance.difficultyMode) * 32) : ((2 - GameManager.instance.difficultyMode) * 64);
 				int num3 = (int)GameManager.FUN_2AC5C();
 				num = (short)(num + num2 + (num3 * num2 >> 15));
 			}

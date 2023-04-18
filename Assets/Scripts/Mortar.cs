@@ -157,7 +157,7 @@ public class Mortar : VigObject
                     break;
                 }
             case 14:
-                if (((GameManager.instance.DAT_28 - (arg2.DAT_19 ^ 0x14)) & Mathf.Clamp(511 - (GameManager.instance.DAT_CC4 - 70) * 2, 0, 511)) == 0 && UpdateW(13, arg2) != 0)
+                if (((GameManager.instance.DAT_28 - (arg2.DAT_19 ^ 0x14)) & Mathf.Clamp(511 - (GameManager.instance.EnemyKill - 70) * 2, 0, 511)) == 0 && UpdateW(13, arg2) != 0)
                 {
                     if (((Vehicle)arg2).target.physics1.W > 8000)
                     {

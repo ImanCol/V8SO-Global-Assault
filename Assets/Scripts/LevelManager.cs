@@ -272,7 +272,7 @@ public class LevelManager : MonoBehaviour
             }
         }
         FUN_3D94(GameManager.instance.playerObjects[0]);
-        GameManager.instance.DAT_CC4 = 0;
+        GameManager.instance.EnemyKill = 0;
         GameManager.instance.inDebug = false;
         level.UpdateW(1, 0);
         if ((level.flags & 0x80) != 0)
@@ -1229,9 +1229,9 @@ public class LevelManager : MonoBehaviour
         param1.vCamera.FUN_4BC0C();
         param1.FUN_38408();
         param1.FUN_3C9C4(~param1.id);
-        if (GameManager.instance.DAT_C6E < 2)
+        if (GameManager.instance.difficultyMode < 2)
         {
-            int num = (GameManager.instance.DAT_C6E != 0) ? (param1.maxHalfHealth * 3 >> 1) : (param1.maxHalfHealth << 1);
+            int num = (GameManager.instance.difficultyMode != 0) ? (param1.maxHalfHealth * 3 >> 1) : (param1.maxHalfHealth << 1);
             param1.FUN_3C404((ushort)num);
         }
         GameObject gameObject = new GameObject();

@@ -105,7 +105,7 @@ public class ClientSend : MonoBehaviour
 	{
 		using (Packet packet = new Packet(9))
 		{
-			packet.Write(GameManager.instance.DAT_C6E);
+			packet.Write(GameManager.instance.difficultyMode);
 			SendTCPData(packet, userId);
 		}
 	}

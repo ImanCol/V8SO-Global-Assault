@@ -151,7 +151,7 @@ public class MissileL : VigObject
                     return (uint)(((3891198u < (uint)(num4 - 204801)) ? 1 : 0) ^ 1);
                 }
             case 14:
-                if (((GameManager.instance.DAT_28 - (arg2.DAT_19 ^ 0x14)) & Mathf.Clamp(511 - (GameManager.instance.DAT_CC4 - 70) * 2, 0, 511)) == 0)
+                if (((GameManager.instance.DAT_28 - (arg2.DAT_19 ^ 0x14)) & Mathf.Clamp(511 - (GameManager.instance.EnemyKill - 70) * 2, 0, 511)) == 0)
                 {
                     List<VigTuple> worldObjs = GameManager.instance.worldObjs;
                     int num = 0;

@@ -226,8 +226,8 @@ public class UIManager : MonoBehaviour
         survivalWhammies.text = vehicle.DAT_BE.ToString();
         survivalTotaled.text = vehicle.DAT_BF.ToString();
         survivalTime.text = text;
-        survivalDestroyed.text = GameManager.instance.DAT_CC4.ToString();
-        switch (GameManager.instance.DAT_C6E)
+        survivalDestroyed.text = GameManager.instance.EnemyKill.ToString();
+        switch (GameManager.instance.difficultyMode)
         {
             case 0:
                 difficulty.text = "Easy";
@@ -251,11 +251,11 @@ public class UIManager : MonoBehaviour
         survivalWhammies.text = vehicle.DAT_BE.ToString();
         survivalTotaled.text = vehicle.DAT_BF.ToString();
         survivalTime.text = text;
-        survivalDestroyed.text = GameManager.instance.DAT_CC4.ToString();
+        survivalDestroyed.text = GameManager.instance.EnemyKill.ToString();
         Text component = gameOverRect.Find("Title").GetComponent<Text>();
         component.text = "GOOD JOB!";
         component.color = Color.yellow;
-        switch (GameManager.instance.DAT_C6E)
+        switch (GameManager.instance.difficultyMode)
         {
             case 0:
                 difficulty.text = "Easy";

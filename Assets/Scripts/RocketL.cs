@@ -196,7 +196,7 @@ public class RocketL : VigObject
                     break;
                 }
             case 14:
-                if (((GameManager.instance.DAT_28 - (arg2.DAT_19 ^ 0x14)) & Mathf.Clamp(63 - (GameManager.instance.DAT_CC4 - 70), 0, 63)) == 0)
+                if (((GameManager.instance.DAT_28 - (arg2.DAT_19 ^ 0x14)) & Mathf.Clamp(63 - (GameManager.instance.EnemyKill - 70), 0, 63)) == 0)
                 {
                     List<VigTuple> worldObjs = GameManager.instance.worldObjs;
                     int num = 0;

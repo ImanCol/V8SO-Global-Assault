@@ -279,7 +279,7 @@ public class Cannon : VigObject
                     break;
                 }
             case 14:
-                if (((GameManager.instance.DAT_28 - (arg2.DAT_19 ^ 0x14)) & Mathf.Clamp(63 - (GameManager.instance.DAT_CC4 - 70), 0, 63)) == 0)
+                if (((GameManager.instance.DAT_28 - (arg2.DAT_19 ^ 0x14)) & Mathf.Clamp(63 - (GameManager.instance.EnemyKill - 70), 0, 63)) == 0)
                 {
                     Vector3Int vector3Int = Utilities.FUN_24304(arg2.vTransform, ((Vehicle)arg2).target.vTransform.position);
                     uint num = 0u;

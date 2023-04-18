@@ -115,7 +115,7 @@ public class ClientHandle : MonoBehaviour
 	public static void Difficulty(Packet _packet, long userId)
 	{
 		byte b = _packet.ReadByte();
-		GameManager.instance.DAT_C6E = b;
+		GameManager.instance.difficultyMode = b;
 		if (GameManager.instance.gameMode == _GAME_MODE.Versus2)
 		{
 			Demo.instance.damageText.text = "DAMAGE: " + Demo.damageNames[b];
