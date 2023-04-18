@@ -19,11 +19,11 @@ public class PSXEffects : MonoBehaviour {
 	public float polygonalDrawDistance = 0f;
 	public int vertexInaccuracy = 30;
 	public int polygonInaccuracy = 2;
-	public int colorDepth = 5;
+	public int colorDepth = 24;
 	public bool scanlines = false;
 	public int scanlineIntensity = 5;
 	public Texture2D ditherTexture;
-	public bool dithering = true;
+	public bool dithering = false;
 	public float ditherThreshold = 1;
 	public int ditherIntensity = 12;
 	public int maxDarkness = 20;
