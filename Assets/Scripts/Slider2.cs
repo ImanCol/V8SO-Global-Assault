@@ -1,10 +1,11 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Slider2 : MonoBehaviour
 {
 	public RectTransform fill;
-
+	public Image fillSlider;
 	public TextMeshProUGUI number;
 
 	public int value;
@@ -40,8 +41,11 @@ public class Slider2 : MonoBehaviour
 		{
 			currentNum = value;
 		}
+
 		float x = (float)currentNum / (float)maxNumber * endFill;
 		float y = fill.sizeDelta.y;
+		fillSlider.fillAmount =  (x);
+		//Debug.Log("x: " + x +  " - y: " + y);
 		fill.sizeDelta = new Vector2(x, y);
 		if (number != null)
 		{

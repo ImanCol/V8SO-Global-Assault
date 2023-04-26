@@ -114,6 +114,11 @@ public class UIManager : MonoBehaviour
         instance = this;
         if (GameManager.instance.gameMode == _GAME_MODE.Survival || GameManager.instance.gameMode == _GAME_MODE.Survival2)
         {
+            if (destroyedRect == null)
+            {
+                Debug.Log("Destroyed Icon UI Not Found | Asigna un arreglo Horizontal en el Canvas UI MANAGER para mostrar el icono de vehiculos destruidos (hud7) y un Texto numerico 000");
+                return;
+            }
             destroyedRect.gameObject.SetActive(value: true);
         }
     }
@@ -126,6 +131,15 @@ public class UIManager : MonoBehaviour
 
     public void RefreshDestroyed(int value)
     {
+        if (destroyed == null)
+        {
+            if (Debugstate1 == 1)
+            {
+                Debug.Log("Destroyed Text UI Not Found | Asigna el objeto texto en UI MANAGER");
+                Debugstate1 = 0;
+            }
+            return;
+        }
         destroyed.text = value.ToString();
     }
 
@@ -208,6 +222,12 @@ public class UIManager : MonoBehaviour
         arcadeWhammies.text = vehicle.DAT_BE.ToString();
         arcadeTotaled.text = vehicle.DAT_BF.ToString() + " of " + GameManager.instance.totalSpawns.ToString();
         completionTime.text = text;
+        if (youWinRect == null)
+        {
+            Debug.Log("No asignado");
+            yield return null;
+
+        }
         youWinRect.gameObject.SetActive(value: true);
     }
 
@@ -407,12 +427,25 @@ public class UIManager : MonoBehaviour
                 powerups[index].enabled = true;
             }
         }
-        else if (powerups[0].gameObject.activeSelf || powerups[1].gameObject.activeSelf || powerups[2].gameObject.activeSelf)
+        if (powerups[0] == null || powerups[1] == null || powerups[2] == null || powerups[3] == null || powerups[4] == null || powerups[5] == null)
         {
-            powerups[0].gameObject.SetActive(value: false);
-            powerups[1].gameObject.SetActive(value: false);
-            powerups[2].gameObject.SetActive(value: false);
+            if (Debugstate2 == 1)
+            {
+                Debug.Log(debugMessage1);
+                Debugstate2 = 0;
+            }
+            return;
         }
+        else
+        {
+            if (powerups[0].gameObject.activeSelf || powerups[1].gameObject.activeSelf || powerups[2].gameObject.activeSelf)
+            {
+                powerups[0].gameObject.SetActive(value: false);
+                powerups[1].gameObject.SetActive(value: false);
+                powerups[2].gameObject.SetActive(value: false);
+            }
+        }
+
         if (player.doubleDamage != 0)
         {
             if (!powerups[3].gameObject.activeSelf)
@@ -605,4 +638,9 @@ public class UIManager : MonoBehaviour
         }
         return flash;
     }
+    string debugMessage1 = "Powerups de UI Manager no asignado en Canvas";
+    int Debugstate1 = 1;
+    int Debugstate2 = 1;
+    int Debugstate3 = 1;
+
 }
