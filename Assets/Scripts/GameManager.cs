@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
     public void SetDriver()
     {
         int index = driverDropdown.value;
-
+        PlayerPrefs.SetInt("driverIndex", index);
         switch (index)
         {
             case 0:
@@ -190,24 +190,30 @@ public class GameManager : MonoBehaviour
     public void SetStage()
     {
         this.map = this.stageDropdown.value + 1;
+        int index = this.map;
+
+        int stageIndex = stageDropdown.value;
+        PlayerPrefs.SetInt("stageIndex", stageIndex);
         ClientSend.Map(0L);
     }
 
     public void SetDithering()
     {
+        int index = (int)ditheringMethod;
+        PlayerPrefs.SetInt("ditheringIndex", index);
         switch (this.ditheringDropdown.value)
         {
             case 0:
                 this.ditheringMethod = _DITHERING.None;
-                return;
+                break;
             case 1:
                 this.ditheringMethod = _DITHERING.Standard;
-                return;
+                break;
             case 2:
                 this.ditheringMethod = _DITHERING.PSX;
-                return;
+                break;
             default:
-                return;
+                break;
         }
     }
 
@@ -215,16 +221,22 @@ public class GameManager : MonoBehaviour
     {
         sbyte b = (sbyte)(this.livesDropdown.value + 1);
         this.playerSpawns = b;
+        int index = (int)ditheringMethod;
         for (int i = 0; i < this.networkMembers.Count; i++)
         {
             this.DAT_1030[i] = b;
+            index = (int)this.DAT_1030[i];
+            PlayerPrefs.SetInt("livesIndex", index);
+
         }
+
         ClientSend.Lives((int)this.playerSpawns, 0L);
     }
 
     public void SetGameMode()
     {
         int value = this.gameModeDropdown.value;
+        PlayerPrefs.SetInt("gameModeIndex", value);
         if (value == 0)
         {
             this.gameMode = _GAME_MODE.Quest;
@@ -356,6 +368,7 @@ public class GameManager : MonoBehaviour
     //}
     public void SetMultiplayerMode()
     {
+
         switch (mpModeDropdown.value)
         {
             case 0:
@@ -390,12 +403,15 @@ public class GameManager : MonoBehaviour
                 DAT_1030[3] = 0;
                 break;
         }
+        int index = this.mpModeDropdown.value;
+        PlayerPrefs.SetInt("mpModeIndex", index);
         ClientSend.Mode(0L);
     }
 
     public void SetDamage()
     {
         int value = this.damageDropdown.value;
+        PlayerPrefs.SetInt("damageIndex", value);
         this.DAT_C80[0] = (sbyte)value;
         this.DAT_C80[1] = (sbyte)value;
         ClientSend.Damage(0L);
@@ -404,6 +420,7 @@ public class GameManager : MonoBehaviour
     public void SetDifficulty()
     {
         int value = this.difficultyDropdown.value;
+        PlayerPrefs.SetInt("difficultyIndex", value);
         this.difficultyMode = (byte)value;
         ClientSend.Difficulty(0L);
     }
@@ -412,32 +429,47 @@ public class GameManager : MonoBehaviour
     {
         int value = this.onlineDmgDropdown.value;
         this.difficultyMode = (byte)value;
+        PlayerPrefs.SetInt("onlineDmgIndex", value);
         ClientSend.Difficulty(0L);
     }
 
     public void SetDrawPlayer()
     {
         this.drawPlayer = this.drawPlayerToggle.isOn;
+        int value = this.drawPlayerToggle.isOn ? 1 : 0;
+        PlayerPrefs.SetInt("drawPlayerIndex", value);
+
     }
 
     public void SetDrawObjects()
     {
         this.drawObjects = this.drawObjectsToggle.isOn;
+        int value = this.drawObjectsToggle.isOn ? 1 : 0;
+        PlayerPrefs.SetInt("drawObjectsIndex", value);
     }
 
     public void SetDrawTerrain()
     {
         this.drawTerrain = this.drawTerrainToggle.isOn;
+        int value = this.drawTerrainToggle.isOn ? 1 : 0;
+        PlayerPrefs.SetInt("drawTerrainIndex", value);
     }
 
     public void SetDrawRoads()
     {
         this.drawRoads = this.drawRoadsToggle.isOn;
+        int value = this.drawRoadsToggle.isOn ? 1 : 0;
+        PlayerPrefs.SetInt("drawRoadsIndex", value);
     }
 
     public void SetEnemySpawn(int index)
     {
         this.DAT_1030[index] = ((sbyte)(this.spawnEnemiesToggle[index].isOn ? 1 : 0));
+        //Probando varios arreglos
+        PlayerPrefs.SetInt("spawnEnemiesIndex0", this.spawnEnemiesToggle[0].isOn ? 1 : 0);
+        PlayerPrefs.SetInt("spawnEnemiesIndex1", this.spawnEnemiesToggle[1].isOn ? 1 : 0);
+        PlayerPrefs.SetInt("spawnEnemiesIndex2", this.spawnEnemiesToggle[2].isOn ? 1 : 0);
+        PlayerPrefs.SetInt("spawnEnemiesIndex3", this.spawnEnemiesToggle[3].isOn ? 1 : 0);
     }
     // public void SetEnemySpawn(int index)
     //{
@@ -447,16 +479,20 @@ public class GameManager : MonoBehaviour
     public void SetDPAD()
     {
         GameManager.DAT_637E0[0, 5] = (this.disableDpadToggle.isOn ? 7431u : 3116899591u);
+        PlayerPrefs.SetInt("disableDpadIndex", this.disableDpadToggle.isOn ? 1 : 0);
     }
 
     public void SetAutoTarget()
     {
         this.autoTarget = this.disableAutoTarget.isOn;
+        PlayerPrefs.SetInt("disableAutoTargetIndex", this.disableDpadToggle.isOn ? 1 : 0);
     }
 
     public void SetExperimentalDakota()
     {
         this.experimentalDakota = this.enableExperimentalDakota.isOn;
+        PlayerPrefs.SetInt("experimentalDakota", this.enableExperimentalDakota.isOn ? 1 : 0);
+
     }
 
     public void SetPlayerReady(bool ready)
@@ -519,7 +555,7 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("Jugadores-Capacidad: " + playable.Capacity);
         Debug.Log("Jugadores-Cantidad: " + playable.Count);
-        
+
 
         for (int j = 0; j < playerammount; j++)
         {
@@ -561,6 +597,7 @@ public class GameManager : MonoBehaviour
 
     public void LoadLevel()
     {
+        setGravity();
         SetDriver();
         SetStage();
         SetDithering();
@@ -1783,9 +1820,15 @@ public class GameManager : MonoBehaviour
         {
             this.FUN_3150C();
         }
-        this.terrainHandle.Complete();
-        this.nativeArray.Dispose();
-        this.terrain.CreateTerrainMesh();
+
+        //Fix Terrain Not Draw
+        if (this.drawTerrain)
+        {
+            this.terrainHandle.Complete();
+            this.nativeArray.Dispose();
+            this.terrain.CreateTerrainMesh();
+        }
+
         Junction.junctionHandle.Complete();
         for (int i = 0; i < GameManager.updateJunc.Count; i++)
         {
@@ -1796,9 +1839,19 @@ public class GameManager : MonoBehaviour
         {
             this.terrain.FUN_1C910();
         }
+
         LevelManager.instance.level.UpdateW(17, 0);
         if (this.DAT_1124 != null)
         {
+            if (UIManager.instance.flaresRect == null)
+            {
+                if (Debugstate2 == 1)
+                {
+                    Debug.Log("Flare de UI Manager no asignado en Canvas");
+                    Debugstate2 = 0;
+                }
+                return;
+            }
             this.FUN_33728(this.DAT_1124, LevelManager.instance.DAT_10F8);
         }
     }
@@ -3622,9 +3675,45 @@ public class GameManager : MonoBehaviour
             GameManager.voices[i] = base.gameObject.AddComponent<AudioSource>();
         }
     }
+    private Vehicle vehicle;
 
+    public void SpawnVehicle(int id)
+    {
+        //GameManager.instance.FUN_308C4(this.vehicle);
+        //Debug.Log("Spawn: " + vehicle.id);
+
+    }
     private void Start()
     {
+        driverDropdown.value = PlayerPrefs.GetInt("driverIndex", 0);
+        ditheringDropdown.value = PlayerPrefs.GetInt("ditheringIndex", 0);
+        //this.stageDropdown.value = PlayerPrefs.GetInt("stageIndex", 0);;
+        gravityDropdown.value = PlayerPrefs.GetInt("gravityIndex", 1);
+        livesDropdown.value = PlayerPrefs.GetInt("livesIndex", 0);
+        gameModeDropdown.value = PlayerPrefs.GetInt("gameModeIndex", 0);
+        mpModeDropdown.value = PlayerPrefs.GetInt("mpModeIndex", 0); ;
+        difficultyDropdown.value = PlayerPrefs.GetInt("difficultyIndex", 0);
+        onlineDmgDropdown.value = PlayerPrefs.GetInt("onlineDmgIndex", 0);
+        drawPlayerToggle.isOn = PlayerPrefs.GetInt("drawPlayerIndex", 1) == 1;
+        drawObjectsToggle.isOn = PlayerPrefs.GetInt("drawObjectsIndex", 1) == 1;
+        drawTerrainToggle.isOn = PlayerPrefs.GetInt("drawTerrainIndex", 1) == 1;
+        drawRoadsToggle.isOn = PlayerPrefs.GetInt("drawRoadsIndex", 1) == 1;
+
+        this.spawnEnemiesToggle[0].isOn = PlayerPrefs.GetInt("spawnEnemiesIndex0", 1) == 1;
+        this.spawnEnemiesToggle[1].isOn = PlayerPrefs.GetInt("spawnEnemiesIndex1", 0) == 1;
+        this.spawnEnemiesToggle[2].isOn = PlayerPrefs.GetInt("spawnEnemiesIndex2", 0) == 1;
+        this.spawnEnemiesToggle[3].isOn = PlayerPrefs.GetInt("spawnEnemiesIndex3", 0) == 1;
+
+        //int value = PlayerPrefs.GetInt("spawnEnemiesToggle"+[index], 0);
+        //this.spawnEnemiesToggle[index].isOn = (value == 1) ? true : false;
+
+        disableDpadToggle.isOn = PlayerPrefs.GetInt("disableDpadIndex", 0) == 1;
+        disableAutoTarget.isOn = PlayerPrefs.GetInt("disableAutoTargetIndex", 1) == 1;
+
+        //disableAutoTarget.isOn = PlayerPrefs.GetInt("disableAutoTargetIndex", 0) == 1 ? true : false;
+        //damageDropdown.value = 1;
+
+        SpawnVehicle(1);
     }
 
     private void Update()
@@ -3644,12 +3733,14 @@ public class GameManager : MonoBehaviour
         {
             if (this.gameMode >= _GAME_MODE.Versus2)
             {
-                DiscordController.instance.DisconnectNetwork2();
+                if (DiscordController.instance)
+                    DiscordController.instance.DisconnectNetwork2();
             }
-            while (DiscordController.instance.pendingCallbacks)
-            {
-            	DiscordController.instance.discord.RunCallbacks();
-            }
+            if (DiscordController.instance)
+                while (DiscordController.instance.pendingCallbacks)
+                {
+                    DiscordController.instance.discord.RunCallbacks();
+                }
             this.LoadDebug();
         }
         this.FUN_3827C(this.playerObjects[0], this.DAT_F00);
@@ -3692,17 +3783,30 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(map, LoadSceneMode.Single);
         print("Reboot");
     }
+
     private void FixedUpdate()
     {
         if (this.inDebug || this.inMenu)
         {
             return;
         }
-        Color32 color = UIManager.instance.flash.color;
-        if (color.r != 0 || color.g != 0 || color.b != 0 || color.a != 0)
+        if (UIManager.instance.flash == null)
         {
-            UIManager.instance.flash.color = new Color32(0, 0, 0, 0);
+            if (Debugstate == 1)
+            {
+                Debug.Log("Objeto Flash de UI Manager no asignado en Canvas. No podras ver el resplandor de ciertas acciones");
+                Debugstate = 0;
+            }
         }
+        else
+        {
+            Color32 color = UIManager.instance.flash.color;
+            if (color.r != 0 || color.g != 0 || color.b != 0 || color.a != 0)
+            {
+                UIManager.instance.flash.color = new Color32(0, 0, 0, 0);
+            }
+        }
+
         if (this.gameMode >= _GAME_MODE.Versus2)
         {
             for (int i = 0; i < this.networkMembers.Count; i++)
@@ -3814,6 +3918,8 @@ public class GameManager : MonoBehaviour
                 }
             }
             short fieldOfView;
+
+            //error terreno
             if (vehicle.view == _CAR_VIEW.Close)
             {
                 if ((vehicle.flags & 33554432u) != 0u)
@@ -4374,6 +4480,8 @@ public class GameManager : MonoBehaviour
         this.FUN_2E0E8(param3, param2);
     }
 
+
+    //Mejora Rendimiento
     public void FUN_2DFF0(VigTransform param1)
     {
         VigTransform vigTransform = default(VigTransform);
@@ -4404,6 +4512,7 @@ public class GameManager : MonoBehaviour
         this.DAT_FD8 = Utilities.FUN_247C4(vigTransform.rotation, param1.rotation);
     }
 
+    //Colision entre vehiculos y objetos (No afecta Armas)
     public HitDetection FUN_2F798(VigObject obj, HitDetection hit, int multiply = 1)
     {
         VigTransform vigTransform = this.FUN_2CDF4(hit.object2);
@@ -4839,6 +4948,8 @@ public class GameManager : MonoBehaviour
         return result;
     }
 
+
+    //Colision sobre objetos. Priorizar
     private HitDetection FUN_2E998(VigObject param1, VigObject param2, VigTransform param3, VigTransform param4)
     {
         if (param1.vCollider != null)
@@ -16389,8 +16500,27 @@ public class GameManager : MonoBehaviour
     };
 
     public static List<Junction> updateJunc = new List<Junction>();
-
     public VigTerrain terrain;
+    public float forceModifier = 1f;
+    public Dropdown gravityDropdown;
+
+    public void setGravity()
+    {
+        int index = gravityDropdown.value;
+        PlayerPrefs.SetInt("gravityIndex", index);
+        switch (index)
+        {
+            case 0:
+                forceModifier = 0.5f; // Aplicar una división
+                break;
+            case 1:
+                forceModifier = 1f; // Sin modificación
+                break;
+            case 2:
+                forceModifier = 10f / 5; // Aplicar una multiplicación
+                break;
+        }
+    }
 
     public LevelManager levelManager;
 
@@ -16840,4 +16970,7 @@ public class GameManager : MonoBehaviour
 
         public int param2;
     }
+    int Debugstate = 1;
+    int Debugstate2 = 1;
+
 }
