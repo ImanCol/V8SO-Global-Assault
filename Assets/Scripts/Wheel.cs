@@ -23,7 +23,6 @@ public class Wheel : VigObject
         base.Update();
     }
 
-//Wheels Pinchadas
     public override uint UpdateW(int arg1, int arg2)
     {
         if (state == _WHEEL_TYPE.Flatten)

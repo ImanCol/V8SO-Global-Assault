@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using MathExtended.Matrices;
-using UnityEngine.UI;
 
 [Serializable]
 public struct Matrix3x3
@@ -486,11 +485,6 @@ public struct VigTransform
 
 public class VigObject : MonoBehaviour
 {
-    private float forceModifier = 1; // Valor predeterminado en caso de que no se establezca otro valor
-
-
-
-
     public uint flags;
 
     public byte type;
@@ -570,7 +564,6 @@ public class VigObject : MonoBehaviour
     public Vector3Int DAT_A0;
 
     public short DAT_A6;
-
 
     protected virtual void Start()
     {
@@ -745,12 +738,9 @@ public class VigObject : MonoBehaviour
 
     public void FUN_2AFF8(Vector3Int v1, Vector3Int v2, bool noflip = false)
     {
-        Debug.Log(GameManager.instance.forceModifier);
-        Debug.Log(Mathf.RoundToInt(GameManager.instance.forceModifier));
-
-        physics1.X += Mathf.RoundToInt(v1.x * GameManager.instance.forceModifier); //Fuerza de Friccion y Aceleracion
-        physics1.Y += Mathf.RoundToInt(v1.y * GameManager.instance.forceModifier); //Gravedad
-        physics1.Z += Mathf.RoundToInt(v1.z * GameManager.instance.forceModifier); //Fuerza de Friccion y Aceleracion
+        physics1.X += v1.x;
+        physics1.Y += v1.y;
+        physics1.Z += v1.z;
         int num = v2.x * DAT_A0.x;
         if (num < 0)
         {
@@ -874,8 +864,6 @@ public class VigObject : MonoBehaviour
         vTransform.position.z += num3 >> 7;
         vTransform.rotation = Utilities.MatrixNormal(vTransform.rotation);
     }
-
-
 
     public void FUN_2AFF8_2(Vector3Int v1, Vector3Int v2, bool noflip = true)
     {
@@ -2652,14 +2640,6 @@ public class VigObject : MonoBehaviour
     {
         VigTerrain terrain = GameManager.instance.terrain;
         Vector3Int param = default(Vector3Int);
-        if (!GameManager.instance.terrain)
-        {
-            Debug.Log("No se encontro un componente Terrain");
-        }
-        else
-        {
-
-        }
         int num = ((terrain.GetTileByPosition((uint)vTransform.position.x, (uint)vTransform.position.z).flags & 4) != 0) ? 3143680 : terrain.FUN_1B750((uint)vTransform.position.x, (uint)vTransform.position.z);
         vShadow.vTransform.position.x = vTransform.position.x;
         vShadow.vTransform.position.z = vTransform.position.z;
@@ -2748,7 +2728,7 @@ public class VigObject : MonoBehaviour
     {
         GameObject gameObject = new GameObject();
         VigMesh param = GameManager.instance.levelManager.xobfList[18].FUN_2CB74(gameObject, 92u, init: true);
-        FUN_4C7E0(param, gameObject); //Llamada Buffer VigCollision
+        FUN_4C7E0(param, gameObject);
     }
 
     public void FUN_4C9C8()

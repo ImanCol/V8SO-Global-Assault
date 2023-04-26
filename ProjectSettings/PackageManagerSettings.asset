@@ -25,20 +25,11 @@ MonoBehaviour:
     m_Scopes: []
     m_IsDefault: 1
     m_Capabilities: 7
-  - m_Id: scoped:Hourai Teahouse
-    m_Name: Hourai Teahouse
-    m_Url: https://upm.houraiteahouse.net
-    m_Scopes:
-    - com.discord
-    - com.houraiteahouse
-    - com.facepunch
-    m_IsDefault: 0
-    m_Capabilities: 0
-  m_UserSelectedRegistryName: Hourai Teahouse
+  m_UserSelectedRegistryName: 
   m_UserAddingNewScopedRegistry: 0
   m_RegistryInfoDraft:
     m_Modified: 0
     m_ErrorMessage: 
-    m_UserModificationsInstanceId: -826
-    m_OriginalInstanceId: -828
+    m_UserModificationsInstanceId: -866
+    m_OriginalInstanceId: -868
   m_LoadAssets: 0

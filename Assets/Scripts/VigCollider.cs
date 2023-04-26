@@ -35,7 +35,6 @@ public class HitDetection
 
     public int distance;
 
-//Colision hacia los objetos. Priorizar
     public HitDetection(byte[] b)
     {
         self = null;

@@ -280,12 +280,7 @@ public class LevelManager : MonoBehaviour
             GameManager.instance.FUN_30080(GameManager.instance.DAT_1088, level);
         }
         ClientSend.Spawn();
-        if (!DiscordController.instance)
-        {
-            Debug.Log("No se encontro DiscordController");
-        }
-        if (DiscordController.instance)
-            DiscordController.instance.sceneLoaded = true;
+        DiscordController.instance.sceneLoaded = true;
     }
 
     private void Update()

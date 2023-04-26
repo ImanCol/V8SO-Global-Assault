@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -74,8 +73,6 @@ public struct ScreenPoly
 
 public class VigTerrain : MonoBehaviour
 {
-    public VigTerrain Terrain;
-
     public static VigTerrain instance;
 
     public int bitmapID;
@@ -226,24 +223,11 @@ public class VigTerrain : MonoBehaviour
             sbBottomRight = GameObject.Find("SB_BottomRight").GetComponent<RectTransform>();
             sbBottomLeft = GameObject.Find("SB_BottomLeft").GetComponent<RectTransform>();
             skyboxMat = skybox.GetComponent<Image>().material;
-
-            if (GetComponent<MeshRenderer>() == null)
-            {
-                Debug.Log(debugMessage2);
-            }
-            else
-            {
-                if (GetComponent<Renderer>().materials.Length >= 2)
-                {
-                    GetComponent<MeshFilter>().mesh = terrainMesh;
-                    Material material = GetComponent<MeshRenderer>().materials[1];
-                    mainT = GetComponent<MeshRenderer>().materials[1].mainTexture;
-                    DAT_BDFF0 = new VigTransform[2];
-                }
-
-            }
+            GetComponent<MeshFilter>().mesh = terrainMesh;
+            Material material = GetComponent<MeshRenderer>().materials[1];
+            mainT = GetComponent<MeshRenderer>().materials[1].mainTexture;
+            DAT_BDFF0 = new VigTransform[2];
         }
-
         if (this.tileData == null || this.tileData.Count == 0)
         {
             this.tileData = new List<TileData>();
@@ -268,42 +252,8 @@ public class VigTerrain : MonoBehaviour
             _tiles = tiles;
             _vertices = vertices;
             _chunks = chunks;
-
-            Renderer meshRenderer = GetComponent<Renderer>();
-#if UNITY_EDITOR
-            string defualtMessage = "Terrain - Mesh Renderer - Elemento";
-
-            if (GetComponent<MeshRenderer>() != null)
-            {
-                if (GetComponent<Renderer>().materials.Length >= 2)
-                {
-                    // Verificar si los materiales del objeto están vacíos
-                    Debug.Log(meshRenderer.materials[0].name == "Default-Material (Instance)" || meshRenderer.materials[0].shader.name != "PSXEffects/PS1Shader" ? defualtMessage + " 0 " + debugMessage1_1 + " TERRAIN_COLOR" : defualtMessage + " 0 " + debugMessage1_2);
-                    Debug.Log(meshRenderer.materials[1].name == "Default-Material (Instance)" || meshRenderer.materials[0].shader.name != "PSXEffects/PS1Shader" ? defualtMessage + " 1 " + debugMessage1_1 + " XBMP_FARXX (Material de Mapa actual)" : defualtMessage + " 1 " + debugMessage1_2);
-                }
-            }
-#endif
-
-            if (GetComponent<MeshRenderer>() == null)
-            {
-                Debug.Log(debugMessage2);
-            }
-            else
-            {
-                if (GetComponent<Renderer>().materials.Length < 2)
-                {
-                    Debug.Log("Mesh Renderer no tiene asignado 2 materiales PS!Shaders (Elemento 1 (Terraincolor) - Elemento 2 (XBMP_FAR00 - Material Terreno))");
-                }
-                else if (GetComponent<Renderer>().materials.Length >= 2 && meshRenderer.materials[1].name != "Default-Material (Instance)")
-                {
-                    if (meshRenderer.materials[1].shader.name == "PSXEffects/PS1Shader")
-                    {
-                        mainWidth = mainT.width;
-                        mainHeight = mainT.height;
-                    }
-
-                }
-            }
+            mainWidth = mainT.width;
+            mainHeight = mainT.height;
         }
     }
 
@@ -326,12 +276,10 @@ public class VigTerrain : MonoBehaviour
         }
         for (int k = 0; k < 16; k++)
         {
-
             for (int l = 0; l < index2[k]; l++)
             {
                 newTriangles[k + 1][l] = 0;
             }
-
         }
         index = 0;
         index3 = 0;
@@ -344,19 +292,19 @@ public class VigTerrain : MonoBehaviour
 
     public void CreateTerrainMesh()
     {
-       terrainMesh.subMeshCount = 17;
-       for (int i = 0; i < newVertices.Length; i++)
-       {
-           newVertices[i] = new Vector3(newVertices[i].x, 0f - newVertices[i].y, newVertices[i].z);
-       }
-       terrainMesh.SetVertices(newVertices, 0, index);
-       terrainMesh.SetColors(newColors, 0, index);
-       terrainMesh.SetUVs(0, newUVs, 0, index);
-       terrainMesh.SetTriangles(newTriangles[0], 0, index3, 0);
-       for (int j = 1; j < 17; j++)
-       {
-           terrainMesh.SetTriangles(newTriangles[j], 0, index2[j - 1], j, calculateBounds: false);
-       }
+        terrainMesh.subMeshCount = 17;
+        for (int i = 0; i < newVertices.Length; i++)
+        {
+            newVertices[i] = new Vector3(newVertices[i].x, 0f - newVertices[i].y, newVertices[i].z);
+        }
+        terrainMesh.SetVertices(newVertices, 0, index);
+        terrainMesh.SetColors(newColors, 0, index);
+        terrainMesh.SetUVs(0, newUVs, 0, index);
+        terrainMesh.SetTriangles(newTriangles[0], 0, index3, 0);
+        for (int j = 1; j < 17; j++)
+        {
+            terrainMesh.SetTriangles(newTriangles[j], 0, index2[j - 1], j, calculateBounds: false);
+        }
     }
 
     private bool InsideCircle(Tile center, Tile tile, float radius)
@@ -389,14 +337,14 @@ public class VigTerrain : MonoBehaviour
 
     public void SetNumberOfZones()
     {
-       vertices = new ushort[zoneCount * 4096];
-       tiles = new byte[zoneCount * 4096];
-       chunks = new ushort[1024];
-       for (int i = 0; i < 4096; i++)
-       {
-           vertices[i] = defaultVertex;
-           tiles[i] = defaultTile;
-       }
+        vertices = new ushort[zoneCount * 4096];
+        tiles = new byte[zoneCount * 4096];
+        chunks = new ushort[1024];
+        for (int i = 0; i < 4096; i++)
+        {
+            vertices[i] = defaultVertex;
+            tiles[i] = defaultTile;
+        }
     }
 
     public void FUN_1C910()
@@ -442,20 +390,18 @@ public class VigTerrain : MonoBehaviour
 
     public static void FUN_1BE68(int param1, int param2, int param3)
     {
-       if (param1 < param2)
-       {
-           int num = 0;
-           do
-           {
-               FUN_288E0((uint)param1, (uint)param3, num++);
-               param1 += 4;
-           }
-           while (param1 < param2);
-       }
+        if (param1 < param2)
+        {
+            int num = 0;
+            do
+            {
+                FUN_288E0((uint)param1, (uint)param3, num++);
+                param1 += 4;
+            }
+            while (param1 < param2);
+        }
     }
 
-
-//Wheels Suspension
     public Vector3Int FUN_1B998(uint x, uint z)
     {
         if ((int)x > 0 && (int)z > 0 && (int)x < 117440512 && (int)z < 117440512)
@@ -547,8 +493,6 @@ public class VigTerrain : MonoBehaviour
         return tilesDict[0];
     }
 
-
-//Wheels Suspension
     public int FUN_1B750(uint x, uint z)
     {
         if ((int)x > 0 && (int)z > 0 && (int)x < 117440512 && (int)z < 117440512)
@@ -618,8 +562,6 @@ public class VigTerrain : MonoBehaviour
         return 0;
     }
 
-
-//Shadow Vehicle
     public Vector3Int FUN_1BB50(int param1, int param2)
     {
         Vector3Int result = default(Vector3Int);
@@ -710,8 +652,6 @@ public class VigTerrain : MonoBehaviour
         param3.rotation = Utilities.FUN_2A5EC(n);
     }
 
-
-//Draw Terrain
     private static void FUN_288E0(uint param1, uint param2, int param3)
     {
         int num = (int)((param1 >> 6) * 32 + (param2 >> 6));
@@ -1132,7 +1072,6 @@ public class VigTerrain : MonoBehaviour
         FUN_297E8(num4, num, 0);
     }
 
-//Draw Terrain Close
     private static void FUN_290A8(uint param1, int param2, int param3, int param4)
     {
         int translateFactor = GameManager.instance.translateFactor2;
@@ -1323,8 +1262,6 @@ public class VigTerrain : MonoBehaviour
         }
     }
 
-
-//Draw Terrain Close2
     private static void FUN_29520(int param1, int param2, int param3, int param4)
     {
         int translateFactor = GameManager.instance.translateFactor2;
@@ -1460,8 +1397,6 @@ public class VigTerrain : MonoBehaviour
         }
     }
 
-
-//Draw Terrain middle
     private static void FUN_297E8(uint param1, int param2, int param4)
     {
         int translateFactor = GameManager.instance.translateFactor2;
@@ -1778,7 +1713,4 @@ public class VigTerrain : MonoBehaviour
         }
         while (num <= param1.DAT_1C);
     }
-    string debugMessage1_1 = " tiene asignado el material predeterminado de Unity. Asigna el Material Correcto PS1Shaders";
-    string debugMessage1_2 = " Material Asignado correctamente.";
-    string debugMessage2 = "Mesh Renderer Not Found from Terrain";
 }
