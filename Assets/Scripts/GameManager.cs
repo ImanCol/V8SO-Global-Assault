@@ -3685,34 +3685,36 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        driverDropdown.value = PlayerPrefs.GetInt("driverIndex", 0);
-        ditheringDropdown.value = PlayerPrefs.GetInt("ditheringIndex", 0);
-        //this.stageDropdown.value = PlayerPrefs.GetInt("stageIndex", 0);;
-        gravityDropdown.value = PlayerPrefs.GetInt("gravityIndex", 1);
-        livesDropdown.value = PlayerPrefs.GetInt("livesIndex", 0);
-        gameModeDropdown.value = PlayerPrefs.GetInt("gameModeIndex", 0);
-        mpModeDropdown.value = PlayerPrefs.GetInt("mpModeIndex", 0); ;
-        difficultyDropdown.value = PlayerPrefs.GetInt("difficultyIndex", 0);
-        onlineDmgDropdown.value = PlayerPrefs.GetInt("onlineDmgIndex", 0);
-        drawPlayerToggle.isOn = PlayerPrefs.GetInt("drawPlayerIndex", 1) == 1;
-        drawObjectsToggle.isOn = PlayerPrefs.GetInt("drawObjectsIndex", 1) == 1;
-        drawTerrainToggle.isOn = PlayerPrefs.GetInt("drawTerrainIndex", 1) == 1;
-        drawRoadsToggle.isOn = PlayerPrefs.GetInt("drawRoadsIndex", 1) == 1;
+        if (GameManager.instance.inDebug & !GameManager.instance.inMenu)
+        {
+            driverDropdown.value = PlayerPrefs.GetInt("driverIndex", 0);
+            ditheringDropdown.value = PlayerPrefs.GetInt("ditheringIndex", 0);
+            //this.stageDropdown.value = PlayerPrefs.GetInt("stageIndex", 0);;
+            gravityDropdown.value = PlayerPrefs.GetInt("gravityIndex", 1);
+            livesDropdown.value = PlayerPrefs.GetInt("livesIndex", 0);
+            gameModeDropdown.value = PlayerPrefs.GetInt("gameModeIndex", 0);
+            mpModeDropdown.value = PlayerPrefs.GetInt("mpModeIndex", 0); ;
+            difficultyDropdown.value = PlayerPrefs.GetInt("difficultyIndex", 0);
+            onlineDmgDropdown.value = PlayerPrefs.GetInt("onlineDmgIndex", 0);
+            drawPlayerToggle.isOn = PlayerPrefs.GetInt("drawPlayerIndex", 1) == 1;
+            drawObjectsToggle.isOn = PlayerPrefs.GetInt("drawObjectsIndex", 1) == 1;
+            drawTerrainToggle.isOn = PlayerPrefs.GetInt("drawTerrainIndex", 1) == 1;
+            drawRoadsToggle.isOn = PlayerPrefs.GetInt("drawRoadsIndex", 1) == 1;
 
-        this.spawnEnemiesToggle[0].isOn = PlayerPrefs.GetInt("spawnEnemiesIndex0", 1) == 1;
-        this.spawnEnemiesToggle[1].isOn = PlayerPrefs.GetInt("spawnEnemiesIndex1", 0) == 1;
-        this.spawnEnemiesToggle[2].isOn = PlayerPrefs.GetInt("spawnEnemiesIndex2", 0) == 1;
-        this.spawnEnemiesToggle[3].isOn = PlayerPrefs.GetInt("spawnEnemiesIndex3", 0) == 1;
+            this.spawnEnemiesToggle[0].isOn = PlayerPrefs.GetInt("spawnEnemiesIndex0", 1) == 1;
+            this.spawnEnemiesToggle[1].isOn = PlayerPrefs.GetInt("spawnEnemiesIndex1", 0) == 1;
+            this.spawnEnemiesToggle[2].isOn = PlayerPrefs.GetInt("spawnEnemiesIndex2", 0) == 1;
+            this.spawnEnemiesToggle[3].isOn = PlayerPrefs.GetInt("spawnEnemiesIndex3", 0) == 1;
 
-        //int value = PlayerPrefs.GetInt("spawnEnemiesToggle"+[index], 0);
-        //this.spawnEnemiesToggle[index].isOn = (value == 1) ? true : false;
+            //int value = PlayerPrefs.GetInt("spawnEnemiesToggle"+[index], 0);
+            //this.spawnEnemiesToggle[index].isOn = (value == 1) ? true : false;
 
-        disableDpadToggle.isOn = PlayerPrefs.GetInt("disableDpadIndex", 0) == 1;
-        disableAutoTarget.isOn = PlayerPrefs.GetInt("disableAutoTargetIndex", 1) == 1;
+            disableDpadToggle.isOn = PlayerPrefs.GetInt("disableDpadIndex", 0) == 1;
+            disableAutoTarget.isOn = PlayerPrefs.GetInt("disableAutoTargetIndex", 1) == 1;
 
-        //disableAutoTarget.isOn = PlayerPrefs.GetInt("disableAutoTargetIndex", 0) == 1 ? true : false;
-        //damageDropdown.value = 1;
-
+            //disableAutoTarget.isOn = PlayerPrefs.GetInt("disableAutoTargetIndex", 0) == 1 ? true : false;
+            //damageDropdown.value = 1;
+        }
         SpawnVehicle(1);
     }
 

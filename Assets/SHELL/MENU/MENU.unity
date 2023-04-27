@@ -123,6 +123,339 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &1014879864 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 692198469162668638, guid: 3d3eb9250a2ee5447b5e4cd4527526fe, type: 3}
+  m_PrefabInstance: {fileID: 692198469544380567}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1014879873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1014879864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4002230e3f441e4bb2c818028c8a835, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrain: {fileID: 0}
+  forceModifier: 1
+  gravityDropdown: {fileID: 0}
+  levelManager: {fileID: 0}
+  commonWheelConfiguration: {fileID: 0}
+  screenMode: 0
+  gameMode: 0
+  playerObjects: []
+  cameraObjects: []
+  vehicles: 
+  translateFactor: 10000
+  translateFactor2: 1000
+  pixelSnapMin: 0.002
+  pixelSnapMax: 0.998
+  DAT_83B: 0
+  difficultyMode: 0
+  DAT_C80: 
+  DAT_CE0: []
+  DAT_CF0: 
+  DAT_CF8: 0
+  DAT_CFC: 
+  DAT_D08: 0
+  DAT_D0C: 0
+  DAT_D18: 
+  DAT_D19: 
+  DAT_D1A: 
+  DAT_D1B: 
+  DAT_DA0: 0
+  DAT_DA8: 0
+  DAT_DB0: 0
+  DAT_DB4: 0
+  DAT_DB6: 0
+  DAT_DB8: 0
+  DAT_F00:
+    rotation:
+      V00: 0
+      V01: 0
+      V02: 0
+      V10: 0
+      V11: 0
+      V12: 0
+      V20: 0
+      V21: 0
+      V22: 0
+      skewed: 0
+      _V00: 0
+      _V01: 0
+      _V02: 0
+      _V10: 0
+      _V11: 0
+      _V12: 0
+      _V20: 0
+      _V21: 0
+      _V22: 0
+    padding: 0
+    position: {x: 0, y: 0, z: 0}
+  DAT_F20: 0
+  DAT_F28:
+    rotation:
+      V00: 0
+      V01: 0
+      V02: 0
+      V10: 0
+      V11: 0
+      V12: 0
+      V20: 0
+      V21: 0
+      V22: 0
+      skewed: 0
+      _V00: 0
+      _V01: 0
+      _V02: 0
+      _V10: 0
+      _V11: 0
+      _V12: 0
+      _V20: 0
+      _V21: 0
+      _V22: 0
+    padding: 0
+    position: {x: 0, y: 0, z: 0}
+  DAT_F48:
+    V00: 0
+    V01: 0
+    V02: 0
+    V10: 0
+    V11: 0
+    V12: 0
+    V20: 0
+    V21: 0
+    V22: 0
+    skewed: 0
+    _V00: 0
+    _V01: 0
+    _V02: 0
+    _V10: 0
+    _V11: 0
+    _V12: 0
+    _V20: 0
+    _V21: 0
+    _V22: 0
+  DAT_F68:
+    V00: 0
+    V01: 0
+    V02: 0
+    V10: 0
+    V11: 0
+    V12: 0
+    V20: 0
+    V21: 0
+    V22: 0
+    skewed: 0
+    _V00: 0
+    _V01: 0
+    _V02: 0
+    _V10: 0
+    _V11: 0
+    _V12: 0
+    _V20: 0
+    _V21: 0
+    _V22: 0
+  DAT_F88:
+    rotation:
+      V00: 0
+      V01: 0
+      V02: 0
+      V10: 0
+      V11: 0
+      V12: 0
+      V20: 0
+      V21: 0
+      V22: 0
+      skewed: 0
+      _V00: 0
+      _V01: 0
+      _V02: 0
+      _V10: 0
+      _V11: 0
+      _V12: 0
+      _V20: 0
+      _V21: 0
+      _V22: 0
+    padding: 0
+    position: {x: 0, y: 0, z: 0}
+  DAT_FA8:
+    V00: 0
+    V01: 0
+    V02: 0
+    V10: 0
+    V11: 0
+    V12: 0
+    V20: 0
+    V21: 0
+    V22: 0
+    skewed: 0
+    _V00: 0
+    _V01: 0
+    _V02: 0
+    _V10: 0
+    _V11: 0
+    _V12: 0
+    _V20: 0
+    _V21: 0
+    _V22: 0
+  DAT_FC8: {x: 0, y: 0}
+  DAT_FD8:
+    V00: 0
+    V01: 0
+    V02: 0
+    V10: 0
+    V11: 0
+    V12: 0
+    V20: 0
+    V21: 0
+    V22: 0
+    skewed: 0
+    _V00: 0
+    _V01: 0
+    _V02: 0
+    _V10: 0
+    _V11: 0
+    _V12: 0
+    _V20: 0
+    _V21: 0
+    _V22: 0
+  DAT_E1C: 0
+  DAT_EA8:
+    rotation:
+      V00: 0
+      V01: 0
+      V02: 0
+      V10: 0
+      V11: 0
+      V12: 0
+      V20: 0
+      V21: 0
+      V22: 0
+      skewed: 0
+      _V00: 0
+      _V01: 0
+      _V02: 0
+      _V10: 0
+      _V11: 0
+      _V12: 0
+      _V20: 0
+      _V21: 0
+      _V22: 0
+    padding: 0
+    position: {x: 0, y: 0, z: 0}
+  DAT_EC8: {x: 0, y: 0, z: 0}
+  DAT_ED8: 0
+  DAT_EDC: 0
+  DAT_EE0:
+    rotation:
+      V00: 0
+      V01: 0
+      V02: 0
+      V10: 0
+      V11: 0
+      V12: 0
+      V20: 0
+      V21: 0
+      V22: 0
+      skewed: 0
+      _V00: 0
+      _V01: 0
+      _V02: 0
+      _V10: 0
+      _V11: 0
+      _V12: 0
+      _V20: 0
+      _V21: 0
+      _V22: 0
+    padding: 0
+    position: {x: 0, y: 0, z: 0}
+  DAT_1000: 0
+  DAT_1002: 0
+  DAT_1004: 0
+  DAT_101C: 0
+  DAT_1028: 0
+  DAT_1030: 
+  playerSpawns: 0
+  DAT_1038: 0
+  DAT_1084: 0
+  DAT_10F0: 0
+  DAT_111C: 0
+  DAT_1124: {fileID: 0}
+  DAT_1128: 
+  DAT_1130: 0
+  DAT_1150: []
+  DAT_E44: 0
+  DAT_C74: 0
+  EnemyKill: 0
+  DAT_898: 0
+  DAT_C2C: []
+  timer: 0
+  DAT_20: 0
+  DAT_24: 0
+  DAT_28: 0
+  gameEnded: 0
+  DAT_36: 0
+  gravityFactor: 0
+  DAT_40: 0
+  map: 0
+  targetHUD: {fileID: 0}
+  ditheringMethod: 0
+  drawPlayer: 0
+  drawObjects: 0
+  drawTerrain: 0
+  drawRoads: 0
+  playMusic: 0
+  inDebug: 0
+  inMenu: 0
+  autoTarget: 0
+  ready: 0
+  max: 0
+  terrainHeight: 0
+  offsetFactor: 0
+  offsetStart: 0
+  angleOffset: 0
+  aspectRatioScale: 0
+  driverDropdown: {fileID: 0}
+  stageDropdown: {fileID: 0}
+  ditheringDropdown: {fileID: 0}
+  gameModeDropdown: {fileID: 0}
+  mpModeDropdown: {fileID: 0}
+  damageDropdown: {fileID: 0}
+  difficultyDropdown: {fileID: 0}
+  onlineDmgDropdown: {fileID: 0}
+  livesDropdown: {fileID: 0}
+  drawPlayerToggle: {fileID: 0}
+  drawObjectsToggle: {fileID: 0}
+  drawTerrainToggle: {fileID: 0}
+  drawRoadsToggle: {fileID: 0}
+  spawnEnemiesToggle: []
+  disableDpadToggle: {fileID: 0}
+  disableAutoTarget: {fileID: 0}
+  enableExperimentalDakota: {fileID: 0}
+  spawnsRect: {fileID: 0}
+  playable: 
+  survival: 
+  currentSpawn: 0
+  wrenchCount: 0
+  lowHealth: 0
+  totalSpawns: 0
+  aiMin: 0
+  aiMax: 0
+  spawns: 0
+  paused: 0
+  noAI: 0
+  noPhysics: 0
+  noHUD: 0
+  experimentalDakota: 0
+  enableReticle: 0
+  networkObjs: []
+  networkEnemies: []
+  leash: 0
 --- !u!1 &1972479919
 GameObject:
   m_ObjectHideFlags: 0
@@ -403,6 +736,10 @@ PrefabInstance:
     - target: {fileID: 692198469162668634, guid: 3d3eb9250a2ee5447b5e4cd4527526fe, type: 3}
       propertyPath: camera
       value: 
+      objectReference: {fileID: 2027107090}
+    - target: {fileID: 692198469162668634, guid: 3d3eb9250a2ee5447b5e4cd4527526fe, type: 3}
+      propertyPath: cameraPositions.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 692198469162668638, guid: 3d3eb9250a2ee5447b5e4cd4527526fe, type: 3}
       propertyPath: m_Name

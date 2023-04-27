@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SpriteMat
-  m_Shader: {fileID: 4800000, guid: 0ad8e0a8940b1184688e8529d30352f1, type: 3}
-  m_ShaderKeywords: 
+  m_Name: MaterialPSXEffect
+  m_Shader: {fileID: 4800000, guid: 12701afc9fb9a784a8ef817efcdbd62c, type: 3}
+  m_ShaderKeywords: _DIFFMODEL_VERTEX _DRAWDIST_ON _SPECMODEL_GOURAUD
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -19,10 +19,6 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _AlphaTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -58,7 +54,7 @@ Material:
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0.80826384, y: 0}
+        m_Offset: {x: 0, y: 0}
     - _MetalMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -85,7 +81,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - PixelSnap: 0
     - _BlendOp: 0
     - _BumpScale: 1
     - _ColorOnly: 1
@@ -93,10 +88,9 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DiffModel: 0
-    - _DrawDist: 0
+    - _DrawDist: 1
     - _DstBlend: 0
     - _EmissionAmt: 0
-    - _EnableExternalAlpha: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -122,6 +116,4 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

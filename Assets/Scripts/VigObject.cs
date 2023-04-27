@@ -745,8 +745,8 @@ public class VigObject : MonoBehaviour
 
     public void FUN_2AFF8(Vector3Int v1, Vector3Int v2, bool noflip = false)
     {
-        Debug.Log(GameManager.instance.forceModifier);
-        Debug.Log(Mathf.RoundToInt(GameManager.instance.forceModifier));
+        //Debug.Log(GameManager.instance.forceModifier);
+        //Debug.Log(Mathf.RoundToInt(GameManager.instance.forceModifier));
 
         physics1.X += Mathf.RoundToInt(v1.x * GameManager.instance.forceModifier); //Fuerza de Friccion y Aceleracion
         physics1.Y += Mathf.RoundToInt(v1.y * GameManager.instance.forceModifier); //Gravedad

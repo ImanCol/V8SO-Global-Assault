@@ -504,6 +504,7 @@ public class VigConfig : MonoBehaviour
         if ((flag & 0x7FF) < 2047)
         {
             VigMesh vigMesh = vigObject.vMesh = xobf.FUN_1FD18(gameObject, (uint)(flag & 0x7FF), init: true);
+            print("Push: " + vigMesh);
         }
         if (-1 < container.colliderID)
         {
@@ -515,14 +516,17 @@ public class VigConfig : MonoBehaviour
 
     private void Awake()
     {
+
     }
 
     private void Start()
     {
+
     }
 
     private void Update()
     {
+
     }
 }
 

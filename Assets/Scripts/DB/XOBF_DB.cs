@@ -1663,10 +1663,10 @@ public class XOBF_DB : MonoBehaviour
 								num = (binaryReader.ReadUInt16(16) & 0x3FFF);
 								texture = timList[num];
 							}
-							int num3 = Utilities.FUN_29BD0(texture.width);
-							writer.Write(18, (byte)(12 - (num3 - 1)));
-							sbyte b = (sbyte)texture.height;
-							writer.Write(19, (byte)(b - ((1 << num3 - 1) + 1)));
+							//int num3 = Utilities.FUN_29BD0(texture.width);
+							//writer.Write(18, (byte)(12 - (num3 - 1)));
+							//sbyte b = (sbyte)texture.height;
+							//writer.Write(19, (byte)(b - ((1 << num3 - 1) + 1)));
 							break;
 						}
 						case 13u:

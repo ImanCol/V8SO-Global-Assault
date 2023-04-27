@@ -113,6 +113,7 @@ public class StatsPanel : MonoBehaviour
 
 	private void Start()
 	{
+		//Vehiculo inicial
 		SpawnVehicle(0);
 	}
 
@@ -307,7 +308,7 @@ public class StatsPanel : MonoBehaviour
 			speedPlusText.color = textColors[2];
 			armorPlusText.color = textColors[2];
 			avoidancePlusText.color = textColors[2];
-			LevelManager.instance.DAT_E48 = Menu.instance.reflections[2];
+			//LevelManager.instance.DAT_E48 = Menu.instance.reflections[2];
 			break;
 			IL_0376:
 			panel.sprite = panelSprites[1];
@@ -332,7 +333,8 @@ public class StatsPanel : MonoBehaviour
 			speedPlusText.color = textColors[1];
 			armorPlusText.color = textColors[1];
 			avoidancePlusText.color = textColors[1];
-			LevelManager.instance.DAT_E48 = Menu.instance.reflections[1];
+			//Error de Material de Menu
+			//LevelManager.instance.DAT_E48 = Menu.instance.reflections[1];
 			break;
 			IL_00db:
 			panel.sprite = panelSprites[0];
@@ -357,7 +359,8 @@ public class StatsPanel : MonoBehaviour
 			speedPlusText.color = textColors[0];
 			armorPlusText.color = textColors[0];
 			avoidancePlusText.color = textColors[0];
-			LevelManager.instance.DAT_E48 = Menu.instance.reflections[0];
+			//Error de Material en Menu
+			//LevelManager.instance.DAT_E48 = Menu.instance.reflections[0];
 			break;
 		}
 		camera.transform.position = cameraPositions[id];

@@ -3978,7 +3978,7 @@ public class Vehicle : VigObject
     }
 
 
-//Control Fisica Oseano
+    //Control Fisica Oseano
     public void PhySea()
     {
         _003C_003Ec__DisplayClass105_0 _003C_003Ec__DisplayClass105_ = default(_003C_003Ec__DisplayClass105_0);
@@ -4276,7 +4276,7 @@ public class Vehicle : VigObject
         }
         _003C_003Ec__DisplayClass105_.local_a0.x = _003C_003Ec__DisplayClass105_.local_a0.x - (int)((ulong)((long)physics1.X * (long)_003C_003Ec__DisplayClass105_.iVar5) >> 32) + num;
         _003C_003Ec__DisplayClass105_.local_a0.z = _003C_003Ec__DisplayClass105_.local_a0.z - num5 + w;
-        
+
         //set Pyshic Sea
         FUN_2AFF8(_003C_003Ec__DisplayClass105_.local_a0, _003C_003Ec__DisplayClass105_.local_b0);
         num = (_003C_003Ec__DisplayClass105_.iVar5 = physics2.X);
@@ -4302,7 +4302,7 @@ public class Vehicle : VigObject
     }
 
 
-//Control Aire - Trineo
+    //Control Aire - Trineo
     public void PhyAir()
     {
         Vector3Int normalVector = default(Vector3Int);
@@ -4629,7 +4629,7 @@ public class Vehicle : VigObject
     }
 
 
-//Fisica Tierra
+    //Fisica Tierra
     public void PhyGround()
     {
         int num;
@@ -5169,7 +5169,7 @@ public class Vehicle : VigObject
             num24 = num2 + 31;
         }
         x = physics2.Z;
-        
+
         //Limite de Giro
         physics2.Y = num2 - (num24 >> 5);
         num24 = x;
@@ -5181,7 +5181,7 @@ public class Vehicle : VigObject
     }
 
 
-//Actualiza objetivo Radar
+    //Actualiza objetivo Radar
     public void FUN_3CCD4(bool param1, bool param2 = false)
     {
         VigTerrain instance = VigTerrain.instance;
@@ -5192,18 +5192,18 @@ public class Vehicle : VigObject
         uint num3 = uint.MaxValue;
         uint num4 = (uint)(~id);
         sbyte b = GameManager.instance.DAT_1128[num4];
-       Coprocessor.rotationMatrix.rt11 = instance.DAT_BDFF0[num4].rotation.V00;
-       Coprocessor.rotationMatrix.rt12 = instance.DAT_BDFF0[num4].rotation.V01;
-       Coprocessor.rotationMatrix.rt13 = instance.DAT_BDFF0[num4].rotation.V02;
-       Coprocessor.rotationMatrix.rt21 = instance.DAT_BDFF0[num4].rotation.V10;
-       Coprocessor.rotationMatrix.rt22 = instance.DAT_BDFF0[num4].rotation.V11;
-       Coprocessor.rotationMatrix.rt23 = instance.DAT_BDFF0[num4].rotation.V12;
-       Coprocessor.rotationMatrix.rt31 = instance.DAT_BDFF0[num4].rotation.V20;
-       Coprocessor.rotationMatrix.rt32 = instance.DAT_BDFF0[num4].rotation.V21;
-       Coprocessor.rotationMatrix.rt33 = instance.DAT_BDFF0[num4].rotation.V22;
-       Coprocessor.translationVector._trx = instance.DAT_BDFF0[num4].position.x;
-       Coprocessor.translationVector._try = instance.DAT_BDFF0[num4].position.y;
-       Coprocessor.translationVector._trz = instance.DAT_BDFF0[num4].position.z;
+        Coprocessor.rotationMatrix.rt11 = instance.DAT_BDFF0[num4].rotation.V00;
+        Coprocessor.rotationMatrix.rt12 = instance.DAT_BDFF0[num4].rotation.V01;
+        Coprocessor.rotationMatrix.rt13 = instance.DAT_BDFF0[num4].rotation.V02;
+        Coprocessor.rotationMatrix.rt21 = instance.DAT_BDFF0[num4].rotation.V10;
+        Coprocessor.rotationMatrix.rt22 = instance.DAT_BDFF0[num4].rotation.V11;
+        Coprocessor.rotationMatrix.rt23 = instance.DAT_BDFF0[num4].rotation.V12;
+        Coprocessor.rotationMatrix.rt31 = instance.DAT_BDFF0[num4].rotation.V20;
+        Coprocessor.rotationMatrix.rt32 = instance.DAT_BDFF0[num4].rotation.V21;
+        Coprocessor.rotationMatrix.rt33 = instance.DAT_BDFF0[num4].rotation.V22;
+        Coprocessor.translationVector._trx = instance.DAT_BDFF0[num4].position.x;
+        Coprocessor.translationVector._try = instance.DAT_BDFF0[num4].position.y;
+        Coprocessor.translationVector._trz = instance.DAT_BDFF0[num4].position.z;
         for (int i = 0; i < GameManager.instance.worldObjs.Count; i++)
         {
             VigObject vObject = GameManager.instance.worldObjs[i].vObject;
