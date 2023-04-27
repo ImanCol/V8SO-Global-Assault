@@ -315,30 +315,30 @@ public class VigTerrain : MonoBehaviour
 
     public void ClearTerrainData()
     {
-        for (int i = 0; i < index; i++)
-        {
-            newVertices[i] = new Vector3(0f, 0f, 0f);
-            newUVs[i] = new Vector2(0f, 0f);
-        }
-        for (int j = 0; j < index3; j++)
-        {
-            newTriangles[0][j] = 0;
-        }
-        for (int k = 0; k < 16; k++)
-        {
+       //for (int i = 0; i < index; i++)
+       //{
+       //    newVertices[i] = new Vector3(0f, 0f, 0f);
+       //    newUVs[i] = new Vector2(0f, 0f);
+       //}
+       //for (int j = 0; j < index3; j++)
+       //{
+       //    newTriangles[0][j] = 0;
+       //}
+       //for (int k = 0; k < 16; k++)
+       //{
 
-            for (int l = 0; l < index2[k]; l++)
-            {
-                newTriangles[k + 1][l] = 0;
-            }
+       //    for (int l = 0; l < index2[k]; l++)
+       //    {
+       //        newTriangles[k + 1][l] = 0;
+       //    }
 
-        }
-        index = 0;
-        index3 = 0;
-        for (int m = 0; m < index2.Length; m++)
-        {
-            index2[m] = 0;
-        }
+       //}
+       //index = 0;
+       //index3 = 0;
+       //for (int m = 0; m < index2.Length; m++)
+       //{
+       //    index2[m] = 0;
+       //}
         terrainMesh.Clear();
     }
 
