@@ -65,6 +65,16 @@ public class StatsPanel : MonoBehaviour
     public int Players = 1;
     public List<Vector3Int> Spawnposition = new List<Vector3Int>();
 
+    public Image panelOnline;
+    public List<Slider2> accelPlayers;
+    public List<Slider2> speedPlayers;
+    public List<Slider2> armorPlayers;
+    public List<Slider2> avoidancePlayers;
+    public List<Slider2> accelPlusPlayers;
+    public List<Slider2> speedPlusPlayers;
+    public List<Slider2> armorPlusPlayers;
+    public List<Slider2> avoidancePlusPlayers;
+
     public void SetPlayer()
     {
         switch (PlayersDropdown.value)
@@ -349,6 +359,10 @@ public class StatsPanel : MonoBehaviour
                 armorPlusText.color = textColors[2];
                 cameras[Players].backgroundColor = textColors[2];
                 avoidancePlusText.color = textColors[2];
+                if (panelOnline.enabled)
+                {
+                    Debug.Log("Activo");
+                }
                 //Error de Material en Menu-Elemento 2
                 LevelManager.instance.DAT_E48 = Menu.instance.reflections[2];
                 break;
@@ -419,6 +433,20 @@ public class StatsPanel : MonoBehaviour
         speedPlus.value = GameManager.instance.vehicleStats[id].speed + Plus;
         armorPlus.value = GameManager.instance.vehicleStats[id].armor + Plus;
         avoidancePlus.value = GameManager.instance.vehicleStats[id].avoidance + Plus;
+
+        //Visualizer Online
+        if (panelOnline.enabled)
+        {
+        accelPlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[0] * 2;
+        speedPlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[1] * 2;
+        armorPlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[2] * 2;
+        avoidancePlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[3] * 2;
+        accelPlusPlayers[0].value = GameManager.instance.vehicleStats[id].accel + Plus;
+        speedPlusPlayers[0].value = GameManager.instance.vehicleStats[id].speed + Plus;
+        armorPlusPlayers[0].value = GameManager.instance.vehicleStats[id].armor + Plus;
+        avoidancePlusPlayers[0].value = GameManager.instance.vehicleStats[id].avoidance + Plus;
+            Debug.Log("Activo");
+        }
 
         ushort param = (ushort)(GameManager.instance.FUN_36558(0, id) ? salvagePartOffsets[id] : 0);
         Vehicle vehicle;
