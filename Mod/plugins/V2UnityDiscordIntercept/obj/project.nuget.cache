@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "/3b/8IJm2L0k9dcvjQbSG3sUkhvCZwXqPPTsLgO3nZxyqjWXabSL4ZkSHjUgWzlSOCXb129Ju4h5wOXRgzURPw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\marlo\\Downloads\\Compressed\\Github\\V2UnityDiscordIntercept\\V2UnityDiscordIntercept\\V2UnityDiscordIntercept.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\marlo\\.nuget\\packages\\lidgren.network.core2\\1.0.0\\lidgren.network.core2.1.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

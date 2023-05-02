@@ -1,0 +1,5 @@
+C:\Users\marlo\Downloads\Compressed\Github\V2UnityDiscordIntercept\V2UnityDiscordIntercept\obj\Debug\netstandard2.1\V2UnityDiscordIntercept.csproj.AssemblyReference.cache
+C:\Users\marlo\Downloads\Compressed\Github\V2UnityDiscordIntercept\V2UnityDiscordIntercept\obj\Debug\netstandard2.1\V2UnityDiscordIntercept.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\marlo\Downloads\Compressed\Github\V2UnityDiscordIntercept\V2UnityDiscordIntercept\obj\Debug\netstandard2.1\V2UnityDiscordIntercept.AssemblyInfoInputs.cache
+C:\Users\marlo\Downloads\Compressed\Github\V2UnityDiscordIntercept\V2UnityDiscordIntercept\obj\Debug\netstandard2.1\V2UnityDiscordIntercept.AssemblyInfo.cs
+C:\Users\marlo\Downloads\Compressed\Github\V2UnityDiscordIntercept\V2UnityDiscordIntercept\obj\Debug\netstandard2.1\V2UnityDiscordIntercept.csproj.CoreCompileInputs.cache

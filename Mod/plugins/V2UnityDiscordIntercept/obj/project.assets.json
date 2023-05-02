@@ -1,0 +1,98 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETStandard,Version=v2.1": {
+      "Lidgren.Network.Core2/1.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Lidgren.Network.Core.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Lidgren.Network.Core.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Lidgren.Network.Core2/1.0.0": {
+      "sha512": "OfnlH2VrGYLh/vrc8Blzi3SH+lE8b3MI9JBap7b45S34rsgvXPQYPu0GtrL/40Ovnz5alvF1XWOUDGuow7CDmQ==",
+      "type": "package",
+      "path": "lidgren.network.core2/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/Lidgren.Network.Core.dll",
+        "lidgren.network.core2.1.0.0.nupkg.sha512",
+        "lidgren.network.core2.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETStandard,Version=v2.1": [
+      "Lidgren.Network.Core2 >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\marlo\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\marlo\\Downloads\\Compressed\\Github\\V2UnityDiscordIntercept\\V2UnityDiscordIntercept\\V2UnityDiscordIntercept.csproj",
+      "projectName": "V2UnityDiscordIntercept",
+      "projectPath": "C:\\Users\\marlo\\Downloads\\Compressed\\Github\\V2UnityDiscordIntercept\\V2UnityDiscordIntercept\\V2UnityDiscordIntercept.csproj",
+      "packagesPath": "C:\\Users\\marlo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\marlo\\Downloads\\Compressed\\Github\\V2UnityDiscordIntercept\\V2UnityDiscordIntercept\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\marlo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "netstandard2.1"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "netstandard2.1": {
+        "targetAlias": "netstandard2.1",
+        "dependencies": {
+          "Lidgren.Network.Core2": {
+            "target": "Package",
+            "version": "[1.0.0, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "NETStandard.Library": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}
