@@ -11227,7 +11227,6 @@ public class GameManager : MonoBehaviour
     public Toggle disableAutoTarget;
 
     public Toggle enableExperimentalDakota;
-
     public RectTransform spawnsRect;
 
     public List<int> playable;
@@ -11255,7 +11254,7 @@ public class GameManager : MonoBehaviour
     public bool noPhysics;
 
     public bool noHUD;
-
+	public bool DriverPlus;
     public bool experimentalDakota;
 
     public bool enableReticle;

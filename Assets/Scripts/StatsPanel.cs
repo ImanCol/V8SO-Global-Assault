@@ -261,7 +261,10 @@ public class StatsPanel : MonoBehaviour
         }
     }
 
-    public int Plus = 100;
+    public int DriverAccelPlus;
+    public int DriverSpeedPlus;
+    public int DriverArmorPlus;
+    public int DriverAvoidancePlus;
     public void SetState(int value)
     {
         state = (_STATS_TYPE)value;
@@ -363,6 +366,7 @@ public class StatsPanel : MonoBehaviour
                 {
                     Debug.Log("Activo");
                 }
+
                 //Error de Material en Menu-Elemento 2
                 LevelManager.instance.DAT_E48 = Menu.instance.reflections[2];
                 break;
@@ -390,6 +394,7 @@ public class StatsPanel : MonoBehaviour
                 armorPlusText.color = textColors[1];
                 cameras[Players].backgroundColor = textColors[1];
                 avoidancePlusText.color = textColors[1];
+
                 //Error de Material en Menu-Elemento 1
                 LevelManager.instance.DAT_E48 = Menu.instance.reflections[1];
                 break;
@@ -417,11 +422,11 @@ public class StatsPanel : MonoBehaviour
                 armorPlusText.color = textColors[0];
                 cameras[Players].backgroundColor = textColors[0];
                 avoidancePlusText.color = textColors[0];
+
                 //Error de Material en Menu-Elemento 0
-                //LevelManager.instance.DAT_E48 = Menu.instance.reflections[0];
+                LevelManager.instance.DAT_E48 = Menu.instance.reflections[0];
                 break;
         }
-
         Debug.Log("Camera:" + cameras[PlayersID]);
 
         cameras[PlayersID].transform.position = cameraPositions[id];
@@ -429,23 +434,35 @@ public class StatsPanel : MonoBehaviour
         speed.value = GameManager.vehicleConfigs[id].DAT_2C[1] * 2;
         armor.value = GameManager.vehicleConfigs[id].DAT_2C[2] * 2;
         avoidance.value = GameManager.vehicleConfigs[id].DAT_2C[3] * 2;
-        accelPlus.value = GameManager.instance.vehicleStats[id].accel + Plus;
-        speedPlus.value = GameManager.instance.vehicleStats[id].speed + Plus;
-        armorPlus.value = GameManager.instance.vehicleStats[id].armor + Plus;
-        avoidancePlus.value = GameManager.instance.vehicleStats[id].avoidance + Plus;
 
-        //Visualizer Online
-        if (panelOnline.enabled)
+        //Hack Plus
+        if (GameManager.instance.DriverPlus)
         {
-        accelPlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[0] * 2;
-        speedPlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[1] * 2;
-        armorPlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[2] * 2;
-        avoidancePlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[3] * 2;
-        accelPlusPlayers[0].value = GameManager.instance.vehicleStats[id].accel + Plus;
-        speedPlusPlayers[0].value = GameManager.instance.vehicleStats[id].speed + Plus;
-        armorPlusPlayers[0].value = GameManager.instance.vehicleStats[id].armor + Plus;
-        avoidancePlusPlayers[0].value = GameManager.instance.vehicleStats[id].avoidance + Plus;
-            Debug.Log("Activo");
+            DriverAccelPlus = 100;
+            DriverSpeedPlus = 100;
+            DriverArmorPlus = 100;
+            DriverAvoidancePlus = 100;
+        }
+
+        accelPlus.value = GameManager.instance.vehicleStats[id].accel + DriverAccelPlus;
+        speedPlus.value = GameManager.instance.vehicleStats[id].speed + DriverSpeedPlus;
+        armorPlus.value = GameManager.instance.vehicleStats[id].armor + DriverArmorPlus;
+        avoidancePlus.value = GameManager.instance.vehicleStats[id].avoidance + DriverAvoidancePlus;
+        //Visualizador Online
+        if (panelOnline != null)
+        {
+            if (panelOnline.enabled)
+            {
+                accelPlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[0] * 2;
+                speedPlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[1] * 2;
+                armorPlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[2] * 2;
+                avoidancePlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[3] * 2;
+                accelPlusPlayers[0].value = GameManager.instance.vehicleStats[id].accel + DriverAccelPlus;
+                speedPlusPlayers[0].value = GameManager.instance.vehicleStats[id].speed + DriverSpeedPlus;
+                armorPlusPlayers[0].value = GameManager.instance.vehicleStats[id].armor + DriverArmorPlus;
+                avoidancePlusPlayers[0].value = GameManager.instance.vehicleStats[id].avoidance + DriverAvoidancePlus;
+                //Debug.Log("Online Lobby");
+            }
         }
 
         ushort param = (ushort)(GameManager.instance.FUN_36558(0, id) ? salvagePartOffsets[id] : 0);
@@ -465,8 +482,8 @@ public class StatsPanel : MonoBehaviour
                 Debug.Log("No Dakota");
             }
             //id += 21;
-            Debug.Log("Plus!: " + id);
-            Debug.Log("param: " + param);
+            //Debug.Log("Plus!: " + id);
+            //Debug.Log("param: " + param);
 
         }
         else
