@@ -347,7 +347,7 @@ public class StatsPanel : MonoBehaviour
                 accelPlusText.color = textColors[2];
                 speedPlusText.color = textColors[2];
                 armorPlusText.color = textColors[2];
-                cameras[Players - 1].backgroundColor = textColors[2];
+                cameras[Players].backgroundColor = textColors[2];
                 avoidancePlusText.color = textColors[2];
                 //Error de Material en Menu-Elemento 2
                 LevelManager.instance.DAT_E48 = Menu.instance.reflections[2];
@@ -374,7 +374,7 @@ public class StatsPanel : MonoBehaviour
                 accelPlusText.color = textColors[1];
                 speedPlusText.color = textColors[1];
                 armorPlusText.color = textColors[1];
-                cameras[Players - 1].backgroundColor = textColors[1];
+                cameras[Players].backgroundColor = textColors[1];
                 avoidancePlusText.color = textColors[1];
                 //Error de Material en Menu-Elemento 1
                 LevelManager.instance.DAT_E48 = Menu.instance.reflections[1];
@@ -401,16 +401,16 @@ public class StatsPanel : MonoBehaviour
                 accelPlusText.color = textColors[0];
                 speedPlusText.color = textColors[0];
                 armorPlusText.color = textColors[0];
-                cameras[Players - 1].backgroundColor = textColors[0];
+                cameras[Players].backgroundColor = textColors[0];
                 avoidancePlusText.color = textColors[0];
                 //Error de Material en Menu-Elemento 0
                 //LevelManager.instance.DAT_E48 = Menu.instance.reflections[0];
                 break;
         }
 
-        Debug.Log("Camera:" + cameras[PlayersID - 1]);
+        Debug.Log("Camera:" + cameras[PlayersID]);
 
-        cameras[PlayersID - 1].transform.position = cameraPositions[id];
+        cameras[PlayersID].transform.position = cameraPositions[id];
         accel.value = GameManager.vehicleConfigs[id].DAT_2C[0] * 2;
         speed.value = GameManager.vehicleConfigs[id].DAT_2C[1] * 2;
         armor.value = GameManager.vehicleConfigs[id].DAT_2C[2] * 2;
