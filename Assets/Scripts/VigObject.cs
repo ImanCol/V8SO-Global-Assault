@@ -748,9 +748,12 @@ public class VigObject : MonoBehaviour
         //Debug.Log(GameManager.instance.forceModifier);
         //Debug.Log(Mathf.RoundToInt(GameManager.instance.forceModifier));
 
-        physics1.X += Mathf.RoundToInt(v1.x * GameManager.instance.forceModifier); //Fuerza de Friccion y Aceleracion
-        physics1.Y += Mathf.RoundToInt(v1.y * GameManager.instance.forceModifier); //Gravedad
-        physics1.Z += Mathf.RoundToInt(v1.z * GameManager.instance.forceModifier); //Fuerza de Friccion y Aceleracion
+        physics1.X += Mathf.RoundToInt(v1.x); //Fuerza de Friccion y Aceleracion
+        //physics1.X += Mathf.RoundToInt(v1.x * GameManager.instance.forceModifier); //Fuerza de Friccion y Aceleracion
+        physics1.Y += Mathf.RoundToInt(v1.y); //Gravedad
+        //physics1.Y += Mathf.RoundToInt(v1.y * GameManager.instance.forceModifier); //Gravedad
+        physics1.Z += Mathf.RoundToInt(v1.z); //Fuerza de Friccion y Aceleracion
+        //physics1.Z += Mathf.RoundToInt(v1.z * GameManager.instance.forceModifier); //Fuerza de Friccion y Aceleracion
         int num = v2.x * DAT_A0.x;
         if (num < 0)
         {

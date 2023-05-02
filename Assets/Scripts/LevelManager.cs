@@ -6,16 +6,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class OBJ
-{
-    public byte[] buffer;
-
-    public OBJ(byte[] b)
-    {
-        buffer = b;
-    }
-}
-
 
 public class LevelManager : MonoBehaviour
 {

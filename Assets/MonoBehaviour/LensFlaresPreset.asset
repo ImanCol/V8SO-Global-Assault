@@ -13,43 +13,43 @@ MonoBehaviour:
   m_Name: "LensFlaresPreset"
   m_EditorClassIdentifier: 
   _presets:
-  - sprite: {fileID: 21300000, guid: ef6949317e304b348c5345878241c2df, type: 3}
+  - sprite: {fileID: 21300000, guid: 554aa8e2d8114f2bbe071c0f8336ec5d, type: 3}
     color: {r: 1, g: 1, b: 1, a: 0.7254902}
     size: 1.5
     position: 0
     align: 0
     startAngle: 0
-  - sprite: {fileID: 21300002, guid: ef6949317e304b348c5345878241c2df, type: 3}
+  - sprite: {fileID: 21300002, guid: 554aa8e2d8114f2bbe071c0f8336ec5d, type: 3}
     color: {r: 1, g: 1, b: 1, a: 0.7607843}
     size: 1.5
     position: 0.05
     align: 0
     startAngle: 0
-  - sprite: {fileID: 21300004, guid: ef6949317e304b348c5345878241c2df, type: 3}
+  - sprite: {fileID: 21300004, guid: 554aa8e2d8114f2bbe071c0f8336ec5d, type: 3}
     color: {r: 1, g: 1, b: 1, a: 0.5254902}
     size: 0.46
     position: 0.43
     align: 0
     startAngle: 0
-  - sprite: {fileID: 21300006, guid: ef6949317e304b348c5345878241c2df, type: 3}
+  - sprite: {fileID: 21300006, guid: 554aa8e2d8114f2bbe071c0f8336ec5d, type: 3}
     color: {r: 1, g: 1, b: 1, a: 0.627451}
     size: 0.98
     position: 0.63
     align: 0
     startAngle: 0
-  - sprite: {fileID: 21300004, guid: ef6949317e304b348c5345878241c2df, type: 3}
+  - sprite: {fileID: 21300004, guid: 554aa8e2d8114f2bbe071c0f8336ec5d, type: 3}
     color: {r: 1, g: 1, b: 1, a: 0.3921569}
     size: 1.3
     position: 1
     align: 0
     startAngle: 0
-  - sprite: {fileID: 21300008, guid: ef6949317e304b348c5345878241c2df, type: 3}
+  - sprite: {fileID: 21300008, guid: 554aa8e2d8114f2bbe071c0f8336ec5d, type: 3}
     color: {r: 1, g: 1, b: 1, a: 0.2235294}
     size: 1.8
     position: 1.05
     align: 0
     startAngle: 0
-  - sprite: {fileID: 21300006, guid: ef6949317e304b348c5345878241c2df, type: 3}
+  - sprite: {fileID: 21300006, guid: 554aa8e2d8114f2bbe071c0f8336ec5d, type: 3}
     color: {r: 1, g: 1, b: 1, a: 0.3764706}
     size: 0.7
     position: 1

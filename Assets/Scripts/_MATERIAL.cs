@@ -1,0 +1,23 @@
+public enum _MATERIAL
+{
+	Cutout,
+	Additive,
+	Billboard,
+	Lines,
+	Mirror,
+	CutAdd,
+	Subtractive,
+	Lines2,
+	Billboard2,
+	Subtractive2,
+	Billboard3,
+	Additive2,
+	Transparent,
+	OpaqueTransparent,
+	AddSub,
+	Billboard4,
+	IgnoreLOD,
+	Backface,
+	CutSub,
+	LinesTransparent
+}

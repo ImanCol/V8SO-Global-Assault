@@ -9,7 +9,7 @@ public class Menu : MonoBehaviour
 
 	public List<AudioClip> sounds;
 
-	//public List<Material> reflections;
+	public List<Material> reflections;
 
 	[HideInInspector]
 	public int tick;
