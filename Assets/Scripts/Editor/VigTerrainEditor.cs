@@ -9,7 +9,7 @@ public class TerrainEditor : Editor
 {
     VigTerrain terrain;
     GameManager gameManager;
-    
+
     SerializedProperty bitmap;
     SerializedProperty defaultVertex;
     SerializedProperty defaultTile;

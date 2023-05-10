@@ -7815,6 +7815,7 @@ public class Vehicle : VigObject
                 FUN_3E32C(_WHEELS.Ground, 0);
                 if (GameManager.instance.gameMode >= _GAME_MODE.Versus2)
                 {
+                    //Envia cambio de Wheel
                     ClientSend.Pickup(16, 0, 0);
                 }
             }

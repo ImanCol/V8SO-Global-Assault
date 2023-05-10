@@ -497,9 +497,13 @@ public class Coprocessor
         RGBC[2] = colorCode.b;
         DPCS(RGBC, shift, lm);
     }
-
+    
+    public float updateTime = 0.5f; // Tiempo de actualización deseado
+    public float currentTime = 0f;
     public static void ExecuteMVMVA(_MVMVA_MULTIPLY_MATRIX matrix, _MVMVA_MULTIPLY_VECTOR multiply, _MVMVA_TRANSLATION_VECTOR translation, byte shift, bool lm)
     {
+
+
         short num = 0;
         short num2 = 0;
         short num3 = 0;

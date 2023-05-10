@@ -10,11 +10,14 @@ using UnityEngine.Profiling;
 using Unity.Jobs;
 using Unity.Collections;
 using Unity.Burst;
+using TMPro;
+using Rewired;
 
 public delegate VigObject _VEHICLE_INIT(XOBF_DB param1, int param2, uint param3); //needs parameters
 public delegate VigObject _SPECIAL_INIT(XOBF_DB param1, int param2);
 public delegate VigObject _OBJECT_INIT(XOBF_DB param1, int param2, uint param3);
 
+[Serializable]
 public struct VehicleStats
 {
     public byte accel;
@@ -11109,173 +11112,96 @@ public class GameManager : MonoBehaviour
     public List<VigTuple> worldObjs_tmp;
 
     public int DAT_10F0;
-
     public List<VigTuple> DAT_1110;
-
     public sbyte DAT_111C;
-
     public SunLensFlare DAT_1124;
-
     public sbyte[] DAT_1128;
-
     public int DAT_1130;
-
     public Navigation DAT_1138;
-
     public VigMesh[] DAT_1150;
-
     public VehicleStats[] vehicleStats;
-
     public uint DAT_E44;
-
     public int DAT_C74;
-
     public int EnemyKill;
-
     public byte DAT_898;
-
     public List<AudioClip> DAT_C2C;
-
     public ushort timer;
-
     public ushort[,] DAT_08;
-
     public int DAT_20;
-
     public int DAT_24;
-
     public int DAT_28;
-
     public _SCREEN_MODE screenMode;
-
     public _GAME_MODE gameMode;
-
     public bool gameEnded;
-
     public bool DAT_36;
-
     public int gravityFactor;
-
     public int DAT_40;
-
     public int map;
-
     public Material targetHUD;
-
     public _DITHERING ditheringMethod;
-
     public bool drawPlayer;
-
     public bool drawObjects;
-
     public bool drawTerrain;
-
     public bool drawRoads;
-
     public bool playMusic;
-
     public bool inDebug;
-
     public bool inMenu;
-
     public bool autoTarget;
-
     public bool ready;
-
     public float max;
-
     public float terrainHeight;
-
     public float offsetFactor;
-
     public float offsetStart;
-
     public float angleOffset;
-
     public float aspectRatioScale;
-
+    public GameObject Options;
     public Dropdown driverDropdown;
-
     public Dropdown stageDropdown;
-
     public Dropdown ditheringDropdown;
-
     public Dropdown gameModeDropdown;
-
     public Dropdown mpModeDropdown;
-
     public Dropdown damageDropdown;
-
     public Dropdown difficultyDropdown;
-
     public Dropdown onlineDmgDropdown;
-
     public Dropdown livesDropdown;
-
     public Toggle drawPlayerToggle;
-
     public Toggle drawObjectsToggle;
-
     public Toggle drawTerrainToggle;
-
     public Toggle drawRoadsToggle;
-
     public Toggle[] spawnEnemiesToggle;
-
     public Toggle disableDpadToggle;
-
     public Toggle disableAutoTarget;
-
+    public Toggle disableDriverPlus;
     public Toggle enableExperimentalDakota;
     public RectTransform spawnsRect;
-
     public List<int> playable;
-
     public List<int> survival;
-
     public int currentSpawn;
-
     public int wrenchCount;
-
     public bool lowHealth;
-
     public int totalSpawns;
-
     public int aiMin;
-
     public int aiMax;
-
     public int spawns;
-
     public bool paused;
-
     public bool noAI;
-
     public bool noPhysics;
-
     public bool noHUD;
-	public bool DriverPlus;
+    public bool DriverPlus;
     public bool experimentalDakota;
-
     public bool enableReticle;
-
     public Dictionary<long, Vehicle> networkMembers;
-
     public List<VigObject> networkObjs;
-
     public Dictionary<long, short> networkIds;
-
     public List<Vehicle> networkEnemies;
-
     public Dictionary<short, Vehicle> enemiesDictionary;
-
     public int leash;
-
     private bool atStart;
 
+    public int driverPlus = 0;
     public void SetDriver()
     {
-        switch (driverDropdown.value)
+        switch (statsPanel.cursor)
         {
             case 0:
                 vehicles[0] = 0;
@@ -11331,6 +11257,60 @@ public class GameManager : MonoBehaviour
             case 17:
                 vehicles[0] = 17;
                 break;
+            case 18:
+                vehicles[0] = 21;
+                break;
+            case 19:
+                vehicles[0] = 22;
+                break;
+            case 20:
+                vehicles[0] = 23;
+                break;
+            case 21:
+                vehicles[0] = 24;
+                break;
+            case 22:
+                vehicles[0] = 25;
+                break;
+            case 23:
+                vehicles[0] = 26;
+                break;
+            case 24:
+                vehicles[0] = 27;
+                break;
+            case 25:
+                vehicles[0] = 28;
+                break;
+            case 26:
+                vehicles[0] = 29;
+                break;
+            case 27:
+                vehicles[0] = 30;
+                break;
+            case 28:
+                vehicles[0] = 31;
+                break;
+            case 29:
+                vehicles[0] = 32;
+                break;
+            case 30:
+                vehicles[0] = 33;
+                break;
+            case 31:
+                vehicles[0] = 34;
+                break;
+            case 32:
+                vehicles[0] = 35;
+                break;
+            case 33:
+                vehicles[0] = 36;
+                break;
+            case 34:
+                vehicles[0] = 37;
+                break;
+            case 35:
+                vehicles[0] = 38;
+                break;
         }
         ClientSend.NotReady(0L);
         Demo.instance.readyLabel.gameObject.SetActive(value: true);
@@ -11340,29 +11320,91 @@ public class GameManager : MonoBehaviour
 
     public void SetStage()
     {
-        map = stageDropdown.value + 1;
+        switch (map)
+        {
+            case 1:
+                mapText = "Arizona - MeteorCrater";
+                break;
+            case 2:
+                mapText = "Utah - Winter Games";
+                break;
+            case 3:
+                mapText = "Louisiana - Ghastly Bayou";
+                break;
+            case 4:
+                mapText = "Florida - Launch Site";
+                break;
+            case 5:
+                mapText = "Pennsylvania - Steel Mill";
+                break;
+            case 6:
+                mapText = "Minnesota - Nuclear Plant";
+                break;
+            case 7:
+                mapText = "Alaska - Alaskan Pipeline";
+                break;
+            case 8:
+                mapText = "California - Pacific Harbor";
+                break;
+            case 9:
+                mapText = "Nevada - Secret Base";
+                break;
+            case 10:
+                mapText = "Utah - Sand Factory";
+                break;
+            case 11:
+                mapText = "New - Mexico Oil Fields";
+                break;
+            case 12:
+                mapText = "Arizona - Aircraft Graveyard";
+                break;
+            case 13:
+                mapText = "New Mexico - Ghost Town";
+                break;
+            case 14:
+                mapText = "Arizona Nevada - Hoover Dam";
+                break;
+            case 15:
+                mapText = "California - Valley Farms";
+                break;
+            case 16:
+                mapText = "Nevada - Casino City";
+                break;
+            case 17:
+                mapText = "Utah - Canyonlands";
+                break;
+        }
+        if (inDebug)
+        {
+            Options.transform.Find("Map/Preview").GetComponent<Image>().sprite = statsPanel.maps[map - 1];
+            Options.transform.Find("Map/Text (TMP)").GetComponent<TextMeshProUGUI>().text = mapText.ToString();
+        }
+        //map = stageDropdown.value + 1;
         ClientSend.Map(0L);
     }
 
     public void SetDithering()
     {
-        switch (ditheringDropdown.value)
-        {
-            case 0:
-                ditheringMethod = _DITHERING.None;
-                break;
-            case 1:
-                ditheringMethod = _DITHERING.Standard;
-                break;
-            case 2:
-                ditheringMethod = _DITHERING.PSX;
-                break;
-        }
+        ditheringMethod = _DITHERING.None;
+
+        //switch (ditheringDropdown.value)
+        //{
+        //    case 0:
+        //        ditheringMethod = _DITHERING.None;
+        //        break;
+        //    case 1:
+        //        ditheringMethod = _DITHERING.Standard;
+        //        break;
+        //    case 2:
+        //        ditheringMethod = _DITHERING.PSX;
+        //        break;
+        //}
     }
 
     public void SetLives()
     {
-        sbyte b = playerSpawns = (sbyte)(livesDropdown.value + 1);
+        Options.transform.Find("Lives/Text (TMP)").GetComponent<TextMeshProUGUI>().text = currentValueLives.ToString();
+        sbyte b = playerSpawns = (sbyte)(currentValueLives);
         for (int i = 0; i < networkMembers.Count; i++)
         {
             DAT_1030[i] = b;
@@ -11372,15 +11414,15 @@ public class GameManager : MonoBehaviour
 
     public void SetGameMode()
     {
-        switch (gameModeDropdown.value)
+        switch (modeIndex)
         {
             case 0:
                 gameMode = _GAME_MODE.Arcade;
-                spawnsRect.gameObject.SetActive(value: true);
+                //spawnsRect.gameObject.SetActive(value: true);
                 break;
             case 1:
                 gameMode = _GAME_MODE.Survival;
-                spawnsRect.gameObject.SetActive(value: false);
+                //spawnsRect.gameObject.SetActive(value: false);
                 DAT_1030[0] = 1;
                 DAT_1030[1] = 0;
                 DAT_1030[2] = 0;
@@ -11391,21 +11433,34 @@ public class GameManager : MonoBehaviour
 
     public void SetMultiplayerMode()
     {
-        switch (mpModeDropdown.value)
+        //gameMode = (_GAME_MODE)modeIndex;
+        switch (modeIndex)
         {
-            case 0:
+            case 10:
                 gameMode = _GAME_MODE.Versus2;
-                livesDropdown.transform.parent.gameObject.SetActive(value: true);
-                onlineDmgDropdown.transform.parent.gameObject.SetActive(value: true);
-                damageDropdown.transform.parent.gameObject.SetActive(value: false);
-                difficultyDropdown.transform.parent.gameObject.SetActive(value: false);
+                //livesDropdown.transform.parent.gameObject.SetActive(value: true);
+                Options.transform.Find("Lives").gameObject.SetActive(value: true);
+                Options.transform.Find("Space 1").gameObject.SetActive(value: false);
+                Options.transform.Find("Damages").gameObject.SetActive(value: true);
+                Options.transform.Find("Space 2").gameObject.SetActive(value: false);
+                Options.transform.Find("Difficulty").gameObject.SetActive(value: false);
+                Options.transform.Find("Space 3").gameObject.SetActive(value: true);
+                //onlineDmgDropdown.transform.parent.gameObject.SetActive(value: true);
+                //damageDropdown.transform.parent.gameObject.SetActive(value: false);
+                //difficultyDropdown.transform.parent.gameObject.SetActive(value: false);
                 break;
-            case 1:
+            case 11:
                 gameMode = _GAME_MODE.Coop2;
-                livesDropdown.transform.parent.gameObject.SetActive(value: false);
-                onlineDmgDropdown.transform.parent.gameObject.SetActive(value: false);
-                damageDropdown.transform.parent.gameObject.SetActive(value: true);
-                difficultyDropdown.transform.parent.gameObject.SetActive(value: true);
+                //livesDropdown.transform.parent.gameObject.SetActive(value: false);
+                Options.transform.Find("Lives").gameObject.SetActive(value: false);
+                Options.transform.Find("Space 1").gameObject.SetActive(value: true);
+                Options.transform.Find("Damages").gameObject.SetActive(value: true);
+                Options.transform.Find("Space 2").gameObject.SetActive(value: false);
+                Options.transform.Find("Difficulty").gameObject.SetActive(value: true);
+                Options.transform.Find("Space 3").gameObject.SetActive(value: false);
+                //onlineDmgDropdown.transform.parent.gameObject.SetActive(value: false);
+                //damageDropdown.transform.parent.gameObject.SetActive(value: true);
+                //difficultyDropdown.transform.parent.gameObject.SetActive(value: true);
                 DAT_1030[0] = 1;
                 DAT_1030[1] = 1;
                 DAT_1030[2] = 1;
@@ -11413,81 +11468,153 @@ public class GameManager : MonoBehaviour
                 DAT_1030[4] = 1;
                 DAT_1030[5] = 1;
                 break;
-            case 2:
+            case 12:
                 gameMode = _GAME_MODE.Survival2;
-                livesDropdown.transform.parent.gameObject.SetActive(value: false);
-                onlineDmgDropdown.transform.parent.gameObject.SetActive(value: false);
-                damageDropdown.transform.parent.gameObject.SetActive(value: true);
-                difficultyDropdown.transform.parent.gameObject.SetActive(value: true);
+                //livesDropdown.transform.parent.gameObject.SetActive(value: false);
+                Options.transform.Find("Lives").gameObject.SetActive(value: false);
+                Options.transform.Find("Space 1").gameObject.SetActive(value: true);
+                Options.transform.Find("Damages").gameObject.SetActive(value: true);
+                Options.transform.Find("Space 2").gameObject.SetActive(value: false);
+                Options.transform.Find("Difficulty").gameObject.SetActive(value: true);
+                Options.transform.Find("Space 3").gameObject.SetActive(value: false);
+                //onlineDmgDropdown.transform.parent.gameObject.SetActive(value: false);
+                //damageDropdown.transform.parent.gameObject.SetActive(value: true);
+                //difficultyDropdown.transform.parent.gameObject.SetActive(value: true);
                 DAT_1030[0] = 1;
                 DAT_1030[1] = 0;
                 DAT_1030[2] = 0;
                 DAT_1030[3] = 0;
                 break;
         }
+
+        Options.transform.Find("Mode/Text (TMP)").GetComponent<TextMeshProUGUI>().text = gameMode.ToString().Substring(0, gameMode.ToString().Length - 1);
         ClientSend.Mode(0L);
     }
 
     public void SetDamage()
     {
-        int value = damageDropdown.value;
-        DAT_C80[0] = (sbyte)value;
-        DAT_C80[1] = (sbyte)value;
+        switch (currentDamageIndex)
+        {
+            case 1:
+                damageText = "Low";
+                break;
+            case 2:
+                damageText = "Normal";
+                break;
+            case 3:
+                damageText = "High";
+                break;
+        }
+
+        Options.transform.Find("Damages/Text (TMP)").GetComponent<TextMeshProUGUI>().text = damageText;
+
+        //int value = damageDropdown.value;
+        //DAT_C80[0] = (sbyte)value;
+        //DAT_C80[1] = (sbyte)value;
         ClientSend.Damage(0L);
+
     }
 
     public void SetDifficulty()
     {
-        int value = difficultyDropdown.value;
+        switch (currentValueDifficulty)
+        {
+            case 1:
+                difficultyInt = 86;
+                break;
+            case 2:
+                difficultyInt = 89;
+                break;
+            case 3:
+                difficultyInt = 92;
+                break;
+        }
+        int value = currentValueDifficulty;
         this.difficultyMode = (byte)value;
+        Options.transform.Find("Difficulty/Text (TMP)").GetComponent<TextMeshProUGUI>().text = difficultyInt.ToString();
+
         ClientSend.Difficulty(0L);
     }
 
     public void SetOnlineDamage()
     {
-        int value = onlineDmgDropdown.value;
-        this.difficultyMode = (byte)value;
+
+        switch (currentDamageIndex)
+        {
+            case 1:
+                damageText = "Low";
+                break;
+            case 2:
+                damageText = "Normal";
+                break;
+            case 3:
+                damageText = "High";
+                break;
+        }
+        Options.transform.Find("Damages/Text (TMP)").GetComponent<TextMeshProUGUI>().text = damageText;
+
+        //int value = currentDamageIndex;
+        //this.difficultyMode = (byte)value;
         ClientSend.Difficulty(0L);
     }
 
     public void SetDrawPlayer()
     {
-        drawPlayer = drawPlayerToggle.isOn;
+        FUN_1E098(1, Menu.instance.sounds, 10, 4095);
+        //drawPlayer = drawPlayerToggle.isOn;
+        drawPlayer = true;
     }
 
     public void SetDrawObjects()
     {
-        drawObjects = drawObjectsToggle.isOn;
+        FUN_1E098(1, Menu.instance.sounds, 10, 4095);
+        //drawObjects = drawObjectsToggle.isOn;
+        drawObjects = true;
     }
 
     public void SetDrawTerrain()
     {
-        drawTerrain = drawTerrainToggle.isOn;
+        FUN_1E098(1, Menu.instance.sounds, 10, 4095);
+        //drawTerrain = drawTerrainToggle.isOn;
+        drawTerrain = true;
     }
 
     public void SetDrawRoads()
     {
-        drawRoads = drawRoadsToggle.isOn;
+        FUN_1E098(1, Menu.instance.sounds, 10, 4095);
+        //drawRoads = drawRoadsToggle.isOn;
+        drawRoads = true;
     }
 
     public void SetEnemySpawn(int index)
     {
-        DAT_1030[index] = (sbyte)(spawnEnemiesToggle[index].isOn ? 1 : 0);
+        FUN_1E098(1, Menu.instance.sounds, 10, 4095);
+        //DAT_1030[index] = (sbyte)(spawnEnemiesToggle[index].isOn ? 1 : 0);
+        DAT_1030[index] = 1;
     }
 
     public void SetDPAD()
     {
+        FUN_1E098(1, Menu.instance.sounds, 10, 4095);
         DAT_637E0[0, 5] = (disableDpadToggle.isOn ? 7431u : 3116899591u);
     }
 
     public void SetAutoTarget()
     {
+        FUN_1E098(1, Menu.instance.sounds, 10, 4095);
         autoTarget = (disableAutoTarget.isOn ? true : false);
+    }
+    public void SetPLUS()
+    {
+        FUN_1E098(1, Menu.instance.sounds, 10, 4095);
+        DriverPlus = (disableDriverPlus.isOn ? true : false);
     }
 
     public void SetExperimentalDakota()
     {
-        experimentalDakota = enableExperimentalDakota.isOn;
+        FUN_1E098(1, Menu.instance.sounds, 10, 4095);
+        //experimentalDakota = enableExperimentalDakota.isOn;
+        experimentalDakota = false;
     }
 
     public void SetPlayerReady(bool ready)
@@ -11539,6 +11666,8 @@ public class GameManager : MonoBehaviour
     public void LoadLevel()
     {
         SetDriver();
+        //Debug.Log("Set Player: " + statsPanel.cursor);
+
         SetStage();
         SetDithering();
         SetGameMode();
@@ -11553,13 +11682,19 @@ public class GameManager : MonoBehaviour
         SetExperimentalDakota();
         RandomizeEnemies(1);
         totalSpawns = DAT_1030[0] + DAT_1030[1] + DAT_1030[2] + DAT_1030[3];
+        inDebug = false;
+        inMenu = false;
         UnityEngine.Object.DontDestroyOnLoad(base.gameObject);
         SceneManager.LoadScene(map, LoadSceneMode.Single);
     }
-
     public void LoadMultiplayerLevel(bool isHost)
     {
+
+        //Debug.Log("Set Player: " + statsPanel.cursor);
+
         SetDriver();
+        if (DriverPlus)
+            vehicles[0] += 21;
         SetDPAD();
         SetAutoTarget();
         ClientSend.Ready(0L);
@@ -11593,13 +11728,17 @@ public class GameManager : MonoBehaviour
         drawRoads = true;
         drawObjects = true;
         drawPlayer = true;
+        inDebug = false;
+        inMenu = false;
         DiscordController.instance.sceneLoaded = false;
         UnityEngine.Object.DontDestroyOnLoad(base.gameObject);
+        //StartCoroutine(UpdateReflections());
         SceneManager.LoadScene(map, LoadSceneMode.Single);
-    }
 
+    }
     public void LoadDebug()
     {
+        //StopCoroutine(UpdateReflections());
         inDebug = true;
         UnityEngine.Object.Destroy(base.gameObject);
         SceneManager.LoadScene(0, LoadSceneMode.Single);
@@ -11630,13 +11769,11 @@ public class GameManager : MonoBehaviour
         }
         Water.instance.FUN_16664(param, (int)num);
     }
-
     public void FUN_1C134()
     {
         terrain.ClearTerrainData();
         FUN_1C158();
     }
-
     public void FUN_1DC0C(bool param1, int param2, bool param3 = false)
     {
         if (param1)
@@ -11649,7 +11786,6 @@ public class GameManager : MonoBehaviour
             voices[param2].Pause();
         }
     }
-
     public int FUN_1DD9C()
     {
         int num = 0;
@@ -11666,7 +11802,6 @@ public class GameManager : MonoBehaviour
         }
         return num + 1;
     }
-
     public bool IsAudioPlaying(int param1, AudioClip param2)
     {
         if (param1 == 0)
@@ -11679,7 +11814,6 @@ public class GameManager : MonoBehaviour
         }
         return false;
     }
-
     public bool IsAudioPlaying(int param1)
     {
         if (param1 == 0)
@@ -11688,7 +11822,6 @@ public class GameManager : MonoBehaviour
         }
         return voices[param1 - 1].isPlaying;
     }
-
     public void FUN_1DE78(int param1)
     {
         if (param1 != 0)
@@ -11696,7 +11829,6 @@ public class GameManager : MonoBehaviour
             FUN_1DC0C(param1: false, (param1 - 1) & 0x1F);
         }
     }
-
     public void FUN_1E098(int param1, List<AudioClip> param2, int param3, uint param4, bool param5 = false)
     {
         if (param1 != 0)
@@ -11713,7 +11845,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
     public void FUN_1E14C(int param1, List<AudioClip> param2, int param3, bool param4 = false)
     {
         int dAT_E1C = DAT_E1C;
@@ -11724,21 +11855,18 @@ public class GameManager : MonoBehaviour
         num = (uint)((int)num + dAT_E1C);
         FUN_1E098(param1, param2, param3, num, param4);
     }
-
     public void FUN_1E188(int param1, List<AudioClip> param2, int param3, bool param4 = false)
     {
         uint num = (uint)(DAT_E1C << 16);
         num = (uint)((int)DAT_E1C + (int)num);
         FUN_1E098(param1, param2, param3, num, param4);
     }
-
     public void FUN_1E188(int param1, List<AudioClip> param2, int param3, int param4, bool param5 = false)
     {
         uint num = (uint)(DAT_E1C << 16);
         num = (uint)((int)DAT_E1C + (int)num);
         FUN_1E098(param1, param2, param3, num << param4, param5);
     }
-
     public void FUN_1E28C(int param1, List<AudioClip> param2, int param3)
     {
         uint num = (uint)(ushort)DAT_E1C >> 31;
@@ -11747,7 +11875,6 @@ public class GameManager : MonoBehaviour
         num2 = (num2 << 16) + num2;
         FUN_1E1B0(param1, param2, param3, num2);
     }
-
     public void FUN_1E2E8(int source, int sampleRate)
     {
         if (source != 0)
@@ -11755,7 +11882,6 @@ public class GameManager : MonoBehaviour
             voices[source - 1].pitch = (float)sampleRate / (float)(voices[source - 1].clip.frequency / 11);
         }
     }
-
     public void FUN_1E30C(int source, int sampleRate)
     {
         if (source != 0)
@@ -11765,30 +11891,25 @@ public class GameManager : MonoBehaviour
             voices[source - 1].pitch = (float)sampleRate / (float)num;
         }
     }
-
     public void FUN_1E580(int param1, List<AudioClip> param2, int param3, Vector3Int param4, bool param5 = false)
     {
         uint param6 = FUN_1E478(param4);
         FUN_1E098(param1, param2, param3, param6, param5);
     }
-
     public void FUN_1E5D4(int param1, List<AudioClip> param2, int param3, Vector3Int param4, bool param5 = false)
     {
         uint num = FUN_1E478(param4);
         FUN_1E098(param1, param2, param3, num << 1, param5);
     }
-
     public void FUN_1E5D4(int param1, List<AudioClip> param2, int param3, Vector3Int param4, int param5, bool param6 = false)
     {
         uint num = FUN_1E478(param4);
         FUN_1E098(param1, param2, param3, num << param5, param6);
     }
-
     public static void SpuSetVoicePitch(int vNum, int sampleRate)
     {
         voices[vNum].pitch = (float)sampleRate / 4096f;
     }
-
     public void FUN_1E2C8(int source, uint volume)
     {
         if (source != 0)
@@ -11811,7 +11932,6 @@ public class GameManager : MonoBehaviour
             voices[source - 1].panStereo = num4 - num3;
         }
     }
-
     public static void SpuSetVoiceVolume(int vNum, int volL, int volR)
     {
         volL &= 0x7FFF;
@@ -11829,12 +11949,10 @@ public class GameManager : MonoBehaviour
         voices[vNum].volume = Mathf.Max(num, num2);
         voices[vNum].panStereo = num2 - num;
     }
-
     public static void SpuSetVoiceStartAddr(int vNum, AudioClip startAddr)
     {
         voices[vNum].clip = startAddr;
     }
-
     public void FUN_1E1B0(int param1, List<AudioClip> param2, int param3, uint param4, bool param5 = false)
     {
         if (param1 != 0)
@@ -11850,14 +11968,13 @@ public class GameManager : MonoBehaviour
                 FUN_1DC0C(param1: true, num & 0x1F, param5);
             }
         }
-    }
 
+    }
     public void FUN_1E628(int param1, List<AudioClip> param2, int param3, Vector3Int param4, bool param5 = false)
     {
         uint param6 = FUN_1E478(param4);
         FUN_1E1B0(param1, param2, param3, param6, param5);
     }
-
     public void FUN_1E8B0(List<AudioClip> param1, int param2, Vector3Int param3)
     {
         uint num = FUN_1E7A8(param3);
@@ -11867,7 +11984,6 @@ public class GameManager : MonoBehaviour
             FUN_1E1B0(param4, param1, param2, num);
         }
     }
-
     public void FUN_1FEB8(VigMesh param1)
     {
         if (param1 != null)
@@ -11879,7 +11995,6 @@ public class GameManager : MonoBehaviour
             UnityEngine.Object.Destroy(param1);
         }
     }
-
     public void FUN_2C0A0(VigObject param1)
     {
         if (!(param1 != null))
@@ -11933,7 +12048,6 @@ public class GameManager : MonoBehaviour
         }
         while (param1 != null);
     }
-
     public void FUN_2C4B4(VigObject param1)
     {
         if (!(param1 != null))
@@ -11955,17 +12069,15 @@ public class GameManager : MonoBehaviour
         }
         while (child != null);
     }
-
     public void FUN_2DE18()
     {
         Utilities.SetColorMatrix(DAT_FA8);
         Utilities.SetBackColor(64, 64, 64);
-        Utilities.SetFogNearFar(2048, 8192, DAT_ED8);
+        Utilities.SetFogNearFar(2048, 8192, DAT_ED8); //Distancia de dibujado?
         Utilities.SetColorMatrix2(DAT_FA8);
         Utilities.SetBackColor2(64, 64, 64);
         Utilities.SetFogNearFar2(2048, 8192, DAT_ED8);
     }
-
     public void FUN_2DE84(int param1, Vector3Int param2, Color32 param3)
     {
         int num = param1;
@@ -11977,7 +12089,6 @@ public class GameManager : MonoBehaviour
         DAT_FA8.SetValue16(num + 3, param3.g << 4);
         DAT_FA8.SetValue16(num + 6, param3.b << 4);
     }
-
     public void FUN_2FB70(VigObject param1, HitDetection param2, HitDetection param3)
     {
         param3.self = param1;
@@ -11987,7 +12098,6 @@ public class GameManager : MonoBehaviour
         param3.object2 = param2.object1;
         FUN_2F798(param2.self, param3);
     }
-
     public int FUN_2FE58(VigObject param1, ushort param2)
     {
         VigObject child;
@@ -12017,7 +12127,6 @@ public class GameManager : MonoBehaviour
         while (!(child == null));
         return 0;
     }
-
     public void FUN_2FEE8(VigObject param1, ushort param2)
     {
         int num = param1.FUN_2FBC8(param2);
@@ -12026,7 +12135,6 @@ public class GameManager : MonoBehaviour
             FUN_2FE58(param1.child2, param2);
         }
     }
-
     public VigTuple2 FUN_2FF3C(uint param1, uint param2)
     {
         List<VigTuple2> dAT_10D = DAT_10D8;
@@ -12042,7 +12150,6 @@ public class GameManager : MonoBehaviour
         }
         return vigTuple;
     }
-
     public VigTuple2 FUN_2FFD0(int param1)
     {
         List<VigTuple2> dAT_10D = DAT_10D8;
@@ -12058,19 +12165,16 @@ public class GameManager : MonoBehaviour
         }
         return vigTuple;
     }
-
     public void FUN_3001C(List<VigTuple> param1)
     {
         param1 = new List<VigTuple>();
     }
-
     public VigTuple FUN_30080(List<VigTuple> param1, VigObject param2)
     {
         VigTuple vigTuple = new VigTuple(param2, 0u);
         param1.Add(vigTuple);
         return vigTuple;
     }
-
     public bool FUN_300B8(List<VigTuple> param1, VigObject param2)
     {
         int num = 0;
@@ -12103,7 +12207,6 @@ public class GameManager : MonoBehaviour
         vigTuple.vObject = null;
         return true;
     }
-
     public VigTuple FUN_30134(List<VigTuple> param1, VigObject param2)
     {
         if (param1 == null)
@@ -12127,12 +12230,10 @@ public class GameManager : MonoBehaviour
         }
         return vigTuple;
     }
-
     public VigTuple FUN_301DC(List<VigTuple> param1, int param2)
     {
         return FUN_30180(param1, param2, null);
     }
-
     public VigTuple FUN_301FC(List<VigTuple> param1, Type param2)
     {
         VigTuple vigTuple = null;
@@ -12147,7 +12248,6 @@ public class GameManager : MonoBehaviour
         }
         return vigTuple;
     }
-
     private VigTuple _GetPowerup(List<VigTuple> param1, Vector3Int param2)
     {
         VigTuple vigTuple = null;
@@ -12162,7 +12262,6 @@ public class GameManager : MonoBehaviour
         }
         return vigTuple;
     }
-
     public VigObject GetPowerup(List<VigTuple> param1, Vector3Int param2)
     {
         VigTuple vigTuple = _GetPowerup(param1, param2);
@@ -12173,7 +12272,6 @@ public class GameManager : MonoBehaviour
         }
         return result;
     }
-
     public VigObject FUN_3027C(List<VigTuple> param1, int param2, VigObject param3)
     {
         VigTuple vigTuple = FUN_30180(param1, param2, param3);
@@ -12184,7 +12282,6 @@ public class GameManager : MonoBehaviour
         }
         return result;
     }
-
     public VigObject FUN_302A8(List<VigTuple> param1, Type param2)
     {
         VigTuple vigTuple = FUN_301FC(param1, param2);
@@ -12195,7 +12292,6 @@ public class GameManager : MonoBehaviour
         }
         return result;
     }
-
     public VigObject FUN_302D4(List<VigTuple> param1, uint param2, int param3)
     {
         for (int i = 0; i < param1.Count; i++)
@@ -12209,7 +12305,6 @@ public class GameManager : MonoBehaviour
         }
         return null;
     }
-
     public uint FUN_30334(List<VigTuple> param1, int param2, VigObject param3)
     {
         uint num = 0u;
@@ -12224,7 +12319,6 @@ public class GameManager : MonoBehaviour
         }
         return num;
     }
-
     public uint FUN_30334(List<VigTuple> param1, int param2, int param3)
     {
         uint num = 0u;
@@ -12239,7 +12333,6 @@ public class GameManager : MonoBehaviour
         }
         return num;
     }
-
     public uint FUN_303C0(List<VigTuple> param1, _EVENT_CALL param2, int param3)
     {
         uint num = 0u;
@@ -12254,7 +12347,6 @@ public class GameManager : MonoBehaviour
         }
         return num;
     }
-
     public int FUN_30428(List<VigTuple> param1, uint param2)
     {
         int num = 0;
@@ -12269,7 +12361,6 @@ public class GameManager : MonoBehaviour
         }
         return num;
     }
-
     public VigObject FUN_30498(List<VigTuple> param1, uint param2, int param3)
     {
         VigObject vigObject = null;
@@ -12284,7 +12375,6 @@ public class GameManager : MonoBehaviour
         }
         return vigObject;
     }
-
     public VigObject FUN_30498_2(List<VigTuple> param1, uint param2, int param3)
     {
         VigObject vigObject = null;
@@ -12298,7 +12388,6 @@ public class GameManager : MonoBehaviour
         }
         return vigObject;
     }
-
     public void FUN_307CC(VigObject param1)
     {
         if (!(param1 != null))
@@ -12333,7 +12422,6 @@ public class GameManager : MonoBehaviour
         }
         while (child != null);
     }
-
     public void FUN_308C4(VigObject param1)
     {
         if (param1.vShadow != null)
@@ -12342,7 +12430,6 @@ public class GameManager : MonoBehaviour
         }
         FUN_307CC(param1);
     }
-
     public void FUN_30904(VigObject param1)
     {
         if (param1.type == byte.MaxValue)
@@ -12354,7 +12441,6 @@ public class GameManager : MonoBehaviour
             FUN_308C4(param1);
         }
     }
-
     public void FUN_3094C(Tuple<List<VigTuple>, VigTuple> param1)
     {
         if (param1.Item2 != null)
@@ -12363,13 +12449,11 @@ public class GameManager : MonoBehaviour
             FUN_308C4(param1.Item2.vObject);
         }
     }
-
     public void FUN_309A0(VigObject param1)
     {
         Tuple<List<VigTuple>, VigTuple> param2 = FUN_31868(param1);
         FUN_3094C(param2);
     }
-
     public void FUN_30B24(List<VigTuple> param1)
     {
         for (int i = 0; i < param1.Count; i++)
@@ -12377,7 +12461,6 @@ public class GameManager : MonoBehaviour
             FUN_2D9E0(param1[i].vObject);
         }
     }
-
     public void FUN_30CB0(VigObject param1, int param2)
     {
         if ((param1.flags & 1) != 0)
@@ -12395,7 +12478,6 @@ public class GameManager : MonoBehaviour
         }
         DAT_1110.Insert(0, vigTuple);
     }
-
     public void FUN_30DE8(BSP param1, int param2, int param3, int param4, int param5)
     {
         switch (param1.DAT_00)
@@ -12434,7 +12516,6 @@ public class GameManager : MonoBehaviour
         }
         FUN_30DE8(param1.DAT_0C, param2, param3, param4, param5);
     }
-
     public Tuple<List<VigTuple>, VigTuple> FUN_310F4(BSP param1, VigObject param2)
     {
         Tuple<List<VigTuple>, VigTuple> tuple;
@@ -12453,7 +12534,6 @@ public class GameManager : MonoBehaviour
         }
         return tuple;
     }
-
     public VigObject FUN_31160(BSP param1, int param2, VigObject param3)
     {
         VigObject vigObject;
@@ -12472,7 +12552,6 @@ public class GameManager : MonoBehaviour
         }
         return vigObject;
     }
-
     public uint FUN_31248(BSP param1, int param2, int param3)
     {
         if (param1.DAT_00 == 0)
@@ -12485,22 +12564,18 @@ public class GameManager : MonoBehaviour
         }
         return 1u;
     }
-
     public Tuple<List<VigTuple>, VigTuple> FUN_318A8(VigObject param1)
     {
         return FUN_310F4(bspTree, param1);
     }
-
     public VigObject FUN_318D0(int param1)
     {
         return FUN_31160(bspTree, param1, null);
     }
-
     public uint FUN_31924(int param1, int param2)
     {
         return FUN_31248(bspTree, param1, param2);
     }
-
     public VigObject FUN_311DC(BSP param1, Type param2)
     {
         VigObject vigObject;
@@ -12519,12 +12594,10 @@ public class GameManager : MonoBehaviour
         }
         return vigObject;
     }
-
     public VigObject FUN_318F8(int param1, VigObject param2)
     {
         return FUN_31160(bspTree, param1, param2);
     }
-
     public VigObject FUN_31C98(int param1, int param2, Vector2Int param3, Vector2Int param4)
     {
         return FUN_31B30(bspTree, param1, param2, param3, param4);
@@ -14515,8 +14588,280 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    int setTouch;
+    public void setMapOnLeftButtonPressed()
+    {
+        setTouch = 1;
+        UpdateOptions();
+    }
+    public void setMapOnRightButtonPressed()
+    {
+        setTouch = 2;
+        UpdateOptions();
+    }
+    public void setModeOnLeftButtonPressed()
+    {
+        setTouch = 3;
+        UpdateOptions();
+    }
+
+    public void setModeOnRightButtonPressed()
+    {
+        setTouch = 4;
+        UpdateOptions();
+    }
+    public void setLiveOnLeftButtonPressed()
+    {
+        setTouch = 5;
+        UpdateOptions();
+    }
+    public void setLiveOnRightButtonPressed()
+    {
+        setTouch = 6;
+        UpdateOptions();
+    }
+    public void setDamageOnLeftButtonPressed()
+    {
+        setTouch = 7;
+        UpdateOptions();
+    }
+    public void setDamageOnRightButtonPressed()
+    {
+        setTouch = 8;
+        UpdateOptions();
+    }
+    public void setDifficultyOnLeftButtonPressed()
+    {
+        setTouch = 9;
+        UpdateOptions();
+    }
+    public void setDifficultyOnRightButtonPressed()
+    {
+        setTouch = 10;
+        UpdateOptions();
+    }
+
+    public StatsPanel statsPanel;
+
     private void Start()
     {
+        reflectionsCoroutine = StartCoroutine(UpdateReflections());
+        //StartCoroutine(UpdateReflections());
+
+        if (inDebug)
+        {
+            map = 1;
+            gameMode = _GAME_MODE.Versus2;
+
+            SetStage();
+            //Options.transform.Find("Map/Preview").GetComponent<Image>().sprite = statsPanel.maps[map];
+            //Options.transform.Find("Map/Text (TMP)").GetComponent<TextMeshProUGUI>().text = mapText;
+            Options.transform.Find("Mode/Text (TMP)").GetComponent<TextMeshProUGUI>().text = gameMode.ToString().Substring(0, gameMode.ToString().Length - 1);
+            Options.transform.Find("Lives/Text (TMP)").GetComponent<TextMeshProUGUI>().text = currentValueLives.ToString();
+            Options.transform.Find("Damages/Text (TMP)").GetComponent<TextMeshProUGUI>().text = damageText;
+
+            //if (Options.transform.Find("Mode").gameObject.transform.Find("Text (TMP)").gameObject)
+            //{
+            //Test: Desactiva texto de Mode
+            //Options.transform.Find("Mode").gameObject.transform.Find("Text (TMP)").gameObject.SetActive(value: false);
+            //Options.transform.Find("Mode/Text (TMP)").GetComponent<TextMeshProUGUI>().text = gameMode.ToString();
+            //gameMode = _GAME_MODE.Arcade;
+            //}
+        }
+        else
+        {
+        }
+    }
+
+    string touchMessage;
+    int currentValueLives = 1;
+    public int currentDamageIndex = 2;
+    public int currentValueDifficulty = 1;
+    public string damageText = "Normal";
+    public string mapText = "Arizona - MeteorCrater";
+    public int difficultyInt;
+    int modeIndex;
+
+    //List<Sprite> Maps = StatsPanel.instance.maps;
+
+    private void UpdateOptions()
+    {
+        if (setTouch <= 2)
+            FUN_1E098(1, Menu.instance.sounds, 7, 4095);
+
+        if (setTouch == 1)
+        {
+            if (map > 0)
+            {
+                if (map == 1)
+                {
+                    map = 17;
+                }
+                else
+                {
+                    map -= 1;
+                }
+                //touchMessage = "Map Left: " + map;
+            }
+        }
+        else if (setTouch == 2)
+        {
+            if (map < 18)
+            {
+                if (map == 17)
+                {
+                    map = 1;
+                }
+                else
+                {
+                    map += 1;
+                }
+                //touchMessage = "Map Right: " + map;
+            }
+        }
+        else if (setTouch == 3)
+        {
+            modeIndex = (int)gameMode;
+            if (modeIndex > 9)
+            {
+                FUN_1E098(1, Menu.instance.sounds, 0, 4095);
+                modeIndex--;
+                if (modeIndex < 10) modeIndex = Enum.GetNames(typeof(_GAME_MODE)).Length - 1;
+                touchMessage = "Mode Left: " + gameMode;
+            }
+            else
+            {
+                FUN_1E098(1, Menu.instance.sounds, 9, 4095);
+            }
+        }
+        else if (setTouch == 4)
+        {
+            modeIndex = (int)gameMode;
+            if (modeIndex < 13)
+            {
+                FUN_1E098(1, Menu.instance.sounds, 0, 4095);
+                modeIndex++;
+                if (modeIndex >= Enum.GetNames(typeof(_GAME_MODE)).Length) modeIndex = 10;
+                //touchMessage = "Mode Right: " + gameMode;
+            }
+            else
+            {
+                FUN_1E098(1, Menu.instance.sounds, 9, 4095);
+            }
+        }
+        else if (setTouch == 5)
+        {
+            if (currentValueLives > 1)
+            {
+                FUN_1E098(1, Menu.instance.sounds, 0, 4095);
+                currentValueLives -= 1;
+                sbyte b = playerSpawns = (sbyte)currentValueLives;
+                for (int i = 0; i < networkMembers.Count; i++)
+                {
+                    DAT_1030[i] = b;
+                }
+                //touchMessage = "Damages Left: " + currentValueLives;
+                ClientSend.Lives(playerSpawns, 0L);
+            }
+            else
+            {
+                FUN_1E098(1, Menu.instance.sounds, 9, 4095);
+            }
+        }
+        else if (setTouch == 6)
+        {
+            if (currentValueLives < 3)
+            {
+                FUN_1E098(1, Menu.instance.sounds, 0, 4095);
+                currentValueLives += 1;
+                sbyte b = playerSpawns = (sbyte)currentValueLives;
+                for (int i = 0; i < networkMembers.Count; i++)
+                {
+                    DAT_1030[i] = b;
+                }
+                //touchMessage = "Damages Left: " + currentValueLives;
+                ClientSend.Lives(playerSpawns, 0L);
+
+            }
+            else
+            {
+                FUN_1E098(1, Menu.instance.sounds, 9, 4095);
+            }
+        }
+        else if (setTouch == 7)
+        {
+            if (currentDamageIndex > 1)
+            {
+                FUN_1E098(1, Menu.instance.sounds, 0, 4095);
+                currentDamageIndex -= 1;
+                DAT_C80[0] = (sbyte)currentDamageIndex;
+                DAT_C80[1] = (sbyte)currentDamageIndex;
+                ClientSend.Damage(0L);
+                //touchMessage = "Damages Left: " + currentDamageIndex;
+            }
+            else
+            {
+                FUN_1E098(1, Menu.instance.sounds, 9, 4095);
+            }
+        }
+        else if (setTouch == 8)
+        {
+            if (currentDamageIndex < 3)
+            {
+                FUN_1E098(1, Menu.instance.sounds, 0, 4095);
+                currentDamageIndex += 1;
+                DAT_C80[0] = (sbyte)currentDamageIndex;
+                DAT_C80[1] = (sbyte)currentDamageIndex;
+                ClientSend.Damage(0L);
+                //touchMessage = "Damages Right: " + currentDamageIndex;
+            }
+            else
+            {
+                FUN_1E098(1, Menu.instance.sounds, 9, 4095);
+            }
+        }
+        else if (setTouch == 9)
+        {
+            if (currentValueDifficulty > 1)
+            {
+                FUN_1E098(1, Menu.instance.sounds, 0, 4095);
+                currentValueDifficulty -= 1;
+                //touchMessage = "Difficulty Right: " + currentValueDifficulty;
+            }
+            else
+            {
+                FUN_1E098(1, Menu.instance.sounds, 9, 4095);
+            }
+        }
+        else if (setTouch == 10)
+        {
+            if (currentValueDifficulty < 3)
+            {
+                FUN_1E098(1, Menu.instance.sounds, 0, 4095);
+                currentValueDifficulty += 1;
+                //touchMessage = "Difficulty Right: " + currentValueDifficulty;
+            }
+            else
+            {
+                FUN_1E098(1, Menu.instance.sounds, 9, 4095);
+            }
+        }
+
+        SetMultiplayerMode();
+        SetOnlineDamage();
+        //SetDamage();
+        SetStage();
+        SetDifficulty();
+        SetLives();
+
+        setTouch = 0;
+
+        //Debug.Log("Touch: " + touchMessage);
+
+        //Debug.Log(ReInput.mapping.GetActionId("Mode-Touch LEFT"));
+        //Debug.Log(ReInput.players.GetPlayer(0).GetButtonDown("Mode-Touch LEFT"));
+
+
     }
 
     private void Update()
@@ -14771,6 +15116,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private Coroutine reflectionsCoroutine;
+
+    private bool shouldRunCoroutine = true;
+
+    IEnumerator UpdateReflections()
+    {
+        while (true)
+        {
+            //updateReflections = true;
+            yield return new WaitForSeconds(reflectionUpdateTime);
+            //shouldRunCoroutine = true;
+        }
+    }
+    private void StopReflections()
+    {
+        if (reflectionsCoroutine != null)
+        {
+            StopCoroutine(reflectionsCoroutine);
+            reflectionsCoroutine = null;
+        }
+    }
     private void FUN_1C158()
     {
         if (gameMode < _GAME_MODE.Coop || gameMode >= _GAME_MODE.Versus2)
@@ -15430,50 +15796,116 @@ public class GameManager : MonoBehaviour
         return hit;
     }
 
+
     public void FUN_2D778(VigObject param1, VigTransform param2)
     {
-        do
         {
-            if ((param1.flags & 2) == 0)
+            do
             {
-                VigTransform vigTransform = Utilities.CompMatrixLV(param2, param1.vTransform);
-                if ((param1.flags & 0x10) != 0)
+                if ((param1.flags & 2) == 0)
                 {
-                    if ((param1.flags & 0x400) == 0)
+
+                    VigTransform vigTransform = Utilities.CompMatrixLV(param2, param1.vTransform);
+
+                    if ((param1.flags & 0x10) != 0)
                     {
-                        vigTransform.rotation = Utilities.FUN_2A4A4(vigTransform.rotation);
+                        if ((param1.flags & 0x400) == 0)
+                        {
+                            vigTransform.rotation = Utilities.FUN_2A4A4(vigTransform.rotation);
+                        }
+                        else
+                        {
+                            vigTransform.rotation = param1.vTransform.rotation;
+                        }
                     }
-                    else
+
+                    if (param1.vMesh != null)
                     {
-                        vigTransform.rotation = param1.vTransform.rotation;
+                        param1.vMesh.FUN_21F70(vigTransform); //Spawn Chasis
+                        //if (getDriver == 2)
+                        //FUN_2D778(param1.child2, vigTransform);
+                        Player = getPlayer;
+                        //Debug.Log("1 - PlayerObject: " + param1.name + " - " + "Vehiculo: " + getDriver + " - " + "Player: " + getPlayer);
+                    }
+
+                    if (param1.child2 != null)
+                    {
+                        param1.child2.name = "ChildVehicle";
+                        if (isBus == true)
+                        {
+                            //Muestra los tubos de escape solo si el vehículo actual es un bus
+                            FUN_2D778(param1.child2, vigTransform);
+                            Debug.Log("Bus - PlayerObject: " + param1.name + " - " + "Vehiculo: " + getDriver + " - " + "Player: " + getPlayer);
+                        }
+                        else if (isTruck != true)
+                        {
+                            // Muestra la carga solo si el vehículo actual es un camión
+                            FUN_2D778(param1.child2, vigTransform);
+                            //Debug.Log("Truck - PlayerObject: " + param1.name + " - " + "Vehiculo: " + getDriver + " - " + "Player: " + getPlayer);
+                        }
                     }
                 }
-                if (param1.vMesh != null)
-                {
-                    param1.vMesh.FUN_21F70(vigTransform);
-                }
-                if (param1.child2 != null)
-                {
-                    FUN_2D778(param1.child2, vigTransform);
-                }
+                param1 = param1.child;
             }
-            param1 = param1.child;
+            while (param1 != null);
         }
-        while (param1 != null);
     }
+
+    public bool updateReflections = true;
+    public float reflectionUpdateTime = 0.5f; //Tiempo en segundos entre actualizaciones de reflejos
+    VigObject getPlayer;
+    int getDriver;
+
+    private bool isBus = false;
+    private bool isTruck = false;
+    VigObject Player;
+
+    //Metodo StatsPanel 
+    public void SetReflections(VigObject param1, int driver)
+    {
+        isBus = false;
+        isTruck = false;
+
+        if (driver == 4)
+        {
+            Player = param1;
+            isTruck = true;
+        }
+        else if (driver == 8)
+        {
+            Player = param1;
+            isBus = true;
+        }
+
+        getPlayer = param1;
+        getDriver = driver;
+
+        //Debug.Log("Objeto: " + param1);
+        FUN_2D9E0(param1);
+    }
+
+    //Reflejo y otros
+
 
     public void FUN_2D9E0(VigObject param1)
     {
+
+        //Código para actualizar los reflejos aquí
         Utilities.ResetMesh(param1);
+
+        //Optimiza La carga en el escenario
         if ((param1.flags & 2) != 0 || !FUN_2E22C(param1.vTransform.position, param1.DAT_58))
         {
             return;
         }
+
         VigTransform vigTransform = Utilities.CompMatrixLV(DAT_F00, param1.vTransform);
+
         if (vigTransform.position.z >= 4194304)
         {
             return;
         }
+
         if ((param1.flags & 0x10) != 0)
         {
             if ((param1.flags & 0x400) == 0)
@@ -15492,7 +15924,9 @@ public class GameManager : MonoBehaviour
                 vigTransform.rotation = param1.vTransform.rotation;
             }
         }
+
         uint num = 64u;
+
         if ((param1.flags & 0x2000) != 0)
         {
             int num2 = param1.vTransform.position.x;
@@ -15515,20 +15949,32 @@ public class GameManager : MonoBehaviour
             }
             num = (uint)(terrain.vertices[terrain.chunks[((uint)(num2 >> 16) >> 6) * 32 + ((uint)(num3 >> 16) >> 6)] * 4096 + (((long)(num3 >> 16) & 63L) * 2 + ((long)(num2 >> 16) & 63L) * 128) / 2] & 0xF800) >> 8;
         }
+
         Utilities.SetBackColor((int)num, (int)num, (int)num);
+
         if (param1.DAT_6C == 0 || vigTransform.position.z <= param1.DAT_6C)
         {
             if ((param1.flags & 0x20000) == 0)
             {
                 if ((param1.flags & 0x10000) == 0 || DAT_DA0 <= param1.vTransform.position.z || param1.vTransform.position.y + param1.DAT_58 <= DAT_DB0)
                 {
+                    //if (shouldRunCoroutine)
+                    //{
+                    //    updateReflections = false;
+                    //    shouldRunCoroutine = false;
+                    //    StartCoroutine(UpdateReflections());
+                    //}
+                    //Spawn Vehicle?
                     if (param1.vMesh != null)
                     {
-                        param1.vMesh.FUN_21F70(vigTransform);
+                        param1.vMesh.FUN_21F70(vigTransform); //Carroceria Dakota
+
+                        //Debug.Log("SPAWN??: " + vigTransform);
                     }
                     if (param1.child2 != null)
                     {
-                        FUN_2D778(param1.child2, vigTransform);
+
+                        FUN_2D778(param1.child2, vigTransform); //Llantas Dakota y Carroceria de otros
                     }
                 }
                 else
@@ -15556,6 +16002,7 @@ public class GameManager : MonoBehaviour
                 {
                     param1.child2.FUN_2D5EC(vigTransform, n, param2);
                 }
+
             }
         }
         else if (param1.vLOD != null)
@@ -15570,6 +16017,7 @@ public class GameManager : MonoBehaviour
             }
             param1.vShadow.FUN_4C73C();
         }
+
     }
 
     private void FUN_2DEE8(int param1, int param2)

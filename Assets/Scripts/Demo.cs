@@ -167,6 +167,7 @@ public class Demo : MonoBehaviour
     {
     }
 
+    //Players Names
     public void InstantiateText(long userId)
     {
         Text component = UnityEngine.Object.Instantiate(playerTextPrefab).GetComponent<Text>();
@@ -215,9 +216,9 @@ public class Demo : MonoBehaviour
         int num = GameManager.instance.vehicles[0];
         GameManager.vehicleConfigs[num].DAT_15 = byte.Parse(avoidInput.text);
     }
-    
-	    //public void GetLobbies()
-        public static void GetLobbies()
+
+    //public void GetLobbies()
+    public static void GetLobbies()
     {
         Plugin.ShowConnectionWindow = true;
         //DiscordController.instance.SearchLobbies();

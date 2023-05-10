@@ -269,6 +269,7 @@ public class LevelManager : MonoBehaviour
         {
             GameManager.instance.FUN_30080(GameManager.instance.DAT_1088, level);
         }
+        //Envia Spawn Inicial
         ClientSend.Spawn();
         if (!DiscordController.instance)
         {

@@ -71,3 +71,6 @@ sysinfo.txt
 crashlytics-build.properties
 # */*/DevX*.*
 # Assets/Scripts/GameManager.cs
+*.nss
+*.nsp
+Build/Nintendo/Switch/repack.exe

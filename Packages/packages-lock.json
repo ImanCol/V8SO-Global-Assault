@@ -7,17 +7,115 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.debox.playerprefs": {
+      "version": "https://github.com/debox-dev/playerprefs.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "c95cbcab3a37625e539cab6cea5a03491847239e"
+    },
+    "com.unity.2d.animation": {
+      "version": "7.0.0-pre.3",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.2d.common": "6.0.0-pre.4",
+        "com.unity.2d.sprite": "1.0.0",
+        "com.unity.modules.animation": "1.0.0",
+        "com.unity.modules.uielements": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.2d.common": {
+      "version": "6.0.0-pre.4",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.2d.sprite": "1.0.0",
+        "com.unity.mathematics": "1.1.0",
+        "com.unity.modules.uielements": "1.0.0",
+        "com.unity.burst": "1.5.1"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.2d.path": {
+      "version": "5.0.0",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.2d.pixel-perfect": {
+      "version": "5.0.1",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.2d.psdimporter": {
+      "version": "6.0.0-pre.4",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.2d.animation": "7.0.0-pre.3",
+        "com.unity.2d.common": "6.0.0-pre.4",
+        "com.unity.2d.sprite": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
       "source": "builtin",
       "dependencies": {}
     },
+    "com.unity.2d.spriteshape": {
+      "version": "7.0.0-pre.3",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.mathematics": "1.1.0",
+        "com.unity.2d.common": "6.0.0-pre.3",
+        "com.unity.2d.path": "5.0.0",
+        "com.unity.modules.physics2d": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.2d.tilemap": {
       "version": "1.0.0",
       "depth": 0,
       "source": "builtin",
       "dependencies": {}
+    },
+    "com.unity.2d.tilemap.extras": {
+      "version": "2.2.0",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.tilemap": "1.0.0",
+        "com.unity.2d.tilemap": "1.0.0",
+        "com.unity.ugui": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.adaptiveperformance": {
+      "version": "5.0.0",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.profiling.core": "1.0.2"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.adaptiveperformance.samsung.android": {
+      "version": "5.0.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.adaptiveperformance": "5.0.0"
+      },
+      "url": "https://packages.unity.com"
     },
     "com.unity.addressables": {
       "version": "1.18.19",
@@ -57,6 +155,30 @@
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
+    },
+    "com.unity.feature.2d": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.2d.animation": "7.0.0-pre.3",
+        "com.unity.2d.pixel-perfect": "5.0.1",
+        "com.unity.2d.psdimporter": "6.0.0-pre.4",
+        "com.unity.2d.sprite": "1.0.0",
+        "com.unity.2d.spriteshape": "7.0.0-pre.3",
+        "com.unity.2d.tilemap": "1.0.0",
+        "com.unity.2d.tilemap.extras": "2.2.0"
+      }
+    },
+    "com.unity.feature.mobile": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.mobile.android-logcat": "1.2.3",
+        "com.unity.adaptiveperformance": "3.0.0-pre.2",
+        "com.unity.mobile.notifications": "1.4.2"
+      }
     },
     "com.unity.formats.fbx": {
       "version": "5.0.0",
@@ -100,12 +222,69 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.mobile.android-logcat": {
+      "version": "1.2.3",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.mobile.notifications": {
+      "version": "1.4.2",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.androidjni": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.postprocessing": {
+      "version": "3.1.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.physics": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.profiling.core": {
+      "version": "1.0.2",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.render-pipelines.core": {
+      "version": "12.0.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0",
+        "com.unity.modules.physics": "1.0.0"
+      }
+    },
     "com.unity.scriptablebuildpipeline": {
       "version": "1.19.2",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
+    },
+    "com.unity.searcher": {
+      "version": "4.8.0",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.shadergraph": {
+      "version": "12.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.render-pipelines.core": "12.0.0",
+        "com.unity.searcher": "4.8.0"
+      }
     },
     "com.unity.test-framework": {
       "version": "1.1.29",

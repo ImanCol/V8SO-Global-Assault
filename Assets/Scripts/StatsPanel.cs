@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -9,7 +10,8 @@ using Random = UnityEngine.Random;
 public class StatsPanel : MonoBehaviour
 {
     public _STATS_TYPE state;
-    public Camera[] cameras;
+    public List<Camera> cameras = new List<Camera>(); //Lista de Vehiculos (Players)
+    public List<RawImage> playersRawImages = new List<RawImage>();
     public Image panel;
     public Image background;
     public Image accelBackground;
@@ -30,7 +32,10 @@ public class StatsPanel : MonoBehaviour
     public TextMeshProUGUI avoidancePlusText;
     public List<Image> signs;
     public TextMeshProUGUI desc;
+    public List<TextMeshProUGUI> descDriver;
     public List<Image> poses;
+    public GameObject selectMap;
+    public List<Sprite> maps;
     public List<Sprite> panelSprites;
     public List<Sprite> backgroundSprites;
     public List<Sprite> sliderSprites;
@@ -56,15 +61,14 @@ public class StatsPanel : MonoBehaviour
     private Vehicle vehicle6;
     private Vehicle vehicle7;
     private Vehicle vehicle8;
-    private int cursor;
+    public int cursor = 0;
     public int spawnVehicleID;
     public int spawnVehicleID2;
     GameManager gameManager;
-    List<Vehicle> vehicles = new List<Vehicle>(); //Lista de Vehiculos (Players)
+    public List<Vehicle> vehicles = new List<Vehicle>(); //Lista de Vehiculos (Players)
     public Dropdown PlayersDropdown;
     public int Players = 1;
     public List<Vector3Int> Spawnposition = new List<Vector3Int>();
-
     public Image panelOnline;
     public List<Slider2> accelPlayers;
     public List<Slider2> speedPlayers;
@@ -74,7 +78,14 @@ public class StatsPanel : MonoBehaviour
     public List<Slider2> speedPlusPlayers;
     public List<Slider2> armorPlusPlayers;
     public List<Slider2> avoidancePlusPlayers;
-
+    public List<Image> accelsBackgroundPlayers;
+    public List<Image> speedsBackgroundPlayers;
+    public List<Image> armorsBackgroundPlayers;
+    public List<Image> avoidancesBackgroundPlayers;
+    public List<Image> accelsPlusBackgroundPlayers;
+    public List<Image> speedsPlusBackgroundPlayers;
+    public List<Image> armorsPlusBackgroundPlayers;
+    public List<Image> avoidancesPlusBackgroundPlayers;
     public void SetPlayer()
     {
         switch (PlayersDropdown.value)
@@ -140,24 +151,96 @@ public class StatsPanel : MonoBehaviour
         1,
         1
     };
-
     private static Vector3Int DAT_15DE8 = new Vector3Int(-170, 0, 0);
-
     private void Start()
     {
+        reflectionsCoroutine = StartCoroutine(UpdateReflections());
+        StartCoroutine(UpdateReflections());
+
         for (int i = 0; i <= 9; i++)
             vehicles.Add(vehicle);
         Debug.Log("Add: " + vehicles);
 
         //Vehiculo inicial
-        //SpawnVehicle(0);
+        SetPlayer();
+        SpawnVehicle(1, 0);
+
+        // Crear un RenderTexture para cada cámara en la lista
+
+        RenderTexture rt = new RenderTexture(textureWidth, textureHeight, 16, RenderTextureFormat.ARGB32); //Principal
+        rtList.Add(rt);
+        for (int i = 1; i < cameras.Count; i++)
+        {
+
+            rt = new RenderTexture(480, 320, 16, RenderTextureFormat.ARGB32);
+            rtList.Add(rt);
+        }
+
+        //Asignar RenderTexture a la Camaras y al RawImage(UI)
+        for (int i = 1; i < cameras.Count; i++)
+        {
+            Camera cam = cameras[i];
+            rt = rtList[i];
+            cam.targetTexture = rt;
+            playersRawImages[i].texture = rt;
+        }
+
+    }
+    void OnDisable()
+    {
+        //Liberar memoria de todos los RenderTextures
+        foreach (RenderTexture rt in rtList)
+        {
+            rt.Release();
+        }
     }
 
+    public int setPAD;
+
+    public void setPadUP()
+    {
+        if (PlayersDropdown.value < 17)
+        {
+            PlayersDropdown.value += 1;
+            Debug.Log("PRESS UP");
+        }
+    }
+    public void setPadDOWN()
+    {
+        if (PlayersDropdown.value > 0)
+        {
+            PlayersDropdown.value -= 1;
+            Debug.Log("PRESS DOWN");
+        }
+    }
+
+    public void setPadLEFT()
+    {
+        setPAD = 1;
+    }
+
+    public void setPadRIGHT()
+    {
+        setPAD = 2;
+    }
+
+    bool pressed = true;
     private void Update()
     {
+        if (GameManager.instance.DriverPlus && pressed == true)
+        {
+            pressed = false;
+            SpawnVehicle(Players, cursor);
+        }
+        else if (!GameManager.instance.DriverPlus && pressed == false)
+        {
+            pressed = true;
+            SpawnVehicle(Players, cursor);
+        }
+
         SetPlayer();
 
-        if (Input.GetButtonDown("P1_RIGHT"))
+        if (Input.GetButtonDown("P1_RIGHT") || setPAD == 2)
         {
             poses[cursor].gameObject.SetActive(value: false);
             if (cursor < 17)
@@ -186,7 +269,7 @@ public class StatsPanel : MonoBehaviour
             SpawnVehicle(Players, cursor);
             poses[cursor].gameObject.SetActive(value: true);
         }
-        else if (Input.GetButtonDown("P1_LEFT"))
+        else if (Input.GetButtonDown("P1_LEFT") || setPAD == 1)
         {
             poses[cursor].gameObject.SetActive(value: false);
             if (cursor > 0)
@@ -221,13 +304,69 @@ public class StatsPanel : MonoBehaviour
             questAnimators[cursor].gameObject.SetActive(value: true);
             questAnimators[cursor].SetTrigger("Next");
         }
+        setPAD = 0;
     }
 
+    public List<RenderTexture> rtList = new List<RenderTexture>();
+    public int textureWidth = 256;
+    public int textureHeight = 256;
+    public float targetFrameRate = 60;
+    public float fixedUpdateRate = 1f / 60f; // Tasa de fotogramas fija de 60 fps
+    public float timeSinceLastUpdate = 0f;
+    public float reflectionUpdateTime = 0.1f;
+    public int Vehiclerelfection = 0;
+
+    IEnumerator UpdateReflections()
+    {
+        while (true)
+        {
+            for (int i = 0; i < vehicles.Count; i++)
+            {
+                Vehicle vehicle = this.vehicles[i];
+                if (i == Vehiclerelfection)
+                {
+                    if (vehicle == null)
+                    {
+                        continue;
+                    }
+                    if (cursor == 4)
+                    {
+
+                        GameManager.instance.SetReflections(vehicle, cursor);
+                    }
+                    else
+                    {
+                        //Solo se ejecuta cada updateTime segundos
+                        GameManager.instance.SetReflections(vehicle, cursor);
+
+                    }
+                }
+            }
+            yield return new WaitForSeconds(reflectionUpdateTime);
+            Vehiclerelfection += 1;
+            if (Vehiclerelfection == 10)
+            {
+                Vehiclerelfection = 0;
+            }
+        }
+    }
+
+    private void StopReflections()
+    {
+        if (reflectionsCoroutine != null)
+        {
+            StopCoroutine(reflectionsCoroutine);
+            reflectionsCoroutine = null;
+        }
+    }
+    private Coroutine reflectionsCoroutine;
     private void FixedUpdate()
     {
         for (int i = 0; i < vehicles.Count; i++)
         {
+            //Debug.Log("Vehicle Set: " + vehicles.Count);
             Vehicle vehicle = this.vehicles[i];
+
             if (vehicle == null)
             {
                 continue;
@@ -240,6 +379,10 @@ public class StatsPanel : MonoBehaviour
             GameManager.instance.FUN_2FEE8(vehicle, (ushort)Menu.instance.tick); //unknow
 
             //Detecta Colision Suelo y reproduce Audio
+
+            //Debug.Log("Debug Vehicle: " + vehicle.DAT_A6);
+            //Debug.Log("Debug flags: " + vehicle.flags);
+
             if ((vehicle.flags & 0x12000000) == 268435456)
             {
                 int param = 3;
@@ -251,13 +394,21 @@ public class StatsPanel : MonoBehaviour
                         param = 1;
                     }
                 }
-                GameManager.instance.FUN_1E28C(1, Menu.instance.sounds, param);
+                if (Players == 1)
+                {
+                    GameManager.instance.FUN_1E28C(1, Menu.instance.sounds, param);
+                }
                 vehicle.flags |= 33554432u;
+
             }
+            //Posicion?
+            //Debug.Log("Vehicle Position : " + vehicle.vTransform.position.y);
             vehicle.vTransform.position.z = 67108864; //unknow
+                                                      //vehicle.vTransform.position.y = 3080659; //unknow
             vehicle.vTransform.position.x = 67108864; //unknow
-            GameManager.instance.FUN_2DE18();
-            GameManager.instance.FUN_2D9E0(vehicle);
+            GameManager.instance.FUN_2DE18(); //Shadow?
+
+            //Solo se ejecuta cada updateTime segundos
         }
     }
 
@@ -265,103 +416,216 @@ public class StatsPanel : MonoBehaviour
     public int DriverSpeedPlus;
     public int DriverArmorPlus;
     public int DriverAvoidancePlus;
+
+    //Lobby
+    public string playersNames;
+
     public void SetState(int value)
     {
         state = (_STATS_TYPE)value;
     }
+
     public ushort param = 0;
+
+    public static object Instance { get; protected set; }
+    public static StatsPanel instance;
+    Color targetColor;
+    Sprite targetSprite;
+    Sprite targetPlusSprite;
+    int bg;
 
     //int PlayersID, int id, Vector3Int position
     public void SpawnVehicle(int PlayersID, int id)
     {
-        Debug.Log("Borras:" + vehicles[Players]);
+        bg = 0;
+        //Debug.Log("Borras:" + vehicles[Players].name);
         if (this.vehicles[Players] != null)
         {
             GameManager.instance.FUN_308C4(this.vehicles[Players]);
         }
 
+
         switch (id)
         {
             case 0:
-                desc.text = "Wonderwagon – a white and pink Baja buggy boasting\nhigh acceleration and avoidance, but low armor.";
+                if (PlayersID == 1)
+                {
+                    desc.text = "Wonderwagon – a white and pink Baja buggy boasting\nhigh acceleration and avoidance, but low armor.";
+                    descDriver[Players].text = "Wonderwagon";
+                }
                 goto IL_00db;
             case 1:
-                desc.text = "Thunderbolt – an ultramarine pony car with golden trims,\nboasting high speed and acceleration, but low avoidance.";
+                if (PlayersID == 1)
+                {
+                    desc.text = "Thunderbolt – an ultramarine pony car with golden trims,\nboasting high speed and acceleration, but low avoidance.";
+                    descDriver[Players].text = "Thunderbolt";
+                }
                 goto IL_00db;
             case 2:
-                desc.text = "Dakota Stunt Cycle – a red, white and blue stunt motorcycle\nwith a sidecar attachment, boasting high top speed\nand avoidance, but low armor.";
+                if (PlayersID == 1)
+                {
+                    desc.text = "Dakota Stunt Cycle – a red, white and blue stunt motorcycle\nwith a sidecar attachment, boasting high top speed\nand avoidance, but low armor.";
+                    descDriver[Players].text = "Dakota Stunt Cycle";
+                }
                 goto IL_00db;
             case 3:
-                desc.text = "Samson Tow Truck – an orange tow truck with white trims,\nboasting high acceleration and average armor,\nbut low tracking avoidance.";
+                if (PlayersID == 1)
+                {
+                    desc.text = "Samson Tow Truck – an orange tow truck with white trims,\nboasting high acceleration and average armor,\nbut low tracking avoidance.";
+                    descDriver[Players].text = "Samson Tow Truck";
+                }
                 goto IL_00db;
             case 4:
-                desc.text = "Livingston Truck – a yellow and brown tandem\naxle conventional truck boasting high armor,\nbut low tracking avoidance.";
+                if (PlayersID == 1)
+                {
+                    desc.text = "Livingston Truck – a yellow and brown tandem\naxle conventional truck boasting high armor,\nbut low tracking avoidance.";
+                    descDriver[Players].text = "Livingston Truck";
+                }
                 goto IL_00db;
             case 5:
-                desc.text = "Xanadu RV – a cream-colored motorhome boasting\nhigh armor, but otherwise mediocre stats.";
+                if (PlayersID == 1)
+                {
+                    desc.text = "Xanadu RV – a cream-colored motorhome boasting\nhigh armor, but otherwise mediocre stats.";
+                    descDriver[Players].text = "Xanadu RV";
+                }
                 goto IL_00db;
             case 6:
-                desc.text = "Palomino XIII – a golden concept car from the future,\nboasting high acceleration and top speed,\nbut low tracking avoidance.";
+                if (PlayersID == 1)
+                {
+                    desc.text = "Palomino XIII – a golden concept car from the future,\nboasting high acceleration and top speed,\nbut low tracking avoidance.";
+                    descDriver[Players].text = "Palomino XIII";
+                }
                 goto IL_0376;
             case 7:
-                desc.text = "El Guerrero – a rusted tan utility vehicle boasting\nhigh acceleration, but low tracking avoidance.";
+                if (PlayersID == 1)
+                {
+                    desc.text = "El Guerrero – a rusted tan utility vehicle boasting\nhigh acceleration, but low tracking avoidance.";
+                    descDriver[Players].text = "El Guerrero";
+                }
                 goto IL_0376;
             case 8:
-                desc.text = "Blue Burro Bus – a white and metal grey tandem-axle\nprison bus, boasting high armor but low top speed.";
+                if (PlayersID == 1)
+                {
+                    desc.text = "Blue Burro Bus – a white and metal grey tandem-axle\nprison bus, boasting high armor but low top speed.";
+                    descDriver[Players].text = "Blue Burro Bus";
+                }
                 goto IL_0376;
             case 9:
-                desc.text = "Excelsior Stretch – a white limousine boasting\naverage balanced stats, but low avoidance.";
+                if (PlayersID == 1)
+                {
+                    desc.text = "Excelsior Stretch – a white limousine boasting\naverage balanced stats, but low avoidance.";
+                    descDriver[Players].text = "Excelsior Stretch";
+                }
                 goto IL_0376;
             case 10:
-                desc.text = "Tsunami – a futuristic red motorcycle boasting\nhigh top speed and acceleration, but low armor.";
+                if (PlayersID == 1)
+                {
+                    desc.text = "Tsunami – a futuristic red motorcycle boasting\nhigh top speed and acceleration, but low armor.";
+                    descDriver[Players].text = "Tsunami";
+                }
                 goto IL_0376;
             case 11:
-                desc.text = "Marathon – a blue and yellow subcompact car boasting\nhigh tracking avoidance, but low armor.";
+                if (PlayersID == 1)
+                {
+                    desc.text = "Marathon – a blue and yellow subcompact car boasting\nhigh tracking avoidance, but low armor.";
+                    descDriver[Players].text = "Marathon";
+                }
                 goto IL_0376;
             case 12:
-                desc.text = "Moon Trekker – a stolen white and orange moon rover\nboasting high acceleration and tracking avoidance,\nbut low top speed.";
+                if (PlayersID == 1)
+                {
+                    desc.text = "Moon Trekker – a stolen white and orange moon rover\nboasting high acceleration and tracking avoidance,\nbut low top speed.";
+                    descDriver[Players].text = "Moon Trekker";
+                }
                 goto IL_0611;
             case 13:
-                desc.text = "Grubb Dual Loader – a rusted brown waste collection truck\nboasting high armor, but low top speed and tracking\navoidance.";
+                if (PlayersID == 1)
+                {
+                    desc.text = "Grubb Dual Loader – a rusted brown waste collection truck\nboasting high armor, but low top speed and tracking\navoidance.";
+                    descDriver[Players].text = "Grubb Dual Loader";
+                }
                 goto IL_0611;
             case 14:
-                desc.text = "Chrono Stinger – a purple sports car boasting\nhigh acceleration and top speed, but low armor.";
+                if (PlayersID == 1)
+                {
+                    desc.text = "Chrono Stinger – a purple sports car boasting\nhigh acceleration and top speed, but low armor.";
+                    descDriver[Players].text = "Chrono Stinger";
+                }
                 goto IL_0611;
             case 15:
-                desc.text = "Vertigo – a silver concept car boasting high speed\nand acceleration, but low armor.";
+                if (PlayersID == 1)
+                {
+                    desc.text = "Vertigo – a silver concept car boasting high speed\nand acceleration, but low armor.";
+                    descDriver[Players].text = "Vertigo";
+                }
                 goto IL_0611;
             case 16:
-                desc.text = "Goliath Halftrack – a tan open-top armored personnel carrier\nboasting high acceleration and armor, but low top speed\nand avoidance.";
+                if (PlayersID == 1)
+                {
+                    desc.text = "Goliath Halftrack – a tan open-top armored personnel carrier\nboasting high acceleration and armor, but low top speed\nand avoidance.";
+                    descDriver[Players].text = "Goliath Halftrack";
+                }
                 goto IL_0611;
             case 17:
                 {
-                    desc.text = "Wapiti 4WD – a brown SUV boasting high acceleration.";
+                    if (PlayersID == 1)
+                    {
+                        desc.text = "Wapiti 4WD – a brown SUV boasting high acceleration.";
+                        descDriver[Players].text = "Wapiti 4WD";
+                    }
                     goto IL_0611;
                 }
             IL_0611:
                 panel.sprite = panelSprites[2];
                 background.sprite = backgroundSprites[2];
-                accelBackground.sprite = sliderSprites[2];
-                speedBackground.sprite = sliderSprites[2];
-                armorBackground.sprite = sliderSprites[2];
-                avoidanceBackground.sprite = sliderSprites[2];
-                accelPlusBackground.sprite = sliderPlusSprites[2];
-                speedPlusBackground.sprite = sliderPlusSprites[2];
-                armorPlusBackground.sprite = sliderPlusSprites[2];
-                avoidancePlusBackground.sprite = sliderPlusSprites[2];
-                signs[0].sprite = signSprites[2];
-                signs[1].sprite = signSprites[2];
-                signs[2].sprite = signSprites[2];
-                signs[3].sprite = signSprites[2];
-                accelText.color = textColors[2];
-                speedText.color = textColors[2];
-                armorText.color = textColors[2];
-                avoidanceText.color = textColors[2];
-                accelPlusText.color = textColors[2];
-                speedPlusText.color = textColors[2];
-                armorPlusText.color = textColors[2];
+
+                targetSprite = sliderSprites[2];
+                targetPlusSprite = sliderPlusSprites[2];
+
+                if (panelOnline != null)
+                {
+                    if (panelOnline.enabled)
+                    {
+                        bg = 1;
+                        targetColor = textColors[5];
+                        targetSprite = sliderSprites[3];
+                        targetPlusSprite = sliderPlusSprites[3];
+                    }
+                }
+                if (PlayersID == 1)
+                {
+                    accelsBackgroundPlayers[bg].sprite = targetSprite;
+                    accelsBackgroundPlayers[bg].color = targetColor;
+                    speedsBackgroundPlayers[bg].sprite = targetSprite;
+                    speedsBackgroundPlayers[bg].color = targetColor;
+                    armorsBackgroundPlayers[bg].sprite = targetSprite;
+                    armorsBackgroundPlayers[bg].color = targetColor;
+                    avoidancesBackgroundPlayers[bg].sprite = targetSprite;
+                    avoidancesBackgroundPlayers[bg].color = targetColor;
+                    accelsPlusBackgroundPlayers[bg].sprite = targetPlusSprite;
+                    accelsPlusBackgroundPlayers[bg].color = targetColor;
+                    speedsPlusBackgroundPlayers[bg].sprite = targetPlusSprite;
+                    speedsPlusBackgroundPlayers[bg].color = targetColor;
+                    armorsPlusBackgroundPlayers[bg].sprite = targetPlusSprite;
+                    armorsPlusBackgroundPlayers[bg].color = targetColor;
+                    avoidancesPlusBackgroundPlayers[bg].sprite = targetPlusSprite;
+                    avoidancesPlusBackgroundPlayers[bg].color = targetColor;
+
+                    signs[0].sprite = signSprites[2];
+                    signs[1].sprite = signSprites[2];
+                    signs[2].sprite = signSprites[2];
+                    signs[3].sprite = signSprites[2];
+                    accelText.color = textColors[2];
+                    speedText.color = textColors[2];
+                    armorText.color = textColors[2];
+                    avoidanceText.color = textColors[2];
+                    accelPlusText.color = textColors[2];
+                    speedPlusText.color = textColors[2];
+                    armorPlusText.color = textColors[2];
+                    avoidancePlusText.color = textColors[2];
+                }
                 cameras[Players].backgroundColor = textColors[2];
-                avoidancePlusText.color = textColors[2];
+
                 if (panelOnline.enabled)
                 {
                     Debug.Log("Activo");
@@ -373,27 +637,53 @@ public class StatsPanel : MonoBehaviour
             IL_0376:
                 panel.sprite = panelSprites[1];
                 background.sprite = backgroundSprites[1];
-                accelBackground.sprite = sliderSprites[1];
-                speedBackground.sprite = sliderSprites[1];
-                armorBackground.sprite = sliderSprites[1];
-                avoidanceBackground.sprite = sliderSprites[1];
-                accelPlusBackground.sprite = sliderPlusSprites[1];
-                speedPlusBackground.sprite = sliderPlusSprites[1];
-                armorPlusBackground.sprite = sliderPlusSprites[1];
-                avoidancePlusBackground.sprite = sliderPlusSprites[1];
-                signs[0].sprite = signSprites[1];
-                signs[1].sprite = signSprites[1];
-                signs[2].sprite = signSprites[1];
-                signs[3].sprite = signSprites[1];
-                accelText.color = textColors[1];
-                speedText.color = textColors[1];
-                armorText.color = textColors[1];
-                avoidanceText.color = textColors[1];
-                accelPlusText.color = textColors[1];
-                speedPlusText.color = textColors[1];
-                armorPlusText.color = textColors[1];
+
+                targetSprite = sliderSprites[1];
+                targetPlusSprite = sliderPlusSprites[1];
+
+                if (panelOnline != null)
+                {
+                    if (panelOnline.enabled)
+                    {
+                        bg = 1;
+                        targetColor = textColors[4];
+                        targetSprite = sliderSprites[3];
+                        targetPlusSprite = sliderPlusSprites[3];
+                    }
+                }
+                if (PlayersID == 1)
+                {
+                    accelsBackgroundPlayers[bg].sprite = targetSprite;
+                    accelsBackgroundPlayers[bg].color = targetColor;
+                    speedsBackgroundPlayers[bg].sprite = targetSprite;
+                    speedsBackgroundPlayers[bg].color = targetColor;
+                    armorsBackgroundPlayers[bg].sprite = targetSprite;
+                    armorsBackgroundPlayers[bg].color = targetColor;
+                    avoidancesBackgroundPlayers[bg].sprite = targetSprite;
+                    avoidancesBackgroundPlayers[bg].color = targetColor;
+                    accelsPlusBackgroundPlayers[bg].sprite = targetPlusSprite;
+                    accelsPlusBackgroundPlayers[bg].color = targetColor;
+                    speedsPlusBackgroundPlayers[bg].sprite = targetPlusSprite;
+                    speedsPlusBackgroundPlayers[bg].color = targetColor;
+                    armorsPlusBackgroundPlayers[bg].sprite = targetPlusSprite;
+                    armorsPlusBackgroundPlayers[bg].color = targetColor;
+                    avoidancesPlusBackgroundPlayers[bg].sprite = targetPlusSprite;
+                    avoidancesPlusBackgroundPlayers[bg].color = targetColor;
+
+                    signs[0].sprite = signSprites[1];
+                    signs[1].sprite = signSprites[1];
+                    signs[2].sprite = signSprites[1];
+                    signs[3].sprite = signSprites[1];
+                    accelText.color = textColors[1];
+                    speedText.color = textColors[1];
+                    armorText.color = textColors[1];
+                    avoidanceText.color = textColors[1];
+                    accelPlusText.color = textColors[1];
+                    speedPlusText.color = textColors[1];
+                    armorPlusText.color = textColors[1];
+                    avoidancePlusText.color = textColors[1];
+                }
                 cameras[Players].backgroundColor = textColors[1];
-                avoidancePlusText.color = textColors[1];
 
                 //Error de Material en Menu-Elemento 1
                 LevelManager.instance.DAT_E48 = Menu.instance.reflections[1];
@@ -401,70 +691,111 @@ public class StatsPanel : MonoBehaviour
             IL_00db:
                 panel.sprite = panelSprites[0];
                 background.sprite = backgroundSprites[0];
-                accelBackground.sprite = sliderSprites[0];
-                speedBackground.sprite = sliderSprites[0];
-                armorBackground.sprite = sliderSprites[0];
-                avoidanceBackground.sprite = sliderSprites[0];
-                accelPlusBackground.sprite = sliderPlusSprites[0];
-                speedPlusBackground.sprite = sliderPlusSprites[0];
-                armorPlusBackground.sprite = sliderPlusSprites[0];
-                avoidancePlusBackground.sprite = sliderPlusSprites[0];
-                signs[0].sprite = signSprites[0];
-                signs[1].sprite = signSprites[0];
-                signs[2].sprite = signSprites[0];
-                signs[3].sprite = signSprites[0];
-                accelText.color = textColors[0];
-                speedText.color = textColors[0];
-                armorText.color = textColors[0];
-                avoidanceText.color = textColors[0];
-                accelPlusText.color = textColors[0];
-                speedPlusText.color = textColors[0];
-                armorPlusText.color = textColors[0];
+
+                targetSprite = sliderSprites[0];
+                targetPlusSprite = sliderPlusSprites[0];
+
+                if (panelOnline != null)
+                {
+                    if (panelOnline.enabled)
+                    {
+                        bg = 1;
+                        targetColor = textColors[3];
+                        targetSprite = sliderSprites[3];
+                        targetPlusSprite = sliderPlusSprites[3];
+                    }
+                }
+                else
+                {
+
+                }
+                if (PlayersID == 1)
+                {
+                    accelsBackgroundPlayers[bg].sprite = targetSprite;
+                    accelsBackgroundPlayers[bg].color = targetColor;
+                    speedsBackgroundPlayers[bg].sprite = targetSprite;
+                    speedsBackgroundPlayers[bg].color = targetColor;
+                    armorsBackgroundPlayers[bg].sprite = targetSprite;
+                    armorsBackgroundPlayers[bg].color = targetColor;
+                    avoidancesBackgroundPlayers[bg].sprite = targetSprite;
+                    avoidancesBackgroundPlayers[bg].color = targetColor;
+                    accelsPlusBackgroundPlayers[bg].sprite = targetPlusSprite;
+                    accelsPlusBackgroundPlayers[bg].color = targetColor;
+                    speedsPlusBackgroundPlayers[bg].sprite = targetPlusSprite;
+                    speedsPlusBackgroundPlayers[bg].color = targetColor;
+                    armorsPlusBackgroundPlayers[bg].sprite = targetPlusSprite;
+                    armorsPlusBackgroundPlayers[bg].color = targetColor;
+                    avoidancesPlusBackgroundPlayers[bg].sprite = targetPlusSprite;
+                    avoidancesPlusBackgroundPlayers[bg].color = targetColor;
+
+                    signs[0].sprite = signSprites[0];
+                    signs[1].sprite = signSprites[0];
+                    signs[2].sprite = signSprites[0];
+                    signs[3].sprite = signSprites[0];
+                    accelText.color = textColors[0];
+                    speedText.color = textColors[0];
+                    armorText.color = textColors[0];
+                    avoidanceText.color = textColors[0];
+                    accelPlusText.color = textColors[0];
+                    speedPlusText.color = textColors[0];
+                    armorPlusText.color = textColors[0];
+                    avoidancePlusText.color = textColors[0];
+                }
                 cameras[Players].backgroundColor = textColors[0];
-                avoidancePlusText.color = textColors[0];
 
                 //Error de Material en Menu-Elemento 0
                 LevelManager.instance.DAT_E48 = Menu.instance.reflections[0];
                 break;
         }
-        Debug.Log("Camera:" + cameras[PlayersID]);
 
+        //Debug.Log("Camera:" + cameras[PlayersID]);
         cameras[PlayersID].transform.position = cameraPositions[id];
-        accel.value = GameManager.vehicleConfigs[id].DAT_2C[0] * 2;
-        speed.value = GameManager.vehicleConfigs[id].DAT_2C[1] * 2;
-        armor.value = GameManager.vehicleConfigs[id].DAT_2C[2] * 2;
-        avoidance.value = GameManager.vehicleConfigs[id].DAT_2C[3] * 2;
-
-        //Hack Plus
-        if (GameManager.instance.DriverPlus)
+        if (PlayersID == 1)
         {
-            DriverAccelPlus = 100;
-            DriverSpeedPlus = 100;
-            DriverArmorPlus = 100;
-            DriverAvoidancePlus = 100;
-        }
+            accelPlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[0] * 2;
+            speedPlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[1] * 2;
+            armorPlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[2] * 2;
+            avoidancePlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[3] * 2;
 
-        accelPlus.value = GameManager.instance.vehicleStats[id].accel + DriverAccelPlus;
-        speedPlus.value = GameManager.instance.vehicleStats[id].speed + DriverSpeedPlus;
-        armorPlus.value = GameManager.instance.vehicleStats[id].armor + DriverArmorPlus;
-        avoidancePlus.value = GameManager.instance.vehicleStats[id].avoidance + DriverAvoidancePlus;
-        //Visualizador Online
-        if (panelOnline != null)
-        {
-            if (panelOnline.enabled)
+
+            //Hack Plus
+            if (GameManager.instance.DriverPlus)
             {
-                accelPlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[0] * 2;
-                speedPlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[1] * 2;
-                armorPlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[2] * 2;
-                avoidancePlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[3] * 2;
-                accelPlusPlayers[0].value = GameManager.instance.vehicleStats[id].accel + DriverAccelPlus;
-                speedPlusPlayers[0].value = GameManager.instance.vehicleStats[id].speed + DriverSpeedPlus;
-                armorPlusPlayers[0].value = GameManager.instance.vehicleStats[id].armor + DriverArmorPlus;
-                avoidancePlusPlayers[0].value = GameManager.instance.vehicleStats[id].avoidance + DriverAvoidancePlus;
-                //Debug.Log("Online Lobby");
+                DriverAccelPlus = 100;
+                DriverSpeedPlus = 100;
+                DriverArmorPlus = 100;
+                DriverAvoidancePlus = 100;
+            }
+            else
+            {
+                DriverAccelPlus = 0;
+                DriverSpeedPlus = 0;
+                DriverArmorPlus = 0;
+                DriverAvoidancePlus = 0;
+            }
+
+            accelPlusPlayers[0].value = GameManager.instance.vehicleStats[id].accel + DriverAccelPlus;
+            speedPlusPlayers[0].value = GameManager.instance.vehicleStats[id].speed + DriverSpeedPlus;
+            armorPlusPlayers[0].value = GameManager.instance.vehicleStats[id].armor + DriverArmorPlus;
+            avoidancePlusPlayers[0].value = GameManager.instance.vehicleStats[id].avoidance + DriverAvoidancePlus;
+
+            //Visualizador Online
+            if (panelOnline != null)
+            {
+                if (panelOnline.enabled)
+                {
+                    accelPlayers[1].value = GameManager.vehicleConfigs[id].DAT_2C[0] * 2;
+                    speedPlayers[1].value = GameManager.vehicleConfigs[id].DAT_2C[1] * 2;
+                    armorPlayers[1].value = GameManager.vehicleConfigs[id].DAT_2C[2] * 2;
+                    avoidancePlayers[1].value = GameManager.vehicleConfigs[id].DAT_2C[3] * 2;
+                    accelPlusPlayers[1].value = GameManager.instance.vehicleStats[id].accel + DriverAccelPlus;
+                    speedPlusPlayers[1].value = GameManager.instance.vehicleStats[id].speed + DriverSpeedPlus;
+                    armorPlusPlayers[1].value = GameManager.instance.vehicleStats[id].armor + DriverArmorPlus;
+                    avoidancePlusPlayers[1].value = GameManager.instance.vehicleStats[id].avoidance + DriverAvoidancePlus;
+                    //Debug.Log("Online Lobby");
+                }
             }
         }
-
         ushort param = (ushort)(GameManager.instance.FUN_36558(0, id) ? salvagePartOffsets[id] : 0);
         Vehicle vehicle;
 
@@ -473,13 +804,14 @@ public class StatsPanel : MonoBehaviour
             if (id == 2 || id + 21 == 23)
             {
                 Debug.Log("Dakota");
-                vehicle = LevelManager.instance.xobfList[id + 21].FUN_3C464(param, GameManager.vehicleConfigs[1], typeof(Vehicle));
+                vehicle = LevelManager.instance.xobfList[id + 21].FUN_3C464(param, GameManager.vehicleConfigs[id], typeof(Vehicle));
+                //vehicle.child2 = LevelManager.instance.xobfList[id + 21].FUN_3C464(1, GameManager.vehicleConfigs[id], typeof(Vehicle));
                 //vehicle = LevelManager.instance.xobfList[id + 21].FUN_3C464(1, GameManager.vehicleConfigs[2], typeof(Vehicle));
             }
             else
             {
                 vehicle = LevelManager.instance.xobfList[id + 21].FUN_3C464(param, GameManager.vehicleConfigs[id], typeof(Vehicle));
-                Debug.Log("No Dakota");
+                // Debug.Log("No Dakota");
             }
             //id += 21;
             //Debug.Log("Plus!: " + id);
@@ -497,14 +829,21 @@ public class StatsPanel : MonoBehaviour
         VigMesh param2 = LevelManager.instance.xobfList[18].FUN_2CB74(gameObject, 56u, init: true);
         vehicle.FUN_4C7E0(param2, gameObject);
         vehicle.screen.x = Spawnposition[0].x;
-        vehicle.screen.y = Spawnposition[0].y;
+        if (PlayersID != 1)
+        {
+            vehicle.screen.y = 3133000;
+
+        }
+        else
+        {
+            vehicle.screen.y = Spawnposition[0].y;
+        }
         vehicle.screen.z = Spawnposition[0].z;
         vehicle.ApplyTransformation();
         vehicle.FUN_2D1DC();
         vehicle.FUN_3C9C4(0);
         FUN_536C(vehicle, 512); //Spawn Vehicle
         vehicle.name = "Player " + (Players);
-
 
         //Asigna Layers para Renderizar el una sola camara
         vehicle.gameObject.layer = Players + 9;
@@ -515,7 +854,16 @@ public class StatsPanel : MonoBehaviour
         }
 
         GameManager.instance.FUN_1E628(param, GameManager.instance.DAT_C2C, id, Spawnposition[0]);
-        GameManager.instance.FUN_1E28C(id + 1, Menu.instance.sounds, 4); //Spawn Sound
+
+        if (PlayersID == 1)
+        {
+            GameManager.instance.FUN_1E28C(id + 1, Menu.instance.sounds, 4); //Spawn Sound
+        }
+        else
+        {
+            GameManager.instance.FUN_1E28C(id + 1, Menu.instance.sounds, 3); //Spawn Sound
+            //GameManager.instance.FUN_1E098(1, Menu.instance.sounds, 3, 4095); //Spawn Sound
+        }
         //vehicles.Add(vehicle);
 
         this.vehicles[Players] = vehicle;

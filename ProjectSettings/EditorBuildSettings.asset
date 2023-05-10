@@ -51,11 +51,20 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/DEBUG-Online.unity
     guid: 10435b57e01bea847a31ea181ca40223
-  - enabled: 0
-    path: Assets/LEVELS/ROUTE66/ROUTE66_Original.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
     path: Assets/SHELL/MENU/MENU-Driver.unity
     guid: 618315963a797a242a9d2c816e4acb0b
+  - enabled: 1
+    path: Assets/LEVELS/ROUTE66/ROUTE66.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 0
+    path: Assets/LEVELS/ROUTE66/ROUTE66-.unity
+    guid: 2737a61b0d72fb043ac228434a534272
+  - enabled: 0
+    path: Assets/LEVELS/ROUTE66/ROUTE66 import.unity
+    guid: 4399b9fa41dca4d4aa0b038cd51e6879
   m_configObjects:
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 23883badba25b184195a6872c54714ad, type: 2}
+    com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: 2248ceb0becc1804da227a75d40eafb0, type: 2}
+    com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: ebcbce8e47beb974686a4f88003f2d84, type: 2}
     com.unity.addressableassets: {fileID: 11400000, guid: 4119d9bae22ea2f46a06279ea2bce6d1, type: 2}

@@ -523,7 +523,7 @@ public class XOBF_DB : MonoBehaviour
 
 	public Vehicle FUN_3C464(ushort param1, VehicleData param2, Type param3, bool bodyParts = false)
 	{
-		ushort @int = param1;
+		ushort @int = param1; //Wheels
 		Vehicle vehicle = bodyParts ? (ini.FUN_2C17C_2(param1, param3, (uint)(((animations.Length != 0) ? 1 : 0) << 3)) as Vehicle) : (ini.FUN_2C17C(param1, param3, (uint)(((animations.Length != 0) ? 1 : 0) << 3)) as Vehicle);
 		uint num = param2.DAT_0C;
 		if ((param2.DAT_0C & 0xF0) == 0)

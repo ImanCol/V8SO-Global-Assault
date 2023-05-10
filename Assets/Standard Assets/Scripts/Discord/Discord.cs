@@ -130,14 +130,13 @@ namespace Discord
         public void RunCallbacks()
         {
 
-//#if UNITY_EDITOR
+            //#if UNITY_EDITOR
             Result result = this.Methods.RunCallbacks(this.MethodsPtr);
             if (result != Result.Ok)
             {
                 throw new ResultException(result);
             }
-//#endif
-
+            //#endif
         }
 
         // Token: 0x0600004B RID: 75 RVA: 0x00003FAC File Offset: 0x000021AC
