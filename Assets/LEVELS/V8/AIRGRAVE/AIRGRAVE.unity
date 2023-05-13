@@ -3979,7 +3979,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.172549, g: 0.2313726, b: 0.2980392, a: 0}
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -6811,7 +6811,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: cc6910b3f8d842e09850941fb348f9d9, type: 2}
+  m_Material: {fileID: 2100000, guid: 24c9c0b413322d245b93ac251359580d, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -8614,7 +8614,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: cc6910b3f8d842e09850941fb348f9d9, type: 2}
+  m_Material: {fileID: 2100000, guid: 24c9c0b413322d245b93ac251359580d, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -8678,7 +8678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: cc6910b3f8d842e09850941fb348f9d9, type: 2}
+  m_Material: {fileID: 2100000, guid: 24c9c0b413322d245b93ac251359580d, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -9423,8 +9423,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95fc7db4098ac62a6e3e1194da26b243, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  occlusionPrefab: {fileID: 1791082649404618470, guid: c5650c11b233461c98177521a705ac6f, type: 3}
-  lensFlarePrefab: {fileID: 1791082649404618443, guid: b3064f38b5694e069a39250121634412, type: 3}
+  occlusionPrefab: {fileID: 7228088348418699657, guid: ddef3ea0f6c2fe24da99d08a484a166d, type: 3}
+  lensFlarePrefab: {fileID: 1773303195645709951, guid: 3e68426ccfc2e9648b6e6829f58547aa, type: 3}
   flash: {fileID: 1791082649404616417}
   hudRect: {fileID: 1791082651250110105}
   flaresRect: {fileID: 1791082651250110097}

@@ -506,7 +506,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1791082647508790539}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7289a659ae0940fe5a52666032adc87d, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b416fbce5a38cc47a3a1e709f95f5e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cfuStatus: "Checking for updates..."
@@ -2515,7 +2515,7 @@ MonoBehaviour:
     serializedVersion: 2
     rgba: 77568911
   DAT_E48: {fileID: 2100000, guid: 10a1c9e3c4094795a04ac7851dd4c490, type: 2}
-  DAT_E58: {fileID: 2100000, guid: 85f0e76744be48b189771bef7d140246, type: 2}
+  DAT_E58: {fileID: 2100000, guid: 145be1119f18f824a91a95cb8ed00165, type: 2}
   DAT_10F8: {x: -2372, y: -2348, z: 2372}
   DAT_1178: {fileID: 0}
   DAT_117C: 0
@@ -7608,7 +7608,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1791082647508790575}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b82968cb647c3b2e77313a417fb74a1, type: 3}
+  m_Script: {fileID: 11500000, guid: 7603ea0bddfe0444bb37c1bc8d650c14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   flags: 0
@@ -65465,8 +65465,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95fc7db4098ac62a6e3e1194da26b243, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  occlusionPrefab: {fileID: 1791082649404618470, guid: c5650c11b233461c98177521a705ac6f, type: 2}
-  lensFlarePrefab: {fileID: 1791082649404618443, guid: b3064f38b5694e069a39250121634412, type: 2}
+  occlusionPrefab: {fileID: 7228088348418699657, guid: ddef3ea0f6c2fe24da99d08a484a166d, type: 3}
+  lensFlarePrefab: {fileID: 1773303195645709951, guid: 3e68426ccfc2e9648b6e6829f58547aa, type: 3}
   flash: {fileID: 1791082649404616758}
   hudRect: {fileID: 1791082651250110286}
   flaresRect: {fileID: 1791082651250110289}

@@ -11373,6 +11373,9 @@ public class GameManager : MonoBehaviour
             case 17:
                 mapText = "Utah - Canyonlands";
                 break;
+            case 18:
+                mapText = "Colorado - Ski Resort";
+                break;
         }
         if (inDebug)
         {
@@ -14263,40 +14266,40 @@ public class GameManager : MonoBehaviour
     }
 
     public void FUN_3827C(Vehicle param1, VigTransform param2)
-    {
-        Vehicle vehicle = (Vehicle)param1.target;
-        if (vehicle != null)
-        {
-            VigObject vigObject = param1.weapons[param1.weaponSlot];
-            Vector3Int param3 = vehicle.screen;
-            short dAT_C;
-            int dAT_;
-            VigMesh param4;
-            if (vehicle.jammer == 0)
-            {
-                int num = 0;
-                param3 = vehicle.vTransform.position;
-                if (vigObject != null)
-                {
-                    num = (((vigObject.flags & 0x4000) != 0) ? 1 : 0);
-                }
-                dAT_C = param1.DAT_C6;
-                dAT_ = vehicle.DAT_58;
-                param4 = DAT_1150[num];
-            }
-            else
-            {
-                dAT_C = param1.DAT_C6;
-                dAT_ = vehicle.DAT_58;
-                param4 = DAT_1150[2];
-            }
-            FUN_380D8(param3, dAT_, param4, param2, dAT_C);
-        }
-        if (param1.jammer != 0 || (DAT_40 & 0x200000) != 0 || enableReticle)
-        {
-            FUN_380D8(param1.screen, param1.DAT_58, DAT_1150[3], param2, 256);
-        }
-    }
+	{
+		Vehicle vehicle = (Vehicle)param1.target;
+		if (vehicle != null)
+		{
+			VigObject vigObject = param1.weapons[param1.weaponSlot];
+			Vector3Int param3 = vehicle.screen;
+			short dAT_C;
+			int dAT_;
+			VigMesh param4;
+			if (vehicle.jammer == 0)
+			{
+				int num = 0;
+				param3 = vehicle.vTransform.position;
+				if (vigObject != null)
+				{
+					num = (((vigObject.flags & 0x4000) != 0) ? 1 : 0);
+				}
+				dAT_C = param1.DAT_C6;
+				dAT_ = vehicle.DAT_58;
+				param4 = DAT_1150[num];
+			}
+			else
+			{
+				dAT_C = param1.DAT_C6;
+				dAT_ = vehicle.DAT_58;
+				param4 = DAT_1150[2];
+			}
+			FUN_380D8(param3, dAT_, param4, param2, dAT_C);
+		}
+		if (param1.jammer != 0 || (DAT_40 & 0x200000) != 0 || enableReticle)
+		{
+			FUN_380D8(param1.screen, param1.DAT_58, DAT_1150[3], param2, 256);
+		}
+	}
 
     public uint FUN_4A970(uint param1, uint param2)
     {
@@ -14695,7 +14698,7 @@ public class GameManager : MonoBehaviour
             {
                 if (map == 1)
                 {
-                    map = 17;
+                    map = 18;
                 }
                 else
                 {
@@ -14706,9 +14709,9 @@ public class GameManager : MonoBehaviour
         }
         else if (setTouch == 2)
         {
-            if (map < 18)
+            if (map < 19)
             {
-                if (map == 17)
+                if (map == 18)
                 {
                     map = 1;
                 }
@@ -14865,63 +14868,63 @@ public class GameManager : MonoBehaviour
     }
 
     private void Update()
-    {
-        if (inMenu)
-        {
-            return;
-        }
-        if (inDebug)
-        {
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
-            {
-                Application.Quit();
-            }
-            return;
-        }
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (gameMode >= _GAME_MODE.Versus2)
-            {
-                DiscordController.instance.DisconnectNetwork2();
-            }
-            while (DiscordController.instance.pendingCallbacks)
-            {
-                DiscordController.instance.discord.RunCallbacks();
-            }
-            LoadDebug();
-        }
-        FUN_3827C(playerObjects[0], DAT_F00);
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Space))
-        {
-            paused = !paused;
-            if (gameMode >= _GAME_MODE.Versus2)
-            {
-                ClientSend.Pause();
-            }
-        }
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            enableReticle = !enableReticle;
-        }
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Return))
-        {
-            ScreenCapture.CaptureScreenshot("screenshot.png");
-        }
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Delete))
-        {
-            noAI = !noAI;
-        }
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Insert))
-        {
-            noPhysics = !noPhysics;
-        }
-        if (UnityEngine.Input.GetKeyDown(KeyCode.End))
-        {
-            noHUD = !noHUD;
-            UIManager.instance.hudRect.gameObject.SetActive(noHUD);
-            UIManager.instance.feedbackRect.gameObject.SetActive(noHUD);
-        }
-    }
+	{
+		if (inMenu)
+		{
+			return;
+		}
+		if (inDebug)
+		{
+			if (Input.GetKeyDown(KeyCode.Escape))
+			{
+				Application.Quit();
+			}
+			return;
+		}
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			if (gameMode >= _GAME_MODE.Versus2)
+			{
+				DiscordController.instance.DisconnectNetwork2();
+			}
+			while (DiscordController.instance.pendingCallbacks)
+			{
+				DiscordController.instance.discord.RunCallbacks();
+			}
+			LoadDebug();
+		}
+		FUN_3827C(playerObjects[0], DAT_F00);
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			paused = !paused;
+			if (gameMode >= _GAME_MODE.Versus2)
+			{
+				ClientSend.Pause();
+			}
+		}
+		if (Input.GetKeyDown(KeyCode.Alpha1))
+		{
+			enableReticle = !enableReticle;
+		}
+		if (Input.GetKeyDown(KeyCode.Return))
+		{
+			ScreenCapture.CaptureScreenshot("screenshot.png");
+		}
+		if (Input.GetKeyDown(KeyCode.Delete))
+		{
+			noAI = !noAI;
+		}
+		if (Input.GetKeyDown(KeyCode.Insert))
+		{
+			noPhysics = !noPhysics;
+		}
+		if (Input.GetKeyDown(KeyCode.End))
+		{
+			noHUD = !noHUD;
+			UIManager.instance.hudRect.gameObject.SetActive(noHUD);
+			UIManager.instance.feedbackRect.gameObject.SetActive(noHUD);
+		}
+	}
 
     private void FixedUpdate()
     {

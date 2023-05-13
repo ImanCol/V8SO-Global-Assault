@@ -46,10 +46,14 @@ public class OcclusionCamera : MonoBehaviour
             RenderTexture renderTexture = new RenderTexture(_camera.targetTexture);
             _camera.targetTexture = renderTexture;
             lensFlare.renderTexture = new Texture2D(64, 64, TextureFormat.R16, false, true);
-            float size = _preset.presets[id].size;
-            transform.localScale = new Vector3(size, size, size);
-            _camera.nearClipPlane = _preset.presets[id].clipNear;
-            _camera.farClipPlane = _preset.presets[id].clipFar;
+            
+            //Fallo de RenderTexture (Occlusion-Flares)
+            
+            //Debug.Log("Siza Camera: " + "/n" + _preset.presets[id].size + "/n" + " id: " + id);
+            //float size = _preset.presets[id].size;
+            //transform.localScale = new Vector3(size, size, size);
+            //_camera.nearClipPlane = _preset.presets[id].clipNear;
+            //_camera.farClipPlane = _preset.presets[id].clipFar;
             lensFlare.camera = this;
         }
     }

@@ -51,17 +51,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cameraTransform: {fileID: 0}
   _cameraOffset: {x: 0, y: 0}
-  _material: {fileID: 0}
+  _material: {fileID: 2100000, guid: 14bc0f3ef21458f4f95e01124925b07f, type: 2}
   _sortingOrder: 4096
   rectTransform: {fileID: 0}
-  _presets: {fileID: 0}
+  _presets: {fileID: 11400000, guid: 5c86fadb3935a804b88b6af471f4b7a2, type: 2}
   color:
     serializedVersion: 2
     rgba: 0
   distance: 0
   renderTexture: {fileID: 0}
   update: 0
-  camera: {fileID: 0}
-  min: 0
-  max: 0
-  divider: 0
+  camera: {fileID: 7228088348418699657, guid: ddef3ea0f6c2fe24da99d08a484a166d, type: 3}
+  min: 1
+  max: 2
+  divider: 40

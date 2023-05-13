@@ -42,7 +42,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5098576184200557467
 Transform:
   m_ObjectHideFlags: 0
@@ -479,6 +479,7 @@ MonoBehaviour:
   networkObjs: []
   networkEnemies: []
   leash: 0
+  driverPlus: 0
   statsPanel: {fileID: 0}
   currentDamageIndex: 2
   currentValueDifficulty: 1

@@ -57,12 +57,57 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/LEVELS/ROUTE66/ROUTE66.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 0
-    path: Assets/LEVELS/ROUTE66/ROUTE66-.unity
-    guid: 2737a61b0d72fb043ac228434a534272
-  - enabled: 0
-    path: Assets/LEVELS/ROUTE66/ROUTE66 import.unity
-    guid: 4399b9fa41dca4d4aa0b038cd51e6879
+  - enabled: 1
+    path: Assets/LEVELS/OLYMPIC/OLYMPIC.unity
+    guid: c1fe3b7e88caacb419bc916b6d4010bb
+  - enabled: 1
+    path: Assets/LEVELS/BAYOU/BAYOU.unity
+    guid: 486d98efe3cc317468692d19da015485
+  - enabled: 1
+    path: Assets/LEVELS/LAUNCH/LAUNCH.unity
+    guid: 6d6ee39af69b08440a42d9bbc2f5a885
+  - enabled: 1
+    path: Assets/LEVELS/STEELMIL/STEELMIL.unity
+    guid: ff3a2a87499d6c14dac1cffc4e196a97
+  - enabled: 1
+    path: Assets/LEVELS/NUCLEAR/NUCLEAR.unity
+    guid: c05415a4699a0784d88b76e46abf9257
+  - enabled: 1
+    path: Assets/LEVELS/OILFIELD/OILFIELD.unity
+    guid: 0834e9933446d4444b9571fe090814a5
+  - enabled: 1
+    path: Assets/LEVELS/HARBOR/HARBOR.unity
+    guid: 6b99b4cac82465d488792cf7c4860ac3
+  - enabled: 1
+    path: Assets/LEVELS/V8/SCRTBASE/SCRTBASE.unity
+    guid: d9893ea95edb8df43b85b3a76ed8f881
+  - enabled: 1
+    path: Assets/LEVELS/V8/SANDFACT/SANDFACT.unity
+    guid: 6d457f0e12b57804aa3e9edc4fdd2621
+  - enabled: 1
+    path: Assets/LEVELS/V8/OILFIELD/OILFIELD2.unity
+    guid: 8fc1befe25629f54f8a2fa6febceed56
+  - enabled: 1
+    path: Assets/LEVELS/V8/AIRGRAVE/AIRGRAVE.unity
+    guid: 92d428415ada9e442af42567e80c3ff4
+  - enabled: 1
+    path: Assets/LEVELS/V8/WILDWEST/WILDWEST.unity
+    guid: 320d366f8954a75459098c00a1f8f28d
+  - enabled: 1
+    path: Assets/LEVELS/V8/HOOVRDAM/HOOVRDAM.unity
+    guid: 72b6e022728095143aae6f614311fc12
+  - enabled: 1
+    path: Assets/LEVELS/V8/VALLYFRM/VALLYFRM.unity
+    guid: f9131d03e1ae3f240b84ddd5594d471a
+  - enabled: 1
+    path: Assets/LEVELS/V8/CASNOCTY/CASNOCTY.unity
+    guid: d8d11ca628ed5614da5d37902666a3cb
+  - enabled: 1
+    path: Assets/LEVELS/V8/CANYNLND/CANYNLND.unity
+    guid: b43f3780f5194e74cbbb31576a309fb2
+  - enabled: 1
+    path: Assets/LEVELS/V8/SKIRESRT/SKIRESRT.unity
+    guid: e7793772f10272d4982e27fa72421382
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 23883badba25b184195a6872c54714ad, type: 2}
     com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: 2248ceb0becc1804da227a75d40eafb0, type: 2}

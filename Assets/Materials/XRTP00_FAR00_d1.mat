@@ -49,11 +49,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _LODTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 34e193743d6e41479e2891b93bdaae63, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 28423604273b6a541a9ec5c76ccde79e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 938c16c0ef6a468996946e49064e8cd8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalMap:
