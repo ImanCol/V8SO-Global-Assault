@@ -9,6 +9,11 @@ using Random = UnityEngine.Random;
 [Serializable]
 public class StatsPanel : MonoBehaviour
 {
+
+    [Header("Photon")]
+    public LobbyMainPanel lobbyMainPanel;
+
+
     public _STATS_TYPE state;
     public List<Camera> cameras = new List<Camera>(); //Lista de Vehiculos (Players)
     public List<RawImage> playersRawImages = new List<RawImage>();
@@ -64,6 +69,9 @@ public class StatsPanel : MonoBehaviour
     public int cursor = 0;
     public int spawnVehicleID;
     public int spawnVehicleID2;
+
+    private LobbyMainPanel lobbyMainPanel2;
+
     GameManager gameManager;
     public List<Vehicle> vehicles = new List<Vehicle>(); //Lista de Vehiculos (Players)
     public Dropdown PlayersDropdown;
@@ -162,8 +170,8 @@ public class StatsPanel : MonoBehaviour
         Debug.Log("Add: " + vehicles);
 
         //Vehiculo inicial
-        SetPlayer();
-        SpawnVehicle(1, 0);
+        //SetPlayer();
+        //SpawnVehicle(1, 0);
 
         // Crear un RenderTexture para cada cámara en la lista
 
@@ -224,21 +232,27 @@ public class StatsPanel : MonoBehaviour
         setPAD = 2;
     }
 
-    bool pressed = true;
+    bool pressed = false;
+
     private void Update()
     {
-        if (GameManager.instance.DriverPlus && pressed == true)
-        {
-            pressed = false;
-            SpawnVehicle(Players, cursor);
-        }
-        else if (!GameManager.instance.DriverPlus && pressed == false)
-        {
-            pressed = true;
-            SpawnVehicle(Players, cursor);
-        }
 
         SetPlayer();
+        //Debug.Log(lobbyMainPanel.selectOptions.activeSelf);
+
+        if (lobbyMainPanel.selectOptions.activeSelf)
+        {
+            if (GameManager.instance.DriverPlus && pressed == true)
+            {
+                pressed = false;
+                SpawnVehicle(Players, cursor);
+            }
+            else if (!GameManager.instance.DriverPlus && pressed == false)
+            {
+                pressed = true;
+                SpawnVehicle(Players, cursor);
+            }
+        }
 
         if (Input.GetButtonDown("P1_RIGHT") || setPAD == 2)
         {
@@ -349,6 +363,20 @@ public class StatsPanel : MonoBehaviour
                 Vehiclerelfection = 0;
             }
         }
+    }
+
+    void Awake()
+    {
+        //if (lobbyMainPanel2.selectOptions)
+        //{
+        //    SetPlayer();
+        //    SpawnVehicle(1, 0);
+        //}
+        //if (lobbyMainPanel.selectOptions)
+        //{
+        //    SetPlayer();
+        //    SpawnVehicle(1, 0);
+        //}
     }
 
     private void StopReflections()

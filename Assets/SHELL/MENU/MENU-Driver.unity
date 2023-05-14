@@ -142,7 +142,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8720672
 RectTransform:
   m_ObjectHideFlags: 0
@@ -150,18 +150,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8720671}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6666667, y: 0.6666667, z: 0.6666667}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 443737397}
-  m_Father: {fileID: 604914391}
-  m_RootOrder: 0
+  m_Father: {fileID: 1544152650}
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 315.01, y: 195}
+  m_AnchoredPosition: {x: 193.99744, y: 130}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8720673
@@ -228,8 +228,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1366750972}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 220565655}
+        m_TargetAssemblyTypeName: LobbyMainPanel, PhotonUnityNetworking.Demos
         m_MethodName: OnLeaveGameButtonClicked
         m_Mode: 1
         m_Arguments:
@@ -2732,8 +2732,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1366750972}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 220565655}
+        m_TargetAssemblyTypeName: LobbyMainPanel, PhotonUnityNetworking.Demos
         m_MethodName: OnLoginButtonClicked
         m_Mode: 1
         m_Arguments:
@@ -5199,8 +5199,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1366750972}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 220565655}
+        m_TargetAssemblyTypeName: LobbyMainPanel, PhotonUnityNetworking.Demos
         m_MethodName: OnCreateRoomButtonClicked
         m_Mode: 1
         m_Arguments:
@@ -6406,6 +6406,9 @@ GameObject:
   - component: {fileID: 220565652}
   - component: {fileID: 220565651}
   - component: {fileID: 220565650}
+  - component: {fileID: 220565656}
+  - component: {fileID: 220565655}
+  - component: {fileID: 220565654}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -6486,6 +6489,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 569866580}
   - {fileID: 263998162}
   - {fileID: 1366750971}
   m_Father: {fileID: 0}
@@ -6496,6 +6500,61 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &220565654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 220565649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b28dd60f6abf16d4094cf0f642a043e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dontDestroyOnLoad: 0
+--- !u!114 &220565655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 220565649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fd812a67908014cb408f749ca7a55e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statsPanel: {fileID: 727416435}
+  PanelOnline: {fileID: 383928029}
+  selectOptions: {fileID: 1544152649}
+  topPanel: {fileID: 263998161}
+  LoginPanel: {fileID: 1906720927}
+  PlayerNameInput: {fileID: 1988777126}
+  SelectionPanel: {fileID: 749040074}
+  CreateRoomPanel: {fileID: 1152380049}
+  RoomNameInputField: {fileID: 1557434815}
+  MaxPlayersInputField: {fileID: 1279956257}
+  JoinRandomRoomPanel: {fileID: 1922429867}
+  RoomListPanel: {fileID: 132094970}
+  RoomListContent: {fileID: 1854019425}
+  RoomListEntryPrefab: {fileID: 114706, guid: 03c5e15309335324fba99d68e38cb08b, type: 3}
+  InsideRoomPanel: {fileID: 1544152649}
+  StartGameButton: {fileID: 1861194693}
+  PlayerListEntryPrefab: {fileID: 195212, guid: d68bf8413681d9b4aa7328277e632e3f, type: 3}
+--- !u!114 &220565656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 220565649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe0a55ef565e3984f8866c5c91e3c2fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConnectionStatusText: {fileID: 569866581}
 --- !u!1 &235610857
 GameObject:
   m_ObjectHideFlags: 0
@@ -6956,8 +7015,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1366750972}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 220565655}
+        m_TargetAssemblyTypeName: LobbyMainPanel, PhotonUnityNetworking.Demos
         m_MethodName: OnBackButtonClicked
         m_Mode: 1
         m_Arguments:
@@ -7791,7 +7850,6 @@ GameObject:
   - component: {fileID: 263998162}
   - component: {fileID: 263998165}
   - component: {fileID: 263998164}
-  - component: {fileID: 263998163}
   m_Layer: 5
   m_Name: TopPanel
   m_TagString: Untagged
@@ -7812,29 +7870,15 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1771810879}
-  - {fileID: 569866580}
   - {fileID: 1918035409}
   m_Father: {fileID: 220565653}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -100}
   m_SizeDelta: {x: 0, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &263998163
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 263998161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe0a55ef565e3984f8866c5c91e3c2fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ConnectionStatusText: {fileID: 569866581}
 --- !u!114 &263998164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14575,17 +14619,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 569866579}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 263998162}
-  m_RootOrder: 1
+  m_Father: {fileID: 220565653}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: -856.74695}
+  m_AnchoredPosition: {x: 0, y: 23.253052}
   m_SizeDelta: {x: 0, y: 46.50673}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &569866581
@@ -15345,9 +15389,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8720672}
-  - {fileID: 1861194691}
+  m_Children: []
   m_Father: {fileID: 1366750971}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -18247,6 +18289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df8c702ef135a68890a0219122ced81d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lobbyMainPanel: {fileID: 220565655}
   state: 0
   cameras:
   - {fileID: 468403124}
@@ -20293,7 +20336,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 197.02255, y: -315.19266}
+  m_AnchoredPosition: {x: 197.02255, y: -313.1046}
   m_SizeDelta: {x: 394.0451, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &810607212
@@ -22532,8 +22575,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1366750972}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 220565655}
+        m_TargetAssemblyTypeName: LobbyMainPanel, PhotonUnityNetworking.Demos
         m_MethodName: OnRoomListButtonClicked
         m_Mode: 1
         m_Arguments:
@@ -24766,8 +24809,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1366750972}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 220565655}
+        m_TargetAssemblyTypeName: LobbyMainPanel, PhotonUnityNetworking.Demos
         m_MethodName: SetActivePanel
         m_Mode: 5
         m_Arguments:
@@ -26055,7 +26098,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 197.02255, y: -467.5252}
+  m_AnchoredPosition: {x: 197.02255, y: -462.6531}
   m_SizeDelta: {x: 394.0451, y: 45}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1038808076
@@ -27116,7 +27159,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 197.02255, y: -498.2161}
+  m_AnchoredPosition: {x: 197.02255, y: -492.64798}
   m_SizeDelta: {x: 394.0451, y: 45}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1084041472
@@ -36268,8 +36311,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1366750971}
   - component: {fileID: 1366750974}
-  - component: {fileID: 1366750972}
-  - component: {fileID: 1366750973}
   m_Layer: 5
   m_Name: MainPanel
   m_TagString: Untagged
@@ -36296,51 +36337,13 @@ RectTransform:
   - {fileID: 132094974}
   - {fileID: 604914391}
   m_Father: {fileID: 220565653}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 440}
   m_SizeDelta: {x: 0, y: 880}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1366750972
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1366750970}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84fd812a67908014cb408f749ca7a55e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LoginPanel: {fileID: 1906720927}
-  PlayerNameInput: {fileID: 1988777126}
-  SelectionPanel: {fileID: 749040074}
-  CreateRoomPanel: {fileID: 1152380049}
-  RoomNameInputField: {fileID: 1557434815}
-  MaxPlayersInputField: {fileID: 1279956257}
-  JoinRandomRoomPanel: {fileID: 1922429867}
-  RoomListPanel: {fileID: 132094970}
-  RoomListContent: {fileID: 1854019425}
-  RoomListEntryPrefab: {fileID: 114706, guid: 03c5e15309335324fba99d68e38cb08b, type: 3}
-  InsideRoomPanel: {fileID: 604914390}
-  StartGameButton: {fileID: 1861194693}
-  PlayerListEntryPrefab: {fileID: 195212, guid: d68bf8413681d9b4aa7328277e632e3f, type: 3}
---- !u!114 &1366750973
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1366750970}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b28dd60f6abf16d4094cf0f642a043e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
 --- !u!222 &1366750974
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -37664,8 +37667,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1366750972}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 220565655}
+        m_TargetAssemblyTypeName: LobbyMainPanel, PhotonUnityNetworking.Demos
         m_MethodName: OnJoinRandomRoomButtonClicked
         m_Mode: 1
         m_Arguments:
@@ -40526,6 +40529,8 @@ RectTransform:
   - {fileID: 1038808075}
   - {fileID: 1084041471}
   - {fileID: 1979816323}
+  - {fileID: 8720672}
+  - {fileID: 1861194691}
   - {fileID: 1585660262}
   - {fileID: 1570264549}
   - {fileID: 1791082651250110096}
@@ -40819,11 +40824,11 @@ RectTransform:
   m_Children:
   - {fileID: 566398691}
   m_Father: {fileID: 1544152650}
-  m_RootOrder: 14
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 197.02255, y: -550.70355}
+  m_AnchoredPosition: {x: 197.02255, y: -543.7434}
   m_SizeDelta: {x: 394.0451, y: 47.2113}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1570264550
@@ -41376,7 +41381,7 @@ RectTransform:
   m_Children:
   - {fileID: 158704900}
   m_Father: {fileID: 1544152650}
-  m_RootOrder: 13
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -44565,7 +44570,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 197.02255, y: -183.81088}
+  m_AnchoredPosition: {x: 197.02255, y: -183.11487}
   m_SizeDelta: {x: 394.0451, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1671521380
@@ -44639,7 +44644,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 197.02255, y: -417.60895}
+  m_AnchoredPosition: {x: 197.02255, y: -414.12885}
   m_SizeDelta: {x: 394.0451, y: 22.069}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1682421817
@@ -47485,8 +47490,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1366750972}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 220565655}
+        m_TargetAssemblyTypeName: LobbyMainPanel, PhotonUnityNetworking.Demos
         m_MethodName: OnBackButtonClicked
         m_Mode: 1
         m_Arguments:
@@ -48846,7 +48851,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 197.02255, y: -436.83432}
+  m_AnchoredPosition: {x: 197.02255, y: -432.65823}
   m_SizeDelta: {x: 394.0451, y: 45}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1853372756
@@ -49118,7 +49123,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1861194691
 RectTransform:
   m_ObjectHideFlags: 0
@@ -49126,18 +49131,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1861194690}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.6666667, y: 0.6666667, z: 0.6666667}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 249890741}
-  m_Father: {fileID: 604914391}
-  m_RootOrder: 1
+  m_Father: {fileID: 1544152650}
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -315.01, y: 105}
+  m_AnchoredPosition: {x: -200.00671, y: 70}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1861194692
@@ -49204,8 +49209,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1366750972}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 220565655}
+        m_TargetAssemblyTypeName: LobbyMainPanel, PhotonUnityNetworking.Demos
         m_MethodName: OnStartGameButtonClicked
         m_Mode: 1
         m_Arguments:
@@ -50280,7 +50285,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 197.02255, y: -380.88354}
+  m_AnchoredPosition: {x: 197.02255, y: -378.0995}
   m_SizeDelta: {x: 394.0451, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1899761038
@@ -50859,7 +50864,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 263998162}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
@@ -52559,7 +52564,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 197.02255, y: -523.907}
+  m_AnchoredPosition: {x: 197.02255, y: -517.6428}
   m_SizeDelta: {x: 394.0451, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1984377434
@@ -52939,7 +52944,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 197.02255, y: -249.50177}
+  m_AnchoredPosition: {x: 197.02255, y: -248.10974}
   m_SizeDelta: {x: 394.0451, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1999065636
@@ -69136,7 +69141,7 @@ RectTransform:
   - {fileID: 1791082651250110027}
   - {fileID: 1791082651250110021}
   m_Father: {fileID: 1544152650}
-  m_RootOrder: 15
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
