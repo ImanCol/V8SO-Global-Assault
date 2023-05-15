@@ -13,7 +13,7 @@ public class StatsPanel : MonoBehaviour
     [Header("Photon")]
     public LobbyMainPanel lobbyMainPanel;
 
-
+    [Header("Config StatsPanel")]
     public _STATS_TYPE state;
     public List<Camera> cameras = new List<Camera>(); //Lista de Vehiculos (Players)
     public List<RawImage> playersRawImages = new List<RawImage>();
@@ -785,22 +785,15 @@ public class StatsPanel : MonoBehaviour
             armorPlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[2] * 2;
             avoidancePlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[3] * 2;
 
-
             //Hack Plus
             if (GameManager.instance.DriverPlus)
             {
-                DriverAccelPlus = 100;
-                DriverSpeedPlus = 100;
-                DriverArmorPlus = 100;
-                DriverAvoidancePlus = 100;
+                //DriverAccelPlus = 100;
+                //DriverSpeedPlus = 100;
+                //DriverArmorPlus = 100;
+                //DriverAvoidancePlus = 100;
             }
-            else
-            {
-                DriverAccelPlus = 0;
-                DriverSpeedPlus = 0;
-                DriverArmorPlus = 0;
-                DriverAvoidancePlus = 0;
-            }
+           
 
             accelPlusPlayers[0].value = GameManager.instance.vehicleStats[id].accel + DriverAccelPlus;
             speedPlusPlayers[0].value = GameManager.instance.vehicleStats[id].speed + DriverSpeedPlus;
