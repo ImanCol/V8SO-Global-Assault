@@ -11737,7 +11737,6 @@ public class GameManager : MonoBehaviour
         UnityEngine.Object.DontDestroyOnLoad(base.gameObject);
         //StartCoroutine(UpdateReflections());
         SceneManager.LoadScene(map, LoadSceneMode.Single);
-
     }
     public void LoadDebug()
     {
@@ -14930,8 +14929,10 @@ public class GameManager : MonoBehaviour
     {
         if (inDebug || inMenu)
         {
+            Debug.Log("In Debur Return");
             return;
         }
+        Debug.Log("continue...");
         Color32 color = UIManager.instance.flash.color;
         if (color.r != 0 || color.g != 0 || color.b != 0 || color.a != 0)
         {

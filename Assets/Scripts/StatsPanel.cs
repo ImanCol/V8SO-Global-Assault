@@ -5,9 +5,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
+using Photon.Pun;
+using Photon.Realtime;
 
 [Serializable]
-public class StatsPanel : MonoBehaviour
+public class StatsPanel : MonoBehaviourPunCallbacks
 {
 
     [Header("Photon")]
@@ -69,9 +71,7 @@ public class StatsPanel : MonoBehaviour
     public int cursor = 0;
     public int spawnVehicleID;
     public int spawnVehicleID2;
-
     private LobbyMainPanel lobbyMainPanel2;
-
     GameManager gameManager;
     public List<Vehicle> vehicles = new List<Vehicle>(); //Lista de Vehiculos (Players)
     public Dropdown PlayersDropdown;
@@ -94,44 +94,57 @@ public class StatsPanel : MonoBehaviour
     public List<Image> speedsPlusBackgroundPlayers;
     public List<Image> armorsPlusBackgroundPlayers;
     public List<Image> avoidancesPlusBackgroundPlayers;
+
     public void SetPlayer()
     {
         switch (PlayersDropdown.value)
         {
             case 0:
                 Players = 1;
+                PhotonNetwork.LocalPlayer.NickName = "Player 1";
                 //Spawnposition[0] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
                 break;
             case 1:
                 Players = 2;
+                PhotonNetwork.LocalPlayer.NickName = "Player 2";
                 //Spawnposition[1] = new Vector3Int(67108000, 3078144, 67108864); // posición del primer vehículo
+
                 break;
             case 2:
                 Players = 3;
+                PhotonNetwork.LocalPlayer.NickName = "Player 3";
                 //Spawnposition[2] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
                 break;
             case 3:
                 Players = 4;
+                PhotonNetwork.LocalPlayer.NickName = "Player 4";
                 //Spawnposition[3] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
+
                 break;
             case 4:
                 Players = 5;
+                PhotonNetwork.LocalPlayer.NickName = "Player 5";
                 //Spawnposition[4] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
                 break;
             case 5:
                 Players = 6;
+                PhotonNetwork.LocalPlayer.NickName = "Player 6";
                 //Spawnposition[5] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
+
                 break;
             case 6:
                 Players = 7;
+                PhotonNetwork.LocalPlayer.NickName = "Player 7";
                 //Spawnposition[6] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
                 break;
             case 7:
                 Players = 8;
+                PhotonNetwork.LocalPlayer.NickName = "Player 8";
                 //Spawnposition[7] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
                 break;
             case 8:
                 Players = 9;
+                PhotonNetwork.LocalPlayer.NickName = "Player 9";
                 //Spawnposition[8] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
                 break;
         }
@@ -233,6 +246,16 @@ public class StatsPanel : MonoBehaviour
     }
 
     bool pressed = false;
+    int GetAssignedPlayer()
+    {
+        // Obtener el jugador local en Photon
+        Photon.Realtime.Player localPlayer = Photon.Pun.PhotonNetwork.LocalPlayer;
+
+        // Obtener el número de jugador asignado al jugador local
+        int assignedPlayer = localPlayer.ActorNumber;
+
+        return assignedPlayer;
+    }
 
     private void Update()
     {
@@ -240,17 +263,26 @@ public class StatsPanel : MonoBehaviour
         SetPlayer();
         //Debug.Log(lobbyMainPanel.selectOptions.activeSelf);
 
+        int assignedPlayer = GetAssignedPlayer(); // Asume que tienes una función para obtener el jugador asignado
+
+        Debug.Log(assignedPlayer);
+
+       //if (assignedPlayer == Players) // Verifica si el jugador local coincide con el jugador asignado
+       //{
+       //    SpawnVehicle(assignedPlayer, cursor);
+       //}
+
         if (lobbyMainPanel.selectOptions.activeSelf)
         {
             if (GameManager.instance.DriverPlus && pressed == true)
             {
                 pressed = false;
-                SpawnVehicle(Players, cursor);
+                SpawnVehicle(assignedPlayer, cursor);
             }
             else if (!GameManager.instance.DriverPlus && pressed == false)
             {
                 pressed = true;
-                SpawnVehicle(Players, cursor);
+                SpawnVehicle(assignedPlayer, cursor);
             }
         }
 
@@ -793,7 +825,7 @@ public class StatsPanel : MonoBehaviour
                 //DriverArmorPlus = 100;
                 //DriverAvoidancePlus = 100;
             }
-           
+
 
             accelPlusPlayers[0].value = GameManager.instance.vehicleStats[id].accel + DriverAccelPlus;
             speedPlusPlayers[0].value = GameManager.instance.vehicleStats[id].speed + DriverSpeedPlus;
