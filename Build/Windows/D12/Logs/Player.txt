@@ -1,0 +1,36 @@
+[23/05/2023 12:46:54 a. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
+[23/05/2023 12:46:54 a. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: 7746007848879089091
+[23/05/2023 12:46:54 a. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
+[23/05/2023 12:46:54 a. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Connected - Connected to A04B821DC542F0A5
+[23/05/2023 12:46:54 a. m.] - V2UnityDiscordIntercept.VigClient.Connected - MemberId: 1
+[23/05/2023 12:46:54 a. m.] - V2UnityDiscordIntercept.Patches.Demo_JoinLobby_Patch.JoinLobby - Joining lobby
+[23/05/2023 12:46:54 a. m.] - V2UnityDiscordIntercept.VigClient.JoinLobby - Joined Lobby
+[23/05/2023 12:47:32 a. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
+[23/05/2023 12:47:33 a. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: -8026367707567115888
+[23/05/2023 12:47:33 a. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
+[23/05/2023 12:47:33 a. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Connected - Connected to A04B821DC542F0A5
+[23/05/2023 12:47:33 a. m.] - V2UnityDiscordIntercept.VigClient.Connected - MemberId: 2
+[23/05/2023 12:47:33 a. m.] - V2UnityDiscordIntercept.Patches.Demo_JoinLobby_Patch.JoinLobby - Joining lobby
+[23/05/2023 12:47:33 a. m.] - V2UnityDiscordIntercept.VigClient.JoinLobby - Joined Lobby
+[23/05/2023 12:47:33 a. m.] - V2UnityDiscordIntercept.Patches.DiscordController_SendNetworkMessageToUser_Patch.SendNetworkMessageToUser - Sending network message to user: -8026367707567115888
+[23/05/2023 12:47:33 a. m.] - V2UnityDiscordIntercept.Patches.DiscordController_SendNetworkMessageToUser_Patch.SendNetworkMessageToUser - Sending network message to user: -8026367707567115888
+[23/05/2023 12:47:33 a. m.] - V2UnityDiscordIntercept.Plugin.Update - System.ArgumentException: Destination array is not long enough to copy all the items in the collection. Check array index and length.
+Parameter name: value
+  at System.BitConverter.ToInt32 (System.Byte[] value, System.Int32 startIndex) [0x00021] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at Packet.ReadInt (System.Boolean _moveReadPos) [0x00013] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00035] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 12:47:56 a. m.] - V2UnityDiscordIntercept.Patches.DiscordController_GetMemberId_Patch.GetMemberId - Got member id: 1
+[23/05/2023 12:47:56 a. m.] - V2UnityDiscordIntercept.Patches.DiscordController_GetMemberId_Patch.GetMemberId - Got member id: 2
+[23/05/2023 04:04:18 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
+[23/05/2023 04:04:18 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: -4614734368909811864
+[23/05/2023 04:04:18 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
+[23/05/2023 04:04:18 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Connected - Connected to A04B821DC542F0A5
+[23/05/2023 04:04:18 p. m.] - V2UnityDiscordIntercept.VigClient.Connected - MemberId: 1
+[23/05/2023 04:04:18 p. m.] - V2UnityDiscordIntercept.Patches.Demo_JoinLobby_Patch.JoinLobby - Joining lobby
+[23/05/2023 04:04:18 p. m.] - V2UnityDiscordIntercept.VigClient.JoinLobby - Joined Lobby
+[23/05/2023 04:04:38 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_GetMemberId_Patch.GetMemberId - Got member id: 1
+[23/05/2023 04:04:43 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnected - The server is shutting down.

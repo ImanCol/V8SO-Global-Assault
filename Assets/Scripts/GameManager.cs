@@ -136,6 +136,7 @@ public class BSP
 
 public class GameManager : MonoBehaviour
 {
+
     public struct TerrainJob : IJob
     {
         public NativeArray<Vector2Int> param1;
@@ -10085,24 +10086,28 @@ public class GameManager : MonoBehaviour
 
     public static short[] DAT_63FA4 = new short[18]
     {
-        9,
-        3,
-        4,
-        2,
-        0,
-        7,
-        8,
-        12,
-        10,
-        11,
-        14,
-        13,
-        15,
-        6,
-        20,
-        21,
-        22,
-        23
+
+        //Mesh Help
+        9, //SnowWheels
+        3, //MultiDamage
+        4, //Shield
+        2, //Lazy
+        0, //Repair
+        7, //Heavy
+        8, //WaterWheels
+        12, //Ballistic
+        10, //Missille
+        11, //TankShot
+        14, //Mortar
+        13, //Mine
+        15, //Flame
+        6, //GreenBox
+        
+        //Quest
+        20, //Maletin
+        21, //Gass
+        22, //Detone
+        23 //BoxGear
     };
 
     public static int[] DAT_63FC8 = new int[3]
@@ -11154,7 +11159,8 @@ public class GameManager : MonoBehaviour
     public float offsetStart;
     public float angleOffset;
     public float aspectRatioScale;
-    public GameObject Options;
+    public GameObject selectOptions;
+    public GameObject panelOnline;
     public Dropdown driverDropdown;
     public Dropdown stageDropdown;
     public Dropdown ditheringDropdown;
@@ -11312,6 +11318,7 @@ public class GameManager : MonoBehaviour
                 vehicles[0] = 38;
                 break;
         }
+        driverDropdown.value = vehicles[0];
         ClientSend.NotReady(0L);
         Demo.instance.readyLabel.gameObject.SetActive(value: true);
         Demo.instance.notReadyLabel.gameObject.SetActive(value: false);
@@ -11379,8 +11386,8 @@ public class GameManager : MonoBehaviour
         }
         if (inDebug)
         {
-            Options.transform.Find("Map/Preview").GetComponent<Image>().sprite = statsPanel.maps[map - 1];
-            Options.transform.Find("Map/Text (TMP)").GetComponent<TextMeshProUGUI>().text = mapText.ToString();
+            selectOptions.transform.Find("Map/Preview").GetComponent<Image>().sprite = statsPanel.maps[map - 1];
+            selectOptions.transform.Find("Map/Text (TMP)").GetComponent<TextMeshProUGUI>().text = mapText.ToString();
         }
         //map = stageDropdown.value + 1;
         ClientSend.Map(0L);
@@ -11406,7 +11413,7 @@ public class GameManager : MonoBehaviour
 
     public void SetLives()
     {
-        Options.transform.Find("Lives/Text (TMP)").GetComponent<TextMeshProUGUI>().text = currentValueLives.ToString();
+        selectOptions.transform.Find("Lives/Text (TMP)").GetComponent<TextMeshProUGUI>().text = currentValueLives.ToString();
         sbyte b = playerSpawns = (sbyte)(currentValueLives);
         for (int i = 0; i < networkMembers.Count; i++)
         {
@@ -11442,12 +11449,12 @@ public class GameManager : MonoBehaviour
             case 10:
                 gameMode = _GAME_MODE.Versus2;
                 //livesDropdown.transform.parent.gameObject.SetActive(value: true);
-                Options.transform.Find("Lives").gameObject.SetActive(value: true);
-                Options.transform.Find("Space 1").gameObject.SetActive(value: false);
-                Options.transform.Find("Damages").gameObject.SetActive(value: true);
-                Options.transform.Find("Space 2").gameObject.SetActive(value: false);
-                Options.transform.Find("Difficulty").gameObject.SetActive(value: false);
-                Options.transform.Find("Space 3").gameObject.SetActive(value: true);
+                selectOptions.transform.Find("Lives").gameObject.SetActive(value: true);
+                selectOptions.transform.Find("Space 1").gameObject.SetActive(value: false);
+                selectOptions.transform.Find("Damages").gameObject.SetActive(value: true);
+                selectOptions.transform.Find("Space 2").gameObject.SetActive(value: false);
+                selectOptions.transform.Find("Difficulty").gameObject.SetActive(value: false);
+                selectOptions.transform.Find("Space 3").gameObject.SetActive(value: true);
                 //onlineDmgDropdown.transform.parent.gameObject.SetActive(value: true);
                 //damageDropdown.transform.parent.gameObject.SetActive(value: false);
                 //difficultyDropdown.transform.parent.gameObject.SetActive(value: false);
@@ -11455,12 +11462,12 @@ public class GameManager : MonoBehaviour
             case 11:
                 gameMode = _GAME_MODE.Coop2;
                 //livesDropdown.transform.parent.gameObject.SetActive(value: false);
-                Options.transform.Find("Lives").gameObject.SetActive(value: false);
-                Options.transform.Find("Space 1").gameObject.SetActive(value: true);
-                Options.transform.Find("Damages").gameObject.SetActive(value: true);
-                Options.transform.Find("Space 2").gameObject.SetActive(value: false);
-                Options.transform.Find("Difficulty").gameObject.SetActive(value: true);
-                Options.transform.Find("Space 3").gameObject.SetActive(value: false);
+                selectOptions.transform.Find("Lives").gameObject.SetActive(value: false);
+                selectOptions.transform.Find("Space 1").gameObject.SetActive(value: true);
+                selectOptions.transform.Find("Damages").gameObject.SetActive(value: true);
+                selectOptions.transform.Find("Space 2").gameObject.SetActive(value: false);
+                selectOptions.transform.Find("Difficulty").gameObject.SetActive(value: true);
+                selectOptions.transform.Find("Space 3").gameObject.SetActive(value: false);
                 //onlineDmgDropdown.transform.parent.gameObject.SetActive(value: false);
                 //damageDropdown.transform.parent.gameObject.SetActive(value: true);
                 //difficultyDropdown.transform.parent.gameObject.SetActive(value: true);
@@ -11474,12 +11481,12 @@ public class GameManager : MonoBehaviour
             case 12:
                 gameMode = _GAME_MODE.Survival2;
                 //livesDropdown.transform.parent.gameObject.SetActive(value: false);
-                Options.transform.Find("Lives").gameObject.SetActive(value: false);
-                Options.transform.Find("Space 1").gameObject.SetActive(value: true);
-                Options.transform.Find("Damages").gameObject.SetActive(value: true);
-                Options.transform.Find("Space 2").gameObject.SetActive(value: false);
-                Options.transform.Find("Difficulty").gameObject.SetActive(value: true);
-                Options.transform.Find("Space 3").gameObject.SetActive(value: false);
+                selectOptions.transform.Find("Lives").gameObject.SetActive(value: false);
+                selectOptions.transform.Find("Space 1").gameObject.SetActive(value: true);
+                selectOptions.transform.Find("Damages").gameObject.SetActive(value: true);
+                selectOptions.transform.Find("Space 2").gameObject.SetActive(value: false);
+                selectOptions.transform.Find("Difficulty").gameObject.SetActive(value: true);
+                selectOptions.transform.Find("Space 3").gameObject.SetActive(value: false);
                 //onlineDmgDropdown.transform.parent.gameObject.SetActive(value: false);
                 //damageDropdown.transform.parent.gameObject.SetActive(value: true);
                 //difficultyDropdown.transform.parent.gameObject.SetActive(value: true);
@@ -11490,7 +11497,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        Options.transform.Find("Mode/Text (TMP)").GetComponent<TextMeshProUGUI>().text = gameMode.ToString().Substring(0, gameMode.ToString().Length - 1);
+        selectOptions.transform.Find("Mode/Text (TMP)").GetComponent<TextMeshProUGUI>().text = gameMode.ToString().Substring(0, gameMode.ToString().Length - 1);
         ClientSend.Mode(0L);
     }
 
@@ -11509,7 +11516,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        Options.transform.Find("Damages/Text (TMP)").GetComponent<TextMeshProUGUI>().text = damageText;
+        selectOptions.transform.Find("Damages/Text (TMP)").GetComponent<TextMeshProUGUI>().text = damageText;
 
         //int value = damageDropdown.value;
         //DAT_C80[0] = (sbyte)value;
@@ -11534,7 +11541,7 @@ public class GameManager : MonoBehaviour
         }
         int value = currentValueDifficulty;
         this.difficultyMode = (byte)value;
-        Options.transform.Find("Difficulty/Text (TMP)").GetComponent<TextMeshProUGUI>().text = difficultyInt.ToString();
+        selectOptions.transform.Find("Difficulty/Text (TMP)").GetComponent<TextMeshProUGUI>().text = difficultyInt.ToString();
 
         ClientSend.Difficulty(0L);
     }
@@ -11554,7 +11561,7 @@ public class GameManager : MonoBehaviour
                 damageText = "High";
                 break;
         }
-        Options.transform.Find("Damages/Text (TMP)").GetComponent<TextMeshProUGUI>().text = damageText;
+        selectOptions.transform.Find("Damages/Text (TMP)").GetComponent<TextMeshProUGUI>().text = damageText;
 
         //int value = currentDamageIndex;
         //this.difficultyMode = (byte)value;
@@ -11620,6 +11627,7 @@ public class GameManager : MonoBehaviour
         experimentalDakota = false;
     }
 
+    [Obsolete]
     public void SetPlayerReady(bool ready)
     {
         this.ready = ready;
@@ -11629,6 +11637,10 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            ////Descargar la escena de forma asíncrona
+            //Debug.Log("UNLOAD : " + sceneName);
+            //DestroyScene();
+
             ClientSend.NotReady(0L);
         }
     }
@@ -11668,6 +11680,7 @@ public class GameManager : MonoBehaviour
 
     public void LoadLevel()
     {
+
         SetDriver();
         //Debug.Log("Set Player: " + statsPanel.cursor);
 
@@ -11685,11 +11698,10 @@ public class GameManager : MonoBehaviour
         SetExperimentalDakota();
         RandomizeEnemies(1);
         totalSpawns = DAT_1030[0] + DAT_1030[1] + DAT_1030[2] + DAT_1030[3];
-        inDebug = false;
-        inMenu = false;
         UnityEngine.Object.DontDestroyOnLoad(base.gameObject);
-        SceneManager.LoadScene(map, LoadSceneMode.Single);
+        StartCoroutine(LoadSceneAsyncWithDelay(map));
     }
+
     public void LoadMultiplayerLevel(bool isHost)
     {
 
@@ -11704,6 +11716,7 @@ public class GameManager : MonoBehaviour
         if (isHost)
         {
             SetMultiplayerMode();
+            //gameMode = _GAME_MODE.Quest;
             SetStage();
             if (gameMode == _GAME_MODE.Versus2)
             {
@@ -11731,13 +11744,14 @@ public class GameManager : MonoBehaviour
         drawRoads = true;
         drawObjects = true;
         drawPlayer = true;
-        inDebug = false;
-        inMenu = false;
         DiscordController.instance.sceneLoaded = false;
         UnityEngine.Object.DontDestroyOnLoad(base.gameObject);
         //StartCoroutine(UpdateReflections());
-        SceneManager.LoadScene(map, LoadSceneMode.Single);
+        //StartCoroutine(LoadSceneAsyncWithDelay(map));
+        StartCoroutine(LoadSceneAsyncWithDelay(map));
+
     }
+
     public void LoadDebug()
     {
         //StopCoroutine(UpdateReflections());
@@ -11970,7 +11984,6 @@ public class GameManager : MonoBehaviour
                 FUN_1DC0C(param1: true, num & 0x1F, param5);
             }
         }
-
     }
     public void FUN_1E628(int param1, List<AudioClip> param2, int param3, Vector3Int param4, bool param5 = false)
     {
@@ -14265,40 +14278,40 @@ public class GameManager : MonoBehaviour
     }
 
     public void FUN_3827C(Vehicle param1, VigTransform param2)
-	{
-		Vehicle vehicle = (Vehicle)param1.target;
-		if (vehicle != null)
-		{
-			VigObject vigObject = param1.weapons[param1.weaponSlot];
-			Vector3Int param3 = vehicle.screen;
-			short dAT_C;
-			int dAT_;
-			VigMesh param4;
-			if (vehicle.jammer == 0)
-			{
-				int num = 0;
-				param3 = vehicle.vTransform.position;
-				if (vigObject != null)
-				{
-					num = (((vigObject.flags & 0x4000) != 0) ? 1 : 0);
-				}
-				dAT_C = param1.DAT_C6;
-				dAT_ = vehicle.DAT_58;
-				param4 = DAT_1150[num];
-			}
-			else
-			{
-				dAT_C = param1.DAT_C6;
-				dAT_ = vehicle.DAT_58;
-				param4 = DAT_1150[2];
-			}
-			FUN_380D8(param3, dAT_, param4, param2, dAT_C);
-		}
-		if (param1.jammer != 0 || (DAT_40 & 0x200000) != 0 || enableReticle)
-		{
-			FUN_380D8(param1.screen, param1.DAT_58, DAT_1150[3], param2, 256);
-		}
-	}
+    {
+        Vehicle vehicle = (Vehicle)param1.target;
+        if (vehicle != null)
+        {
+            VigObject vigObject = param1.weapons[param1.weaponSlot];
+            Vector3Int param3 = vehicle.screen;
+            short dAT_C;
+            int dAT_;
+            VigMesh param4;
+            if (vehicle.jammer == 0)
+            {
+                int num = 0;
+                param3 = vehicle.vTransform.position;
+                if (vigObject != null)
+                {
+                    num = (((vigObject.flags & 0x4000) != 0) ? 1 : 0);
+                }
+                dAT_C = param1.DAT_C6;
+                dAT_ = vehicle.DAT_58;
+                param4 = DAT_1150[num];
+            }
+            else
+            {
+                dAT_C = param1.DAT_C6;
+                dAT_ = vehicle.DAT_58;
+                param4 = DAT_1150[2];
+            }
+            FUN_380D8(param3, dAT_, param4, param2, dAT_C);
+        }
+        if (param1.jammer != 0 || (DAT_40 & 0x200000) != 0 || enableReticle)
+        {
+            FUN_380D8(param1.screen, param1.DAT_58, DAT_1150[3], param2, 256);
+        }
+    }
 
     public uint FUN_4A970(uint param1, uint param2)
     {
@@ -14308,25 +14321,66 @@ public class GameManager : MonoBehaviour
         {
             if (num2 == -1)
             {
+                //Error Pickup
+                Debug.Log("Go 1: " + param2);
+                Debug.Log("Go 1: " + num + " - " + num2);
                 return param2;
             }
             do
             {
+                Debug.Log("Go 2: " + param2);
+                Debug.Log("Go 2: " + num + " - " + num2);
                 param2 = FUN_2AC5C() * 18 >> 15;
             }
             while (DAT_63FA4[param2] < 0 || (param1 & (262144 << (int)param2)) == 0L);
             if (param2 == 13)
             {
+                Debug.Log("Go 4: " + param2);
+                Debug.Log("Go 4: " + num + " - " + num2);
                 break;
             }
             num2--;
             if (-1 < (int)param1)
             {
+                Debug.Log("Go 5: " + param2);
+                Debug.Log("Go 5: " + param2);
+                Debug.Log("Go 5: " + num + " - " + num2);
                 return param2;
             }
         }
+        Debug.Log("Config Parameters Pickup: " + num + " - " + num2);
         return 13u;
     }
+
+    public short meshHelp = 0;
+    public short effectHelp = 0;
+
+    //Mesh Help
+    //0 Repair
+    //2 Lazy
+    //3 MultiDamage
+    //4 Shield
+    //5 BrownBox
+    //6 GreenBox
+    //7 Heavy
+    //8 WaterWheels
+    //9 SnowWheels 
+    //10 Missille
+    //11 TankShot
+    //12 Ballistic
+    //13 Mine
+    //14 Mortar
+    //15 Flame
+    //16 Accel
+    //17 Speed
+    //18 Armor
+    //19 Avoidance
+
+    //Quest
+    //20 Briefcase
+    //21 Fuel Can
+    //22 Bomb
+    //23 Toolbox
 
     public VigObject FUN_4AB18(uint param1, VigObject param2)
     {
@@ -14341,6 +14395,7 @@ public class GameManager : MonoBehaviour
             if ((param1 & param2.flags) != 0)
             {
                 int num = (int)FUN_4A970(param1 & param2.flags, 0u);
+                Debug.Log("Get Parameters Pickup: " + num + " - " + param1 + " - " + param2 + " - " + param2.name + " - " + param2.flags);
                 if (num == 3)
                 {
                     DAT_101C++;
@@ -14351,14 +14406,25 @@ public class GameManager : MonoBehaviour
                     flag = ((param2.flags & 0x7E000000) != 0);
                 }
                 param2.tags = (sbyte)(flag ? 1 : 0);
+
+                //Dibuja el efecto del objeto
                 short num2 = param2.DAT_1A = (short)((!flag) ? DAT_63FA4[num] : 5);
+                //short num2 = param2.DAT_1A = (short)((!flag) ? DAT_63FA4[meshHelp] : 5); //Max: 18
+                //short num2 = param2.DAT_1A = meshHelp; //Max: 18
+
+                Debug.Log("Pickup Number: " + num2);
                 if (gameMode >= _GAME_MODE.Versus2)
                 {
+					Debug.Log("SawnDiscord");
                     ClientSend.SpawnPickup(param2.id, param2.tags, DAT_63FA4[num], param2.parent != null);
+					Debug.Log("Pass..");
                 }
                 vigObject = param2.FUN_31DDC();
                 vigObject.flags |= 16777216u;
+
+                //Genera el efecto del objeto
                 vigObject.DAT_1A = DAT_63FA4[num];
+                //vigObject.DAT_1A = effectHelp;
             }
         }
         return vigObject;
@@ -14606,7 +14672,6 @@ public class GameManager : MonoBehaviour
         setTouch = 3;
         UpdateOptions();
     }
-
     public void setModeOnRightButtonPressed()
     {
         setTouch = 4;
@@ -14644,9 +14709,140 @@ public class GameManager : MonoBehaviour
     }
 
     public StatsPanel statsPanel;
+    private float loadingProgress = 0f;
+
+    float totalSceneProgress = 0f; //Progreso total de la carga de la escena
+    float currentSceneProgress = 0f; //Progreso actual de la carga de la escena
+    AsyncOperation asyncOperation;
+    public int sceneBuildIndex;
+    Scene loadedScene;
+
+    [Obsolete]
+    public void DestroyScene()
+    {
+        // Verificar si el nombre de la escena no es nulo o vacío
+        if (!string.IsNullOrEmpty(sceneName))
+        {
+            Scene sceneToUnload = SceneManager.GetSceneByName(sceneName);
+            if (sceneToUnload.IsValid())
+            {
+                SceneManager.UnloadScene(sceneToUnload);
+
+                Debug.Log(sceneToUnload);
+
+                if (sceneToUnload.isLoaded)
+                {
+                    SceneManager.UnloadSceneAsync(sceneToUnload);
+                }
+                else
+                {
+                    Debug.LogWarning("La escena no está cargada." + " Reference: " + sceneToUnload.path);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("La escena no es válida." + " Reference: " + sceneName);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("El nombre de la escena es nulo o vacío." + " Reference: " + sceneName);
+        }
+    }
+
+    private int buildIndex = 0;
+
+    private string GetSceneNameByBuildIndex(int buildIndex)
+    {
+        Scene[] scenes = new Scene[SceneManager.sceneCountInBuildSettings];
+
+        for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+        {
+            scenes[i] = SceneManager.GetSceneByBuildIndex(i);
+        }
+
+        if (buildIndex >= 0 && buildIndex < scenes.Length)
+        {
+            return scenes[buildIndex].name;
+        }
+        return null;
+    }
+
+    string sceneName;
+
+    private IEnumerator LoadSceneAsyncWithDelay(int sceneIndex)
+    {
+
+        asyncOperation = SceneManager.LoadSceneAsync(sceneIndex);
+        asyncOperation.allowSceneActivation = false;
+
+        while (!asyncOperation.isDone)
+        {
+            totalSceneProgress = asyncOperation.progress;
+
+            //Si el progreso total es menor a 0.9f, establece el progreso actual de acuerdo al progreso total
+            if (totalSceneProgress < 0.9f)
+            {
+                currentSceneProgress = totalSceneProgress;
+            }
+
+            //Si el progreso total es igual o mayor a 0.9f, establece el progreso actual en 1.0f para indicar que la escena está completamente cargada
+            else if (asyncOperation.progress >= 0.9f)
+            {
+                inDebug = false;
+                inMenu = false;
+                asyncOperation.allowSceneActivation = true;
+
+                //panelOnline.transform.Find("LoadScene").gameObject.SetActive(value: true);
+                //Obtener el nombre de la escena por índice de compilación
+                sceneName = GetSceneNameByBuildIndex(sceneIndex);
+                Debug.Log("Scene Precargada: " + sceneName);
+                progressBarTexture = null;
+                StopCoroutine(LoadSceneAsyncWithDelay(map));
+                //SceneManager.LoadSceneAsync(sceneIndex);
+            }
+            else
+            {
+                currentSceneProgress = 1.0f;
+            }
+            //Actualiza la barra de progreso en cada iteración del ciclo
+            yield return null;
+        }
+
+        //Activa la escena una vez que la carga esté completa
+        //asyncOperation.allowSceneActivation = true;
+
+        //yield return new WaitForSeconds(3.0f); // Espera 1 segundo (puedes ajustar este valor según tus necesidades)
+        //AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneIndex);
+        //
+        //
+        //inDebug = false;
+        //inMenu = false;
+        //
+        //Espera a que se complete la carga de la escena
+        //while (!asyncOperation.isDone)
+        //{
+        //    yield return null;
+        //}
+        ////La escena se ha cargado correctamente, puedes realizar cualquier otra acción necesaria aquí
+    }
+
+    void OnGUI()
+    {
+        if (inDebug && progressBarTexture != null)
+        {
+            float barWidth = 200f;
+            float progressWidth = barWidth * currentSceneProgress;
+
+            //Dibuja la barra de progreso dentro del método OnGUI
+            Rect progressBarRect = new Rect(Screen.width / 2 - barWidth / 2, Screen.height / 2, progressWidth, 20f);
+            GUI.DrawTexture(progressBarRect, progressBarTexture);
+        }
+    }
 
     private void Start()
     {
+
         reflectionsCoroutine = StartCoroutine(UpdateReflections());
         //StartCoroutine(UpdateReflections());
 
@@ -14656,17 +14852,17 @@ public class GameManager : MonoBehaviour
             gameMode = _GAME_MODE.Versus2;
 
             SetStage();
-            //Options.transform.Find("Map/Preview").GetComponent<Image>().sprite = statsPanel.maps[map];
-            //Options.transform.Find("Map/Text (TMP)").GetComponent<TextMeshProUGUI>().text = mapText;
-            Options.transform.Find("Mode/Text (TMP)").GetComponent<TextMeshProUGUI>().text = gameMode.ToString().Substring(0, gameMode.ToString().Length - 1);
-            Options.transform.Find("Lives/Text (TMP)").GetComponent<TextMeshProUGUI>().text = currentValueLives.ToString();
-            Options.transform.Find("Damages/Text (TMP)").GetComponent<TextMeshProUGUI>().text = damageText;
+            //selectOptions.transform.Find("Map/Preview").GetComponent<Image>().sprite = statsPanel.maps[map];
+            //selectOptions.transform.Find("Map/Text (TMP)").GetComponent<TextMeshProUGUI>().text = mapText;
+            selectOptions.transform.Find("Mode/Text (TMP)").GetComponent<TextMeshProUGUI>().text = gameMode.ToString().Substring(0, gameMode.ToString().Length - 1);
+            selectOptions.transform.Find("Lives/Text (TMP)").GetComponent<TextMeshProUGUI>().text = currentValueLives.ToString();
+            selectOptions.transform.Find("Damages/Text (TMP)").GetComponent<TextMeshProUGUI>().text = damageText;
 
-            //if (Options.transform.Find("Mode").gameObject.transform.Find("Text (TMP)").gameObject)
+            //if (selectOptions.transform.Find("Mode").gameObject.transform.Find("Text (TMP)").gameObject)
             //{
             //Test: Desactiva texto de Mode
-            //Options.transform.Find("Mode").gameObject.transform.Find("Text (TMP)").gameObject.SetActive(value: false);
-            //Options.transform.Find("Mode/Text (TMP)").GetComponent<TextMeshProUGUI>().text = gameMode.ToString();
+            //selectOptions.transform.Find("Mode").gameObject.transform.Find("Text (TMP)").gameObject.SetActive(value: false);
+            //selectOptions.transform.Find("Mode/Text (TMP)").GetComponent<TextMeshProUGUI>().text = gameMode.ToString();
             //gameMode = _GAME_MODE.Arcade;
             //}
         }
@@ -14862,82 +15058,90 @@ public class GameManager : MonoBehaviour
 
         //Debug.Log(ReInput.mapping.GetActionId("Mode-Touch LEFT"));
         //Debug.Log(ReInput.players.GetPlayer(0).GetButtonDown("Mode-Touch LEFT"));
-
-
     }
 
+    [Header("Progress Bar")]
+    public Texture2D loadingTexture;
+    public Image loadingBarImage;
+    public Texture2D progressBarTexture;
+
     private void Update()
-	{
-		if (inMenu)
-		{
-			return;
-		}
-		if (inDebug)
-		{
-			if (Input.GetKeyDown(KeyCode.Escape))
-			{
-				Application.Quit();
-			}
-			return;
-		}
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			if (gameMode >= _GAME_MODE.Versus2)
-			{
-				DiscordController.instance.DisconnectNetwork2();
-			}
-			while (DiscordController.instance.pendingCallbacks)
-			{
-				DiscordController.instance.discord.RunCallbacks();
-			}
-			LoadDebug();
-		}
-		FUN_3827C(playerObjects[0], DAT_F00);
-		if (Input.GetKeyDown(KeyCode.Space))
-		{
-			paused = !paused;
-			if (gameMode >= _GAME_MODE.Versus2)
-			{
-				ClientSend.Pause();
-			}
-		}
-		if (Input.GetKeyDown(KeyCode.Alpha1))
-		{
-			enableReticle = !enableReticle;
-		}
-		if (Input.GetKeyDown(KeyCode.Return))
-		{
-			ScreenCapture.CaptureScreenshot("screenshot.png");
-		}
-		if (Input.GetKeyDown(KeyCode.Delete))
-		{
-			noAI = !noAI;
-		}
-		if (Input.GetKeyDown(KeyCode.Insert))
-		{
-			noPhysics = !noPhysics;
-		}
-		if (Input.GetKeyDown(KeyCode.End))
-		{
-			noHUD = !noHUD;
-			UIManager.instance.hudRect.gameObject.SetActive(noHUD);
-			UIManager.instance.feedbackRect.gameObject.SetActive(noHUD);
-		}
-	}
+    {
+
+        //Obtener la progresión de carga de la escena actual
+        //loadingProgress = SceneManager.LoadSceneAsync(map).progress;
+
+        if (inDebug || inMenu || SceneManager.GetActiveScene().name == "MENU-Driver")
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (gameMode >= _GAME_MODE.Versus2)
+            {
+                DiscordController.instance.DisconnectNetwork2();
+            }
+            while (DiscordController.instance.pendingCallbacks)
+            {
+                DiscordController.instance.discord.RunCallbacks();
+            }
+            LoadDebug();
+        }
+        FUN_3827C(playerObjects[0], DAT_F00);
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            paused = !paused;
+            if (gameMode >= _GAME_MODE.Versus2)
+            {
+                ClientSend.Pause();
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            enableReticle = !enableReticle;
+        }
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            ScreenCapture.CaptureScreenshot("screenshot.png");
+        }
+        if (Input.GetKeyDown(KeyCode.Delete))
+        {
+            noAI = !noAI;
+        }
+        if (Input.GetKeyDown(KeyCode.Insert))
+        {
+            noPhysics = !noPhysics;
+        }
+        if (Input.GetKeyDown(KeyCode.End))
+        {
+            noHUD = !noHUD;
+            UIManager.instance.hudRect.gameObject.SetActive(noHUD);
+            UIManager.instance.feedbackRect.gameObject.SetActive(noHUD);
+        }
+    }
 
     private void FixedUpdate()
     {
-        if (inDebug || inMenu)
+        if (inDebug || inMenu || SceneManager.GetActiveScene().name == "MENU-Driver")
         {
-            Debug.Log("In Debur Return");
+            //Debug.Log("In Debug Return");
             return;
         }
-        Debug.Log("continue...");
+
+        //Debug.Log("Continue...");
+
         Color32 color = UIManager.instance.flash.color;
+
         if (color.r != 0 || color.g != 0 || color.b != 0 || color.a != 0)
         {
             UIManager.instance.flash.color = new Color32(0, 0, 0, 0);
         }
+
         if (gameMode >= _GAME_MODE.Versus2)
         {
             for (int i = 0; i < networkMembers.Count; i++)
@@ -14948,6 +15152,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+
         if (!paused)
         {
             uint num = 1u;
@@ -15826,8 +16031,8 @@ public class GameManager : MonoBehaviour
                     if (param1.vMesh != null)
                     {
                         param1.vMesh.FUN_21F70(vigTransform); //Spawn Chasis
-                        //if (getDriver == 2)
-                        //FUN_2D778(param1.child2, vigTransform);
+                                                              //if (getDriver == 2)
+                                                              //FUN_2D778(param1.child2, vigTransform);
                         Player = getPlayer;
                         //Debug.Log("1 - PlayerObject: " + param1.name + " - " + "Vehiculo: " + getDriver + " - " + "Player: " + getPlayer);
                     }

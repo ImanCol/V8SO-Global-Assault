@@ -8,7 +8,7 @@ public class ConfigEditor
 {
     private static string previousPath = "";
 
-    [MenuItem("CONTEXT/VehicleConfig/Import Config")]
+    [MenuItem("CONTEXT/VigConfig/Import Config")]
     public static void ImportConfig(MenuCommand menuCommand)
     {
         VigConfig config = menuCommand.context as VigConfig;

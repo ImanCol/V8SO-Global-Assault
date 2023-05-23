@@ -1,0 +1,23 @@
+System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.TypeInitializationException: The type initializer for 'BepInEx.Preloader.Unity.UnityPreloader' threw an exception. ---> System.TypeInitializationException: The type initializer for 'BepInEx.Configuration.ConfigFile' threw an exception. ---> System.IO.IOException: Sharing violation on path C:\Users\marlo\Downloads\Compressed\Github\V8SO-Online\V8SO-Unity\Build\Windows\D12\BepInEx\config\BepInEx.cfg
+  at System.IO.FileStream..ctor (System.String path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share, System.Int32 bufferSize, System.Boolean anonymous, System.IO.FileOptions options) [0x0019e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at System.IO.FileStream..ctor (System.String path, System.IO.FileMode mode, System.IO.FileAccess access, System.IO.FileShare share, System.Int32 bufferSize, System.IO.FileOptions options) [0x00000] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.FileStream..ctor(string,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,int,System.IO.FileOptions)
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding, System.Boolean detectEncodingFromByteOrderMarks, System.Int32 bufferSize) [0x00055] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at System.IO.StreamReader..ctor (System.String path, System.Text.Encoding encoding) [0x00000] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at (wrapper remoting-invoke-with-check) System.IO.StreamReader..ctor(string,System.Text.Encoding)
+  at System.IO.File.InternalReadAllLines (System.String path, System.Text.Encoding encoding) [0x00006] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at System.IO.File.ReadAllLines (System.String path) [0x0002c] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at BepInEx.Configuration.ConfigFile.Reload () [0x00024] in <52a40f0507f5457b96494c74b45447c9>:0 
+  at BepInEx.Configuration.ConfigFile..ctor (System.String configPath, System.Boolean saveOnInit, BepInEx.BepInPlugin ownerMetadata) [0x00066] in <52a40f0507f5457b96494c74b45447c9>:0 
+  at BepInEx.Configuration.ConfigFile..ctor (System.String configPath, System.Boolean saveOnInit) [0x00000] in <52a40f0507f5457b96494c74b45447c9>:0 
+  at BepInEx.Configuration.ConfigFile..cctor () [0x00005] in <52a40f0507f5457b96494c74b45447c9>:0 
+   --- End of inner exception stack trace ---
+  at BepInEx.Preloader.Unity.UnityPreloader..cctor () [0x00000] in <0a3cbb2b4e0845f19cd08b8660dd775f>:0 
+   --- End of inner exception stack trace ---
+  at BepInEx.Preloader.Unity.UnityPreloaderRunner.PreloaderPreMain () [0x0005c] in <0a3cbb2b4e0845f19cd08b8660dd775f>:0 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <231f6c5a042647adb84a9cc42c982c35>:0 
+   --- End of inner exception stack trace ---
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x00083] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at System.Reflection.MethodBase.Invoke (System.Object obj, System.Object[] parameters) [0x00000] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at BepInEx.Preloader.Unity.DoorstopEntrypoint.Main () [0x0008b] in <0a3cbb2b4e0845f19cd08b8660dd775f>:0 

@@ -68,6 +68,7 @@ public class OilSlick2 : VigObject
             Type type = self.GetType();
             if (type == typeof(Flame1) || type == typeof(Hovermine) || type == typeof(Brimstone) || type == typeof(Flamewall1) || type == typeof(Flamewall2) || type == typeof(Flamewall3) || (type == typeof(Missile) && ((Missile)self).state == _MISSILE_TYPE.Halo) || type == typeof(Furnace2) || type == typeof(Furnace3) || type == typeof(Pipe3) || type == typeof(Pump2))
             {
+                Debug.Log("Go 1 Type: " + type);
                 CreateBurstFire(chain: true);
             }
             else if (type == typeof(Mine))
@@ -83,6 +84,7 @@ public class OilSlick2 : VigObject
             Type type = self.GetType();
             if (type == typeof(LaunchRocket3) || type == typeof(TestThruster3) || type == typeof(Spark) || type == typeof(Spark2))
             {
+                Debug.Log("Go 2 Type: " + type);
                 CreateBurstFire(chain: true);
             }
             return 0u;
@@ -93,6 +95,7 @@ public class OilSlick2 : VigObject
             Type type = self.GetType();
             if (type == typeof(IngPlant2) || type == typeof(MoltenSteel) || type == typeof(Bonfire))
             {
+                Debug.Log("Go 3 Type: " + type);
                 CreateBurstFire(chain: true);
             }
             return 0u;
@@ -104,6 +107,7 @@ public class OilSlick2 : VigObject
         Vehicle vehicle = (Vehicle)hit.self;
         if ((vehicle.DAT_F6 & 8) != 0 && !trigger)
         {
+            Debug.Log("Go 4 Type: " + type);
             CreateBurstFire(chain: true);
             return 0u;
         }
@@ -211,6 +215,7 @@ public class OilSlick2 : VigObject
                 OilSlick2 oilSlick = (OilSlick2)vObject;
                 if (!oilSlick.trigger && Utilities.FUN_29F6C(vTransform.position, oilSlick.vTransform.position) < 262144)
                 {
+                    Debug.Log("Go 5 Type: " + vObject);
                     oilSlick.CreateBurstFire(chain: true);
                 }
             }

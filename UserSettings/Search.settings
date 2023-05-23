@@ -7,7 +7,7 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
-	"last_search.F4034D60" = "rounde"
+	"last_search.F4034D60" = "occlusion"
 	"OpenInspectorPreview.F4034D60" = "0"
 	"currentGroup.F4034D60" = "scene"
 	"last_search.DD2EEDCB" = "PlayerPrefs"
@@ -70,6 +70,7 @@ providers = {
 	}
 }
 recentSearches = [
+	"occlusion"
 	"fbx"
 	"PlayerPrefs"
 ]

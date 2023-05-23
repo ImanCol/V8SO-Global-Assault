@@ -21,6 +21,10 @@ MonoBehaviour:
     m_Address: Assets/SHELL/MENU/Render.mat
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 0ea12fd903c613b489e6b15665da7f64
+    m_Address: Assets/Scripts
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 1c227065345a491458dee94b1e60c603, type: 2}
   m_SchemaSet:

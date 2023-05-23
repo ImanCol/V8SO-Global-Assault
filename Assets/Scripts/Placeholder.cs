@@ -225,6 +225,14 @@ public class Placeholder : VigObject
 
     public static Vehicle FUN_367A4(XOBF_DB arg1, VehicleData arg2, bool arg3 = false)
     {
+        Debug.Log("arg1 " + arg1); //Xobfs
+        Debug.Log("args2 " + arg2.vehicleID); //VehicleData
+        Debug.Log("typeof(Vehicle) " + typeof(Vehicle).Name); //Vehicle
+        Debug.Log("arg3 " + arg3); //False
+        if (arg1 == null)
+        {
+            return null;
+        }
         return arg1.FUN_3C464(0, arg2, typeof(Vehicle), arg3);
     }
 

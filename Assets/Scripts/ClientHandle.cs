@@ -5,8 +5,9 @@ public class ClientHandle : MonoBehaviour
 {
 	public static void Joined(Packet _packet, long userId)
 	{
+		//Get Username
 		string text = _packet.ReadString();
-		UnityEngine.Debug.Log(text + "joined.");
+		UnityEngine.Debug.Log(text + " joined.");
 		GameManager.instance.networkMembers.Add(userId, null);
 		Demo.instance.playerReady.Add(userId, value: false);
 		Demo.instance.playerNames.Add(userId, text);

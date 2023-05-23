@@ -126,6 +126,7 @@ public class LevelEditor
         previousOpen = Path.GetDirectoryName(file);
 
         XOBF_DB xobf = menuCommand.context as XOBF_DB;
+        Debug.Log("Cargando a DB...");
         xobf.LoadDB(file, "BIN ");
     }
 

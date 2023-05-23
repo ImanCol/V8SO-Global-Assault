@@ -1,8 +1,6 @@
 ﻿//Necesita actualizarse
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-//using Rewired;
+using UnityEngine.InputSystem;
 
 public enum _CONTROLLER_TYPE
 {
@@ -94,6 +92,8 @@ public struct PSXInput
 
 public class InputManager : MonoBehaviour
 {
+    private Gamepad gamepad;
+
     public static InputManager instance;
 
     public static Controller[] controllers;
@@ -104,17 +104,18 @@ public class InputManager : MonoBehaviour
 
     public static int[] turnRadius;
 
+    public _CONTROLLER_TYPE[] controllerTypes;
     public _CONTROLLER_ACTIONS[] controllerActions;
-
     public _CONTROLLER_STEERING[] controllerSteerings;
 
-    //private Player player;
 
+    //private Player player;
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
+
             //player = ReInput.players.GetPlayer(0);
         }
         controllers = new Controller[2];
@@ -160,10 +161,14 @@ public class InputManager : MonoBehaviour
 
     private void Start()
     {
+        gamepad = Gamepad.current;
+
     }
 
     void Update()
     {
+        //if (gamepad == null)
+        //    return;
         for (int i = 0; i < 1; i++)
         {
             string player = "P" + (i + 1) + "_";

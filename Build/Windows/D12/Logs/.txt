@@ -1,0 +1,747 @@
+[23/05/2023 04:04:45 p. m.] - V2UnityDiscordIntercept.VigServer.CreateLobby - Created server with id: -6489613648669815904
+[23/05/2023 04:04:45 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
+[23/05/2023 04:04:45 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: 5661478235766051532
+[23/05/2023 04:04:45 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_SetLobbyOwner_Patch.SetLobbyOwner - Setting lobby owner
+[23/05/2023 04:04:45 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
+[23/05/2023 04:04:45 p. m.] - V2UnityDiscordIntercept.VigServer.StatusChanged - StatusChanged: RespondedAwaitingApproval:5661478235766051532 - Awaiting approval
+[23/05/2023 04:04:45 p. m.] - V2UnityDiscordIntercept.VigServer.ConnectionApproval - Connection approval requested from 5661478235766051532
+[23/05/2023 04:04:45 p. m.] - V2UnityDiscordIntercept.VigServer.StatusChanged - StatusChanged: RespondedConnect:5661478235766051532 - Remotely requested connect
+[23/05/2023 04:04:45 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Connected - Connected to A04B821DC542F0A5
+[23/05/2023 04:04:45 p. m.] - V2UnityDiscordIntercept.VigClient.Connected - MemberId: 0
+[23/05/2023 04:04:45 p. m.] - V2UnityDiscordIntercept.Patches.Demo_JoinLobby_Patch.JoinLobby - Joining lobby
+[23/05/2023 04:04:45 p. m.] - V2UnityDiscordIntercept.VigClient.JoinLobby - Joined Lobby
+[23/05/2023 04:04:45 p. m.] - V2UnityDiscordIntercept.VigServer.StatusChanged - StatusChanged: Connected:5661478235766051532 - Connected to CCD270AA759C914E
+[23/05/2023 04:04:51 p. m.] - V2UnityDiscordIntercept.VigServer.StatusChanged - StatusChanged: RespondedAwaitingApproval:-2222598809013236670 - Awaiting approval
+[23/05/2023 04:04:51 p. m.] - V2UnityDiscordIntercept.VigServer.ConnectionApproval - Connection approval requested from -2222598809013236670
+[23/05/2023 04:04:51 p. m.] - V2UnityDiscordIntercept.VigServer.StatusChanged - StatusChanged: RespondedConnect:-2222598809013236670 - Remotely requested connect
+[23/05/2023 04:04:51 p. m.] - V2UnityDiscordIntercept.VigServer.StatusChanged - StatusChanged: Connected:-2222598809013236670 - Connected to 424C8FB628BE27E1
+[23/05/2023 04:04:51 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_SendNetworkMessageToUser_Patch.SendNetworkMessageToUser - Sending network message to user: -2222598809013236670
+[23/05/2023 04:04:51 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_SendNetworkMessageToUser_Patch.SendNetworkMessageToUser - Sending network message to user: -2222598809013236670
+[23/05/2023 04:04:51 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_SendNetworkMessageToUser_Patch.SendNetworkMessageToUser - Sending network message to user: -2222598809013236670
+[23/05/2023 04:04:51 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_SendNetworkMessageToUser_Patch.SendNetworkMessageToUser - Sending network message to user: -2222598809013236670
+[23/05/2023 04:04:51 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_SendNetworkMessageToUser_Patch.SendNetworkMessageToUser - Sending network message to user: -2222598809013236670
+[23/05/2023 04:04:51 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_SendNetworkMessageToUser_Patch.SendNetworkMessageToUser - Sending network message to user: -2222598809013236670
+[23/05/2023 04:04:51 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_SendNetworkMessageToUser_Patch.SendNetworkMessageToUser - Sending network message to user: -2222598809013236670
+[23/05/2023 04:05:48 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_SendNetworkMessageToUser_Patch.SendNetworkMessageToUser - Sending network message to user: 5661478235766051532
+[23/05/2023 04:05:49 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_GetMemberId_Patch.GetMemberId - Got member id: 0
+[23/05/2023 04:05:50 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_DisconnectNetwork2_Patch.DisconnectNetwork2 - Disconnecting network
+[23/05/2023 04:05:50 p. m.] - V2UnityDiscordIntercept.Patches.Demo_LeaveLobby_Patch.LeaveLobby - Leaving lobby
+[23/05/2023 04:05:50 p. m.] - V2UnityDiscordIntercept.VigServer.DeleteLobby - Deleting the lobby
+[23/05/2023 04:05:50 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '-2222598809013236670' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.Transform (Packet _packet, System.Int64 userId) [0x00000] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleUDPData (System.Byte[] _data, System.Int64 userId) [0x0005c] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x00044] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:05:50 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '-2222598809013236670' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.Physics (Packet _packet, System.Int64 userId) [0x00000] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleUDPData (System.Byte[] _data, System.Int64 userId) [0x0005c] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x00044] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:05:50 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '-2222598809013236670' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.Control (Packet _packet, System.Int64 userId) [0x00000] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleUDPData (System.Byte[] _data, System.Int64 userId) [0x0005c] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x00044] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:05:50 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '-2222598809013236670' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.Status (Packet _packet, System.Int64 userId) [0x00000] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleUDPData (System.Byte[] _data, System.Int64 userId) [0x0005c] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x00044] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:05:50 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnecting -  has disconnected.
+[23/05/2023 04:05:50 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnected - The server is shutting down.
+[23/05/2023 04:06:10 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
+[23/05/2023 04:06:10 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: 5551654737949824955
+[23/05/2023 04:06:10 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
+[23/05/2023 04:06:10 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Connected - Connected to A04B821DC542F0A5
+[23/05/2023 04:06:10 p. m.] - V2UnityDiscordIntercept.VigClient.Connected - MemberId: 2
+[23/05/2023 04:06:10 p. m.] - V2UnityDiscordIntercept.Patches.Demo_JoinLobby_Patch.JoinLobby - Joining lobby
+[23/05/2023 04:06:10 p. m.] - V2UnityDiscordIntercept.VigClient.JoinLobby - Joined Lobby
+[23/05/2023 04:06:25 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.ArgumentException: Destination array is not long enough to copy all the items in the collection. Check array index and length.
+Parameter name: value
+  at System.BitConverter.ToInt32 (System.Byte[] value, System.Int32 startIndex) [0x00021] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at Packet.ReadInt (System.Boolean _moveReadPos) [0x00013] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00035] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:06:25 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.SpawnPickup (Packet _packet, System.Int64 userId) [0x00070] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:06:25 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.Spawn (Packet _packet, System.Int64 userId) [0x00170] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:06:25 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_GetMemberId_Patch.GetMemberId - Got member id: 2
+[23/05/2023 04:08:48 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.Pickup (Packet _packet, System.Int64 userId) [0x00031] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:08:52 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.Combo (Packet _packet, System.Int64 userId) [0x00025] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:08:53 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.Weapon (Packet _packet, System.Int64 userId) [0x0001d] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:08:53 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.Weapon (Packet _packet, System.Int64 userId) [0x0001d] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:08:53 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.Weapon (Packet _packet, System.Int64 userId) [0x0001d] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:08:54 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.Weapon (Packet _packet, System.Int64 userId) [0x0001d] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:08:54 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.Weapon (Packet _packet, System.Int64 userId) [0x0001d] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:08:56 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.Weapon (Packet _packet, System.Int64 userId) [0x0001d] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:08:56 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.Weapon (Packet _packet, System.Int64 userId) [0x0001d] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:08:56 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.Weapon (Packet _packet, System.Int64 userId) [0x0001d] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:08:57 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.Weapon (Packet _packet, System.Int64 userId) [0x0001d] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:09:03 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.Combo (Packet _packet, System.Int64 userId) [0x00025] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:09:05 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.Weapon (Packet _packet, System.Int64 userId) [0x0001d] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:09:35 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_DisconnectNetwork2_Patch.DisconnectNetwork2 - Disconnecting network
+[23/05/2023 04:09:35 p. m.] - V2UnityDiscordIntercept.Patches.Demo_LeaveLobby_Patch.LeaveLobby - Leaving lobby
+[23/05/2023 04:09:36 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnecting -  has disconnected.
+[23/05/2023 04:09:36 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '8720526974078140283' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.Transform (Packet _packet, System.Int64 userId) [0x00000] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleUDPData (System.Byte[] _data, System.Int64 userId) [0x0005c] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x00044] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:09:36 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '8720526974078140283' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.Physics (Packet _packet, System.Int64 userId) [0x00000] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleUDPData (System.Byte[] _data, System.Int64 userId) [0x0005c] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x00044] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:09:36 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '8720526974078140283' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.Control (Packet _packet, System.Int64 userId) [0x00000] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleUDPData (System.Byte[] _data, System.Int64 userId) [0x0005c] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x00044] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:09:36 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '8720526974078140283' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.Status (Packet _packet, System.Int64 userId) [0x00000] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleUDPData (System.Byte[] _data, System.Int64 userId) [0x0005c] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x00044] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:09:36 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnected -  has disconnected.
+[23/05/2023 04:09:39 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
+[23/05/2023 04:09:39 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: -1820663949577694653
+[23/05/2023 04:09:39 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
+[23/05/2023 04:09:39 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnected - Currently in game!
+[23/05/2023 04:09:48 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
+[23/05/2023 04:09:48 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: -2637778059612831545
+[23/05/2023 04:09:48 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
+[23/05/2023 04:09:48 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Connected - Connected to A04B821DC542F0A5
+[23/05/2023 04:09:48 p. m.] - V2UnityDiscordIntercept.VigClient.Connected - MemberId: 1
+[23/05/2023 04:09:48 p. m.] - V2UnityDiscordIntercept.Patches.Demo_JoinLobby_Patch.JoinLobby - Joining lobby
+[23/05/2023 04:09:48 p. m.] - V2UnityDiscordIntercept.VigClient.JoinLobby - Joined Lobby
+[23/05/2023 04:09:52 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.SpawnPickup (Packet _packet, System.Int64 userId) [0x00070] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:09:52 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.Spawn (Packet _packet, System.Int64 userId) [0x00170] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:09:52 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_GetMemberId_Patch.GetMemberId - Got member id: 1
+[23/05/2023 04:09:57 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_DisconnectNetwork2_Patch.DisconnectNetwork2 - Disconnecting network
+[23/05/2023 04:09:57 p. m.] - V2UnityDiscordIntercept.Patches.Demo_LeaveLobby_Patch.LeaveLobby - Leaving lobby
+[23/05/2023 04:09:57 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnecting -  has disconnected.
+[23/05/2023 04:09:57 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnected -  has disconnected.
+[23/05/2023 04:10:07 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
+[23/05/2023 04:10:07 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: -3199346589541703855
+[23/05/2023 04:10:07 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
+[23/05/2023 04:10:07 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Connected - Connected to A04B821DC542F0A5
+[23/05/2023 04:10:07 p. m.] - V2UnityDiscordIntercept.VigClient.Connected - MemberId: 1
+[23/05/2023 04:10:07 p. m.] - V2UnityDiscordIntercept.Patches.Demo_JoinLobby_Patch.JoinLobby - Joining lobby
+[23/05/2023 04:10:07 p. m.] - V2UnityDiscordIntercept.VigClient.JoinLobby - Joined Lobby
+[23/05/2023 04:10:12 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.ArgumentException: Destination array is not long enough to copy all the items in the collection. Check array index and length.
+Parameter name: value
+  at System.BitConverter.ToInt32 (System.Byte[] value, System.Int32 startIndex) [0x00021] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at Packet.ReadInt (System.Boolean _moveReadPos) [0x00013] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00035] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:10:12 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.SpawnPickup (Packet _packet, System.Int64 userId) [0x00070] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:10:12 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.SpawnPickup (Packet _packet, System.Int64 userId) [0x00070] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:10:12 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.Spawn (Packet _packet, System.Int64 userId) [0x00170] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:10:12 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_GetMemberId_Patch.GetMemberId - Got member id: 1
+[23/05/2023 04:10:13 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnected - The server is shutting down.
+[23/05/2023 04:10:20 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
+[23/05/2023 04:10:20 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: 5543429862215152599
+[23/05/2023 04:10:20 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
+[23/05/2023 04:10:20 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Connected - Connected to A04B821DC542F0A5
+[23/05/2023 04:10:20 p. m.] - V2UnityDiscordIntercept.VigClient.Connected - MemberId: 1
+[23/05/2023 04:10:20 p. m.] - V2UnityDiscordIntercept.Patches.Demo_JoinLobby_Patch.JoinLobby - Joining lobby
+[23/05/2023 04:10:20 p. m.] - V2UnityDiscordIntercept.VigClient.JoinLobby - Joined Lobby
+[23/05/2023 04:10:24 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.ArgumentException: Destination array is not long enough to copy all the items in the collection. Check array index and length.
+Parameter name: value
+  at System.BitConverter.ToInt32 (System.Byte[] value, System.Int32 startIndex) [0x00021] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at Packet.ReadInt (System.Boolean _moveReadPos) [0x00013] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00035] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:10:24 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.SpawnPickup (Packet _packet, System.Int64 userId) [0x00070] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:10:24 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.SpawnPickup (Packet _packet, System.Int64 userId) [0x00070] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:10:24 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.Spawn (Packet _packet, System.Int64 userId) [0x00170] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:10:24 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_GetMemberId_Patch.GetMemberId - Got member id: 1
+[23/05/2023 04:10:25 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnected - The server is shutting down.
+[23/05/2023 04:10:26 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_DisconnectNetwork2_Patch.DisconnectNetwork2 - Disconnecting network
+[23/05/2023 04:10:26 p. m.] - V2UnityDiscordIntercept.Patches.Demo_LeaveLobby_Patch.LeaveLobby - Leaving lobby
+[23/05/2023 04:10:33 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
+[23/05/2023 04:10:33 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: 881772588739866186
+[23/05/2023 04:10:33 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
+[23/05/2023 04:10:33 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Connected - Connected to A04B821DC542F0A5
+[23/05/2023 04:10:33 p. m.] - V2UnityDiscordIntercept.VigClient.Connected - MemberId: 1
+[23/05/2023 04:10:33 p. m.] - V2UnityDiscordIntercept.Patches.Demo_JoinLobby_Patch.JoinLobby - Joining lobby
+[23/05/2023 04:10:33 p. m.] - V2UnityDiscordIntercept.VigClient.JoinLobby - Joined Lobby
+[23/05/2023 04:10:35 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.ArgumentException: Destination array is not long enough to copy all the items in the collection. Check array index and length.
+Parameter name: value
+  at System.BitConverter.ToInt32 (System.Byte[] value, System.Int32 startIndex) [0x00021] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at Packet.ReadInt (System.Boolean _moveReadPos) [0x00013] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00035] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:10:35 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.ArgumentException: Destination array is not long enough to copy all the items in the collection. Check array index and length.
+Parameter name: value
+  at System.BitConverter.ToInt32 (System.Byte[] value, System.Int32 startIndex) [0x00021] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at Packet.ReadInt (System.Boolean _moveReadPos) [0x00013] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00035] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:10:35 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.SpawnPickup (Packet _packet, System.Int64 userId) [0x00070] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:10:35 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.SpawnPickup (Packet _packet, System.Int64 userId) [0x00070] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:10:35 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.Spawn (Packet _packet, System.Int64 userId) [0x00170] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:10:35 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_GetMemberId_Patch.GetMemberId - Got member id: 1
+[23/05/2023 04:10:37 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_DisconnectNetwork2_Patch.DisconnectNetwork2 - Disconnecting network
+[23/05/2023 04:10:37 p. m.] - V2UnityDiscordIntercept.Patches.Demo_LeaveLobby_Patch.LeaveLobby - Leaving lobby
+[23/05/2023 04:10:38 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnecting -  has disconnected.
+[23/05/2023 04:10:38 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnected -  has disconnected.
+[23/05/2023 04:10:46 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
+[23/05/2023 04:10:46 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: -2231487005787159391
+[23/05/2023 04:10:46 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
+[23/05/2023 04:10:46 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Connected - Connected to A04B821DC542F0A5
+[23/05/2023 04:10:46 p. m.] - V2UnityDiscordIntercept.VigClient.Connected - MemberId: 1
+[23/05/2023 04:10:46 p. m.] - V2UnityDiscordIntercept.Patches.Demo_JoinLobby_Patch.JoinLobby - Joining lobby
+[23/05/2023 04:10:46 p. m.] - V2UnityDiscordIntercept.VigClient.JoinLobby - Joined Lobby
+[23/05/2023 04:10:48 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.ArgumentException: Destination array is not long enough to copy all the items in the collection. Check array index and length.
+Parameter name: value
+  at System.BitConverter.ToInt32 (System.Byte[] value, System.Int32 startIndex) [0x00021] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at Packet.ReadInt (System.Boolean _moveReadPos) [0x00013] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00035] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:10:48 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.Spawn (Packet _packet, System.Int64 userId) [0x00170] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:10:48 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_GetMemberId_Patch.GetMemberId - Got member id: 1
+[23/05/2023 04:10:49 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnected - The server is shutting down.
+[23/05/2023 04:10:58 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
+[23/05/2023 04:10:59 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: 5776480841499235841
+[23/05/2023 04:10:59 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
+[23/05/2023 04:10:59 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Connected - Connected to A04B821DC542F0A5
+[23/05/2023 04:10:59 p. m.] - V2UnityDiscordIntercept.VigClient.Connected - MemberId: 1
+[23/05/2023 04:10:59 p. m.] - V2UnityDiscordIntercept.Patches.Demo_JoinLobby_Patch.JoinLobby - Joining lobby
+[23/05/2023 04:10:59 p. m.] - V2UnityDiscordIntercept.VigClient.JoinLobby - Joined Lobby
+[23/05/2023 04:11:00 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.ArgumentException: Destination array is not long enough to copy all the items in the collection. Check array index and length.
+Parameter name: value
+  at System.BitConverter.ToInt32 (System.Byte[] value, System.Int32 startIndex) [0x00021] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at Packet.ReadInt (System.Boolean _moveReadPos) [0x00013] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00035] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:11:00 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.SpawnPickup (Packet _packet, System.Int64 userId) [0x00070] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:11:00 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.Spawn (Packet _packet, System.Int64 userId) [0x00170] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:11:00 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_GetMemberId_Patch.GetMemberId - Got member id: 1
+[23/05/2023 04:11:03 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_DisconnectNetwork2_Patch.DisconnectNetwork2 - Disconnecting network
+[23/05/2023 04:11:03 p. m.] - V2UnityDiscordIntercept.Patches.Demo_LeaveLobby_Patch.LeaveLobby - Leaving lobby
+[23/05/2023 04:11:03 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '2148462050995080621' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.Transform (Packet _packet, System.Int64 userId) [0x00000] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleUDPData (System.Byte[] _data, System.Int64 userId) [0x0005c] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x00044] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:11:03 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '2148462050995080621' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.Physics (Packet _packet, System.Int64 userId) [0x00000] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleUDPData (System.Byte[] _data, System.Int64 userId) [0x0005c] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x00044] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:11:03 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '2148462050995080621' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.Control (Packet _packet, System.Int64 userId) [0x00000] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleUDPData (System.Byte[] _data, System.Int64 userId) [0x0005c] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x00044] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:11:03 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '2148462050995080621' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.Status (Packet _packet, System.Int64 userId) [0x00000] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleUDPData (System.Byte[] _data, System.Int64 userId) [0x0005c] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x00044] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:11:03 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnecting -  has disconnected.
+[23/05/2023 04:11:03 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnected -  has disconnected.
+[23/05/2023 04:11:11 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
+[23/05/2023 04:11:11 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: -2834913776175437736
+[23/05/2023 04:11:11 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
+[23/05/2023 04:11:11 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Connected - Connected to A04B821DC542F0A5
+[23/05/2023 04:11:11 p. m.] - V2UnityDiscordIntercept.VigClient.Connected - MemberId: 1
+[23/05/2023 04:11:11 p. m.] - V2UnityDiscordIntercept.Patches.Demo_JoinLobby_Patch.JoinLobby - Joining lobby
+[23/05/2023 04:11:11 p. m.] - V2UnityDiscordIntercept.VigClient.JoinLobby - Joined Lobby
+[23/05/2023 04:11:15 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.SpawnPickup (Packet _packet, System.Int64 userId) [0x00070] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:11:15 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.SpawnPickup (Packet _packet, System.Int64 userId) [0x00070] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:11:15 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.Spawn (Packet _packet, System.Int64 userId) [0x00170] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:11:15 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_GetMemberId_Patch.GetMemberId - Got member id: 1
+[23/05/2023 04:11:22 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_DisconnectNetwork2_Patch.DisconnectNetwork2 - Disconnecting network
+[23/05/2023 04:11:22 p. m.] - V2UnityDiscordIntercept.Patches.Demo_LeaveLobby_Patch.LeaveLobby - Leaving lobby
+[23/05/2023 04:11:23 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnecting -  has disconnected.
+[23/05/2023 04:11:23 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '6331519750125031248' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.Transform (Packet _packet, System.Int64 userId) [0x00000] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleUDPData (System.Byte[] _data, System.Int64 userId) [0x0005c] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x00044] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:11:23 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '6331519750125031248' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.Physics (Packet _packet, System.Int64 userId) [0x00000] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleUDPData (System.Byte[] _data, System.Int64 userId) [0x0005c] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x00044] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:11:23 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '6331519750125031248' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.Control (Packet _packet, System.Int64 userId) [0x00000] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleUDPData (System.Byte[] _data, System.Int64 userId) [0x0005c] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x00044] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:11:23 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '6331519750125031248' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.Status (Packet _packet, System.Int64 userId) [0x00000] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleUDPData (System.Byte[] _data, System.Int64 userId) [0x0005c] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x00044] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:11:23 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnected -  has disconnected.
+[23/05/2023 04:11:27 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
+[23/05/2023 04:11:27 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: 6454669304960987392
+[23/05/2023 04:11:27 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
+[23/05/2023 04:11:27 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnected - Currently in game!
+[23/05/2023 04:11:31 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
+[23/05/2023 04:11:31 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: 409126403784852917
+[23/05/2023 04:11:31 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
+[23/05/2023 04:11:31 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnected - Currently in game!
+[23/05/2023 04:11:50 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
+[23/05/2023 04:11:50 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: -4704808586519696564
+[23/05/2023 04:11:50 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
+[23/05/2023 04:11:50 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Connected - Connected to A04B821DC542F0A5
+[23/05/2023 04:11:50 p. m.] - V2UnityDiscordIntercept.VigClient.Connected - MemberId: 1
+[23/05/2023 04:11:50 p. m.] - V2UnityDiscordIntercept.Patches.Demo_JoinLobby_Patch.JoinLobby - Joining lobby
+[23/05/2023 04:11:50 p. m.] - V2UnityDiscordIntercept.VigClient.JoinLobby - Joined Lobby
+[23/05/2023 04:12:24 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.ArgumentException: Destination array is not long enough to copy all the items in the collection. Check array index and length.
+Parameter name: value
+  at System.BitConverter.ToInt32 (System.Byte[] value, System.Int32 startIndex) [0x00021] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at Packet.ReadInt (System.Boolean _moveReadPos) [0x00013] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00035] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:12:24 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.ArgumentException: Destination array is not long enough to copy all the items in the collection. Check array index and length.
+Parameter name: value
+  at System.BitConverter.ToInt32 (System.Byte[] value, System.Int32 startIndex) [0x00021] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at Packet.ReadInt (System.Boolean _moveReadPos) [0x00013] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00035] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:12:24 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.SpawnAI (Packet _packet, System.Int64 userId) [0x00071] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:12:24 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.SpawnPickup (Packet _packet, System.Int64 userId) [0x00070] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:12:24 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.SpawnPickup (Packet _packet, System.Int64 userId) [0x00070] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:12:24 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.SpawnPickup (Packet _packet, System.Int64 userId) [0x00070] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:12:24 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.Spawn (Packet _packet, System.Int64 userId) [0x00170] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:12:24 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_GetMemberId_Patch.GetMemberId - Got member id: 1
+[23/05/2023 04:12:28 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.WeaponAI (Packet _packet, System.Int64 userId) [0x00023] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:12:31 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.WeaponAI (Packet _packet, System.Int64 userId) [0x00023] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:12:34 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.WeaponAI (Packet _packet, System.Int64 userId) [0x00023] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:12:38 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.WeaponAI (Packet _packet, System.Int64 userId) [0x00023] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:12:38 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.WeaponAI (Packet _packet, System.Int64 userId) [0x00023] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:12:38 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.ObjectDestroyed (Packet _packet, System.Int64 userId) [0x00008] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:12:41 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.WeaponAI (Packet _packet, System.Int64 userId) [0x00023] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:12:44 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.WeaponAI (Packet _packet, System.Int64 userId) [0x00023] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:12:46 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.WeaponAI (Packet _packet, System.Int64 userId) [0x00023] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:12:48 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.ObjectDestroyed (Packet _packet, System.Int64 userId) [0x00008] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:12:49 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.PickupAI (Packet _packet, System.Int64 userId) [0x0003a] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:12:52 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.WeaponAI (Packet _packet, System.Int64 userId) [0x00023] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:12:54 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.WeaponAI (Packet _packet, System.Int64 userId) [0x00023] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:12:54 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.ObjectDestroyed (Packet _packet, System.Int64 userId) [0x00008] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:12:54 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.ObjectDestroyed (Packet _packet, System.Int64 userId) [0x00008] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:13:05 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.WeaponAI (Packet _packet, System.Int64 userId) [0x00023] in <0a42b26d3dde44159097a1aa0e4b8826>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:13:06 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnected - The server is shutting down.
+[23/05/2023 04:14:02 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
+[23/05/2023 04:14:02 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: -4776039960398701272
+[23/05/2023 04:14:02 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
+[23/05/2023 04:14:08 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Connected - Connected to A04B821DC542F0A5
+[23/05/2023 04:14:08 p. m.] - V2UnityDiscordIntercept.VigClient.Connected - MemberId: 1
+[23/05/2023 04:14:08 p. m.] - V2UnityDiscordIntercept.Patches.Demo_JoinLobby_Patch.JoinLobby - Joining lobby
+[23/05/2023 04:14:08 p. m.] - V2UnityDiscordIntercept.VigClient.JoinLobby - Joined Lobby
+[23/05/2023 04:14:16 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_SendNetworkMessageToUser_Patch.SendNetworkMessageToUser - Sending network message to user: -4776039960398701272
+[23/05/2023 04:14:16 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '1414877010' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x0003d] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <3e417a59f92346a39819649e72b3e219>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <3e417a59f92346a39819649e72b3e219>:0 
+[23/05/2023 04:14:24 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_OnApplicationQuit_Patch.OnApplicationQuit - DiscordController.OnApplicationQuit
+[23/05/2023 04:14:24 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_DisconnectNetwork2_Patch.DisconnectNetwork2 - Disconnecting network
+[23/05/2023 04:14:24 p. m.] - V2UnityDiscordIntercept.Patches.Demo_LeaveLobby_Patch.LeaveLobby - Leaving lobby

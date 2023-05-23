@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using Random = UnityEngine.Random;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.InputSystem;
 
 [Serializable]
 public class StatsPanel : MonoBehaviourPunCallbacks
@@ -14,7 +15,7 @@ public class StatsPanel : MonoBehaviourPunCallbacks
 
     [Header("Photon")]
     public LobbyMainPanel lobbyMainPanel;
-
+    
     [Header("Config StatsPanel")]
     public _STATS_TYPE state;
     public List<Camera> cameras = new List<Camera>(); //Lista de Vehiculos (Players)
@@ -108,7 +109,6 @@ public class StatsPanel : MonoBehaviourPunCallbacks
                 Players = 2;
                 PhotonNetwork.LocalPlayer.NickName = "Player 2";
                 //Spawnposition[1] = new Vector3Int(67108000, 3078144, 67108864); // posición del primer vehículo
-
                 break;
             case 2:
                 Players = 3;
@@ -193,7 +193,7 @@ public class StatsPanel : MonoBehaviourPunCallbacks
         for (int i = 1; i < cameras.Count; i++)
         {
 
-            rt = new RenderTexture(480, 320, 16, RenderTextureFormat.ARGB32);
+            rt = new RenderTexture(480, 320, 32, RenderTextureFormat.ARGB32);
             rtList.Add(rt);
         }
 
@@ -207,6 +207,7 @@ public class StatsPanel : MonoBehaviourPunCallbacks
         }
 
     }
+    
     void OnDisable()
     {
         //Liberar memoria de todos los RenderTextures
@@ -226,6 +227,7 @@ public class StatsPanel : MonoBehaviourPunCallbacks
             Debug.Log("PRESS UP");
         }
     }
+
     public void setPadDOWN()
     {
         if (PlayersDropdown.value > 0)
@@ -246,6 +248,7 @@ public class StatsPanel : MonoBehaviourPunCallbacks
     }
 
     bool pressed = false;
+
     int GetAssignedPlayer()
     {
         // Obtener el jugador local en Photon
@@ -263,14 +266,13 @@ public class StatsPanel : MonoBehaviourPunCallbacks
         SetPlayer();
         //Debug.Log(lobbyMainPanel.selectOptions.activeSelf);
 
-        int assignedPlayer = GetAssignedPlayer(); // Asume que tienes una función para obtener el jugador asignado
+        int assignedPlayer = GetAssignedPlayer(); //Asume que tienes una función para obtener el jugador asignado
+        //Debug.Log(assignedPlayer);
 
-        Debug.Log(assignedPlayer);
-
-       //if (assignedPlayer == Players) // Verifica si el jugador local coincide con el jugador asignado
-       //{
-       //    SpawnVehicle(assignedPlayer, cursor);
-       //}
+        //if (assignedPlayer == Players) // Verifica si el jugador local coincide con el jugador asignado
+        //{
+        //    SpawnVehicle(assignedPlayer, cursor);
+        //}
 
         if (lobbyMainPanel.selectOptions.activeSelf)
         {
@@ -574,7 +576,8 @@ public class StatsPanel : MonoBehaviourPunCallbacks
                 if (PlayersID == 1)
                 {
                     desc.text = "Excelsior Stretch – a white limousine boasting\naverage balanced stats, but low avoidance.";
-                    descDriver[Players].text = "Excelsior Stretch";
+                    //descDriver[Players].text = "Excelsior Stretch";
+                    descDriver[Players].text = "V4F 570 Delegate";
                 }
                 goto IL_0376;
             case 10:
@@ -807,9 +810,17 @@ public class StatsPanel : MonoBehaviourPunCallbacks
                 LevelManager.instance.DAT_E48 = Menu.instance.reflections[0];
                 break;
         }
+        if (PlayersID >= 0 && PlayersID < cameras.Count)
+        {
+            //if (PlayersID != -1)
+            cameras[PlayersID].transform.position = cameraPositions[id];
+            Debug.Log("Camera: " + cameras[PlayersID]);
+        }
+        else
+        {
+            Debug.LogWarning("Invalid camera index: " + PlayersID);
+        }
 
-        //Debug.Log("Camera:" + cameras[PlayersID]);
-        cameras[PlayersID].transform.position = cameraPositions[id];
         if (PlayersID == 1)
         {
             accelPlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[0] * 2;
@@ -864,7 +875,7 @@ public class StatsPanel : MonoBehaviourPunCallbacks
             else
             {
                 vehicle = LevelManager.instance.xobfList[id + 21].FUN_3C464(param, GameManager.vehicleConfigs[id], typeof(Vehicle));
-                // Debug.Log("No Dakota");
+                //Debug.Log("No Dakota");
             }
             //id += 21;
             //Debug.Log("Plus!: " + id);
@@ -898,7 +909,7 @@ public class StatsPanel : MonoBehaviourPunCallbacks
         FUN_536C(vehicle, 512); //Spawn Vehicle
         vehicle.name = "Player " + (Players);
 
-        //Asigna Layers para Renderizar el una sola camara
+        //Asigna Layers para Renderizar en una sola camara
         vehicle.gameObject.layer = Players + 9;
         Renderer[] renderers = vehicle.GetComponentsInChildren<Renderer>(true);
         foreach (Renderer renderer in renderers)

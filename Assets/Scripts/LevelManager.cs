@@ -117,6 +117,7 @@ public class LevelManager : MonoBehaviour
         {
             if (xobfList[i] != null)
             {
+                Debug.Log("xobfList Read "  + xobfList[i].name);
                 xobfList[i].SetAtlas();
             }
         }

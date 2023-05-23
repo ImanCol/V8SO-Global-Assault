@@ -1,0 +1,581 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1791082647508792933
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1791082647559124597}
+  - component: {fileID: 1791082649404618430}
+  - component: {fileID: 1791082649404618407}
+  m_Layer: 0
+  m_Name: EXCELSR 1
+  m_TagString: 
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1791082647559124597
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791082647508792933}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1791082649404618430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791082647508792933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8d5ae3e8ef599e6a176310d82fc6f71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tmdList: []
+  cbbList: []
+  timList: []
+  ini: {fileID: 1791082649404618407}
+  animations: 
+  sndList:
+  - {fileID: 8300000, guid: 4e57e050082f4c92a776fd055ea880cd, type: 3}
+  - {fileID: 8300000, guid: 9962a06d959546b28e74f0ce97db426f, type: 3}
+  - {fileID: 8300000, guid: 45a4d941faa840d6be3acabfdade46cb, type: 3}
+  - {fileID: 8300000, guid: adc5aae9a9534d7790afa2040bb317ab, type: 3}
+  materialList: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000010000000800000008000000
+  renderList: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+--- !u!114 &1791082649404618407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791082647508792933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 743fa514700ab43f0740e7ab7d048469, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dataID: 1
+  configContainers:
+  - flag: 2047
+    colliderID: 0
+    v3_1: {x: 0, y: -7327, z: 14049}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 1
+    next: 4
+  - flag: 15
+    colliderID: 1
+    v3_1: {x: 0, y: 32768, z: 0}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 2
+    next: 65535
+  - flag: 16
+    colliderID: 2
+    v3_1: {x: 65536, y: 32768, z: 0}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 3
+    next: 65535
+  - flag: 17
+    colliderID: 3
+    v3_1: {x: 131059, y: 32768, z: 0}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 65535
+    next: 65535
+  - flag: 32768
+    colliderID: -1
+    v3_1: {x: -15820, y: 5356, z: 54492}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 5
+    next: 65535
+  - flag: 32769
+    colliderID: -1
+    v3_1: {x: 15790, y: 5356, z: 54492}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 6
+    next: 65535
+  - flag: 32770
+    colliderID: -1
+    v3_1: {x: -15820, y: 5356, z: -38221}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 7
+    next: 65535
+  - flag: 32771
+    colliderID: -1
+    v3_1: {x: 15790, y: 5356, z: -38221}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 8
+    next: 65535
+  - flag: 32772
+    colliderID: -1
+    v3_1: {x: -15820, y: 5356, z: 41180}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 9
+    next: 65535
+  - flag: 32773
+    colliderID: -1
+    v3_1: {x: 15790, y: 5356, z: 41180}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 10
+    next: 65535
+  - flag: 0
+    colliderID: -1
+    v3_1: {x: 0, y: 0, z: 0}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 0
+    previous: 24
+    next: 11
+  - flag: 61441
+    colliderID: -1
+    v3_1: {x: 0, y: 0, z: 0}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 22
+    next: 12
+  - flag: 32833
+    colliderID: -1
+    v3_1: {x: 14773, y: -9039, z: 63787}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 13
+    next: 65535
+  - flag: 33828
+    colliderID: -1
+    v3_1: {x: -20238, y: 220, z: 46335}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 15
+    next: 14
+  - flag: 2
+    colliderID: -1
+    v3_1: {x: -4203, y: -3737, z: -423}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 65535
+    next: 65535
+  - flag: 33838
+    colliderID: 4
+    v3_1: {x: 11654, y: -13217, z: 50406}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 16
+    next: 65535
+  - flag: 34048
+    colliderID: -1
+    v3_1: {x: 378, y: -16919, z: 30321}
+    v3_2: {x: -312, y: 2048, z: 0}
+    objID: 43690
+    previous: 17
+    next: 65535
+  - flag: 33821
+    colliderID: 5
+    v3_1: {x: -15152, y: -6152, z: 63268}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 18
+    next: 65535
+  - flag: 37377
+    colliderID: -1
+    v3_1: {x: 31082, y: -6152, z: 46812}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 19
+    next: 65535
+  - flag: 37129
+    colliderID: -1
+    v3_1: {x: 31047, y: -6152, z: 33501}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 5
+    previous: 20
+    next: 65535
+  - flag: 37130
+    colliderID: -1
+    v3_1: {x: 38700, y: -6152, z: -30866}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 5
+    previous: 21
+    next: 65535
+  - flag: 37377
+    colliderID: -1
+    v3_1: {x: 38734, y: -6152, z: -17555}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 65535
+    next: 65535
+  - flag: 32833
+    colliderID: -1
+    v3_1: {x: 14953, y: -6302, z: 63236}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 23
+    next: 65535
+  - flag: 32832
+    colliderID: -1
+    v3_1: {x: -15008, y: -6302, z: 63236}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 65535
+    next: 65535
+  - flag: 3
+    colliderID: -1
+    v3_1: {x: 0, y: 0, z: 0}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 1
+    previous: 39
+    next: 25
+  - flag: 61444
+    colliderID: -1
+    v3_1: {x: 0, y: 0, z: 0}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 37
+    next: 26
+  - flag: 61445
+    colliderID: -1
+    v3_1: {x: 0, y: 0, z: 0}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 34
+    next: 27
+  - flag: 34048
+    colliderID: -1
+    v3_1: {x: -18341, y: -14625, z: -23575}
+    v3_2: {x: -255, y: 1024, z: 2}
+    objID: 43690
+    previous: 28
+    next: 65535
+  - flag: 34048
+    colliderID: -1
+    v3_1: {x: 19337, y: -14625, z: -22852}
+    v3_2: {x: -255, y: -1029, z: 2}
+    objID: 43690
+    previous: 29
+    next: 65535
+  - flag: 33828
+    colliderID: -1
+    v3_1: {x: 24039, y: 220, z: -57051}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 31
+    next: 30
+  - flag: 6
+    colliderID: -1
+    v3_1: {x: 1649, y: -3273, z: -229}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 65535
+    next: 65535
+  - flag: 34048
+    colliderID: -1
+    v3_1: {x: -394, y: -15773, z: -54248}
+    v3_2: {x: -255, y: 5, z: 2}
+    objID: 43690
+    previous: 32
+    next: 65535
+  - flag: 33821
+    colliderID: -1
+    v3_1: {x: -18197, y: -5381, z: -71672}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 33
+    next: 65535
+  - flag: 34061
+    colliderID: -1
+    v3_1: {x: 17433, y: -8968, z: -71672}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 65535
+    next: 65535
+  - flag: 32835
+    colliderID: -1
+    v3_1: {x: 17596, y: -8451, z: -72707}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 35
+    next: 65535
+  - flag: 33828
+    colliderID: -1
+    v3_1: {x: -12481, y: 201, z: -74711}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 36
+    next: 65535
+  - flag: 37377
+    colliderID: -1
+    v3_1: {x: 38380, y: 220, z: -56918}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 65535
+    next: 65535
+  - flag: 32834
+    colliderID: -1
+    v3_1: {x: -18154, y: -6949, z: -71967}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 38
+    next: 65535
+  - flag: 32835
+    colliderID: -1
+    v3_1: {x: 18099, y: -6949, z: -71967}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 65535
+    next: 65535
+  - flag: 49159
+    colliderID: -1
+    v3_1: {x: 0, y: 0, z: 0}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 8
+    previous: 40
+    next: 65535
+  - flag: 33024
+    colliderID: -1
+    v3_1: {x: -8168, y: -15263, z: 20566}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 41
+    next: 65535
+  - flag: 32784
+    colliderID: -1
+    v3_1: {x: 329, y: -5280, z: 63842}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 42
+    next: 65535
+  - flag: 32785
+    colliderID: -1
+    v3_1: {x: -17667, y: -11343, z: 39343}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 43
+    next: 65535
+  - flag: 32786
+    colliderID: -1
+    v3_1: {x: 28, y: -18889, z: -16912}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 44
+    next: 65535
+  - flag: 32787
+    colliderID: -1
+    v3_1: {x: 28, y: -18706, z: 11527}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 45
+    next: 65535
+  - flag: 32788
+    colliderID: -1
+    v3_1: {x: 18080, y: -12062, z: -50276}
+    v3_2: {x: 0, y: -1012, z: 0}
+    objID: 43690
+    previous: 46
+    next: 65535
+  - flag: 32789
+    colliderID: -1
+    v3_1: {x: 28, y: -661, z: -74535}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 47
+    next: 65535
+  - flag: 32790
+    colliderID: -1
+    v3_1: {x: 14633, y: -11459, z: 50480}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 48
+    next: 65535
+  - flag: 45064
+    colliderID: -1
+    v3_1: {x: -52877, y: -9782, z: 4591}
+    v3_2: {x: 0, y: 0, z: 1024}
+    objID: 43690
+    previous: 49
+    next: 65535
+  - flag: 9
+    colliderID: -1
+    v3_1: {x: 1, y: -12906, z: 41704}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 256
+    previous: 50
+    next: 65535
+  - flag: 10
+    colliderID: -1
+    v3_1: {x: -2, y: -18098, z: -42638}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 259
+    previous: 51
+    next: 65535
+  - flag: 11
+    colliderID: -1
+    v3_1: {x: 100, y: 5177, z: 41}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 258
+    previous: 52
+    next: 65535
+  - flag: 32799
+    colliderID: -1
+    v3_1: {x: -33, y: -9269, z: -70471}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 57
+    next: 53
+  - flag: 12
+    colliderID: -1
+    v3_1: {x: 0, y: 0, z: 0}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 65535
+    next: 54
+  - flag: 32769
+    colliderID: -1
+    v3_1: {x: 18147, y: -9319, z: -5988}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 55
+    next: 65535
+  - flag: 32768
+    colliderID: -1
+    v3_1: {x: -18039, y: -9319, z: -5988}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 56
+    next: 65535
+  - flag: 13
+    colliderID: -1
+    v3_1: {x: 61, y: -9326, z: -6591}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 65535
+    next: 65535
+  - flag: 33025
+    colliderID: -1
+    v3_1: {x: 329, y: -8423, z: 63842}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 58
+    next: 65535
+  - flag: 61454
+    colliderID: -1
+    v3_1: {x: 0, y: 0, z: 0}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 15
+    previous: 65535
+    next: 59
+  - flag: 36866
+    colliderID: -1
+    v3_1: {x: -51506, y: -6152, z: 1279}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 15
+    previous: 60
+    next: 65535
+  - flag: 36867
+    colliderID: -1
+    v3_1: {x: -52001, y: -6152, z: 13437}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 5
+    previous: 61
+    next: 65535
+  - flag: 36866
+    colliderID: -1
+    v3_1: {x: -52092, y: -6152, z: 28055}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 62
+    next: 65535
+  - flag: 34816
+    colliderID: -1
+    v3_1: {x: -52182, y: -6152, z: -14423}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 63
+    next: 65535
+  - flag: 33798
+    colliderID: -1
+    v3_1: {x: -26389, y: 48, z: -55167}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 10
+    previous: 64
+    next: 65535
+  - flag: 33798
+    colliderID: -1
+    v3_1: {x: -28622, y: -5210, z: -10726}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 5
+    previous: 65
+    next: 65535
+  - flag: 33798
+    colliderID: -1
+    v3_1: {x: -27154, y: -7958, z: 24499}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 66
+    next: 65535
+  - flag: 33798
+    colliderID: -1
+    v3_1: {x: 28910, y: -6174, z: 21641}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 67
+    next: 65535
+  - flag: 33798
+    colliderID: -1
+    v3_1: {x: 28238, y: -2260, z: -53950}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 10
+    previous: 68
+    next: 65535
+  - flag: 33798
+    colliderID: -1
+    v3_1: {x: 26615, y: -1011, z: -12343}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 5
+    previous: 69
+    next: 65535
+  - flag: 33798
+    colliderID: 6
+    v3_1: {x: -510, y: -6152, z: 38273}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 70
+    next: 65535
+  - flag: 33792
+    colliderID: -1
+    v3_1: {x: 72, y: 3880, z: 22193}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 71
+    next: 65535
+  - flag: 34578
+    colliderID: -1
+    v3_1: {x: -753, y: 3880, z: -14222}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 43690
+    previous: 65535
+    next: 65535
+  pointerUnk1: 0
+  obj: []
+  currentID: 0
+  xobf: {fileID: 1791082649404618430}

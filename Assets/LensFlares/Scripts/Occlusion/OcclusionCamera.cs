@@ -38,33 +38,39 @@ public class OcclusionCamera : MonoBehaviour
 
     public void AwakeW()
     {
+
 #if UNITY_EDITOR
         if (_camera != null)
 #endif
+
         {
             _camera.enabled = false;
             RenderTexture renderTexture = new RenderTexture(_camera.targetTexture);
             _camera.targetTexture = renderTexture;
             lensFlare.renderTexture = new Texture2D(64, 64, TextureFormat.R16, false, true);
-            
+
             //Fallo de RenderTexture (Occlusion-Flares)
-            
+
             //Debug.Log("Siza Camera: " + "/n" + _preset.presets[id].size + "/n" + " id: " + id);
-            //float size = _preset.presets[id].size;
-            //transform.localScale = new Vector3(size, size, size);
-            //_camera.nearClipPlane = _preset.presets[id].clipNear;
-            //_camera.farClipPlane = _preset.presets[id].clipFar;
+            Debug.Log("_preset " + id);
+            //Debug.Log("size " + _preset.presets[id].size);
+            float size = _preset.presets[0].size;
+            transform.localScale = new Vector3(size, size, size);
+            _camera.nearClipPlane = _preset.presets[0].clipNear;
+            _camera.farClipPlane = _preset.presets[0].clipFar;
             lensFlare.camera = this;
         }
     }
 
     public void UpdateW()
     {
+
 #if UNITY_EDITOR
         if (_camera != null &&
             _shader != null &&
             _target != null)
 #endif
+
         {
             var bounds = _target.bounds;
             var size = bounds.size;
@@ -81,7 +87,7 @@ public class OcclusionCamera : MonoBehaviour
     public void RenderW()
     {
         var originalPos = transform.localPosition;
-        transform.localPosition += _preset.presets[id].offset;
+        transform.localPosition += _preset.presets[0].offset;
         transform.LookAt(LevelManager.instance.defaultCamera.transform);
         _camera.RenderWithShader(_shader, kReplacementTag);
         transform.localPosition = originalPos;

@@ -1,4 +1,4 @@
-﻿//Falta por Actualizar
+//Falta por Actualizar
 using System;
 using System.IO;
 using System.Text;
@@ -140,7 +140,7 @@ public class IMP_OBJ
             return null;
         }
 
-        LAB_2E74:
+    LAB_2E74:
         if ((pcVar17 & 4) != 0 && levelManager.xobfList[iVar9].animations.Length > 0)
         {
             iVar11 = (int)GameManager.FUN_2AC5C();
@@ -286,7 +286,7 @@ public class IMP_OBJ
                             {
                                 oVar18 = piVar15.child;
 
-                                while(oVar18 != null)
+                                while (oVar18 != null)
                                 {
                                     piVar15 = piVar15.child;
                                     oVar18 = piVar15.child;
@@ -378,7 +378,7 @@ public class IMP_OBJ
         param1.maxFullHealth = uVar2;
         oVar3 = param1.child2;
 
-        while(oVar3 != null)
+        while (oVar3 != null)
         {
             if (oVar3.maxHalfHealth == 0)
                 oVar3.maxHalfHealth = uVar1;
