@@ -325,7 +325,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cfuStatus: PSXEffects v1.18
   sections: 01010101
-  customRes: {x: 638, y: 359}
+  customRes: {x: 691, y: 389}
   resolutionFactor: 1
   limitFramerate: -1
   skipFrames: 0
@@ -10391,7 +10391,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cfuStatus: PSXEffects v1.18
   sections: 01010101
-  customRes: {x: 638, y: 359}
+  customRes: {x: 691, y: 389}
   resolutionFactor: 1
   limitFramerate: -1
   skipFrames: 0
@@ -11510,7 +11510,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cfuStatus: PSXEffects v1.18
   sections: 00000000
-  customRes: {x: 638, y: 359}
+  customRes: {x: 691, y: 389}
   resolutionFactor: 1
   limitFramerate: -1
   skipFrames: 0
@@ -12661,7 +12661,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cfuStatus: PSXEffects v1.18
   sections: 01010101
-  customRes: {x: 638, y: 359}
+  customRes: {x: 691, y: 389}
   resolutionFactor: 1
   limitFramerate: -1
   skipFrames: 0
@@ -12780,7 +12780,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cfuStatus: PSXEffects v1.18
   sections: 01010101
-  customRes: {x: 638, y: 359}
+  customRes: {x: 691, y: 389}
   resolutionFactor: 1
   limitFramerate: -1
   skipFrames: 0
@@ -23637,7 +23637,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cfuStatus: PSXEffects v1.18
   sections: 01010101
-  customRes: {x: 638, y: 359}
+  customRes: {x: 691, y: 389}
   resolutionFactor: 1
   limitFramerate: -1
   skipFrames: 0
@@ -26473,7 +26473,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cfuStatus: PSXEffects v1.18
   sections: 01010101
-  customRes: {x: 638, y: 359}
+  customRes: {x: 691, y: 389}
   resolutionFactor: 1
   limitFramerate: -1
   skipFrames: 0
@@ -28492,7 +28492,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cfuStatus: PSXEffects v1.18
   sections: 01010101
-  customRes: {x: 638, y: 359}
+  customRes: {x: 691, y: 389}
   resolutionFactor: 1
   limitFramerate: -1
   skipFrames: 0
@@ -43615,6 +43615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41e4fd2ff834bf547b8ac1064879a5d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statsPanel: {fileID: 727416439}
   sceneLoaded: 0
   pendingCallbacks: 0
 --- !u!1 &1616813597
@@ -44317,7 +44318,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cfuStatus: PSXEffects v1.18
   sections: 01010101
-  customRes: {x: 638, y: 359}
+  customRes: {x: 691, y: 389}
   resolutionFactor: 1
   limitFramerate: -1
   skipFrames: 0
@@ -46051,7 +46052,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cfuStatus: PSXEffects v1.18
   sections: 01010101
-  customRes: {x: 638, y: 359}
+  customRes: {x: 691, y: 389}
   resolutionFactor: 1
   limitFramerate: -1
   skipFrames: 0

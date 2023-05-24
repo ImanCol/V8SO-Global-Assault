@@ -11203,8 +11203,16 @@ public class GameManager : MonoBehaviour
     public Dictionary<short, Vehicle> enemiesDictionary;
     public int leash;
     private bool atStart;
-
     public int driverPlus = 0;
+    int Players;
+
+    public void SetPlayer(Packet _packet)
+    {
+        Debug.Log("User ID: " + _packet);
+        Players += 1;
+        statsPanel.SpawnVehicle(Players, 0);
+    }
+
     public void SetDriver()
     {
         switch (statsPanel.cursor)
@@ -14415,9 +14423,9 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Pickup Number: " + num2);
                 if (gameMode >= _GAME_MODE.Versus2)
                 {
-					Debug.Log("SawnDiscord");
+                    Debug.Log("SawnDiscord");
                     ClientSend.SpawnPickup(param2.id, param2.tags, DAT_63FA4[num], param2.parent != null);
-					Debug.Log("Pass..");
+                    Debug.Log("Pass..");
                 }
                 vigObject = param2.FUN_31DDC();
                 vigObject.flags |= 16777216u;
@@ -14789,17 +14797,20 @@ public class GameManager : MonoBehaviour
             //Si el progreso total es igual o mayor a 0.9f, establece el progreso actual en 1.0f para indicar que la escena está completamente cargada
             else if (asyncOperation.progress >= 0.9f)
             {
+
                 inDebug = false;
                 inMenu = false;
                 asyncOperation.allowSceneActivation = true;
 
                 //panelOnline.transform.Find("LoadScene").gameObject.SetActive(value: true);
+
                 //Obtener el nombre de la escena por índice de compilación
                 sceneName = GetSceneNameByBuildIndex(sceneIndex);
                 Debug.Log("Scene Precargada: " + sceneName);
                 progressBarTexture = null;
                 StopCoroutine(LoadSceneAsyncWithDelay(map));
                 //SceneManager.LoadSceneAsync(sceneIndex);
+
             }
             else
             {

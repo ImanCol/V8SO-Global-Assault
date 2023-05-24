@@ -85,6 +85,7 @@ public class Demo : MonoBehaviour
 
     public void _GetLobbies(List<Lobby> lobbies)
     {
+
         for (int i = 0; i < lobbies.Count; i++)
         {
             Button component = UnityEngine.Object.Instantiate<GameObject>(this.lobbyButtonPrefab).GetComponent<Button>();
@@ -114,18 +115,22 @@ public class Demo : MonoBehaviour
             });
             component.onClick.AddListener(delegate ()
             {
+                Debug.Log("Debug damageLabel");
                 this.damageLabel.gameObject.SetActive(false);
             });
             component.onClick.AddListener(delegate ()
             {
+                Debug.Log("Debug difficulty");
                 this.difficultyLabel.gameObject.SetActive(false);
             });
             component.onClick.AddListener(delegate ()
             {
+                Debug.Log("Debug onlineDmg");
                 this.onlineDmgLabel.gameObject.SetActive(false);
             });
             component.onClick.AddListener(delegate ()
             {
+                Debug.Log("Debug livesLabel");
                 this.livesLabel.gameObject.SetActive(false);
             });
             component.onClick.AddListener(delegate ()
@@ -135,6 +140,7 @@ public class Demo : MonoBehaviour
             });
             component.onClick.AddListener(delegate ()
             {
+                Debug.Log("Debug NotReady");
                 this.notReadyLabel.gameObject.SetActive(false);
             });
             component.onClick.AddListener(delegate ()
@@ -167,6 +173,7 @@ public class Demo : MonoBehaviour
             });
             component.onClick.AddListener(delegate ()
             {
+                Debug.Log("Debug JoinLobby");
                 this.JoinLobby(lobby.Id, lobby.Secret);
             });
         }

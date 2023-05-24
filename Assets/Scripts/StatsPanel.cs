@@ -186,7 +186,7 @@ public class StatsPanel : MonoBehaviourPunCallbacks
         //SetPlayer();
         //SpawnVehicle(1, 0);
 
-        // Crear un RenderTexture para cada cámara en la lista
+        //Crear un RenderTexture para cada cámara en la lista
 
         RenderTexture rt = new RenderTexture(textureWidth, textureHeight, 16, RenderTextureFormat.ARGB32); //Principal
         rtList.Add(rt);

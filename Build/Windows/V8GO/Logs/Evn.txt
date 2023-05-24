@@ -1,0 +1,8 @@
+[24/05/2023 01:52:04 a. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at 26.187.55.204:14697
+[24/05/2023 01:52:04 a. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: -2883198486493599737
+[24/05/2023 01:52:04 a. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
+[24/05/2023 01:52:04 a. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Connected - Connected to DD8B730081492993
+[24/05/2023 01:52:04 a. m.] - V2UnityDiscordIntercept.VigClient.Connected - MemberId: 1
+[24/05/2023 01:52:04 a. m.] - V2UnityDiscordIntercept.Patches.Demo_JoinLobby_Patch.JoinLobby - Joining lobby
+[24/05/2023 01:52:04 a. m.] - V2UnityDiscordIntercept.VigClient.JoinLobby - Joined Lobby
+[24/05/2023 01:52:29 a. m.] - V2UnityDiscordIntercept.Patches.DiscordController_GetMemberId_Patch.GetMemberId - Got member id: 1

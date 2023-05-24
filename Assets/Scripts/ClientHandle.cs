@@ -5,7 +5,11 @@ public class ClientHandle : MonoBehaviour
 {
 	public static void Joined(Packet _packet, long userId)
 	{
+
 		//Get Username
+		GameManager.instance.SetPlayer(_packet);
+
+		//StatsPanel.instance.SpawnVehicle(2, 0);
 		string text = _packet.ReadString();
 		UnityEngine.Debug.Log(text + " joined.");
 		GameManager.instance.networkMembers.Add(userId, null);
@@ -13,7 +17,9 @@ public class ClientHandle : MonoBehaviour
 		Demo.instance.playerNames.Add(userId, text);
 		Demo.instance.playerVehicles.Add(userId, 0);
 		Demo.instance.InstantiateText(userId);
+
 		ClientSend.Welcome(userId);
+
 		if (GameManager.instance.ready)
 		{
 			ClientSend.Ready(userId);
