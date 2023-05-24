@@ -15,7 +15,7 @@ namespace V2UnityDiscordIntercept
         private NetClient client;
         public int MemberId { get; set; }
 
-        private Dictionary<string, string> lobbyMetadata = new Dictionary<string, string>();        
+        private Dictionary<string, string> lobbyMetadata = new Dictionary<string, string>();
 
         public void Disconnect(string byeMessage)
         {
