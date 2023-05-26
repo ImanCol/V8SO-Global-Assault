@@ -5,8 +5,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun.Demo.Asteroids;
 using Photon.Pun;
+
 public class LobbyMainPanel : MonoBehaviourPunCallbacks
 {
+    public static LobbyMainPanel Instance { get; private set; }
+
+
     [Header("Lobby Panel")]
     public GameObject statsPanel;
     public GameObject PanelOnline;
@@ -21,9 +25,11 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
     public GameObject LoginPanel;
 
     public InputField PlayerNameInput;
+    
 
     [Header("Selection Panel")]
     public GameObject SelectionPanel;
+
 
     [Header("Create Room Panel")]
     public GameObject CreateRoomPanel;
@@ -31,33 +37,51 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
     public InputField RoomNameInputField;
     public InputField MaxPlayersInputField;
 
+
     [Header("Join Random Room Panel")]
     public GameObject JoinRandomRoomPanel;
 
+
     [Header("Room List Panel")]
     public GameObject RoomListPanel;
-
     public GameObject RoomListContent;
     public GameObject RoomListEntryPrefab;
-
     [Header("Inside Room Panel")]
     public GameObject InsideRoomPanel;
-
     public Button StartGameButton;
     public GameObject PlayerListEntryPrefab;
-
     private Dictionary<string, RoomInfo> cachedRoomList;
     private Dictionary<string, GameObject> roomListEntries;
     private Dictionary<int, GameObject> playerListEntries;
-
     #region UNITY
-
     string[] names = { "Molo", "Torque", "Nina", "Vigilante", "Coyote", "Evan" };
-
-
+    public int GetLocalPlayerID()
+    {
+        if (PhotonNetwork.LocalPlayer != null)
+        {
+            return PhotonNetwork.LocalPlayer.ActorNumber;
+        }
+        else
+        {
+            //Si PhotonNetwork.LocalPlayer es nulo, devuelve un valor predeterminado
+            //Aquí puedes elegir qué valor quieres asignar en ese caso
+            return 0;
+        }
+    }
 
     public void Awake()
     {
+
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         PhotonNetwork.AutomaticallySyncScene = true;
 
         cachedRoomList = new Dictionary<string, RoomInfo>();
@@ -123,7 +147,14 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        // joining (or entering) a room invalidates any cached lobby room list (even if LeaveLobby was not called due to just joining a room)
+        //Resto del código...
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            //El host crea la partida y llama a SpawnVehicle con su PlayerID como 1 y el ID del coche como 0
+        }
+
+        //joining (or entering) a room invalidates any cached lobby room list (even if LeaveLobby was not called due to just joining a room)
         cachedRoomList.Clear();
 
         selectOptions.SetActive(value: true);
@@ -155,9 +186,9 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
         StartGameButton.gameObject.SetActive(CheckPlayersReady());
 
         Hashtable props = new Hashtable
-            {
-                {AsteroidsGame.PLAYER_LOADED_LEVEL, false}
-            };
+        {
+            {AsteroidsGame.PLAYER_LOADED_LEVEL, false}
+        };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
     }
 
@@ -352,7 +383,7 @@ public class LobbyMainPanel : MonoBehaviourPunCallbacks
     {
         foreach (RoomInfo info in roomList)
         {
-            // Remove room from cached room list if it got closed, became invisible or was marked as removed
+            // Remove room from cached room list if it got closed, became invisible, or was marked as removed
             if (!info.IsOpen || !info.IsVisible || info.RemovedFromList)
             {
                 if (cachedRoomList.ContainsKey(info.Name))

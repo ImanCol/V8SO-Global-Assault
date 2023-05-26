@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 public class ControlsMenu : Menu
 {
-    StatsPanel statsPanel;
     public Dropdown PlayersDropdown;
 
     private void Start()

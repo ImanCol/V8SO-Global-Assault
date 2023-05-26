@@ -12,7 +12,6 @@ using Unity.Collections;
 using Unity.Burst;
 using TMPro;
 using Rewired;
-
 public delegate VigObject _VEHICLE_INIT(XOBF_DB param1, int param2, uint param3); //needs parameters
 public delegate VigObject _SPECIAL_INIT(XOBF_DB param1, int param2);
 public delegate VigObject _OBJECT_INIT(XOBF_DB param1, int param2, uint param3);
@@ -10086,7 +10085,6 @@ public class GameManager : MonoBehaviour
 
     public static short[] DAT_63FA4 = new short[18]
     {
-
         //Mesh Help
         9, //SnowWheels
         3, //MultiDamage
@@ -11159,6 +11157,7 @@ public class GameManager : MonoBehaviour
     public float offsetStart;
     public float angleOffset;
     public float aspectRatioScale;
+    public StatsPanel statsPanel;
     public GameObject selectOptions;
     public GameObject panelOnline;
     public Dropdown driverDropdown;
@@ -11215,424 +11214,623 @@ public class GameManager : MonoBehaviour
 
     public void SetDriver()
     {
-        switch (statsPanel.cursor)
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
         {
-            case 0:
-                vehicles[0] = 0;
-                break;
-            case 1:
-                vehicles[0] = 1;
-                break;
-            case 2:
-                vehicles[0] = 2;
-                break;
-            case 3:
-                vehicles[0] = 3;
-                break;
-            case 4:
-                vehicles[0] = 4;
-                break;
-            case 5:
-                vehicles[0] = 5;
-                break;
-            case 6:
-                vehicles[0] = 6;
-                break;
-            case 7:
-                vehicles[0] = 7;
-                break;
-            case 8:
-                vehicles[0] = 8;
-                break;
-            case 9:
-                vehicles[0] = 9;
-                break;
-            case 10:
-                vehicles[0] = 10;
-                break;
-            case 11:
-                vehicles[0] = 11;
-                break;
-            case 12:
-                vehicles[0] = 12;
-                break;
-            case 13:
-                vehicles[0] = 13;
-                break;
-            case 14:
-                vehicles[0] = 14;
-                break;
-            case 15:
-                vehicles[0] = 15;
-                break;
-            case 16:
-                vehicles[0] = 16;
-                break;
-            case 17:
-                vehicles[0] = 17;
-                break;
-            case 18:
-                vehicles[0] = 21;
-                break;
-            case 19:
-                vehicles[0] = 22;
-                break;
-            case 20:
-                vehicles[0] = 23;
-                break;
-            case 21:
-                vehicles[0] = 24;
-                break;
-            case 22:
-                vehicles[0] = 25;
-                break;
-            case 23:
-                vehicles[0] = 26;
-                break;
-            case 24:
-                vehicles[0] = 27;
-                break;
-            case 25:
-                vehicles[0] = 28;
-                break;
-            case 26:
-                vehicles[0] = 29;
-                break;
-            case 27:
-                vehicles[0] = 30;
-                break;
-            case 28:
-                vehicles[0] = 31;
-                break;
-            case 29:
-                vehicles[0] = 32;
-                break;
-            case 30:
-                vehicles[0] = 33;
-                break;
-            case 31:
-                vehicles[0] = 34;
-                break;
-            case 32:
-                vehicles[0] = 35;
-                break;
-            case 33:
-                vehicles[0] = 36;
-                break;
-            case 34:
-                vehicles[0] = 37;
-                break;
-            case 35:
-                vehicles[0] = 38;
-                break;
+            //switch (statsPanel.cursor)
+            switch (driverDropdown.value)
+            {
+                case 0:
+                    vehicles[0] = 0;
+                    break;
+                case 1:
+                    vehicles[0] = 1;
+                    break;
+                case 2:
+                    vehicles[0] = 2;
+                    break;
+                case 3:
+                    vehicles[0] = 3;
+                    break;
+                case 4:
+                    vehicles[0] = 4;
+                    break;
+                case 5:
+                    vehicles[0] = 5;
+                    break;
+                case 6:
+                    vehicles[0] = 6;
+                    break;
+                case 7:
+                    vehicles[0] = 7;
+                    break;
+                case 8:
+                    vehicles[0] = 8;
+                    break;
+                case 9:
+                    vehicles[0] = 9;
+                    break;
+                case 10:
+                    vehicles[0] = 10;
+                    break;
+                case 11:
+                    vehicles[0] = 11;
+                    break;
+                case 12:
+                    vehicles[0] = 12;
+                    break;
+                case 13:
+                    vehicles[0] = 13;
+                    break;
+                case 14:
+                    vehicles[0] = 14;
+                    break;
+                case 15:
+                    vehicles[0] = 15;
+                    break;
+                case 16:
+                    vehicles[0] = 16;
+                    break;
+                case 17:
+                    vehicles[0] = 17;
+                    break;
+                case 18:
+                    vehicles[0] = 21;
+                    break;
+                case 19:
+                    vehicles[0] = 22;
+                    break;
+                case 20:
+                    vehicles[0] = 23;
+                    break;
+                case 21:
+                    vehicles[0] = 24;
+                    break;
+                case 22:
+                    vehicles[0] = 25;
+                    break;
+                case 23:
+                    vehicles[0] = 26;
+                    break;
+                case 24:
+                    vehicles[0] = 27;
+                    break;
+                case 25:
+                    vehicles[0] = 28;
+                    break;
+                case 26:
+                    vehicles[0] = 29;
+                    break;
+                case 27:
+                    vehicles[0] = 30;
+                    break;
+                case 28:
+                    vehicles[0] = 31;
+                    break;
+                case 29:
+                    vehicles[0] = 32;
+                    break;
+                case 30:
+                    vehicles[0] = 33;
+                    break;
+                case 31:
+                    vehicles[0] = 34;
+                    break;
+                case 32:
+                    vehicles[0] = 35;
+                    break;
+                case 33:
+                    vehicles[0] = 36;
+                    break;
+                case 34:
+                    vehicles[0] = 37;
+                    break;
+                case 35:
+                    vehicles[0] = 38;
+                    break;
+            }
+            //driverDropdown.value = vehicles[0];
+            ClientSend.NotReady(0L);
+            Demo.instance.readyLabel.gameObject.SetActive(value: true);
+            Demo.instance.notReadyLabel.gameObject.SetActive(value: false);
+            Demo.instance.SetupPlaceholders();
         }
-        driverDropdown.value = vehicles[0];
-        ClientSend.NotReady(0L);
-        Demo.instance.readyLabel.gameObject.SetActive(value: true);
-        Demo.instance.notReadyLabel.gameObject.SetActive(value: false);
-        Demo.instance.SetupPlaceholders();
+        else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
+        {
+            switch (driverDropdown.value)
+            {
+                case 0:
+                    vehicles[0] = 0;
+                    break;
+                case 1:
+                    vehicles[0] = 1;
+                    break;
+                case 2:
+                    vehicles[0] = 2;
+                    break;
+                case 3:
+                    vehicles[0] = 3;
+                    break;
+                case 4:
+                    vehicles[0] = 4;
+                    break;
+                case 5:
+                    vehicles[0] = 5;
+                    break;
+                case 6:
+                    vehicles[0] = 6;
+                    break;
+                case 7:
+                    vehicles[0] = 7;
+                    break;
+                case 8:
+                    vehicles[0] = 8;
+                    break;
+                case 9:
+                    vehicles[0] = 9;
+                    break;
+                case 10:
+                    vehicles[0] = 10;
+                    break;
+                case 11:
+                    vehicles[0] = 11;
+                    break;
+                case 12:
+                    vehicles[0] = 12;
+                    break;
+                case 13:
+                    vehicles[0] = 13;
+                    break;
+                case 14:
+                    vehicles[0] = 14;
+                    break;
+                case 15:
+                    vehicles[0] = 15;
+                    break;
+                case 16:
+                    vehicles[0] = 16;
+                    break;
+                case 17:
+                    vehicles[0] = 17;
+                    break;
+            }
+            ClientSend.NotReady(0L);
+            Demo.instance.readyLabel.gameObject.SetActive(value: true);
+            Demo.instance.notReadyLabel.gameObject.SetActive(value: false);
+            Demo.instance.SetupPlaceholders();
+        }
     }
 
     public void SetStage()
     {
-        switch (map)
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
         {
-            case 1:
-                mapText = "Arizona - MeteorCrater";
-                break;
-            case 2:
-                mapText = "Utah - Winter Games";
-                break;
-            case 3:
-                mapText = "Louisiana - Ghastly Bayou";
-                break;
-            case 4:
-                mapText = "Florida - Launch Site";
-                break;
-            case 5:
-                mapText = "Pennsylvania - Steel Mill";
-                break;
-            case 6:
-                mapText = "Minnesota - Nuclear Plant";
-                break;
-            case 7:
-                mapText = "Alaska - Alaskan Pipeline";
-                break;
-            case 8:
-                mapText = "California - Pacific Harbor";
-                break;
-            case 9:
-                mapText = "Nevada - Secret Base";
-                break;
-            case 10:
-                mapText = "Utah - Sand Factory";
-                break;
-            case 11:
-                mapText = "New - Mexico Oil Fields";
-                break;
-            case 12:
-                mapText = "Arizona - Aircraft Graveyard";
-                break;
-            case 13:
-                mapText = "New Mexico - Ghost Town";
-                break;
-            case 14:
-                mapText = "Arizona Nevada - Hoover Dam";
-                break;
-            case 15:
-                mapText = "California - Valley Farms";
-                break;
-            case 16:
-                mapText = "Nevada - Casino City";
-                break;
-            case 17:
-                mapText = "Utah - Canyonlands";
-                break;
-            case 18:
-                mapText = "Colorado - Ski Resort";
-                break;
+            switch (map)
+            {
+                case 1:
+                    mapText = "Arizona - MeteorCrater";
+                    break;
+                case 2:
+                    mapText = "Utah - Winter Games";
+                    break;
+                case 3:
+                    mapText = "Louisiana - Ghastly Bayou";
+                    break;
+                case 4:
+                    mapText = "Florida - Launch Site";
+                    break;
+                case 5:
+                    mapText = "Pennsylvania - Steel Mill";
+                    break;
+                case 6:
+                    mapText = "Minnesota - Nuclear Plant";
+                    break;
+                case 7:
+                    mapText = "Alaska - Alaskan Pipeline";
+                    break;
+                case 8:
+                    mapText = "California - Pacific Harbor";
+                    break;
+                case 9:
+                    mapText = "Nevada - Secret Base";
+                    break;
+                case 10:
+                    mapText = "Utah - Sand Factory";
+                    break;
+                case 11:
+                    mapText = "New - Mexico Oil Fields";
+                    break;
+                case 12:
+                    mapText = "Arizona - Aircraft Graveyard";
+                    break;
+                case 13:
+                    mapText = "New Mexico - Ghost Town";
+                    break;
+                case 14:
+                    mapText = "Arizona Nevada - Hoover Dam";
+                    break;
+                case 15:
+                    mapText = "California - Valley Farms";
+                    break;
+                case 16:
+                    mapText = "Nevada - Casino City";
+                    break;
+                case 17:
+                    mapText = "Utah - Canyonlands";
+                    break;
+                case 18:
+                    mapText = "Colorado - Ski Resort";
+                    break;
+            }
+            if (inDebug)
+            {
+                Debug.Log("MAP: " + map);
+                Debug.Log("statsPanel.maps: " + statsPanel.maps);
+                selectOptions.transform.Find("Map/Preview").GetComponent<Image>().sprite = statsPanel.maps[map - 1];
+                selectOptions.transform.Find("Map/Text (TMP)").GetComponent<TextMeshProUGUI>().text = mapText.ToString();
+            }
         }
-        if (inDebug)
+        else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
         {
-            selectOptions.transform.Find("Map/Preview").GetComponent<Image>().sprite = statsPanel.maps[map - 1];
-            selectOptions.transform.Find("Map/Text (TMP)").GetComponent<TextMeshProUGUI>().text = mapText.ToString();
+            map = stageDropdown.value + 1;
+            Debug.Log("Scene Set: " + map);
         }
-        //map = stageDropdown.value + 1;
         ClientSend.Map(0L);
     }
 
     public void SetDithering()
     {
-        ditheringMethod = _DITHERING.None;
-
-        //switch (ditheringDropdown.value)
-        //{
-        //    case 0:
-        //        ditheringMethod = _DITHERING.None;
-        //        break;
-        //    case 1:
-        //        ditheringMethod = _DITHERING.Standard;
-        //        break;
-        //    case 2:
-        //        ditheringMethod = _DITHERING.PSX;
-        //        break;
-        //}
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
+        {
+            ditheringMethod = _DITHERING.None;
+        }
+        else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
+        {
+            switch (ditheringDropdown.value)
+            {
+                case 0:
+                    ditheringMethod = _DITHERING.None;
+                    break;
+                case 1:
+                    ditheringMethod = _DITHERING.Standard;
+                    break;
+                case 2:
+                    ditheringMethod = _DITHERING.PSX;
+                    break;
+            }
+        }
     }
 
     public void SetLives()
     {
-        selectOptions.transform.Find("Lives/Text (TMP)").GetComponent<TextMeshProUGUI>().text = currentValueLives.ToString();
-        sbyte b = playerSpawns = (sbyte)(currentValueLives);
-        for (int i = 0; i < networkMembers.Count; i++)
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
         {
-            DAT_1030[i] = b;
+            selectOptions.transform.Find("Lives/Text (TMP)").GetComponent<TextMeshProUGUI>().text = currentValueLives.ToString();
+
+            sbyte b = playerSpawns = (sbyte)(currentValueLives);
+            for (int i = 0; i < networkMembers.Count; i++)
+            {
+                DAT_1030[i] = b;
+            }
+        }
+        if (SceneManager.GetActiveScene().name == "DEBUG-Online")
+        {
+            sbyte b = playerSpawns = (sbyte)(livesDropdown.value + 1);
+            for (int i = 0; i < networkMembers.Count; i++)
+            {
+                DAT_1030[i] = b;
+            }
         }
         ClientSend.Lives(playerSpawns, 0L);
     }
 
     public void SetGameMode()
     {
-        switch (modeIndex)
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
         {
-            case 0:
-                gameMode = _GAME_MODE.Arcade;
-                //spawnsRect.gameObject.SetActive(value: true);
-                break;
-            case 1:
-                gameMode = _GAME_MODE.Survival;
-                //spawnsRect.gameObject.SetActive(value: false);
-                DAT_1030[0] = 1;
-                DAT_1030[1] = 0;
-                DAT_1030[2] = 0;
-                DAT_1030[3] = 0;
-                break;
+            switch (modeIndex)
+            {
+                case 0:
+                    gameMode = _GAME_MODE.Arcade;
+                    break;
+                case 1:
+                    gameMode = _GAME_MODE.Survival;
+                    DAT_1030[0] = 1;
+                    DAT_1030[1] = 0;
+                    DAT_1030[2] = 0;
+                    DAT_1030[3] = 0;
+                    break;
+            }
+        }
+        else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
+        {
+            switch (gameModeDropdown.value)
+            {
+                case 0:
+                    gameMode = _GAME_MODE.Arcade;
+                    spawnsRect.gameObject.SetActive(value: true);
+                    break;
+                case 1:
+                    gameMode = _GAME_MODE.Survival;
+                    spawnsRect.gameObject.SetActive(value: false);
+                    DAT_1030[0] = 1;
+                    DAT_1030[1] = 0;
+                    DAT_1030[2] = 0;
+                    DAT_1030[3] = 0;
+                    break;
+            }
         }
     }
 
     public void SetMultiplayerMode()
     {
-        //gameMode = (_GAME_MODE)modeIndex;
-        switch (modeIndex)
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
         {
-            case 10:
-                gameMode = _GAME_MODE.Versus2;
-                //livesDropdown.transform.parent.gameObject.SetActive(value: true);
-                selectOptions.transform.Find("Lives").gameObject.SetActive(value: true);
-                selectOptions.transform.Find("Space 1").gameObject.SetActive(value: false);
-                selectOptions.transform.Find("Damages").gameObject.SetActive(value: true);
-                selectOptions.transform.Find("Space 2").gameObject.SetActive(value: false);
-                selectOptions.transform.Find("Difficulty").gameObject.SetActive(value: false);
-                selectOptions.transform.Find("Space 3").gameObject.SetActive(value: true);
-                //onlineDmgDropdown.transform.parent.gameObject.SetActive(value: true);
-                //damageDropdown.transform.parent.gameObject.SetActive(value: false);
-                //difficultyDropdown.transform.parent.gameObject.SetActive(value: false);
-                break;
-            case 11:
-                gameMode = _GAME_MODE.Coop2;
-                //livesDropdown.transform.parent.gameObject.SetActive(value: false);
-                selectOptions.transform.Find("Lives").gameObject.SetActive(value: false);
-                selectOptions.transform.Find("Space 1").gameObject.SetActive(value: true);
-                selectOptions.transform.Find("Damages").gameObject.SetActive(value: true);
-                selectOptions.transform.Find("Space 2").gameObject.SetActive(value: false);
-                selectOptions.transform.Find("Difficulty").gameObject.SetActive(value: true);
-                selectOptions.transform.Find("Space 3").gameObject.SetActive(value: false);
-                //onlineDmgDropdown.transform.parent.gameObject.SetActive(value: false);
-                //damageDropdown.transform.parent.gameObject.SetActive(value: true);
-                //difficultyDropdown.transform.parent.gameObject.SetActive(value: true);
-                DAT_1030[0] = 1;
-                DAT_1030[1] = 1;
-                DAT_1030[2] = 1;
-                DAT_1030[3] = 1;
-                DAT_1030[4] = 1;
-                DAT_1030[5] = 1;
-                break;
-            case 12:
-                gameMode = _GAME_MODE.Survival2;
-                //livesDropdown.transform.parent.gameObject.SetActive(value: false);
-                selectOptions.transform.Find("Lives").gameObject.SetActive(value: false);
-                selectOptions.transform.Find("Space 1").gameObject.SetActive(value: true);
-                selectOptions.transform.Find("Damages").gameObject.SetActive(value: true);
-                selectOptions.transform.Find("Space 2").gameObject.SetActive(value: false);
-                selectOptions.transform.Find("Difficulty").gameObject.SetActive(value: true);
-                selectOptions.transform.Find("Space 3").gameObject.SetActive(value: false);
-                //onlineDmgDropdown.transform.parent.gameObject.SetActive(value: false);
-                //damageDropdown.transform.parent.gameObject.SetActive(value: true);
-                //difficultyDropdown.transform.parent.gameObject.SetActive(value: true);
-                DAT_1030[0] = 1;
-                DAT_1030[1] = 0;
-                DAT_1030[2] = 0;
-                DAT_1030[3] = 0;
-                break;
+            switch (modeIndex)
+            {
+                case 10:
+                    gameMode = _GAME_MODE.Versus2;
+                    selectOptions.transform.Find("Lives").gameObject.SetActive(value: true);
+                    selectOptions.transform.Find("Space 1").gameObject.SetActive(value: false);
+                    selectOptions.transform.Find("Damages").gameObject.SetActive(value: true);
+                    selectOptions.transform.Find("Space 2").gameObject.SetActive(value: false);
+                    selectOptions.transform.Find("Difficulty").gameObject.SetActive(value: false);
+                    selectOptions.transform.Find("Space 3").gameObject.SetActive(value: true);
+                    break;
+                case 11:
+                    gameMode = _GAME_MODE.Coop2;
+                    selectOptions.transform.Find("Lives").gameObject.SetActive(value: false);
+                    selectOptions.transform.Find("Space 1").gameObject.SetActive(value: true);
+                    selectOptions.transform.Find("Damages").gameObject.SetActive(value: true);
+                    selectOptions.transform.Find("Space 2").gameObject.SetActive(value: false);
+                    selectOptions.transform.Find("Difficulty").gameObject.SetActive(value: true);
+                    selectOptions.transform.Find("Space 3").gameObject.SetActive(value: false);
+                    DAT_1030[0] = 1;
+                    DAT_1030[1] = 1;
+                    DAT_1030[2] = 1;
+                    DAT_1030[3] = 1;
+                    DAT_1030[4] = 1;
+                    DAT_1030[5] = 1;
+                    break;
+                case 12:
+                    gameMode = _GAME_MODE.Survival2;
+                    selectOptions.transform.Find("Lives").gameObject.SetActive(value: false);
+                    selectOptions.transform.Find("Space 1").gameObject.SetActive(value: true);
+                    selectOptions.transform.Find("Damages").gameObject.SetActive(value: true);
+                    selectOptions.transform.Find("Space 2").gameObject.SetActive(value: false);
+                    selectOptions.transform.Find("Difficulty").gameObject.SetActive(value: true);
+                    selectOptions.transform.Find("Space 3").gameObject.SetActive(value: false);
+                    DAT_1030[0] = 1;
+                    DAT_1030[1] = 0;
+                    DAT_1030[2] = 0;
+                    DAT_1030[3] = 0;
+                    break;
+            }
+            selectOptions.transform.Find("Mode/Text (TMP)").GetComponent<TextMeshProUGUI>().text = gameMode.ToString().Substring(0, gameMode.ToString().Length - 1);
+            ClientSend.Mode(0L);
         }
-
-        selectOptions.transform.Find("Mode/Text (TMP)").GetComponent<TextMeshProUGUI>().text = gameMode.ToString().Substring(0, gameMode.ToString().Length - 1);
-        ClientSend.Mode(0L);
+        else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
+        {
+            Debug.Log("MODE: " + mpModeDropdown.value);
+            switch (mpModeDropdown.value)
+            {
+                case 0:
+                    gameMode = _GAME_MODE.Versus2;
+                    livesDropdown.transform.parent.gameObject.SetActive(value: true);
+                    onlineDmgDropdown.transform.parent.gameObject.SetActive(value: true);
+                    damageDropdown.transform.parent.gameObject.SetActive(value: false);
+                    difficultyDropdown.transform.parent.gameObject.SetActive(value: false);
+                    break;
+                case 1:
+                    gameMode = _GAME_MODE.Coop2;
+                    livesDropdown.transform.parent.gameObject.SetActive(value: false);
+                    onlineDmgDropdown.transform.parent.gameObject.SetActive(value: false);
+                    damageDropdown.transform.parent.gameObject.SetActive(value: true);
+                    difficultyDropdown.transform.parent.gameObject.SetActive(value: true);
+                    DAT_1030[0] = 1;
+                    DAT_1030[1] = 1;
+                    DAT_1030[2] = 1;
+                    DAT_1030[3] = 1;
+                    DAT_1030[4] = 1;
+                    DAT_1030[5] = 1;
+                    break;
+                case 2:
+                    gameMode = _GAME_MODE.Survival2;
+                    livesDropdown.transform.parent.gameObject.SetActive(value: false);
+                    onlineDmgDropdown.transform.parent.gameObject.SetActive(value: false);
+                    damageDropdown.transform.parent.gameObject.SetActive(value: true);
+                    difficultyDropdown.transform.parent.gameObject.SetActive(value: true);
+                    DAT_1030[0] = 1;
+                    DAT_1030[1] = 0;
+                    DAT_1030[2] = 0;
+                    DAT_1030[3] = 0;
+                    break;
+            }
+            ClientSend.Mode(0L);
+        }
     }
 
     public void SetDamage()
     {
-        switch (currentDamageIndex)
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
         {
-            case 1:
-                damageText = "Low";
-                break;
-            case 2:
-                damageText = "Normal";
-                break;
-            case 3:
-                damageText = "High";
-                break;
+            switch (currentDamageIndex)
+            {
+                case 1:
+                    damageText = "Low";
+                    break;
+                case 2:
+                    damageText = "Normal";
+                    break;
+                case 3:
+                    damageText = "High";
+                    break;
+            }
+            selectOptions.transform.Find("Damages/Text (TMP)").GetComponent<TextMeshProUGUI>().text = damageText;
+            ClientSend.Damage(0L);
         }
-
-        selectOptions.transform.Find("Damages/Text (TMP)").GetComponent<TextMeshProUGUI>().text = damageText;
-
-        //int value = damageDropdown.value;
-        //DAT_C80[0] = (sbyte)value;
-        //DAT_C80[1] = (sbyte)value;
-        ClientSend.Damage(0L);
-
+        else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
+        {
+            int value = damageDropdown.value;
+            DAT_C80[0] = (sbyte)value;
+            DAT_C80[1] = (sbyte)value;
+            ClientSend.Damage(0L);
+        }
     }
 
     public void SetDifficulty()
     {
-        switch (currentValueDifficulty)
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
         {
-            case 1:
-                difficultyInt = 86;
-                break;
-            case 2:
-                difficultyInt = 89;
-                break;
-            case 3:
-                difficultyInt = 92;
-                break;
+            switch (currentValueDifficulty)
+            {
+                case 1:
+                    difficultyInt = 86;
+                    break;
+                case 2:
+                    difficultyInt = 89;
+                    break;
+                case 3:
+                    difficultyInt = 92;
+                    break;
+            }
+            int value = currentValueDifficulty;
+            this.difficultyMode = (byte)value;
+            selectOptions.transform.Find("Difficulty/Text (TMP)").GetComponent<TextMeshProUGUI>().text = difficultyInt.ToString();
+            ClientSend.Difficulty(0L);
         }
-        int value = currentValueDifficulty;
-        this.difficultyMode = (byte)value;
-        selectOptions.transform.Find("Difficulty/Text (TMP)").GetComponent<TextMeshProUGUI>().text = difficultyInt.ToString();
-
-        ClientSend.Difficulty(0L);
+        else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
+        {
+            int value = difficultyDropdown.value;
+            this.difficultyMode = (byte)value;
+            ClientSend.Difficulty(0L);
+        }
     }
 
     public void SetOnlineDamage()
     {
-
-        switch (currentDamageIndex)
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
         {
-            case 1:
-                damageText = "Low";
-                break;
-            case 2:
-                damageText = "Normal";
-                break;
-            case 3:
-                damageText = "High";
-                break;
-        }
-        selectOptions.transform.Find("Damages/Text (TMP)").GetComponent<TextMeshProUGUI>().text = damageText;
+            switch (currentDamageIndex)
+            {
+                case 1:
+                    damageText = "Low";
+                    break;
+                case 2:
+                    damageText = "Normal";
+                    break;
+                case 3:
+                    damageText = "High";
+                    break;
+            }
 
-        //int value = currentDamageIndex;
-        //this.difficultyMode = (byte)value;
+            selectOptions.transform.Find("Damages/Text (TMP)").GetComponent<TextMeshProUGUI>().text = damageText;
+
+            int value = currentDamageIndex;
+            this.difficultyMode = (byte)value;
+        }
+        else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
+        {
+            int value = onlineDmgDropdown.value;
+            this.difficultyMode = (byte)value;
+        }
         ClientSend.Difficulty(0L);
     }
-
     public void SetDrawPlayer()
     {
-        FUN_1E098(1, Menu.instance.sounds, 10, 4095);
-        //drawPlayer = drawPlayerToggle.isOn;
-        drawPlayer = true;
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
+        {
+            FUN_1E098(1, Menu.instance.sounds, 10, 4095);
+            drawPlayer = true;
+        }
+        else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
+        {
+            drawPlayer = drawPlayerToggle.isOn;
+        }
     }
 
     public void SetDrawObjects()
     {
-        FUN_1E098(1, Menu.instance.sounds, 10, 4095);
-        //drawObjects = drawObjectsToggle.isOn;
-        drawObjects = true;
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
+        {
+            FUN_1E098(1, Menu.instance.sounds, 10, 4095);
+            drawObjects = true;
+        }
+        else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
+        {
+            drawObjects = drawObjectsToggle.isOn;
+        }
     }
 
     public void SetDrawTerrain()
     {
-        FUN_1E098(1, Menu.instance.sounds, 10, 4095);
-        //drawTerrain = drawTerrainToggle.isOn;
-        drawTerrain = true;
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
+        {
+            FUN_1E098(1, Menu.instance.sounds, 10, 4095);
+            drawTerrain = true;
+        }
+        else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
+        {
+            drawTerrain = drawTerrainToggle.isOn;
+        }
     }
 
     public void SetDrawRoads()
     {
-        FUN_1E098(1, Menu.instance.sounds, 10, 4095);
-        //drawRoads = drawRoadsToggle.isOn;
-        drawRoads = true;
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
+        {
+            FUN_1E098(1, Menu.instance.sounds, 10, 4095);
+            drawRoads = true;
+        }
+        else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
+        {
+            drawRoads = drawRoadsToggle.isOn;
+        }
     }
 
     public void SetEnemySpawn(int index)
     {
-        FUN_1E098(1, Menu.instance.sounds, 10, 4095);
-        //DAT_1030[index] = (sbyte)(spawnEnemiesToggle[index].isOn ? 1 : 0);
-        DAT_1030[index] = 1;
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
+        {
+            FUN_1E098(1, Menu.instance.sounds, 10, 4095);
+            DAT_1030[index] = 1;
+        }
+        else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
+        {
+            DAT_1030[index] = (sbyte)(spawnEnemiesToggle[index].isOn ? 1 : 0);
+        }
     }
 
     public void SetDPAD()
     {
-        FUN_1E098(1, Menu.instance.sounds, 10, 4095);
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
+            FUN_1E098(1, Menu.instance.sounds, 10, 4095);
         DAT_637E0[0, 5] = (disableDpadToggle.isOn ? 7431u : 3116899591u);
     }
 
     public void SetAutoTarget()
     {
-        FUN_1E098(1, Menu.instance.sounds, 10, 4095);
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
+            FUN_1E098(1, Menu.instance.sounds, 10, 4095);
         autoTarget = (disableAutoTarget.isOn ? true : false);
     }
     public void SetPLUS()
     {
-        FUN_1E098(1, Menu.instance.sounds, 10, 4095);
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
+            FUN_1E098(1, Menu.instance.sounds, 10, 4095);
         DriverPlus = (disableDriverPlus.isOn ? true : false);
     }
 
     public void SetExperimentalDakota()
     {
-        FUN_1E098(1, Menu.instance.sounds, 10, 4095);
-        //experimentalDakota = enableExperimentalDakota.isOn;
-        experimentalDakota = false;
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
+        {
+            FUN_1E098(1, Menu.instance.sounds, 10, 4095);
+            experimentalDakota = false;
+        }
+        else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
+        {
+            experimentalDakota = enableExperimentalDakota.isOn;
+        }
     }
 
     [Obsolete]
@@ -11645,10 +11843,6 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            ////Descargar la escena de forma asíncrona
-            //Debug.Log("UNLOAD : " + sceneName);
-            //DestroyScene();
-
             ClientSend.NotReady(0L);
         }
     }
@@ -11691,7 +11885,6 @@ public class GameManager : MonoBehaviour
 
         SetDriver();
         //Debug.Log("Set Player: " + statsPanel.cursor);
-
         SetStage();
         SetDithering();
         SetGameMode();
@@ -11714,7 +11907,6 @@ public class GameManager : MonoBehaviour
     {
 
         //Debug.Log("Set Player: " + statsPanel.cursor);
-
         SetDriver();
         if (DriverPlus)
             vehicles[0] += 21;
@@ -14423,7 +14615,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Pickup Number: " + num2);
                 if (gameMode >= _GAME_MODE.Versus2)
                 {
-                    Debug.Log("SawnDiscord");
+                    Debug.Log("SpawnPickup");
                     ClientSend.SpawnPickup(param2.id, param2.tags, DAT_63FA4[num], param2.parent != null);
                     Debug.Log("Pass..");
                 }
@@ -14716,7 +14908,6 @@ public class GameManager : MonoBehaviour
         UpdateOptions();
     }
 
-    public StatsPanel statsPanel;
     private float loadingProgress = 0f;
 
     float totalSceneProgress = 0f; //Progreso total de la carga de la escena
@@ -14853,32 +15044,31 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-
-        reflectionsCoroutine = StartCoroutine(UpdateReflections());
-        //StartCoroutine(UpdateReflections());
-
-        if (inDebug)
+        if (inDebug || inMenu || SceneManager.GetActiveScene().name == "MENU-Driver")
         {
-            map = 1;
-            gameMode = _GAME_MODE.Versus2;
+            reflectionsCoroutine = StartCoroutine(UpdateReflections());
+            //StartCoroutine(UpdateReflections());
 
-            SetStage();
-            //selectOptions.transform.Find("Map/Preview").GetComponent<Image>().sprite = statsPanel.maps[map];
-            //selectOptions.transform.Find("Map/Text (TMP)").GetComponent<TextMeshProUGUI>().text = mapText;
-            selectOptions.transform.Find("Mode/Text (TMP)").GetComponent<TextMeshProUGUI>().text = gameMode.ToString().Substring(0, gameMode.ToString().Length - 1);
-            selectOptions.transform.Find("Lives/Text (TMP)").GetComponent<TextMeshProUGUI>().text = currentValueLives.ToString();
-            selectOptions.transform.Find("Damages/Text (TMP)").GetComponent<TextMeshProUGUI>().text = damageText;
+            if (inDebug)
+            {
+                map = 1;
+                gameMode = _GAME_MODE.Versus2;
 
-            //if (selectOptions.transform.Find("Mode").gameObject.transform.Find("Text (TMP)").gameObject)
-            //{
-            //Test: Desactiva texto de Mode
-            //selectOptions.transform.Find("Mode").gameObject.transform.Find("Text (TMP)").gameObject.SetActive(value: false);
-            //selectOptions.transform.Find("Mode/Text (TMP)").GetComponent<TextMeshProUGUI>().text = gameMode.ToString();
-            //gameMode = _GAME_MODE.Arcade;
-            //}
-        }
-        else
-        {
+                SetStage();
+                //selectOptions.transform.Find("Map/Preview").GetComponent<Image>().sprite = statsPanel.maps[map];
+                //selectOptions.transform.Find("Map/Text (TMP)").GetComponent<TextMeshProUGUI>().text = mapText;
+                selectOptions.transform.Find("Mode/Text (TMP)").GetComponent<TextMeshProUGUI>().text = gameMode.ToString().Substring(0, gameMode.ToString().Length - 1);
+                selectOptions.transform.Find("Lives/Text (TMP)").GetComponent<TextMeshProUGUI>().text = currentValueLives.ToString();
+                selectOptions.transform.Find("Damages/Text (TMP)").GetComponent<TextMeshProUGUI>().text = damageText;
+
+                //if (selectOptions.transform.Find("Mode").gameObject.transform.Find("Text (TMP)").gameObject)
+                //{
+                //Test: Desactiva texto de Mode
+                //selectOptions.transform.Find("Mode").gameObject.transform.Find("Text (TMP)").gameObject.SetActive(value: false);
+                //selectOptions.transform.Find("Mode/Text (TMP)").GetComponent<TextMeshProUGUI>().text = gameMode.ToString();
+                //gameMode = _GAME_MODE.Arcade;
+                //}
+            }
         }
     }
 
@@ -15082,7 +15272,7 @@ public class GameManager : MonoBehaviour
         //Obtener la progresión de carga de la escena actual
         //loadingProgress = SceneManager.LoadSceneAsync(map).progress;
 
-        if (inDebug || inMenu || SceneManager.GetActiveScene().name == "MENU-Driver")
+        if (inDebug || inMenu || SceneManager.GetActiveScene().name == "MENU-Driver" || SceneManager.GetActiveScene().name == "DEBUG-Online")
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -15138,7 +15328,7 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (inDebug || inMenu || SceneManager.GetActiveScene().name == "MENU-Driver")
+        if (inDebug || inMenu || SceneManager.GetActiveScene().name == "MENU-Driver" || SceneManager.GetActiveScene().name == "DEBUG-Online")
         {
             //Debug.Log("In Debug Return");
             return;

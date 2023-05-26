@@ -21,7 +21,6 @@ namespace Photon.Pun.Demo.Asteroids
     {
         [Header("UI References")]
         public Text PlayerNameText;
-
         public Image PlayerColorImage;
         public Button PlayerReadyButton;
         public Image PlayerReadyImage;

@@ -3849,7 +3849,18 @@ public class BufferedBinaryReader : IDisposable
 	{
 		return buffer[bufferOffset + offset];
 	}
-
+  public short ReadInt16()
+    {
+        var val = (short)((int)buffer[bufferOffset] | (int)buffer[bufferOffset + 1] << 8);
+        bufferOffset += 2;
+        return val;
+    }
+    public ushort ReadUInt16()
+    {
+        var val = (ushort)((int)buffer[bufferOffset] | (int)buffer[bufferOffset + 1] << 8);
+        bufferOffset += 2;
+        return val;
+    }
 	public short ReadInt16(int offset)
 	{
 		return (short)(buffer[bufferOffset + offset] | (buffer[bufferOffset + offset + 1] << 8));

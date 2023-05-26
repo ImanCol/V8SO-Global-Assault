@@ -21,3 +21,17 @@ Rewired version: 1.1.44.0.U2020
 Platform: Unknown
 Using Unity input: False
 
+[Info   :   Console] Rewired is not initialized. You must have an enabled Rewired Input Manager in the scene if using a Custom Controller. Custom Controller support will be disabled on this Custom Controller.
+------- Rewired System Info -------
+Unity version: 2021.2.0b11
+Rewired version: 1.1.44.0.U2020
+Platform: Unknown
+Using Unity input: False
+
+[Info   :   Console] Rewired is not initialized. You must have an enabled Rewired Input Manager in the scene if using a Custom Controller. Custom Controller support will be disabled on this Custom Controller.
+------- Rewired System Info -------
+Unity version: 2021.2.0b11
+Rewired version: 1.1.44.0.U2020
+Platform: Unknown
+Using Unity input: False
+

@@ -8,7 +8,6 @@
 // <author>developer@exitgames.com</author>
 // ----------------------------------------------------------------------------
 
-
 namespace Photon.Pun
 {
     using System.Diagnostics;
@@ -27,7 +26,6 @@ namespace Photon.Pun
     using UnityEditor;
     using System.IO;
 #endif
-
 
     public struct InstantiateParameters
     {
@@ -54,7 +52,6 @@ namespace Photon.Pun
             this.timestamp = timestamp;
         }
     }
-
 
     /// <summary>
     /// The main class to use the PhotonNetwork plugin.
@@ -104,7 +101,6 @@ namespace Photon.Pun
         /// The maximum number of assigned PhotonViews <i>per player</i> (or scene). See the [General Documentation](@ref general) topic "Limitations" on how to raise this limitation.
         /// </summary>
         public static readonly int MAX_VIEW_IDS = 1000; // VIEW & PLAYER LIMIT CAN BE EASILY CHANGED, SEE DOCS
-
 
         /// <summary>Name of the PhotonServerSettings file (used to load and by PhotonEditor to save new files).</summary>
         public const string ServerSettingsFileName = "PhotonServerSettings";
@@ -250,7 +246,6 @@ namespace Photon.Pun
         /// PhotonNetwork.ConnectUsingSettings will call either ConnectToMaster, ConnectToRegion or ConnectToBest, depending on the settings.
         /// </remarks>
         public static ConnectMethod ConnectMethod = ConnectMethod.NotCalled;
-
 
         /// <summary>The server (type) this client is currently connected or connecting to.</summary>
         /// <remarks>Photon uses 3 different roles of servers: Name Server, Master Server and Game Server.</remarks>
@@ -427,7 +422,6 @@ namespace Photon.Pun
         /// </summary>
         public static float PrecisionForFloatSynchronization = 0.01f;
 
-
         /// <summary>
         /// Offline mode can be set to re-use your multiplayer code in singleplayer game modes.
         /// When this is on PhotonNetwork will not create any connections and there is near to
@@ -488,7 +482,6 @@ namespace Photon.Pun
         private static bool offlineMode = false;
         private static Room offlineModeRoom = null;
 
-
         /// <summary>Defines if all clients in a room should automatically load the same level as the Master Client.</summary>
         /// <remarks>
         /// When enabled, clients load the same scene that is active on the Master Client.
@@ -548,7 +541,6 @@ namespace Photon.Pun
             }
         }
 
-
         /// <summary>True while this client is in a lobby.</summary>
         /// <remarks>
         /// Implement IPunCallbacks.OnRoomListUpdate() for a notification when the list of rooms
@@ -564,7 +556,6 @@ namespace Photon.Pun
                 return NetworkingClient.InLobby;
             }
         }
-
 
         /// <summary>
         /// Defines how many times per second the PhotonHandler should send data, if any is queued. Default: 30.
@@ -609,7 +600,6 @@ namespace Photon.Pun
                 }
             }
         }
-
         private static int sendFrequency = 33; // in milliseconds.
 
         /// <summary>
@@ -649,7 +639,6 @@ namespace Photon.Pun
 
         private static int serializationFrequency = 100; // in milliseconds. I.e. 100 = 100ms which makes 10 times/second
 
-
         /// <summary>
         /// Can be used to pause dispatching of incoming events (RPCs, Instantiates and anything else incoming).
         /// </summary>
@@ -676,7 +665,6 @@ namespace Photon.Pun
 
         /// <summary>Backup for property IsMessageQueueRunning.</summary>
         private static bool isMessageQueueRunning = true;
-
 
         /// <summary>
         /// Photon network time, synched with the server.
@@ -736,14 +724,12 @@ namespace Photon.Pun
                     }
                     return Environment.TickCount;
                 }
-
                 return NetworkingClient.LoadBalancingPeer.ServerTimeInMilliSeconds;   // TODO: implement ServerTimeInMilliSeconds in LBC
             }
         }
 
         /// <summary>Used for Photon/PUN timing, as Time.time can't be called from Threads.</summary>
         private static Stopwatch StartupStopwatch;
-
 
         /// <summary>
         /// Defines how many seconds PUN keeps the connection after Unity's OnApplicationPause(true) call. Default: 60 seconds.
@@ -784,7 +770,6 @@ namespace Photon.Pun
             get { return PhotonHandler.Instance != null ? Mathf.Round(PhotonHandler.Instance.KeepAliveInBackground / 1000.0f) : 60.0f; }
         }
 
-
         /// <summary>Affects if the PhotonHandler dispatches incoming messages in LateUpdate or FixedUpdate (default).</summary>
         /// <remarks>
         /// By default the PhotonHandler component dispatches incoming messages in FixedUpdate.
@@ -800,7 +785,6 @@ namespace Photon.Pun
         /// By default, this value is -1f, so there is no fallback to LateUpdate.
         /// </remarks>
         public static float MinimalTimeScaleToDispatchInFixedUpdate = -1f;
-
 
         /// <summary>
         /// Are we the master client?
@@ -869,7 +853,6 @@ namespace Photon.Pun
                 return NetworkClientState == ClientState.Joined;
             }
         }
-
 
         /// <summary>
         /// The count of players currently looking for a room (available on MasterServer in 5sec intervals).

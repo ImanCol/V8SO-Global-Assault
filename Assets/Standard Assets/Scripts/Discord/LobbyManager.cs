@@ -6,6 +6,7 @@ using System.Text;
 namespace Discord
 {
 	// Token: 0x02000035 RID: 53
+
 	public class LobbyManager
 	{
 		// Token: 0x1700000A RID: 10

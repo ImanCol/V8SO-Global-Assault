@@ -107,9 +107,9 @@ public class XOBF_DB : MonoBehaviour
 
         atlas = new Texture2D(1024, 1024);
 
-        Debug.Log("rects: " + rects);
-        Debug.Log("array: " + array); //Texture2D
-        Debug.Log("atlas.PackTextures: " + atlas.PackTextures(array, 0, 1024));
+        //Debug.Log("rects: " + rects);
+        //Debug.Log("array: " + array); //Texture2D
+        //Debug.Log("atlas.PackTextures: " + atlas.PackTextures(array, 0, 1024));
 
         rects = atlas.PackTextures(array, 0, 1024);
 

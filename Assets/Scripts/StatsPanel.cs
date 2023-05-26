@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,13 +11,13 @@ using Photon.Realtime;
 using UnityEngine.InputSystem;
 
 [Serializable]
-public class StatsPanel : MonoBehaviourPunCallbacks
+public class StatsPanel : MonoBehaviour
 {
-
     [Header("Photon")]
     public LobbyMainPanel lobbyMainPanel;
-    
+
     [Header("Config StatsPanel")]
+
     public _STATS_TYPE state;
     public List<Camera> cameras = new List<Camera>(); //Lista de Vehiculos (Players)
     public List<RawImage> playersRawImages = new List<RawImage>();
@@ -71,8 +72,6 @@ public class StatsPanel : MonoBehaviourPunCallbacks
     private Vehicle vehicle8;
     public int cursor = 0;
     public int spawnVehicleID;
-    public int spawnVehicleID2;
-    private LobbyMainPanel lobbyMainPanel2;
     GameManager gameManager;
     public List<Vehicle> vehicles = new List<Vehicle>(); //Lista de Vehiculos (Players)
     public Dropdown PlayersDropdown;
@@ -119,7 +118,6 @@ public class StatsPanel : MonoBehaviourPunCallbacks
                 Players = 4;
                 PhotonNetwork.LocalPlayer.NickName = "Player 4";
                 //Spawnposition[3] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
-
                 break;
             case 4:
                 Players = 5;
@@ -130,7 +128,6 @@ public class StatsPanel : MonoBehaviourPunCallbacks
                 Players = 6;
                 PhotonNetwork.LocalPlayer.NickName = "Player 6";
                 //Spawnposition[5] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
-
                 break;
             case 6:
                 Players = 7;
@@ -205,9 +202,8 @@ public class StatsPanel : MonoBehaviourPunCallbacks
             cam.targetTexture = rt;
             playersRawImages[i].texture = rt;
         }
-
     }
-    
+
     void OnDisable()
     {
         //Liberar memoria de todos los RenderTextures
@@ -249,45 +245,86 @@ public class StatsPanel : MonoBehaviourPunCallbacks
 
     bool pressed = false;
 
-    int GetAssignedPlayer()
+    int GetAssignedPlayer(Player player)
     {
-        // Obtener el jugador local en Photon
-        Photon.Realtime.Player localPlayer = Photon.Pun.PhotonNetwork.LocalPlayer;
-
-        // Obtener el número de jugador asignado al jugador local
-        int assignedPlayer = localPlayer.ActorNumber;
-
+        int assignedPlayer = 0;
+        //Recorrer la lista de jugadores en la sala
+        foreach (Player p in PhotonNetwork.PlayerList)
+        {
+            //Verificar si el jugador es igual al jugador especificado
+            if (p == player)
+            {
+                //Obtener el número de jugador asignado al jugador especificado
+                assignedPlayer = p.ActorNumber;
+                break;
+            }
+        }
         return assignedPlayer;
     }
 
     private void Update()
     {
-
-        SetPlayer();
-        //Debug.Log(lobbyMainPanel.selectOptions.activeSelf);
-
-        int assignedPlayer = GetAssignedPlayer(); //Asume que tienes una función para obtener el jugador asignado
-        //Debug.Log(assignedPlayer);
-
-        //if (assignedPlayer == Players) // Verifica si el jugador local coincide con el jugador asignado
-        //{
-        //    SpawnVehicle(assignedPlayer, cursor);
-        //}
-
         if (lobbyMainPanel.selectOptions.activeSelf)
         {
+            Debug.Log("Get Player: " + GetAssignedPlayer(PhotonNetwork.LocalPlayer));
             if (GameManager.instance.DriverPlus && pressed == true)
             {
                 pressed = false;
-                SpawnVehicle(assignedPlayer, cursor);
+
+                //Obtener el número de jugador asignado al jugador local
+                int localPlayerID = GetAssignedPlayer(PhotonNetwork.LocalPlayer);
+
+                //Recorrer la lista de jugadores en la sala
+                foreach (Player player in PhotonNetwork.PlayerList)
+                {
+                    //Obtener el número de jugador asignado al jugador actual
+                    Players = GetAssignedPlayer(player);
+                    Debug.Log("PLAYER GET: " + player);
+                    //Verificar si el jugador es diferente al jugador local
+                    if (player != PhotonNetwork.LocalPlayer)
+                    {
+                        Debug.Log("Spawn Local...");
+                        SetPlayer();
+                        SpawnVehicle(Players, cursor);
+                    }
+                    else
+                    {
+                        Debug.Log("Spawn Normal...");
+                        SetPlayer();
+                        SpawnVehicle(Players, cursor);
+                    }
+                }
             }
             else if (!GameManager.instance.DriverPlus && pressed == false)
             {
                 pressed = true;
-                SpawnVehicle(assignedPlayer, cursor);
+
+                //Obtener el número de jugador asignado al jugador local
+                Players = GetAssignedPlayer(PhotonNetwork.LocalPlayer);
+
+                //Recorrer la lista de jugadores en la sala
+                foreach (Player player in PhotonNetwork.PlayerList)
+                {
+                    // Obtener el número de jugador asignado al jugador actual
+                    Players = GetAssignedPlayer(player);
+                    Debug.Log("PLAYER GET: " + player + " - " + Players);
+
+                    // Verificar si el jugador es diferente al jugador local
+                    if (player != PhotonNetwork.LocalPlayer)
+                    {
+                        Debug.Log("Spawn Local...");
+                        SetPlayer();
+                        SpawnVehicle(Players, cursor);
+                    }
+                    else
+                    {
+                        Debug.Log("Spawn Normal...");
+                        SetPlayer();
+                        SpawnVehicle(Players, cursor);
+                    }
+                }
             }
         }
-
         if (Input.GetButtonDown("P1_RIGHT") || setPAD == 2)
         {
             poses[cursor].gameObject.SetActive(value: false);
@@ -386,7 +423,6 @@ public class StatsPanel : MonoBehaviourPunCallbacks
                     {
                         //Solo se ejecuta cada updateTime segundos
                         GameManager.instance.SetReflections(vehicle, cursor);
-
                     }
                 }
             }
@@ -505,7 +541,6 @@ public class StatsPanel : MonoBehaviourPunCallbacks
         {
             GameManager.instance.FUN_308C4(this.vehicles[Players]);
         }
-
 
         switch (id)
         {
@@ -694,7 +729,7 @@ public class StatsPanel : MonoBehaviourPunCallbacks
                     Debug.Log("Activo");
                 }
 
-                //Error de Material en Menu-Elemento 2
+                //Error de Material en Menu-Elemento
                 LevelManager.instance.DAT_E48 = Menu.instance.reflections[2];
                 break;
             IL_0376:
@@ -820,7 +855,6 @@ public class StatsPanel : MonoBehaviourPunCallbacks
         {
             Debug.LogWarning("Invalid camera index: " + PlayersID);
         }
-
         if (PlayersID == 1)
         {
             accelPlayers[0].value = GameManager.vehicleConfigs[id].DAT_2C[0] * 2;
@@ -831,12 +865,11 @@ public class StatsPanel : MonoBehaviourPunCallbacks
             //Hack Plus
             if (GameManager.instance.DriverPlus)
             {
-                //DriverAccelPlus = 100;
-                //DriverSpeedPlus = 100;
-                //DriverArmorPlus = 100;
-                //DriverAvoidancePlus = 100;
+                DriverAccelPlus = 100;
+                DriverSpeedPlus = 100;
+                DriverArmorPlus = 100;
+                DriverAvoidancePlus = 100;
             }
-
 
             accelPlusPlayers[0].value = GameManager.instance.vehicleStats[id].accel + DriverAccelPlus;
             speedPlusPlayers[0].value = GameManager.instance.vehicleStats[id].speed + DriverSpeedPlus;
@@ -926,7 +959,7 @@ public class StatsPanel : MonoBehaviourPunCallbacks
         else
         {
             GameManager.instance.FUN_1E28C(id + 1, Menu.instance.sounds, 3); //Spawn Sound
-            //GameManager.instance.FUN_1E098(1, Menu.instance.sounds, 3, 4095); //Spawn Sound
+                                                                             //GameManager.instance.FUN_1E098(1, Menu.instance.sounds, 3, 4095); //Spawn Sound
         }
         //vehicles.Add(vehicle);
 
