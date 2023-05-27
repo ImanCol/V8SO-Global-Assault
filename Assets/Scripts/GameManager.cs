@@ -12,6 +12,7 @@ using Unity.Collections;
 using Unity.Burst;
 using TMPro;
 using Rewired;
+
 public delegate VigObject _VEHICLE_INIT(XOBF_DB param1, int param2, uint param3); //needs parameters
 public delegate VigObject _SPECIAL_INIT(XOBF_DB param1, int param2);
 public delegate VigObject _OBJECT_INIT(XOBF_DB param1, int param2, uint param3);
@@ -11873,6 +11874,7 @@ public class GameManager : MonoBehaviour
             do
             {
                 index2 = UnityEngine.Random.Range(0, playable.Count);
+                Debug.Log("Playable Count: " + playable.Count);
             }
             while (playable[index2] == vehicles[0] || playable[index2] == vehicles[1]);
             vehicles[j + 2] = (byte)playable[index2];
@@ -11882,7 +11884,6 @@ public class GameManager : MonoBehaviour
 
     public void LoadLevel()
     {
-
         SetDriver();
         //Debug.Log("Set Player: " + statsPanel.cursor);
         SetStage();
@@ -11938,6 +11939,7 @@ public class GameManager : MonoBehaviour
         }
         for (short num = 1; num <= 6; num = (short)(num + 1))
         {
+            Debug.Log("Enemy: " + num);
             enemiesDictionary.Add(num, null);
         }
         drawTerrain = true;
@@ -12272,10 +12274,6 @@ public class GameManager : MonoBehaviour
         VigObject child;
         do
         {
-            if (param1.vLOD != null && param1.vLOD != param1.vMesh)
-            {
-                FUN_1FEB8(param1.vLOD);
-            }
             FUN_1FEB8(param1.vMesh);
             FUN_2C4B4(param1.child2);
             child = param1.child;
@@ -12612,11 +12610,7 @@ public class GameManager : MonoBehaviour
         VigObject child;
         do
         {
-            param1.FUN_306FC();
-            if (param1.vLOD != null && param1.vLOD != param1.vMesh)
-            {
-                FUN_1FEB8(param1.vLOD);
-            }
+            
             FUN_1FEB8(param1.vMesh);
             FUN_307CC(param1.child2);
             child = param1.child;
@@ -16438,7 +16432,7 @@ public class GameManager : MonoBehaviour
 
     private void FUN_2DF30(int param1, int param2, int param3, int param4)
     {
-        DAT_EDC = param1;
+        //DAT_EDC = param1;
         DAT_F20 = param2;
         FUN_2DEE8(param3, param4);
     }
@@ -16493,7 +16487,7 @@ public class GameManager : MonoBehaviour
         DAT_F28 = param1;
         DAT_F88 = DAT_F28;
         DAT_F00 = Utilities.FUN_2A3EC(param1);
-        DAT_ED8 = param2;
+        //DAT_ED8 = param2;
         Utilities.SetProjectionPlane(param2);
         Utilities.SetProjectionPlane3(param2);
         DAT_F48 = Utilities.FUN_247C4(DAT_F68, param1.rotation);

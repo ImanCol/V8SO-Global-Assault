@@ -1626,8 +1626,8 @@ MonoBehaviour:
     padding: 0
     position: {x: 0, y: 0, z: 0}
   DAT_EC8: {x: 0, y: 0, z: 0}
-  DAT_ED8: 0
-  DAT_EDC: 0
+  DAT_ED8: 24
+  DAT_EDC: 100
   DAT_EE0:
     rotation:
       V00: 0
