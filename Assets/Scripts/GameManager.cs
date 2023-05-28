@@ -12,6 +12,7 @@ using Unity.Collections;
 using Unity.Burst;
 using TMPro;
 using Rewired;
+using System.Threading;
 
 public delegate VigObject _VEHICLE_INIT(XOBF_DB param1, int param2, uint param3); //needs parameters
 public delegate VigObject _SPECIAL_INIT(XOBF_DB param1, int param2);
@@ -136,6 +137,11 @@ public class BSP
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Frame Settings")]
+    public int MaxRate = 9999;
+    public float TargetFrameRate = 60.0f;
+    float currentFrameTime;
+
 
     public struct TerrainJob : IJob
     {
@@ -12610,7 +12616,7 @@ public class GameManager : MonoBehaviour
         VigObject child;
         do
         {
-            
+
             FUN_1FEB8(param1.vMesh);
             FUN_307CC(param1.child2);
             child = param1.child;
@@ -14775,6 +14781,11 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = MaxRate;
+        currentFrameTime = Time.realtimeSinceStartup;
+        StartCoroutine("WaitForNextFrame");
+
         if (instance == null)
         {
             instance = this;
@@ -14847,6 +14858,21 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < 24; i++)
         {
             voices[i] = base.gameObject.AddComponent<AudioSource>();
+        }
+    }
+
+    IEnumerator WaitForNextFrame()
+    {
+        while (true)
+        {
+            yield return new WaitForEndOfFrame();
+            currentFrameTime += 1.0f / TargetFrameRate;
+            var t = Time.realtimeSinceStartup;
+            var sleepTime = currentFrameTime - t - 0.01f;
+            if (sleepTime > 0)
+                Thread.Sleep((int)(sleepTime * 1000));
+            while (t < currentFrameTime)
+                t = Time.realtimeSinceStartup;
         }
     }
 
