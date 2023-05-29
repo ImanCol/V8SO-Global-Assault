@@ -11,7 +11,6 @@
 [Message:AssemblyPatcher] Executing 1 patch(es)
 [Message: Preloader] Preloader finished
 [Message:   BepInEx] Chainloader initialized
-[Warning:   BepInEx] Failed to save cache "chainloader"; skipping saving cache. Reason: Sharing violation on path C:\Users\marlo\Downloads\Compressed\Github\V8SO-Online\V8SO-Unity\Build\Windows\V8GO\BepInEx\cache\chainloader_typeloader.dat.
 [Info   :   BepInEx] 1 plugin to load
 [Info   :   BepInEx] Loading [V2Unity Discord Intercept 0.0.7-alpha]
 [Message:   BepInEx] Chainloader startup complete

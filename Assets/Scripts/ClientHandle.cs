@@ -116,8 +116,8 @@ public class ClientHandle : MonoBehaviour
     public static void Damage(Packet _packet, long userId)
     {
         sbyte b = _packet.ReadSByte();
-        GameManager.instance.DAT_C80[0] = b;
-        GameManager.instance.DAT_C80[1] = b;
+        GameManager.instance.damageMode[0] = b;
+        GameManager.instance.damageMode[1] = b;
         Demo.instance.damageText.text = "DAMAGE: " + Demo.damageNames[b];
     }
 

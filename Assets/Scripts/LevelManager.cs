@@ -117,7 +117,7 @@ public class LevelManager : MonoBehaviour
         {
             if (xobfList[i] != null)
             {
-                Debug.Log("Read: "  + xobfList[i].name);
+                Debug.Log("Read: " + xobfList[i].name);
                 xobfList[i].SetAtlas();
             }
         }
@@ -270,18 +270,27 @@ public class LevelManager : MonoBehaviour
         {
             GameManager.instance.FUN_30080(GameManager.instance.DAT_1088, level);
         }
+
+        //music
+        MusicManager.instance.music.Stop();
+        MusicManager.instance.music.loop = false;
+        MusicManager.instance.SetMusic();
+        MusicManager.instance.PlayMusic();
+
         //Envia Spawn Inicial
         ClientSend.Spawn();
         if (!DiscordController.instance)
         {
             Debug.Log("No se encontro DiscordController");
         }
+
         if (DiscordController.instance)
             DiscordController.instance.sceneLoaded = true;
     }
 
     private void Update()
     {
+        MusicManager.instance.PlayMusic();
     }
 
     public void LoadData()

@@ -5725,7 +5725,7 @@ public class Vehicle : VigObject
         {
             if (id < 0)
             {
-                param3 = param3 << (GameManager.instance.DAT_C80[~id] & 0x1F) >> 1;
+                param3 = param3 << (GameManager.instance.damageMode[~id] & 0x1F) >> 1;
             }
             Vehicle vehicle = (Vehicle)param1;
             if (id == -2 && GameManager.instance.gameMode - 6 < _GAME_MODE.Alone)
@@ -6456,7 +6456,7 @@ public class Vehicle : VigObject
             num3 = (uint)((int)num3 >> ((GameManager.DAT_63F60[num2 & 7] & 0xF) << 1));
         }
         num3 &= 3;
-        num2 = (uint)(((sbyte)GameManager.instance.difficultyMode + 1) * (GameManager.instance.DAT_C80[0] + 1) + 1);
+        num2 = (uint)(((sbyte)GameManager.instance.difficultyMode + 1) * (GameManager.instance.damageMode[0] + 1) + 1);
         bool result = false;
         if (num2 != 0)
         {

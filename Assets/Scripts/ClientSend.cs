@@ -98,7 +98,7 @@ public class ClientSend : MonoBehaviour
     {
         using (Packet packet = new Packet(8))
         {
-            packet.Write(GameManager.instance.DAT_C80[0]);
+            packet.Write(GameManager.instance.damageMode[0]);
             SendTCPData(packet, userId);
         }
     }
