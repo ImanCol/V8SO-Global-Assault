@@ -12,6 +12,8 @@ using Unity.Collections;
 using Unity.Burst;
 using TMPro;
 using Rewired;
+using System.Threading;
+
 public delegate VigObject _VEHICLE_INIT(XOBF_DB param1, int param2, uint param3); //needs parameters
 public delegate VigObject _SPECIAL_INIT(XOBF_DB param1, int param2);
 public delegate VigObject _OBJECT_INIT(XOBF_DB param1, int param2, uint param3);
@@ -135,6 +137,11 @@ public class BSP
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Frame Settings")]
+    public int MaxRate = 9999;
+    public float TargetFrameRate = 60.0f;
+    float currentFrameTime;
+
 
     public struct TerrainJob : IJob
     {
@@ -11745,6 +11752,7 @@ public class GameManager : MonoBehaviour
         else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
         {
             drawPlayer = drawPlayerToggle.isOn;
+            drawPlayer = drawPlayerToggle.isOn;
         }
     }
 
@@ -11868,12 +11876,12 @@ public class GameManager : MonoBehaviour
             if (gameMode == _GAME_MODE.Arcade)
             {
                 SetEnemySpawn(j);
-                
             }
             int index2;
             do
             {
                 index2 = UnityEngine.Random.Range(0, playable.Count);
+                Debug.Log("Playable Count: " + playable.Count);
             }
             while (playable[index2] == vehicles[0] || playable[index2] == vehicles[1]);
             vehicles[j + 2] = (byte)playable[index2];
@@ -11883,7 +11891,6 @@ public class GameManager : MonoBehaviour
 
     public void LoadLevel()
     {
-
         SetDriver();
         //Debug.Log("Set Player: " + statsPanel.cursor);
         SetStage();
@@ -11913,6 +11920,10 @@ public class GameManager : MonoBehaviour
             vehicles[0] += 21;
         SetDPAD();
         SetAutoTarget();
+
+        SetDamage();
+        SetDrawPlayer();
+
         ClientSend.Ready(0L);
         if (isHost)
         {
@@ -11939,6 +11950,7 @@ public class GameManager : MonoBehaviour
         }
         for (short num = 1; num <= 6; num = (short)(num + 1))
         {
+            Debug.Log("Enemy: " + num);
             enemiesDictionary.Add(num, null);
         }
         drawTerrain = true;
@@ -11957,7 +11969,8 @@ public class GameManager : MonoBehaviour
     {
         //StopCoroutine(UpdateReflections());
         inDebug = true;
-        UnityEngine.Object.Destroy(base.gameObject);
+        Destroy(this.gameObject);
+        Destroy(MusicManager.instance.gameObject);
         SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
 
@@ -14782,6 +14795,11 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = MaxRate;
+        currentFrameTime = Time.realtimeSinceStartup;
+        StartCoroutine("WaitForNextFrame");
+
         if (instance == null)
         {
             instance = this;
@@ -14854,6 +14872,21 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < 24; i++)
         {
             voices[i] = base.gameObject.AddComponent<AudioSource>();
+        }
+    }
+
+    IEnumerator WaitForNextFrame()
+    {
+        while (true)
+        {
+            yield return new WaitForEndOfFrame();
+            currentFrameTime += 1.0f / TargetFrameRate;
+            var t = Time.realtimeSinceStartup;
+            var sleepTime = currentFrameTime - t - 0.01f;
+            if (sleepTime > 0)
+                Thread.Sleep((int)(sleepTime * 1000));
+            while (t < currentFrameTime)
+                t = Time.realtimeSinceStartup;
         }
     }
 
@@ -14972,7 +15005,6 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator LoadSceneAsyncWithDelay(int sceneIndex)
     {
-
         asyncOperation = SceneManager.LoadSceneAsync(sceneIndex);
         asyncOperation.allowSceneActivation = false;
 
@@ -16428,7 +16460,6 @@ public class GameManager : MonoBehaviour
             }
             param1.vShadow.FUN_4C73C();
         }
-
     }
 
     private void FUN_2DEE8(int param1, int param2)
@@ -16439,7 +16470,7 @@ public class GameManager : MonoBehaviour
 
     private void FUN_2DF30(int param1, int param2, int param3, int param4)
     {
-        DAT_EDC = param1;
+        //DAT_EDC = param1;
         DAT_F20 = param2;
         FUN_2DEE8(param3, param4);
     }
@@ -16494,7 +16525,7 @@ public class GameManager : MonoBehaviour
         DAT_F28 = param1;
         DAT_F88 = DAT_F28;
         DAT_F00 = Utilities.FUN_2A3EC(param1);
-        DAT_ED8 = param2;
+        //DAT_ED8 = param2;
         Utilities.SetProjectionPlane(param2);
         Utilities.SetProjectionPlane3(param2);
         DAT_F48 = Utilities.FUN_247C4(DAT_F68, param1.rotation);
