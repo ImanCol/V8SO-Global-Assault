@@ -870,6 +870,13 @@ public class StatsPanel : MonoBehaviour
                 DriverArmorPlus = 100;
                 DriverAvoidancePlus = 100;
             }
+            else
+            {
+                DriverAccelPlus = 0;
+                DriverSpeedPlus = 0;
+                DriverArmorPlus = 0;
+                DriverAvoidancePlus = 0;
+            }
 
             accelPlusPlayers[0].value = GameManager.instance.vehicleStats[id].accel + DriverAccelPlus;
             speedPlusPlayers[0].value = GameManager.instance.vehicleStats[id].speed + DriverSpeedPlus;

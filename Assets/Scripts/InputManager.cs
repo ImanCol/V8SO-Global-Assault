@@ -1,7 +1,7 @@
 ﻿//Necesita actualizarse
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using Rewired;
 public enum _CONTROLLER_TYPE
 {
     None,
@@ -41,7 +41,6 @@ public enum _CONTROLLER_STEERING
 
 public class Controller
 {
-
     public _CONTROLLER_TYPE type;
 
     public short delay;
@@ -92,8 +91,6 @@ public struct PSXInput
 
 public class InputManager : MonoBehaviour
 {
-    private Gamepad gamepad;
-
     public static InputManager instance;
 
     public static Controller[] controllers;
@@ -104,19 +101,18 @@ public class InputManager : MonoBehaviour
 
     public static int[] turnRadius;
 
-    public _CONTROLLER_TYPE[] controllerTypes;
     public _CONTROLLER_ACTIONS[] controllerActions;
+
     public _CONTROLLER_STEERING[] controllerSteerings;
 
+    private Rewired.Player player;
 
-    //private Player player;
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
-
-            //player = ReInput.players.GetPlayer(0);
+            player = ReInput.players.GetPlayer(1);
         }
         controllers = new Controller[2];
         inputs = new PSXInput[2, 9];
@@ -161,17 +157,14 @@ public class InputManager : MonoBehaviour
 
     private void Start()
     {
-        gamepad = Gamepad.current;
-
     }
 
     void Update()
     {
-        //if (gamepad == null)
-        //    return;
         for (int i = 0; i < 1; i++)
         {
-            string player = "P" + (i + 1) + "_";
+            string playerPrefix = "P" + (i + 1) + "_";
+            Debug.Log("PlayerPrefix: " + playerPrefix);
             inputs[i, 0].DAT_00 = 0;
             inputs[i, 0].DAT_01 = 115;
             inputs[i, 0].DAT_02 = 0xff;
@@ -181,58 +174,66 @@ public class InputManager : MonoBehaviour
             inputs[i, 0].DAT_06 = 0x80;
             inputs[i, 0].DAT_07 = 0x80;
 
-            if (Input.GetButton(player + "CROSS"))
+            //Debug.Log("Player GetButton: " + player.GetButton());
+
+            Debug.Log("Botón presionado: " + player.GetAnyButtonDown());
+            if (player.GetButton(playerPrefix + "CROSS"))
+            {
+                Debug.Log("Botón presionado: " + playerPrefix + "CROSS");
+            }
+
+            if (player.GetButton(playerPrefix + "CROSS"))
                 inputs[i, 0].DAT_03 &= 0xbf;
 
-            if (Input.GetButton(player + "CIRCLE"))
+            if (player.GetButton(playerPrefix + "CIRCLE"))
                 inputs[i, 0].DAT_03 &= 0xdf;
 
-            if (Input.GetButton(player + "SQUARE"))
+            if (player.GetButton(playerPrefix + "SQUARE"))
                 inputs[i, 0].DAT_03 &= 0x7f;
 
-            if (Input.GetButton(player + "TRIANGLE"))
+            if (player.GetButton(playerPrefix + "TRIANGLE"))
                 inputs[i, 0].DAT_03 &= 0xef;
 
-            if (Input.GetButton(player + "R1"))
+            if (player.GetButton(playerPrefix + "R1"))
                 inputs[i, 0].DAT_03 &= 0xf7;
 
-            if (Input.GetButton(player + "L1"))
+            if (player.GetButton(playerPrefix + "L1"))
                 inputs[i, 0].DAT_03 &= 0xfb;
 
-            if (Input.GetButton(player + "R2") ||
-                Input.GetAxis(player + "TRIGGER_R") > 0)
+            if (player.GetButton(playerPrefix + "R2") ||
+                player.GetAxis(playerPrefix + "TRIGGER_R") > 0)
                 inputs[i, 0].DAT_03 &= 0xfd;
 
-            if (Input.GetButton(player + "L2") ||
-                Input.GetAxis(player + "TRIGGER_L") > 0)
+            if (player.GetButton(playerPrefix + "L2") ||
+                player.GetAxis(playerPrefix + "TRIGGER_L") > 0)
                 inputs[i, 0].DAT_03 &= 0xfe;
 
-            if (Input.GetButton(player + "UP") ||
-                Input.GetAxis(player + "DPAD_Y") > 0)
+            if (player.GetButton(playerPrefix + "UP") ||
+                player.GetAxis(playerPrefix + "DPAD_Y") > 0)
                 inputs[i, 0].DAT_02 &= 0xef;
 
-            if (Input.GetButton(player + "DOWN") ||
-                Input.GetAxis(player + "DPAD_Y") < 0)
+            if (player.GetButton(playerPrefix + "DOWN") ||
+                player.GetAxis(playerPrefix + "DPAD_Y") < 0)
                 inputs[i, 0].DAT_02 &= 0xbf;
 
-            if (Input.GetButton(player + "RIGHT") ||
-                Input.GetAxis(player + "DPAD_X") > 0)
+            if (player.GetButton(playerPrefix + "RIGHT") ||
+                player.GetAxis(playerPrefix + "DPAD_X") > 0)
                 inputs[i, 0].DAT_02 &= 0xdf;
 
-            if (Input.GetButton(player + "LEFT") ||
-                Input.GetAxis(player + "DPAD_X") < 0)
+            if (player.GetButton(playerPrefix + "LEFT") ||
+                player.GetAxis(playerPrefix + "DPAD_X") < 0)
                 inputs[i, 0].DAT_02 &= 0x7f;
 
-            if (Input.GetButton(player + "START"))
+            if (player.GetButton(playerPrefix + "START"))
                 inputs[i, 0].DAT_02 &= 0xf7;
 
-            if (Input.GetButton(player + "SELECT"))
+            if (player.GetButton(playerPrefix + "SELECT"))
                 inputs[i, 0].DAT_02 &= 0xfe;
 
-            inputs[i, 0].DAT_04 = (byte)((int)(Input.GetAxis(player + "ANALOG_RX") * 0x7f) + 0x7f);
-            inputs[i, 0].DAT_05 = (byte)((int)(Input.GetAxis(player + "ANALOG_RY") * 0x7f) + 0x7f);
-            inputs[i, 0].DAT_06 = (byte)((int)(Input.GetAxis(player + "ANALOG_LX") * 0x7f) + 0x7f);
-            inputs[i, 0].DAT_07 = (byte)((int)(Input.GetAxis(player + "ANALOG_LY") * 0x7f) + 0x7f);
+            inputs[i, 0].DAT_04 = (byte)((int)(player.GetAxis(playerPrefix + "ANALOG_RX") * 0x7f) + 0x7f);
+            inputs[i, 0].DAT_05 = (byte)((int)(player.GetAxis(playerPrefix + "ANALOG_RY") * 0x7f) + 0x7f);
+            inputs[i, 0].DAT_06 = (byte)((int)(player.GetAxis(playerPrefix + "ANALOG_LX") * 0x7f) + 0x7f);
+            inputs[i, 0].DAT_07 = (byte)((int)(player.GetAxis(playerPrefix + "ANALOG_LY") * 0x7f) + 0x7f);
 
             for (int j = 1; j < 9; j++)
             {

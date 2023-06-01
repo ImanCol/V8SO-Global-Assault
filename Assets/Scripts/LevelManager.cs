@@ -290,7 +290,7 @@ public class LevelManager : MonoBehaviour
 
     private void Update()
     {
-        MusicManager.instance.PlayMusic();
+        //MusicManager.instance.PlayMusic();
     }
 
     public void LoadData()

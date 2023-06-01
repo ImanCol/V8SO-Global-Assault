@@ -1,3 +1,18 @@
 [29/05/2023 05:07:36 a. m.] - V2UnityDiscordIntercept.Patches.DiscordController_OnApplicationQuit_Patch.OnApplicationQuit - DiscordController.OnApplicationQuit
 [29/05/2023 05:07:36 a. m.] - V2UnityDiscordIntercept.Patches.DiscordController_DisconnectNetwork2_Patch.DisconnectNetwork2 - Disconnecting network
 [29/05/2023 05:07:36 a. m.] - V2UnityDiscordIntercept.Patches.Demo_LeaveLobby_Patch.LeaveLobby - Leaving lobby
+[30/05/2023 05:32:26 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_OnApplicationQuit_Patch.OnApplicationQuit - DiscordController.OnApplicationQuit
+[30/05/2023 05:32:26 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_DisconnectNetwork2_Patch.DisconnectNetwork2 - Disconnecting network
+[30/05/2023 05:32:26 p. m.] - V2UnityDiscordIntercept.Patches.Demo_LeaveLobby_Patch.LeaveLobby - Leaving lobby
+[30/05/2023 05:32:38 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_OnApplicationQuit_Patch.OnApplicationQuit - DiscordController.OnApplicationQuit
+[30/05/2023 05:32:38 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_DisconnectNetwork2_Patch.DisconnectNetwork2 - Disconnecting network
+[30/05/2023 05:32:38 p. m.] - V2UnityDiscordIntercept.Patches.Demo_LeaveLobby_Patch.LeaveLobby - Leaving lobby
+[30/05/2023 05:33:14 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_OnApplicationQuit_Patch.OnApplicationQuit - DiscordController.OnApplicationQuit
+[30/05/2023 05:33:14 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_DisconnectNetwork2_Patch.DisconnectNetwork2 - Disconnecting network
+[30/05/2023 05:33:14 p. m.] - V2UnityDiscordIntercept.Patches.Demo_LeaveLobby_Patch.LeaveLobby - Leaving lobby
+[30/05/2023 05:43:19 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_OnApplicationQuit_Patch.OnApplicationQuit - DiscordController.OnApplicationQuit
+[30/05/2023 05:43:19 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_DisconnectNetwork2_Patch.DisconnectNetwork2 - Disconnecting network
+[30/05/2023 05:43:19 p. m.] - V2UnityDiscordIntercept.Patches.Demo_LeaveLobby_Patch.LeaveLobby - Leaving lobby
+[30/05/2023 05:49:08 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_OnApplicationQuit_Patch.OnApplicationQuit - DiscordController.OnApplicationQuit
+[30/05/2023 05:49:08 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_DisconnectNetwork2_Patch.DisconnectNetwork2 - Disconnecting network
+[30/05/2023 05:49:08 p. m.] - V2UnityDiscordIntercept.Patches.Demo_LeaveLobby_Patch.LeaveLobby - Leaving lobby

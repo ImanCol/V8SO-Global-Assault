@@ -1,16 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MusicManager : MonoBehaviour
 {
     public static MusicManager instance;
-    public MusicList musicList;
     public Dropdown musicDropdown;
     public Toggle musicToggle;
     public List<string>[] tracks = new List<string>[5];
-    public AudioSource music = new AudioSource();
+    public AudioSource music;
     public int listID;
     public int trackID;
     public bool play;
@@ -35,8 +36,8 @@ public class MusicManager : MonoBehaviour
         music = gameObject.AddComponent<AudioSource>();
         MusicManager.instance.music.Stop();
 
-        //Cargar el primer clip de música de la lista 0
-        LoadMusicClip(0, 0, PlayMusicAfterLoad);
+        // Escanear la carpeta "Music" dentro de StreamingAssets
+        ScanMusicFolder();
 
         music.playOnAwake = false;
         music.loop = true;
@@ -60,72 +61,25 @@ public class MusicManager : MonoBehaviour
     {
         if (play == true)
         {
-            switch (listID)
+            if (tracks[listID].Count > 0 && music.isPlaying == false)
             {
-                case 0:
-                    if (music.isPlaying == false)
-                    {
-                        rndList = Random.Range(0, musicList.tracks.Count);
-                        rndTrack = Random.Range(0, musicList.tracks[rndList].list.Count);
+                rndTrack = UnityEngine.Random.Range(0, tracks[listID].Count);
+                string audioPath = tracks[listID][rndTrack];
+                string audioFullPath = Path.Combine(Application.streamingAssetsPath, audioPath);
 
-                        LoadMusicClip(rndList, rndTrack, PlayMusicAfterLoad);
-                    }
-                    break;
-                case 1:
-                    if (music.isPlaying == false)
-                    {
-                        rndTrack = Random.Range(0, musicList.tracks[0].list.Count);
-
-                        LoadMusicClip(0, rndTrack, PlayMusicAfterLoad);
-                    }
-                    break;
-                case 2:
-                    if (music.isPlaying == false)
-                    {
-                        rndTrack = Random.Range(0, musicList.tracks[1].list.Count);
-
-                        LoadMusicClip(1, rndTrack, PlayMusicAfterLoad);
-                    }
-                    break;
-                case 3:
-                    if (music.isPlaying == false)
-                    {
-                        rndTrack = Random.Range(0, musicList.tracks[2].list.Count);
-
-                        LoadMusicClip(2, rndTrack, PlayMusicAfterLoad);
-                    }
-                    break;
-                case 4:
-                    if (music.isPlaying == false)
-                    {
-                        rndTrack = Random.Range(0, musicList.tracks[3].list.Count);
-
-                        LoadMusicClip(3, rndTrack, PlayMusicAfterLoad);
-                    }
-                    break;
-                case 5:
-                    if (music.isPlaying == false)
-                    {
-                        rndTrack = Random.Range(0, musicList.tracks[4].list.Count);
-
-                        LoadMusicClip(4, rndTrack, PlayMusicAfterLoad);
-                    }
-                    break;
+                LoadMusicClip(audioFullPath, PlayMusicAfterLoad);
             }
         }
     }
 
-    private void LoadMusicClip(int listIndex, int trackIndex, System.Action onComplete)
+    private void LoadMusicClip(string audioFullPath, System.Action onComplete)
     {
-        string audioPath = musicList.tracks[listIndex].list[trackIndex];
-        string audioFullPath = System.IO.Path.Combine(Application.streamingAssetsPath, audioPath);
-
         StartCoroutine(LoadMusicClipCoroutine(audioFullPath, onComplete));
     }
 
     private IEnumerator LoadMusicClipCoroutine(string audioFullPath, System.Action onComplete)
     {
-        using (UnityEngine.Networking.UnityWebRequest www = UnityEngine.Networking.UnityWebRequestMultimedia.GetAudioClip(audioFullPath, UnityEngine.AudioType.OGGVORBIS))
+        using (var www = UnityEngine.Networking.UnityWebRequestMultimedia.GetAudioClip(audioFullPath, UnityEngine.AudioType.OGGVORBIS))
         {
             yield return www.SendWebRequest();
 
@@ -142,8 +96,7 @@ public class MusicManager : MonoBehaviour
                     music.clip = clip;
 
                     // Llamar al método onComplete después de cargar el clip
-                    if (onComplete != null)
-                        onComplete.Invoke();
+                    onComplete?.Invoke();
                 }
                 else
                 {
@@ -159,5 +112,78 @@ public class MusicManager : MonoBehaviour
         {
             music.Play();
         }
+    }
+
+    private void ScanMusicFolder()
+    {
+        string musicFolderPath = Path.Combine(Application.streamingAssetsPath, "Music");
+
+        if (Directory.Exists(musicFolderPath))
+        {
+            tracks = new List<string>[5];
+
+            for (int i = 0; i < tracks.Length; i++)
+            {
+                tracks[i] = new List<string>();
+            }
+
+            string[] musicFiles = Directory.GetFiles(musicFolderPath, "*.ogg", SearchOption.AllDirectories);
+
+            foreach (string musicFile in musicFiles)
+            {
+                string relativePath = GetRelativePath(musicFile, Application.streamingAssetsPath);
+                int listIndex = GetListIndexFromFilePath(relativePath);
+
+                if (listIndex != -1)
+                {
+                    tracks[listIndex].Add(relativePath);
+                }
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Music folder not found in StreamingAssets");
+        }
+    }
+
+    private string GetRelativePath(string absolutePath, string basePath)
+    {
+        if (!basePath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+        {
+            basePath += Path.DirectorySeparatorChar;
+        }
+
+        Uri baseUri = new Uri(basePath);
+        Uri absoluteUri = new Uri(absolutePath);
+
+        Uri relativeUri = baseUri.MakeRelativeUri(absoluteUri);
+        string relativePath = Uri.UnescapeDataString(relativeUri.ToString());
+
+        return relativePath.Replace('/', Path.DirectorySeparatorChar);
+    }
+
+    private int GetListIndexFromFilePath(string filePath)
+    {
+        string[] pathParts = filePath.Split(Path.DirectorySeparatorChar);
+
+        if (pathParts.Length >= 2)
+        {
+            string listFolderName = pathParts[pathParts.Length - 2];
+
+            if (listFolderName.StartsWith("List"))
+            {
+                string listIndexStr = listFolderName.Substring(4);
+
+                if (int.TryParse(listIndexStr, out int listIndex))
+                {
+                    if (listIndex >= 0 && listIndex < tracks.Length)
+                    {
+                        return listIndex;
+                    }
+                }
+            }
+        }
+
+        return -1;
     }
 }
