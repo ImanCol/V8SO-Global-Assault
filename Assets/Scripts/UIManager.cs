@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
-
     public OcclusionCamera occlusionPrefab;
 
     public LensFlares lensFlarePrefab;
@@ -40,6 +39,8 @@ public class UIManager : MonoBehaviour
     public RectTransform radarRect;
 
     public RectTransform feedbackRect;
+
+    public RectTransform trackFeedbackRect;
 
     public Image playerHealthSlider;
 
@@ -92,10 +93,12 @@ public class UIManager : MonoBehaviour
     public float under;
 
     public float waterOffset;
+    public Image printedChar;
+    public Image printedCharTrack;
+    public Image printedCharFeedback;
 
-    private Image printedChar;
-
-    private List<Image> feedbackElements;
+    public List<Image> feedbackElements;
+    public List<Image> trackElements;
 
     private int printIndex;
 
@@ -142,22 +145,22 @@ public class UIManager : MonoBehaviour
         component.color = GRAY;
         return component;
     }
-
     public void InstantiateCharacter()
     {
-        printedChar = UnityEngine.Object.Instantiate(characterPrefab, feedbackRect).GetComponent<Image>();
-        feedbackElements.Add(printedChar);
+        printedCharFeedback = UnityEngine.Object.Instantiate(characterPrefab, feedbackRect).GetComponent<Image>();
+        feedbackElements.Add(printedCharFeedback);
     }
 
     public void ReplaceCharacter(char c)
     {
-        printedChar.sprite = asciiSprites[c];
-        printedChar.SetNativeSize();
+        printedCharFeedback.sprite = asciiSprites[c];
+        printedCharFeedback.SetNativeSize();
     }
 
     public IEnumerator Printf(string text, bool overwrite = true)
     {
-        CR_Running = true;
+
+
         if (feedbackElements != null)
         {
             for (int k = 0; k < feedbackElements.Count; k++)
@@ -189,6 +192,7 @@ public class UIManager : MonoBehaviour
                 }
                 yield return null;
             }
+
             for (int m = 0; m < feedbackElements.Count; m++)
             {
                 UnityEngine.Object.DestroyImmediate(feedbackElements[m].gameObject, allowDestroyingAssets: false);
@@ -269,7 +273,59 @@ public class UIManager : MonoBehaviour
         }
         gameOverRect.gameObject.SetActive(value: true);
     }
+    void CreateTrackGameObject()
+    {
+        //Crear el GameObject "Track"
+        GameObject trackGO = new GameObject("Track");
 
+        //Añadir el componente HorizontalLayoutGroup
+        HorizontalLayoutGroup layoutGroup = trackGO.AddComponent<HorizontalLayoutGroup>();
+
+        //Configurar el HorizontalLayoutGroup
+        layoutGroup.childForceExpandHeight = true;
+        layoutGroup.childForceExpandWidth = false;
+        layoutGroup.childAlignment = TextAnchor.MiddleCenter;
+        layoutGroup.childControlWidth = false;
+        layoutGroup.childControlHeight = false;
+
+        // Hacer que el GameObject actual sea el padre de "Track"
+        trackGO.transform.SetParent(transform);
+
+        // Ajustar la escala y posición del objeto para que ocupe el ancho total del objeto actual
+        RectTransform trackRect = trackGO.GetComponent<RectTransform>();
+        trackRect.localScale = Vector3.one;
+        trackRect.anchorMin = new Vector2(0f, 0f);
+        trackRect.anchorMax = new Vector2(1f, 0f);
+        trackRect.pivot = new Vector2(0.5f, 0.5f);
+        trackRect.anchoredPosition = new Vector3(225, 50, 0);
+
+        // Ajustar el SizeDelta en Left y Right
+        trackRect.sizeDelta = new Vector2(-450, 100f);
+
+        // Asignar el RectTransform del objeto "Track" a la variable trackFeedbackRect
+        trackFeedbackRect = trackRect;
+
+    }
+    void AddUIMessagesScript(GameObject targetObject)
+    {
+        //Agregar el componente UIMessages al GameObject
+        uiMessagesScript = targetObject.AddComponent<UIMessage>();
+
+        //Verificar si el componente se agregó correctamente
+        if (uiMessagesScript != null)
+        {
+            //Hacer cualquier otra configuración o uso del script UIMessages aquí
+            //uiMessagesScript.SomeFunction();
+        }
+    }
+    public UIMessage uiMessagesScript;
+
+    private void Start()
+    {
+        //this.AddScriptToGameObject(this.gameObject);
+        AddUIMessagesScript(this.gameObject);
+        //CreateTrackGameObject();
+    }
     public void WinScreen()
     {
         hudRect.gameObject.SetActive(value: false);

@@ -7,45 +7,10 @@
 [Message: Preloader] Preloader started
 [Info   :AssemblyPatcher] Loaded 1 patcher type from [BepInEx.Preloader.Unity 6.0.0.0]
 [Info   : Preloader] 1 patcher plugin loaded
-[Info   : Preloader] 138 assemblies discovered
+[Info   : Preloader] 139 assemblies discovered
 [Message:AssemblyPatcher] Executing 1 patch(es)
 [Message: Preloader] Preloader finished
 [Message:   BepInEx] Chainloader initialized
 [Info   :   BepInEx] 1 plugin to load
 [Info   :   BepInEx] Loading [V2Unity Discord Intercept 0.0.7-alpha]
 [Message:   BepInEx] Chainloader startup complete
-[Info   :   Console] Rewired is not initialized. Do you have a Rewired Input Manager in the scene and enabled?
-------- Rewired System Info -------
-Unity version: 2021.2.0b11
-Rewired version: 1.1.44.0.U2020
-Platform: Unknown
-Using Unity input: False
-
-[Info   :   Console] Rewired is not initialized. Do you have a Rewired Input Manager in the scene and enabled?
-------- Rewired System Info -------
-Unity version: 2021.2.0b11
-Rewired version: 1.1.44.0.U2020
-Platform: Unknown
-Using Unity input: False
-
-[Info   :   Console] Rewired is not initialized. Do you have a Rewired Input Manager in the scene and enabled?
-------- Rewired System Info -------
-Unity version: 2021.2.0b11
-Rewired version: 1.1.44.0.U2020
-Platform: Unknown
-Using Unity input: False
-
-[Info   :   Console] Rewired is not initialized. Do you have a Rewired Input Manager in the scene and enabled?
-------- Rewired System Info -------
-Unity version: 2021.2.0b11
-Rewired version: 1.1.44.0.U2020
-Platform: Unknown
-Using Unity input: False
-
-[Info   :   Console] Rewired is not initialized. Do you have a Rewired Input Manager in the scene and enabled?
-------- Rewired System Info -------
-Unity version: 2021.2.0b11
-Rewired version: 1.1.44.0.U2020
-Platform: Unknown
-Using Unity input: False
-

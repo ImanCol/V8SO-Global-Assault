@@ -8,7 +8,7 @@ public class ML
     public List<string> list = new List<string>();
 }
 
-public class MusicList : ScriptableObject
+public class MusicList3 : ScriptableObject
 {
 
     public string path;

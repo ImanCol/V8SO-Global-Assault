@@ -272,13 +272,12 @@ public class LevelManager : MonoBehaviour
         }
 
         //music
-        MusicManager.instance.music.Stop();
+        //MusicManager.instance.PlayNextMusic();
         MusicManager.instance.music.loop = false;
-        MusicManager.instance.SetMusic();
-        MusicManager.instance.PlayMusic();
 
         //Envia Spawn Inicial
-        ClientSend.Spawn();
+        if (GameManager.instance.online)
+            ClientSend.Spawn();
         if (!DiscordController.instance)
         {
             Debug.Log("No se encontro DiscordController");

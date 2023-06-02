@@ -11336,7 +11336,8 @@ public class GameManager : MonoBehaviour
                     break;
             }
             //driverDropdown.value = vehicles[0];
-            ClientSend.NotReady(0L);
+            if (online)
+                ClientSend.NotReady(0L);
             Demo.instance.readyLabel.gameObject.SetActive(value: true);
             Demo.instance.notReadyLabel.gameObject.SetActive(value: false);
             Demo.instance.SetupPlaceholders();
@@ -11400,7 +11401,8 @@ public class GameManager : MonoBehaviour
                     vehicles[0] = 17;
                     break;
             }
-            ClientSend.NotReady(0L);
+            if (online)
+                ClientSend.NotReady(0L);
             Demo.instance.readyLabel.gameObject.SetActive(value: true);
             Demo.instance.notReadyLabel.gameObject.SetActive(value: false);
             Demo.instance.SetupPlaceholders();
@@ -11481,7 +11483,8 @@ public class GameManager : MonoBehaviour
             map = stageDropdown.value + 1;
             Debug.Log("Scene Set: " + map);
         }
-        ClientSend.Map(0L);
+        if (online)
+            ClientSend.Map(0L);
     }
 
     public void SetDithering()
@@ -11527,7 +11530,8 @@ public class GameManager : MonoBehaviour
                 DAT_1030[i] = b;
             }
         }
-        ClientSend.Lives(playerSpawns, 0L);
+        if (online)
+            ClientSend.Lives(playerSpawns, 0L);
     }
 
     public void SetGameMode()
@@ -11613,7 +11617,8 @@ public class GameManager : MonoBehaviour
                     break;
             }
             selectOptions.transform.Find("Mode/Text (TMP)").GetComponent<TextMeshProUGUI>().text = gameMode.ToString().Substring(0, gameMode.ToString().Length - 1);
-            ClientSend.Mode(0L);
+            if (online)
+                ClientSend.Mode(0L);
         }
         else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
         {
@@ -11652,7 +11657,8 @@ public class GameManager : MonoBehaviour
                     DAT_1030[3] = 0;
                     break;
             }
-            ClientSend.Mode(0L);
+            if (online)
+                ClientSend.Mode(0L);
         }
     }
 
@@ -11673,14 +11679,16 @@ public class GameManager : MonoBehaviour
                     break;
             }
             selectOptions.transform.Find("Damages/Text (TMP)").GetComponent<TextMeshProUGUI>().text = damageText;
-            ClientSend.Damage(0L);
+            if (online)
+                ClientSend.Damage(0L);
         }
         else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
         {
             int value = damageDropdown.value;
             damageMode[0] = (sbyte)value;
             damageMode[1] = (sbyte)value;
-            ClientSend.Damage(0L);
+            if (online)
+                ClientSend.Damage(0L);
         }
     }
 
@@ -11703,13 +11711,15 @@ public class GameManager : MonoBehaviour
             int value = currentValueDifficulty;
             this.difficultyMode = (byte)value;
             selectOptions.transform.Find("Difficulty/Text (TMP)").GetComponent<TextMeshProUGUI>().text = difficultyInt.ToString();
-            ClientSend.Difficulty(0L);
+            if (online)
+                ClientSend.Difficulty(0L);
         }
         else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
         {
             int value = difficultyDropdown.value;
             this.difficultyMode = (byte)value;
-            ClientSend.Difficulty(0L);
+            if (online)
+                ClientSend.Difficulty(0L);
         }
     }
 
@@ -11740,7 +11750,8 @@ public class GameManager : MonoBehaviour
             int value = onlineDmgDropdown.value;
             this.difficultyMode = (byte)value;
         }
-        ClientSend.Difficulty(0L);
+        if (online)
+            ClientSend.Difficulty(0L);
     }
     public void SetDrawPlayer()
     {
@@ -11837,7 +11848,8 @@ public class GameManager : MonoBehaviour
         }
         else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
         {
-            experimentalDakota = enableExperimentalDakota.isOn;
+            experimentalDakota = false;
+            //experimentalDakota = enableExperimentalDakota.isOn;
         }
     }
 
@@ -11847,11 +11859,13 @@ public class GameManager : MonoBehaviour
         this.ready = ready;
         if (ready)
         {
-            ClientSend.Ready(0L);
+            if (online)
+                ClientSend.Ready(0L);
         }
         else
         {
-            ClientSend.NotReady(0L);
+            if (online)
+                ClientSend.NotReady(0L);
         }
     }
 
@@ -11871,7 +11885,25 @@ public class GameManager : MonoBehaviour
             survival.Add(list[index]);
             list.RemoveAt(index);
         }
-        for (int j = 0; j < 6; j++)
+
+        int playerammount = 4;
+
+        if (players == 1)
+        {
+            playerammount = 4;
+            Debug.Log("Singleplayer Iniciado");
+        }
+        else if (players == 2)
+        {
+            playerammount = 6;
+            Debug.Log("Multiplayer Iniciado");
+        }
+
+        Debug.Log("Jugadores-Capacidad: " + playable.Capacity);
+        Debug.Log("Jugadores-Cantidad: " + playable.Count);
+
+
+        for (int j = 0; j < playerammount; j++)
         {
             if (gameMode == _GAME_MODE.Arcade)
             {
@@ -11881,7 +11913,7 @@ public class GameManager : MonoBehaviour
             do
             {
                 index2 = UnityEngine.Random.Range(0, playable.Count);
-                Debug.Log("Playable Count: " + playable.Count);
+                //Debug.Log("Playable Count: " + playable.Count);
             }
             while (playable[index2] == vehicles[0] || playable[index2] == vehicles[1]);
             vehicles[j + 2] = (byte)playable[index2];
@@ -11889,8 +11921,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+
+
+
+
+
+
+    public void setOnline(bool setOnline)
+    {
+        online = setOnline;
+    }
+    public bool online = false;
     public void LoadLevel()
     {
+        online = false;
         SetDriver();
         //Debug.Log("Set Player: " + statsPanel.cursor);
         SetStage();
@@ -11910,10 +11955,9 @@ public class GameManager : MonoBehaviour
         UnityEngine.Object.DontDestroyOnLoad(base.gameObject);
         StartCoroutine(LoadSceneAsyncWithDelay(map));
     }
-
     public void LoadMultiplayerLevel(bool isHost)
     {
-
+        online = true;
         //Debug.Log("Set Player: " + statsPanel.cursor);
         SetDriver();
         if (DriverPlus)
@@ -11970,8 +12014,9 @@ public class GameManager : MonoBehaviour
         //StopCoroutine(UpdateReflections());
         inDebug = true;
         Destroy(this.gameObject);
-        Destroy(MusicManager.instance.gameObject);
+        //Destroy(MusicManager.instance.gameObject);
         SceneManager.LoadScene(0, LoadSceneMode.Single);
+        //StartCoroutine(LoadSceneAsyncWithDelay(0));
     }
 
     public void FUN_17F34(int param1, int param2)
@@ -15060,6 +15105,7 @@ public class GameManager : MonoBehaviour
         //    yield return null;
         //}
         ////La escena se ha cargado correctamente, puedes realizar cualquier otra acción necesaria aquí
+        MusicManager.instance.PlayNextMusic();
     }
 
     void OnGUI()
@@ -15077,7 +15123,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        if (inDebug || inMenu || SceneManager.GetActiveScene().name == "MENU-Driver")
+        if (inDebug && inMenu && SceneManager.GetActiveScene().name == "MENU-Driver")
         {
             reflectionsCoroutine = StartCoroutine(UpdateReflections());
             //StartCoroutine(UpdateReflections());

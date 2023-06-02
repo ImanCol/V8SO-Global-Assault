@@ -163,6 +163,7 @@ Library: lib_burst_generated
 --root-assembly=C:\Users\marlo\Downloads\Compressed\Github\V8SO-Online\V8SO-Unity\Temp\StagingArea\Data\Managed\IngameDebugConsole.Runtime.dll
 --root-assembly=C:\Users\marlo\Downloads\Compressed\Github\V8SO-Online\V8SO-Unity\Temp\StagingArea\Data\Managed\PhotonChat.dll
 --root-assembly=C:\Users\marlo\Downloads\Compressed\Github\V8SO-Online\V8SO-Unity\Temp\StagingArea\Data\Managed\Unity.2D.Tilemap.Extras.dll
+--root-assembly=C:\Users\marlo\Downloads\Compressed\Github\V8SO-Online\V8SO-Unity\Temp\StagingArea\Data\Managed\VorbisPluginImpl.dll
 --root-assembly=C:\Users\marlo\Downloads\Compressed\Github\V8SO-Online\V8SO-Unity\Temp\StagingArea\Data\Managed\Nobi.UiRoundedCorners.dll
 --root-assembly=C:\Users\marlo\Downloads\Compressed\Github\V8SO-Online\V8SO-Unity\Temp\StagingArea\Data\Managed\Unity.Profiling.Core.dll
 --root-assembly=C:\Users\marlo\Downloads\Compressed\Github\V8SO-Online\V8SO-Unity\Temp\StagingArea\Data\Managed\Unity.Formats.Fbx.Runtime.dll
@@ -341,6 +342,7 @@ Library: lib_burst_generated
 --root-assembly=C:\Users\marlo\Downloads\Compressed\Github\V8SO-Online\V8SO-Unity\Temp\StagingArea\Data\Managed\IngameDebugConsole.Runtime.dll
 --root-assembly=C:\Users\marlo\Downloads\Compressed\Github\V8SO-Online\V8SO-Unity\Temp\StagingArea\Data\Managed\PhotonChat.dll
 --root-assembly=C:\Users\marlo\Downloads\Compressed\Github\V8SO-Online\V8SO-Unity\Temp\StagingArea\Data\Managed\Unity.2D.Tilemap.Extras.dll
+--root-assembly=C:\Users\marlo\Downloads\Compressed\Github\V8SO-Online\V8SO-Unity\Temp\StagingArea\Data\Managed\VorbisPluginImpl.dll
 --root-assembly=C:\Users\marlo\Downloads\Compressed\Github\V8SO-Online\V8SO-Unity\Temp\StagingArea\Data\Managed\Nobi.UiRoundedCorners.dll
 --root-assembly=C:\Users\marlo\Downloads\Compressed\Github\V8SO-Online\V8SO-Unity\Temp\StagingArea\Data\Managed\Unity.Profiling.Core.dll
 --root-assembly=C:\Users\marlo\Downloads\Compressed\Github\V8SO-Online\V8SO-Unity\Temp\StagingArea\Data\Managed\Unity.Formats.Fbx.Runtime.dll
