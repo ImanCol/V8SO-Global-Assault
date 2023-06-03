@@ -40,15 +40,32 @@ public class MusicManager : MonoBehaviour
     private Dictionary<string, AudioClip> musicClips = new Dictionary<string, AudioClip>();
     private Coroutine preloadCoroutine;
 
+    private string canvasKey = "CanvasLink";
+    private string musicDropdownKey = "MusicDropdownLink";
+    private string musicToggleKey = "MusicToggleLink";
+
+    private string GetGameObjectLink(Component component)
+    {
+        if (component != null)
+        {
+            GameObject linkedGameObject = component.gameObject;
+            if (linkedGameObject != null)
+            {
+                return linkedGameObject.name;
+            }
+        }
+        return string.Empty;
+    }
+
     public void SetMusic()
     {
+
         if (GameManager.instance.inDebug)
             musicDropdown.gameObject.SetActive(value: musicToggle.isOn);
         play = musicToggle.isOn;
         listID = musicDropdown.value;
         PlayNextMusic();
     }
-
 
     private void Awake()
     {
@@ -61,11 +78,7 @@ public class MusicManager : MonoBehaviour
             instance = this;
             player = ReInput.players.GetPlayer(0);
         }
-        if (musicClipsPreloaded)
-        {
-            canvas.alpha = 1f;
-            canvas.interactable = true;
-        }
+
         DontDestroyOnLoad(this.gameObject);
     }
     private IEnumerator FadeCanvasGroup()
@@ -84,6 +97,29 @@ public class MusicManager : MonoBehaviour
 
     private void Start()
     {
+        //Guardar el valor inicial del Dropdown y del Toggle
+        previousDropdownValue = musicDropdown.value;
+        previousToggleValue = musicToggle.isOn;
+
+        // Guardar los enlaces de los GameObjects en PlayerPrefs
+        if (canvas != null)
+        {
+            string canvasLink = GetGameObjectLink(canvas);
+            PlayerPrefs.SetString(canvasKey, canvasLink);
+        }
+
+        if (musicDropdown != null)
+        {
+            string musicDropdownLink = GetGameObjectLink(musicDropdown);
+            PlayerPrefs.SetString(musicDropdownKey, musicDropdownLink);
+        }
+
+        if (musicToggle != null)
+        {
+            string musicToggleLink = GetGameObjectLink(musicToggle);
+            PlayerPrefs.SetString(musicToggleKey, musicToggleLink);
+        }
+
         music = gameObject.AddComponent<AudioSource>();
         music.Stop();
         music.playOnAwake = false;
@@ -123,8 +159,56 @@ public class MusicManager : MonoBehaviour
     }
 
     private bool pressed = false;
+
+    private static int previousDropdownValue;
+    private static bool previousToggleValue;
+
     private void Update()
     {
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            //Obtener los enlaces guardados en PlayerPrefs
+            string canvasLink = PlayerPrefs.GetString(canvasKey);
+            string musicDropdownLink = PlayerPrefs.GetString(musicDropdownKey);
+            string musicToggleLink = PlayerPrefs.GetString(musicToggleKey);
+
+            //Buscar los GameObjects en función de los enlaces guardados
+            canvas = GameObject.Find(canvasLink)?.GetComponent<CanvasGroup>();
+
+            if (musicDropdown == null)
+            {
+                musicDropdown = GameObject.Find(musicDropdownLink)?.GetComponent<Dropdown>();
+            }
+            else
+            {
+                if (musicDropdown.value != previousDropdownValue)
+                {
+                    SetMusic();
+                    previousDropdownValue = musicDropdown.value; //Actualizar el valor previo
+                }
+            }
+
+            if (musicToggle == null)
+            {
+                musicToggle = GameObject.Find(musicToggleLink)?.GetComponent<Toggle>();
+            }
+            else
+            {
+                //Comprobar si el valor del Toggle ha cambiado
+                if (musicToggle.isOn != previousToggleValue)
+                {
+                    SetMusic();
+                    previousToggleValue = musicToggle.isOn; //Actualizar el valor previo
+                }
+            }
+
+            if (musicClipsPreloaded)
+            {
+                canvas.alpha = 1f;
+                canvas.interactable = true;
+            }
+        }
+
         if (player.GetButton("L3") && player.GetButton("R3") && !pressed)
         {
             pressed = true;
@@ -135,7 +219,60 @@ public class MusicManager : MonoBehaviour
         {
             pressed = false;
         }
+        if (music.isPlaying && !isFading)
+        {
+            //Debug.Log("Reproduciendo...");
+
+        }
+        else
+        {
+            if (musicClipsPreloaded)
+            {
+                // Verificar si el audio ha terminado de reproducirse
+                if (music.time >= music.clip.length)
+                {
+                    Debug.Log("Finalizo...reproducir siguiente");
+                    PlayNextMusic();
+                }
+            }
+        }
+        //Actualizar el progreso de la barra (debe estar entre 0 y 1)
+        //progress += Time.deltaTime * 0.5f; // Solo para demostración, puedes modificar esto según tus necesidades
+        //progress = Mathf.Clamp01(progress);
     }
+
+    public float fadeTrack = 2f;
+
+    private IEnumerator FadeOutAndIn(AudioClip newClip)
+    {
+        float elapsedTime = 0f;
+        float startVolume = music.volume;
+
+        while (elapsedTime < fadeTrack)
+        {
+            float normalizedTime = elapsedTime / fadeTrack;
+            music.volume = Mathf.Lerp(startVolume, 0f, normalizedTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        music.Stop();
+        music.clip = newClip;
+        music.Play();
+
+        elapsedTime = 0f;
+        while (elapsedTime < fadeTrack)
+        {
+            float normalizedTime = elapsedTime / fadeTrack;
+            music.volume = Mathf.Lerp(0f, startVolume, normalizedTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        music.volume = startVolume;
+    }
+
+
 
     public void PlayMusic()
     {
@@ -143,11 +280,6 @@ public class MusicManager : MonoBehaviour
         {
             Debug.Log("Music clips are not preloaded yet.");
             return;
-        }
-
-        if (music.isPlaying)
-        {
-            music.Stop();
         }
 
         if (play && musicClips.Count > 0)
@@ -159,7 +291,8 @@ public class MusicManager : MonoBehaviour
                 string randomTrackPath = musicList.tracks[rndList].list[rndTrack];
                 AudioClip randomClip = musicClips[randomTrackPath];
                 music.clip = randomClip;
-                music.Play();
+                StartCoroutine(FadeOutAndIn(music.clip));
+
             }
             else if (listID > 0 && listID <= musicList.tracks.Length) // Lista específica
             {
@@ -170,7 +303,7 @@ public class MusicManager : MonoBehaviour
                     string randomTrackPath = musicList.tracks[index].list[rndTrack];
                     AudioClip randomClip = musicClips[randomTrackPath];
                     music.clip = randomClip;
-                    music.Play();
+                    StartCoroutine(FadeOutAndIn(music.clip));
                 }
                 else
                 {
@@ -181,22 +314,25 @@ public class MusicManager : MonoBehaviour
             {
                 Debug.Log("Invalid music list ID.");
             }
+            // Llamar a PlayNextMusic() al final del método
+            StartCoroutine(PlayNextMusicAfterClipDuration(music.clip.length));
+
         }
     }
+    private IEnumerator PlayNextMusicAfterClipDuration(float clipDuration)
+    {
+        yield return new WaitForSeconds(clipDuration);
+        PlayNextMusic();
+    }
+    private bool isFading = false;
 
     public void PlayNextMusic()
     {
-        if (!musicClipsPreloaded)
+        if (!musicClipsPreloaded || isFading) // Si los clips de música no se han cargado completamente o se está realizando un fundido, no reproducir la siguiente pista
         {
             Debug.Log("Music clips are not preloaded yet.");
             return;
         }
-
-        if (music.isPlaying)
-        {
-            music.Stop();
-        }
-
         if (play && musicClips.Count > 0)
         {
             if (listID == 0) // Lista aleatoria
@@ -206,7 +342,9 @@ public class MusicManager : MonoBehaviour
                 string randomTrackPath = musicList.tracks[rndList].list[rndTrack];
                 AudioClip randomClip = musicClips[randomTrackPath];
                 music.clip = randomClip;
-                music.Play();
+                //StartCoroutine(FadeOutAndIn(music.clip));
+                StartCoroutine(PlayNextMusicWithFade());
+
             }
             else if (listID > 0 && listID <= musicList.tracks.Length) // Lista específica
             {
@@ -217,7 +355,9 @@ public class MusicManager : MonoBehaviour
                     string randomTrackPath = musicList.tracks[index].list[rndTrack];
                     AudioClip randomClip = musicClips[randomTrackPath];
                     music.clip = randomClip;
-                    music.Play();
+                    //StartCoroutine(FadeOutAndIn(music.clip));
+                    StartCoroutine(PlayNextMusicWithFade());
+
                 }
                 else
                 {
@@ -229,6 +369,55 @@ public class MusicManager : MonoBehaviour
                 Debug.Log("Invalid music list ID.");
             }
         }
+
+    }
+
+    private IEnumerator PlayNextMusicWithFade()
+    {
+        isFading = true;
+
+        // Desvanecer la música actual
+        float elapsedTime = 0f;
+        float startVolume = music.volume;
+        while (elapsedTime < fadeTrack)
+        {
+            float normalizedTime = elapsedTime / fadeTrack;
+            music.volume = Mathf.Lerp(startVolume, 0f, normalizedTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        music.Stop();
+
+        // Reproducir la siguiente pista
+        if (listID == 0) // Lista aleatoria
+        {
+            rndList = Random.Range(0, musicList.tracks.Length);
+            rndTrack = (rndTrack + 1) % musicList.tracks[rndList].list.Length;
+            string randomTrackPath = musicList.tracks[rndList].list[rndTrack];
+            AudioClip randomClip = musicClips[randomTrackPath];
+            music.clip = randomClip;
+        }
+        else if (listID > 0 && listID <= musicList.tracks.Length) // Lista específica
+        {
+            int index = listID - 1;
+            if (musicList.tracks[index].list.Length > 0)
+            {
+                rndTrack = (rndTrack + 1) % musicList.tracks[index].list.Length;
+                string randomTrackPath = musicList.tracks[index].list[rndTrack];
+                AudioClip randomClip = musicClips[randomTrackPath];
+                music.clip = randomClip;
+            }
+            else
+            {
+                Debug.Log("No tracks found in the selected list.");
+            }
+        }
+        else
+        {
+            Debug.Log("Invalid music list ID.");
+        }
+
         Debug.Log("Music clip loaded successfully.");
         if (SceneManager.GetActiveScene().buildIndex != 0)
         {
@@ -266,7 +455,23 @@ public class MusicManager : MonoBehaviour
             rndList = 0;
             rndTrack = 0;
         }
+
+
+        elapsedTime = 0f;
+        while (elapsedTime < fadeTrack)
+        {
+            float normalizedTime = elapsedTime / fadeTrack;
+            music.volume = Mathf.Lerp(0f, startVolume, normalizedTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        music.volume = startVolume;
+        music.Play(); // Mover la reproducción aquí
+
+        isFading = false;
     }
+
     private IEnumerator PreloadMusicClips()
     {
         preloadCoroutine = StartCoroutine(PreloadCoroutine());
@@ -303,7 +508,6 @@ public class MusicManager : MonoBehaviour
                 {
                     trackName = trackName.Substring(2);
                 }
-
                 string str = trackName;
                 UIMessage.instance.track = true;
                 IEnumerator routineTrack = UIMessage.instance.PrintfTrack(str + " Played!");
@@ -358,20 +562,74 @@ public class MusicManager : MonoBehaviour
         }
     }
 
+    private float progressBarWidth = Screen.width; // Ancho total de la barra de progreso
+    private float progressBarHeight = 20f; // Alto de la barra de progreso
+    private float slideSpeed = 200f; // Velocidad de deslizamiento del slide
+    private float progress = 0f; // Progreso actual de la barra
+
     private void OnGUI()
     {
         if (!musicClipsPreloaded) // Solo dibujar la barra de progreso si los clips de música no se han cargado completamente
         {
-            if (preloadCoroutine != null)
+            // Calcular la posición de la barra de progreso en la pantalla
+            float progressBarX = (Screen.width - progressBarWidth) / 2f; // Centrado horizontal
+            float progressBarY = (Screen.height - progressBarHeight) / 15f; // Centrado vertical
+            Rect progressBarRect = new Rect(progressBarX, progressBarY, progressBarWidth, progressBarHeight);
+
+            // Calcular la cantidad de mosaicos completos y el progreso dentro del mosaico actual
+            int completeTiles = Mathf.FloorToInt(currentSceneProgress * progressBarWidth / progressBarTexture.width);
+            float partialTileProgress = (currentSceneProgress * progressBarWidth) % progressBarTexture.width;
+
+            // Dibujar los mosaicos completos
+            for (int i = 0; i < completeTiles; i++)
             {
-                float progress = currentSceneProgress;
-                Rect rect = new Rect(10, 10, Screen.width - 20, 100);
-                GUI.DrawTexture(new Rect(rect.x, rect.y, rect.width * progress, rect.height), progressBarTexture);
+                Rect tileRect = new Rect(progressBarRect.x + i * progressBarTexture.width, progressBarRect.y, progressBarTexture.width, progressBarRect.height);
+                GUI.DrawTexture(tileRect, progressBarTexture);
             }
+
+            // Dibujar el mosaico parcial
+            Rect partialTileRect = new Rect(progressBarRect.x + completeTiles * progressBarTexture.width, progressBarRect.y, partialTileProgress, progressBarRect.height);
+            Rect partialTileTexCoords = new Rect(0f, 0f, partialTileProgress / progressBarTexture.width, 1f);
+            GUI.DrawTextureWithTexCoords(partialTileRect, progressBarTexture, partialTileTexCoords);
         }
+        else
+        {
+            // Eliminar la barra de progreso
+            DestroyProgressBar();
+        }
+    }
+    private void DestroyProgressBar()
+    {
+        progressBarTexture = null;
+        // Realizar aquí cualquier acción necesaria para eliminar la barra de progreso
+        // Por ejemplo, desactivar objetos, limpiar referencias, etc.
+        // ...
+
     }
     public void LoadMusicList()
     {
+#if UNITY_ANDROID
+             string filePath = Path.Combine(Application.streamingAssetsPath, "musiclist.json");
+    string json = "";
+
+    if (filePath.Contains("://"))
+    {
+        UnityWebRequest www = UnityWebRequest.Get(filePath);
+        www.SendWebRequest();
+        while (!www.isDone) { }
+
+        if (www.result == UnityWebRequest.Result.Success)
+        {
+            json = www.downloadHandler.text;
+        }
+    }
+    else
+    {
+        json = File.ReadAllText(filePath);
+    }
+
+    musicList = JsonUtility.FromJson<MusicList>(json);
+#elif UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || UNITY_SWITCH
         string filePath = Path.Combine(Application.streamingAssetsPath, "music.json");
         string json = File.ReadAllText(filePath);
         if (json != null)
@@ -382,5 +640,6 @@ public class MusicManager : MonoBehaviour
         {
             Debug.LogError("Failed to load music list at path: " + filePath);
         }
+#endif
     }
 }

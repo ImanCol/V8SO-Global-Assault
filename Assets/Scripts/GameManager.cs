@@ -13,6 +13,7 @@ using Unity.Burst;
 using TMPro;
 using Rewired;
 using System.Threading;
+using Rewired;
 
 public delegate VigObject _VEHICLE_INIT(XOBF_DB param1, int param2, uint param3); //needs parameters
 public delegate VigObject _SPECIAL_INIT(XOBF_DB param1, int param2);
@@ -11211,6 +11212,7 @@ public class GameManager : MonoBehaviour
     private bool atStart;
     public int driverPlus = 0;
     int Players;
+    private Player player;
 
     public void SetPlayer(Packet _packet)
     {
@@ -14848,6 +14850,7 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            player = ReInput.players.GetPlayer(0);
         }
         DAT_08 = new ushort[2, 6]
         {
@@ -15344,6 +15347,7 @@ public class GameManager : MonoBehaviour
     public Texture2D loadingTexture;
     public Image loadingBarImage;
     public Texture2D progressBarTexture;
+    private bool pressed = false;
 
     private void Update()
     {
@@ -15359,7 +15363,14 @@ public class GameManager : MonoBehaviour
             }
             return;
         }
+        else
+        {
 
+        }
+        if (player.GetButton("L2") && player.GetButton("R2") && player.GetButton("L1") && player.GetButton("R1") && !pressed)
+        {
+            DAT_1030[0] = 1;
+        }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (gameMode >= _GAME_MODE.Versus2)

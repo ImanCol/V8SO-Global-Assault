@@ -71,7 +71,7 @@ static Il2CppMethodPointer s_methodPointers[18] =
 };
 static const int32_t s_InvokerIndices[18] = 
 {
-	13186,
+	13188,
 	8663,
 	8663,
 	8663,
@@ -80,7 +80,7 @@ static const int32_t s_InvokerIndices[18] =
 	8663,
 	7083,
 	8663,
-	14035,
+	14037,
 	8663,
 	8663,
 	8663,
@@ -88,7 +88,7 @@ static const int32_t s_InvokerIndices[18] =
 	8663,
 	8663,
 	8663,
-	14035,
+	14037,
 };
 IL2CPP_EXTERN_C const Il2CppCodeGenModule g_Nobi_UiRoundedCorners_CodeGenModule;
 const Il2CppCodeGenModule g_Nobi_UiRoundedCorners_CodeGenModule = 

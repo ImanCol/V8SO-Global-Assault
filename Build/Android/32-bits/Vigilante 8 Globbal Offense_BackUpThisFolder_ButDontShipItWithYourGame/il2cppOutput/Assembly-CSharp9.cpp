@@ -3309,6 +3309,14 @@ struct MusicManager_t50343E4230B62B127D8AA186232F1B8D0FF38FDC  : public MonoBeha
 	Coroutine_t85EA685566A254C23F3FD77AB5BDFFFF8799596B* ___preloadCoroutine_20;
 	// System.Boolean MusicManager::pressed
 	bool ___pressed_21;
+	// System.Single MusicManager::progressBarWidth
+	float ___progressBarWidth_22;
+	// System.Single MusicManager::progressBarHeight
+	float ___progressBarHeight_23;
+	// System.Single MusicManager::slideSpeed
+	float ___slideSpeed_24;
+	// System.Single MusicManager::progress
+	float ___progress_25;
 };
 
 struct MusicManager_t50343E4230B62B127D8AA186232F1B8D0FF38FDC_StaticFields
