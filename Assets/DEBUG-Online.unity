@@ -2170,6 +2170,7 @@ MonoBehaviour:
   difficultyDropdown: {fileID: 1791082649404616472}
   onlineDmgDropdown: {fileID: 1791082649404616503}
   livesDropdown: {fileID: 1791082649404616517}
+  gravityDropdown: {fileID: 0}
   drawPlayerToggle: {fileID: 323508165}
   drawObjectsToggle: {fileID: 102456863}
   drawTerrainToggle: {fileID: 2127504603}
@@ -15582,7 +15583,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 507362848}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: setGravity
+        m_MethodName: SetGravity
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

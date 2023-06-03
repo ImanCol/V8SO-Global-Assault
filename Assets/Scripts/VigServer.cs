@@ -57,17 +57,17 @@ public class VigServer : VigPeer
         Logger.Log($"Connection approval requested from {msg.SenderConnection.RemoteUniqueIdentifier}");
 
         // Only allow new connections if we are still in the debug menu.
-        if (GameManager.instance.inDebug)
+        //if (GameManager.instance.inDebug)
         {
             // Provide the new client with a member id.
             var hail = server.CreateMessage();
             hail.Write(server.ConnectionsCount);
             msg.SenderConnection.Approve(hail);
         }
-        else
-        {
-            msg.SenderConnection.Deny("Currently in game!");
-        }
+        //else
+        //{
+        //    msg.SenderConnection.Deny("Currently in game!");
+        //}
     }
 
     public override void ReadMessages()

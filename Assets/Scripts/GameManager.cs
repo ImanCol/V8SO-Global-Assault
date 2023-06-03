@@ -11177,6 +11177,7 @@ public class GameManager : MonoBehaviour
     public Dropdown difficultyDropdown;
     public Dropdown onlineDmgDropdown;
     public Dropdown livesDropdown;
+    public Dropdown gravityDropdown;
     public Toggle drawPlayerToggle;
     public Toggle drawObjectsToggle;
     public Toggle drawTerrainToggle;
@@ -11213,7 +11214,21 @@ public class GameManager : MonoBehaviour
     public int driverPlus = 0;
     int Players;
     private Player player;
-
+    public void SetGravity()
+    {
+        switch (gravityDropdown.value)
+        {
+            case 0:
+                gravityFactor = 5760;
+                break;
+            case 1:
+                gravityFactor = 11520;
+                break;
+            case 2:
+                gravityFactor = 23040;
+                break;
+        }
+    }
     public void SetPlayer(Packet _packet)
     {
         Debug.Log("User ID: " + _packet);
