@@ -31,3 +31,8 @@
 [03/06/2023 09:53:13 p. m.] - V2UnityDiscordIntercept.VigServer.ConnectionApproval - Connection approval requested from 4667734318092025658
 [03/06/2023 09:54:31 p. m.] - V2UnityDiscordIntercept.VigServer.StatusChanged - StatusChanged: RespondedAwaitingApproval:-1082907867369573115 - Awaiting approval
 [03/06/2023 09:54:31 p. m.] - V2UnityDiscordIntercept.VigServer.ConnectionApproval - Connection approval requested from -1082907867369573115
+[03/06/2023 10:46:02 p. m.] - V2UnityDiscordIntercept.Patches.DiscordController_DisconnectNetwork2_Patch.DisconnectNetwork2 - Disconnecting network
+[03/06/2023 10:46:02 p. m.] - V2UnityDiscordIntercept.Patches.Demo_LeaveLobby_Patch.LeaveLobby - Leaving lobby
+[03/06/2023 10:46:02 p. m.] - V2UnityDiscordIntercept.VigServer.DeleteLobby - Deleting the lobby
+[03/06/2023 10:46:02 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnecting - sdds has disconnected.
+[03/06/2023 10:46:02 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnected - The server is shutting down.
