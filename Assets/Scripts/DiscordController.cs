@@ -7,7 +7,6 @@ public class DiscordController : MonoBehaviour
 {
     private void Start()
     {
-
 #if UNITY_EDITOR
         Debug.Log("Ejecutando en el editor de Unity");
 #else
@@ -95,7 +94,7 @@ public class DiscordController : MonoBehaviour
         lobbyCreateTransaction.SetCapacity(10U);
         lobbyCreateTransaction.SetType(LobbyType.Public);
         lobbyCreateTransaction.SetMetadata("name", lobbyName);
-        lobbyCreateTransaction.SetMetadata("game", "v2unity");
+        lobbyCreateTransaction.SetMetadata("game", "V8GO");
         lobbyCreateTransaction.SetMetadata("level", "DEBUG2");
         this.lobbyManager.CreateLobby(lobbyCreateTransaction, delegate (Result result, ref Lobby lobby)
         {
@@ -115,7 +114,7 @@ public class DiscordController : MonoBehaviour
     public void SearchLobbies()
     {
         LobbySearchQuery searchQuery = this.lobbyManager.GetSearchQuery();
-        searchQuery.Filter("metadata.game", LobbySearchComparison.Equal, LobbySearchCast.String, "v2unity");
+        searchQuery.Filter("metadata.game", LobbySearchComparison.Equal, LobbySearchCast.String, "V8SO");
         searchQuery.Filter("metadata.level", LobbySearchComparison.Equal, LobbySearchCast.String, "DEBUG2");
         searchQuery.Distance(LobbySearchDistance.Global);
         this.lobbyManager.Search(searchQuery, delegate (Result res)

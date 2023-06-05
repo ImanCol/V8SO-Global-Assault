@@ -94,9 +94,6 @@ public class UIManager : MonoBehaviour
 
     public float waterOffset;
     public Image printedChar;
-    public Image printedCharTrack;
-    public Image printedCharFeedback;
-
     public List<Image> feedbackElements;
     public List<Image> trackElements;
 
@@ -147,14 +144,14 @@ public class UIManager : MonoBehaviour
     }
     public void InstantiateCharacter()
     {
-        printedCharFeedback = UnityEngine.Object.Instantiate(characterPrefab, feedbackRect).GetComponent<Image>();
-        feedbackElements.Add(printedCharFeedback);
+        printedChar = UnityEngine.Object.Instantiate(characterPrefab, feedbackRect).GetComponent<Image>();
+        feedbackElements.Add(printedChar);
     }
 
     public void ReplaceCharacter(char c)
     {
-        printedCharFeedback.sprite = asciiSprites[c];
-        printedCharFeedback.SetNativeSize();
+        printedChar.sprite = asciiSprites[c];
+        printedChar.SetNativeSize();
     }
 
     public IEnumerator Printf(string text, bool overwrite = true)
@@ -273,39 +270,6 @@ public class UIManager : MonoBehaviour
         }
         gameOverRect.gameObject.SetActive(value: true);
     }
-    void CreateTrackGameObject()
-    {
-        //Crear el GameObject "Track"
-        GameObject trackGO = new GameObject("Track");
-
-        //Añadir el componente HorizontalLayoutGroup
-        HorizontalLayoutGroup layoutGroup = trackGO.AddComponent<HorizontalLayoutGroup>();
-
-        //Configurar el HorizontalLayoutGroup
-        layoutGroup.childForceExpandHeight = true;
-        layoutGroup.childForceExpandWidth = false;
-        layoutGroup.childAlignment = TextAnchor.MiddleCenter;
-        layoutGroup.childControlWidth = false;
-        layoutGroup.childControlHeight = false;
-
-        // Hacer que el GameObject actual sea el padre de "Track"
-        trackGO.transform.SetParent(transform);
-
-        // Ajustar la escala y posición del objeto para que ocupe el ancho total del objeto actual
-        RectTransform trackRect = trackGO.GetComponent<RectTransform>();
-        trackRect.localScale = Vector3.one;
-        trackRect.anchorMin = new Vector2(0f, 0f);
-        trackRect.anchorMax = new Vector2(1f, 0f);
-        trackRect.pivot = new Vector2(0.5f, 0.5f);
-        trackRect.anchoredPosition = new Vector3(225, 50, 0);
-
-        // Ajustar el SizeDelta en Left y Right
-        trackRect.sizeDelta = new Vector2(-450, 100f);
-
-        // Asignar el RectTransform del objeto "Track" a la variable trackFeedbackRect
-        trackFeedbackRect = trackRect;
-
-    }
     void AddUIMessagesScript(GameObject targetObject)
     {
         //Agregar el componente UIMessages al GameObject
@@ -322,9 +286,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        //this.AddScriptToGameObject(this.gameObject);
         AddUIMessagesScript(this.gameObject);
-        //CreateTrackGameObject();
     }
     public void WinScreen()
     {
@@ -367,17 +329,21 @@ public class UIManager : MonoBehaviour
         unit.rectTransform.anchoredPosition = new Vector2(vector2.x, vector2.z);
     }
 
+
+    //Get PowerUp
     public void UpdateHUD(Vehicle player, int tick)
     {
+        //Obtiene la cantidad de Vida
         float health = GetHealth(player);
         playerHealthSlider.fillAmount = health;
+        //parpadea si la vida es baja
         if (health < 0.3f)
         {
-            playerHealthSlider.enabled = (((tick & 0x10) == 0) ? true : false);
+            playerHealthSlider.enabled = (((tick & 0x10) == 0) ? true : false); //parpadea
         }
         else
         {
-            playerHealthSlider.enabled = true;
+            playerHealthSlider.enabled = true; //estatico verdadero
         }
         VigObject target = player.target;
         if (target != null && target.type == 2)
@@ -429,6 +395,8 @@ public class UIManager : MonoBehaviour
             digits[0].enabled = false;
             digits[1].enabled = false;
         }
+
+        //get PowerUp
         if (player.transformation != 0)
         {
             int index;
@@ -607,11 +575,13 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    //Flash Get State
     public Flash FUN_4E414(Vector3Int param1, Color32 param2)
     {
         Flash result;
         if (GameManager.instance.screenMode == _SCREEN_MODE.Whole)
         {
+            Debug.Log("Return Magnet1");
             bool num = GameManager.instance.FUN_2E22C(param1, 0);
             result = null;
             if (num)

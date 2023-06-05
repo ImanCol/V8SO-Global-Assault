@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -71,7 +71,7 @@ public class DetectUnknownControllerMappings : MonoBehaviour {
         else
             axis1Value.text = "";
 
-        if (Input.GetAxis("Axis 2") > 0f)
+        if (Input.GetAxis("Axis 2") > 0f) //L3StickHorizontal
             axis2Value.text = "positive";
         else if (Input.GetAxis("Axis 2") < 0f)
             axis2Value.text = "negative";
@@ -85,7 +85,7 @@ public class DetectUnknownControllerMappings : MonoBehaviour {
         else
             axis3Value.text = "";
 
-        if (Input.GetAxis("Axis 4") > 0f)
+        if (Input.GetAxis("Axis 4") > 0f) //3StickVertical
             axis4Value.text = "positive";
         else if (Input.GetAxis("Axis 4") < 0f)
             axis4Value.text = "negative";
@@ -106,28 +106,28 @@ public class DetectUnknownControllerMappings : MonoBehaviour {
         else
             axis6Value.text = "";
 
-        if (Input.GetAxis("Axis 7") > 0f)
+        if (Input.GetAxis("Axis 7") > 0f) //R3StickLeft
             axis7Value.text = "positive";
         else if (Input.GetAxis("Axis 7") < 0f)
             axis7Value.text = "negative";
         else
             axis7Value.text = "";
 
-        if (Input.GetAxis("Axis 8") > 0f)
+        if (Input.GetAxis("Axis 8") > 0f) //R3StickRight
             axis8Value.text = "positive";
         else if (Input.GetAxis("Axis 8") < 0f)
             axis8Value.text = "negative";
         else
             axis8Value.text = "";
 
-        if (Input.GetAxis("Axis 9") > 0f)
+        if (Input.GetAxis("Axis 9") > 0f) //DPADHorizontal
             axis9Value.text = "positive";
         else if (Input.GetAxis("Axis 9") < 0f)
             axis9Value.text = "negative";
         else
             axis9Value.text = "";
 
-        if (Input.GetAxis("Axis 10") > 0f)
+        if (Input.GetAxis("Axis 10") > 0f) //DPADVertical
             axis10Value.text = "positive";
         else if (Input.GetAxis("Axis 10") < 0f)
             axis10Value.text = "negative";
@@ -263,77 +263,77 @@ public class DetectUnknownControllerMappings : MonoBehaviour {
 
         //buttons
         if (Input.GetKey(KeyCode.JoystickButton0) == true)
-            button0Value.text = "pressed";
+            button0Value.text = "pressed"; //B
         else
             button0Value.text = "";
 
         if (Input.GetKey(KeyCode.JoystickButton1) == true)
-            button1Value.text = "pressed";
+            button1Value.text = "pressed"; //A
         else
             button1Value.text = "";
 
         if (Input.GetKey(KeyCode.JoystickButton2) == true)
-            button2Value.text = "pressed";
+            button2Value.text = "pressed"; //Y
         else
             button2Value.text = "";
 
         if (Input.GetKey(KeyCode.JoystickButton3) == true)
-            button3Value.text = "pressed";
+            button3Value.text = "pressed"; //X
         else
             button3Value.text = "";
 
         if (Input.GetKey(KeyCode.JoystickButton4) == true)
-            button4Value.text = "pressed";
+            button4Value.text = "pressed"; //L1
         else
             button4Value.text = "";
 
         if (Input.GetKey(KeyCode.JoystickButton5) == true)
-            button5Value.text = "pressed";
+            button5Value.text = "pressed"; //R1
         else
             button5Value.text = "";
 
         if (Input.GetKey(KeyCode.JoystickButton6) == true)
-            button6Value.text = "pressed";
+            button6Value.text = "pressed"; //L2
         else
             button6Value.text = "";
 
         if (Input.GetKey(KeyCode.JoystickButton7) == true)
-            button7Value.text = "pressed";
+            button7Value.text = "pressed"; //R2
         else
             button7Value.text = "";
 
         if (Input.GetKey(KeyCode.JoystickButton8) == true)
-            button8Value.text = "pressed";
+            button8Value.text = "pressed"; //Minus
         else
             button8Value.text = "";
 
         if (Input.GetKey(KeyCode.JoystickButton9) == true)
-            button9Value.text = "pressed";
+            button9Value.text = "pressed"; //Plus
         else
             button9Value.text = "";
 
         if (Input.GetKey(KeyCode.JoystickButton10) == true)
-            button10Value.text = "pressed";
+            button10Value.text = "pressed"; //L3
         else
             button10Value.text = "";
 
         if (Input.GetKey(KeyCode.JoystickButton11) == true)
-            button11Value.text = "pressed";
+            button11Value.text = "pressed"; //R3
         else
             button11Value.text = "";
 
         if (Input.GetKey(KeyCode.JoystickButton12) == true)
-            button12Value.text = "pressed";
+            button12Value.text = "pressed"; //Home
         else
             button12Value.text = "";
 
         if (Input.GetKey(KeyCode.JoystickButton13) == true)
-            button13Value.text = "pressed";
+            button13Value.text = "pressed"; //Capture
         else
             button13Value.text = "";
 
         if (Input.GetKey(KeyCode.JoystickButton14) == true)
-            button14Value.text = "pressed";
+            button14Value.text = "pressed"; //
         else
             button14Value.text = "";
 

@@ -8035,6 +8035,8 @@ public class Vehicle : VigObject
             {
                 vigObject.id = 0;
             }
+
+            //RapidFire? = Remove !DiscordController.IsOwner() 
             else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && !DiscordController.IsOwner() && (id > 0 || id == -2))
             {
                 vigObject.id = 0;
@@ -8042,42 +8044,88 @@ public class Vehicle : VigObject
         }
     }
 
+    //Fix Weapon Last Round
     public void FUN_3A280(uint param1)
     {
-        uint num = weaponSlot;
+        byte bVar1;
+        short sVar2;
+        int iVar3;
+        VigObject oVar3;
+        uint uVar4;
+
+        bVar1 = weaponSlot;
+        uVar4 = bVar1;
         FUN_3A148((int)param1);
+        iVar3 = (int)param1;
+
         for (int i = 0; i < 2 - param1; i++)
-        {
-            weapons[(int)param1 + i] = weapons[(int)param1 + i + 1];
-            DAT_B6[(int)param1 + i] = DAT_B6[(int)param1 + i + 1];
-        }
+            weapons[iVar3 + i] = weapons[iVar3 + i + 1];
+
         weapons[2] = null;
-        if ((int)num > (int)param1)
+
+        if ((int)uVar4 <= (int)param1)
         {
-            goto IL_0071;
-        }
-        if (param1 != 0)
-        {
-            if (num != param1)
-            {
+            if (param1 == 0) goto LAB_3A304;
+
+            if (uVar4 != param1)
                 return;
-            }
-            if (!(weapons[param1] != null))
-            {
-                goto IL_0071;
-            }
+
+            if (weapons[iVar3] != null) goto LAB_3A304;
         }
-        goto IL_0080;
-    IL_0080:
-        if (num == param1)
-        {
-            bool flag = weapons[weaponSlot] != null;
-        }
-        return;
-    IL_0071:
+
         weaponSlot--;
-        goto IL_0080;
+    LAB_3A304:
+        if (uVar4 == param1)
+        {
+            oVar3 = weapons[weaponSlot];
+
+            if (oVar3 != null)
+            {
+                sVar2 = 30;
+
+                if (30 < oVar3.id)
+                    sVar2 = oVar3.id;
+
+                oVar3.id = sVar2;
+            }
+        }
     }
+    //public void FUN_3A280(uint param1)
+    //{
+    //    uint num = weaponSlot;
+    //    FUN_3A148((int)param1);
+    //    for (int i = 0; i < 2 - param1; i++)
+    //    {
+    //        weapons[(int)param1 + i] = weapons[(int)param1 + i + 1];
+    //        DAT_B6[(int)param1 + i] = DAT_B6[(int)param1 + i + 1];
+    //    }
+    //    weapons[2] = null;
+    //    if ((int)num > (int)param1)
+    //    {
+    //        goto IL_0071;
+    //    }
+    //    if (param1 != 0)
+    //    {
+    //        if (num != param1)
+    //        {
+    //            return;
+    //        }
+    //        if (!(weapons[param1] != null))
+    //        {
+    //            goto IL_0071;
+    //        }
+    //    }
+    //    goto IL_0080;
+    //IL_0080:
+    //    if (num == param1)
+    //    {
+    //        bool flag = weapons[weaponSlot] != null;
+    //    }
+    //    return;
+    //IL_0071:
+    //    weaponSlot--;
+    //    goto IL_0080;
+    //}
 
     public bool FUN_3A734(int param1)
     {

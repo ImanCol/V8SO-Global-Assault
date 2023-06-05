@@ -1,9 +1,0 @@
-[Message: Preloader] BepInEx 6.0.0-pre.1 - V8SO
-[Info   :   BepInEx] System platform: Windows 10 64-bit
-[Info   :   BepInEx] Process bitness: 64-bit (x64)
-[Info   : Preloader] Running under Unity v2022.1.0
-[Info   : Preloader] 0 patcher plugins loaded
-[Info   : Preloader] 0 assemblies discovered
-[Message:AssemblyPatcher] Executing 0 patch(es)
-[Message:   BepInEx] Chainloader initialized
-[Warning:Unhollower] Class::Init signatures have been exhausted, using il2cpp_class_has_references as a substitute!
