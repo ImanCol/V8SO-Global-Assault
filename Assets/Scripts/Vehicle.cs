@@ -6,8 +6,7 @@ using UnityEngine;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using UnityEngine.UI;
-
-
+using TMPro;
 
 public enum _WHEELS
 {
@@ -355,6 +354,7 @@ public class Vehicle : VigObject
     public _VEHICLE_TYPE state;
 
     public RawImage unit;
+    public TextMeshPro gameTag;
 
     private VigConfig config;
 
@@ -784,6 +784,8 @@ public class Vehicle : VigObject
         return 0u;
     }
 
+    int unint = 0;
+
     public uint FUN_367A4(int arg1, int arg2)
     {
         if (arg1 == 1)
@@ -819,7 +821,11 @@ public class Vehicle : VigObject
             }
             if (id > 0)
             {
+                unint += 1;
+                Debug.Log("instantiateUnit: " + unint);
+                //Genera Objetivos en Radar
                 unit = UIManager.instance.InstantiateUnit();
+                //gameTag = UIManager.instance.InstantiateGameTag();
             }
             if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && id == -2)
             {

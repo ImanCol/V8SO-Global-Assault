@@ -8,15 +8,10 @@ using System.IO;
 using UnityEngine.SceneManagement;
 
 [System.Serializable]
-public class MusicList
-{
-    public TrackList[] tracks;
-}
-
-[System.Serializable]
 public class TrackList
 {
     public string[] list;
+    public TrackList[] tracks;
 }
 
 public class MusicManager : MonoBehaviour
@@ -26,7 +21,7 @@ public class MusicManager : MonoBehaviour
     public Texture2D progressBarTexture;
     private float currentSceneProgress;
     public static MusicManager instance;
-    public MusicList musicList;
+    public TrackList musicList;
     public AudioSource music;
     public Dropdown musicDropdown;
     public Toggle musicToggle;
@@ -219,10 +214,10 @@ public class MusicManager : MonoBehaviour
         {
             pressed = false;
         }
+
         if (music.isPlaying && !isFading)
         {
             //Debug.Log("Reproduciendo...");
-
         }
         else
         {
@@ -268,11 +263,8 @@ public class MusicManager : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-
         music.volume = startVolume;
     }
-
-
 
     public void PlayMusic()
     {
@@ -548,6 +540,7 @@ public class MusicManager : MonoBehaviour
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError(www.error);
+                musicClipsPreloaded = false;
                 yield break;
             }
 
@@ -604,12 +597,11 @@ public class MusicManager : MonoBehaviour
         // Realizar aquí cualquier acción necesaria para eliminar la barra de progreso
         // Por ejemplo, desactivar objetos, limpiar referencias, etc.
         // ...
-
     }
     public void LoadMusicList()
     {
 #if UNITY_ANDROID
-             string filePath = Path.Combine(Application.streamingAssetsPath, "musiclist.json");
+             string filePath = Path.Combine(Application.streamingAssetsPath, "music.json");
     string json = "";
 
     if (filePath.Contains("://"))
@@ -634,7 +626,7 @@ public class MusicManager : MonoBehaviour
         string json = File.ReadAllText(filePath);
         if (json != null)
         {
-            musicList = JsonUtility.FromJson<MusicList>(json);
+            musicList = JsonUtility.FromJson<TrackList>(json);
         }
         else
         {

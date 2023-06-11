@@ -4,109 +4,71 @@ using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
     public OcclusionCamera occlusionPrefab;
-
     public LensFlares lensFlarePrefab;
-
     public Image flash;
-
     public RectTransform hudRect;
-
     public RectTransform flaresRect;
-
     public List<Sprite> enemySprites;
-
     public List<Sprite> weaponSprites;
-
     public List<Sprite> digitSprites;
-
     public List<Sprite> slotSprites;
-
     public List<Sprite> asciiSprites;
-
     public GameObject unitPrefab;
 
+
+    public RectTransform playerTag;
+    public GameObject gameLifePrefab;
+    public GameObject gameTagPrefab;
+    public TextMeshPro gameTagPlayer;
+    public SpriteRenderer spriteLifePlayer;
+    public Sprite gameTagSprite;
+
     public GameObject characterPrefab;
-
     public Image weaponRect;
-
     public Image enemyRect;
-
     public RectTransform radarRect;
-
     public RectTransform feedbackRect;
-
     public RectTransform trackFeedbackRect;
-
     public Image playerHealthSlider;
-
     public Slider enemyHealthSlider;
-
     public List<Image> digits;
-
     public List<Image> slots;
-
     public List<Image> powerups;
-
     public RectTransform youWinRect;
-
     public RectTransform youLoseRect;
-
     public RectTransform gameOverRect;
-
     public RectTransform destroyedRect;
-
     public Text completionTime;
-
     public Text arcadeWhammies;
-
     public Text arcadeTotaled;
-
     public Text survivalTime;
-
     public Text survivalWhammies;
-
     public Text survivalTotaled;
-
     public Text survivalDestroyed;
-
     public Text difficulty;
-
     public Text destroyed;
-
     public List<LensFlares> flares;
-
     public List<OcclusionCamera> cameras;
-
     public Image underwater;
-
     public float units;
-
     public float radius;
-
     public float printSpeed;
-
     public float under;
-
     public float waterOffset;
     public Image printedChar;
     public List<Image> feedbackElements;
     public List<Image> trackElements;
-
     private int printIndex;
-
     private bool CR_Running;
-
     private static Color32 GREEN = new Color32(37, byte.MaxValue, 0, byte.MaxValue);
-
     private static Color32 RED = new Color32(byte.MaxValue, 0, 0, byte.MaxValue);
-
     private static Color32 YELLOW = new Color32(byte.MaxValue, byte.MaxValue, 0, byte.MaxValue);
-
     private static Color32 GRAY = Color.gray;
 
     private void Awake()
@@ -136,12 +98,43 @@ public class UIManager : MonoBehaviour
         return component;
     }
 
+    public TextMeshPro component2;
+    public TextMeshPro InstantiateGameTag()
+    {
+        TextMeshPro component = UnityEngine.Object.Instantiate(gameTagPrefab, playerTag).GetComponent<TextMeshPro>();
+        //component.color = RED;
+        return component;
+    }
+
+    public SpriteRenderer InstantiateSpriteLife()
+    {
+        SpriteRenderer component = UnityEngine.Object.Instantiate(gameLifePrefab, playerTag).GetComponent<SpriteRenderer>();
+        //component.color = RED;
+        return component;
+    }
+
     public RawImage InstantiateFriendlyUnit()
     {
         RawImage component = UnityEngine.Object.Instantiate(unitPrefab, radarRect).GetComponent<RawImage>();
         component.color = GRAY;
         return component;
     }
+
+    public RawImage InstantiateFriendlyGameTag()
+    {
+        RawImage component = UnityEngine.Object.Instantiate(gameTagPrefab, playerTag).GetComponent<RawImage>();
+        component.color = GRAY;
+        return component;
+    }
+
+    public SpriteRenderer InstantiateFriendlySpriteLife()
+    {
+        SpriteRenderer component = UnityEngine.Object.Instantiate(gameLifePrefab, playerTag).GetComponent<SpriteRenderer>();
+        //component.color = RED;
+        return component;
+    }
+
+
     public void InstantiateCharacter()
     {
         printedChar = UnityEngine.Object.Instantiate(characterPrefab, feedbackRect).GetComponent<Image>();
@@ -156,8 +149,6 @@ public class UIManager : MonoBehaviour
 
     public IEnumerator Printf(string text, bool overwrite = true)
     {
-
-
         if (feedbackElements != null)
         {
             for (int k = 0; k < feedbackElements.Count; k++)
@@ -270,6 +261,7 @@ public class UIManager : MonoBehaviour
         }
         gameOverRect.gameObject.SetActive(value: true);
     }
+
     void AddUIMessagesScript(GameObject targetObject)
     {
         //Agregar el componente UIMessages al GameObject
@@ -282,12 +274,31 @@ public class UIManager : MonoBehaviour
             //uiMessagesScript.SomeFunction();
         }
     }
+
     public UIMessage uiMessagesScript;
 
     private void Start()
     {
+
         AddUIMessagesScript(this.gameObject);
+
+        gameTagPlayer = UIManager.instance.InstantiateGameTag();
+        spriteLifePlayer = UIManager.instance.InstantiateSpriteLife();
+
+        gameTagPlayer.text = "ImanCol";
+
+        //GameObject obj = new GameObject("GameTagPlayer");
+        //spriteRenderer2 = obj.AddComponent<SpriteRenderer>();
+        //Asignar el sprite al SpriteRenderer
+        //spriteRenderer2.sprite = gameTagSprite;
+
+        //GameObject obj2 = new GameObject("GameTagPlayer2");
+        //gameTag2 = obj2.AddComponent<TextMeshPro>();
+        //Asignar el sprite al SpriteRenderer
+        //gameTag2.text = "Player 1";
+
     }
+
     public void WinScreen()
     {
         hudRect.gameObject.SetActive(value: false);
@@ -316,6 +327,7 @@ public class UIManager : MonoBehaviour
     {
         Vehicle vehicle = GameManager.instance.playerObjects[0];
         float num = Vector3.Angle(vehicle.transform.forward, Vector3.forward);
+        Debug.Log("Player Position: " + num);
         if (Vector3.Cross(vehicle.transform.forward, Vector3.forward).y < 0f)
         {
             num = 0f - num;
@@ -328,7 +340,6 @@ public class UIManager : MonoBehaviour
         Vector3 vector2 = Vector3.ClampMagnitude(vector, radius);
         unit.rectTransform.anchoredPosition = new Vector2(vector2.x, vector2.z);
     }
-
 
     //Get PowerUp
     public void UpdateHUD(Vehicle player, int tick)

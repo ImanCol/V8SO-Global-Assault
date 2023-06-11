@@ -49,8 +49,11 @@ public class DiscordController : MonoBehaviour
     {
         if (this.sceneLoaded)
         {
-            if (DiscordController.instance)
-                this.discord.RunCallbacks();
+            if (GameManager.instance.online)
+            {
+                if (DiscordController.instance)
+                    this.discord.RunCallbacks();
+            }
         }
     }
 

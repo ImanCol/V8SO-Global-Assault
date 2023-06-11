@@ -2142,6 +2142,7 @@ MonoBehaviour:
   DAT_40: 0
   map: 0
   targetHUD: {fileID: 0}
+  targetTextPrefab: {fileID: 0}
   ditheringMethod: 0
   drawPlayer: 0
   drawObjects: 0
@@ -2170,7 +2171,7 @@ MonoBehaviour:
   difficultyDropdown: {fileID: 1791082649404616472}
   onlineDmgDropdown: {fileID: 1791082649404616503}
   livesDropdown: {fileID: 1791082649404616517}
-  gravityDropdown: {fileID: 0}
+  gravityDropdown: {fileID: 1704674758}
   drawPlayerToggle: {fileID: 323508165}
   drawObjectsToggle: {fileID: 102456863}
   drawTerrainToggle: {fileID: 2127504603}
@@ -2200,12 +2201,39 @@ MonoBehaviour:
   noHUD: 0
   DriverPlus: 0
   experimentalDakota: 0
-  enableReticle: 0
+  enableReticle: 1
   networkObjs: []
   networkEnemies: []
   leash: 0
   driverPlus: 0
   online: 0
+  gameTagPlayer: {fileID: 0}
+  matrix:
+    e00: 0
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 0
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 0
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 0
+  target: {fileID: 0}
+  followSpeed: 5
+  reticula: 1
+  positionSprite: 1
+  rotationSprite: 1
+  scaleSprite: 1
+  positionInt: {x: 2, y: 8, z: -3}
+  rotationInt: {x: 0, y: 0, z: 0, w: 1}
+  scaleInt: {x: 1, y: 1, z: 1}
   meshHelp: 17
   effectHelp: 0
   sceneBuildIndex: 0
@@ -2689,6 +2717,7 @@ MonoBehaviour:
   fadeDuration: 2
   progressBarTexture: {fileID: 2800000, guid: dc394e0cfba51d84cbcbee386846244e, type: 3}
   musicList:
+    list: []
     tracks: []
   music: {fileID: 0}
   musicDropdown: {fileID: 1829420057}

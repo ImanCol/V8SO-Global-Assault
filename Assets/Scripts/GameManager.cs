@@ -11149,6 +11149,7 @@ public class GameManager : MonoBehaviour
     public int DAT_40;
     public int map;
     public Material targetHUD;
+    public Material targetTextPrefab;
     public _DITHERING ditheringMethod;
     public bool drawPlayer;
     public bool drawObjects;
@@ -11974,7 +11975,7 @@ public class GameManager : MonoBehaviour
     }
     public void LoadMultiplayerLevel(bool isHost)
     {
-        online = true;
+        //online = true;
         //Debug.Log("Set Player: " + statsPanel.cursor);
         SetDriver();
         if (DriverPlus)
@@ -11985,7 +11986,8 @@ public class GameManager : MonoBehaviour
         SetDamage();
         SetDrawPlayer();
 
-        ClientSend.Ready(0L);
+        if (online)
+            ClientSend.Ready(0L);
         if (isHost)
         {
             SetMultiplayerMode();
@@ -12001,13 +12003,15 @@ public class GameManager : MonoBehaviour
                 SetDamage();
                 SetDifficulty();
             }
-            DiscordController.instance.SetLobbyMetadata("level", Demo.mapNames[map - 1]);
+            if (online)
+                DiscordController.instance.SetLobbyMetadata("level", Demo.mapNames[map - 1]);
             while (DiscordController.instance.pendingCallbacks)
             {
                 DiscordController.instance.discord.RunCallbacks();
             }
             RandomizeEnemies(2);
-            ClientSend.Load();
+            if (online)
+                ClientSend.Load();
         }
         for (short num = 1; num <= 6; num = (short)(num + 1))
         {
@@ -14510,6 +14514,23 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
+    public TextMeshPro gameTagPlayer;
+    private SpriteRenderer spriteLifePlayer;
+
+    public Matrix4x4 matrix;
+
+    public GameObject target; //El objeto a seguir
+    public float followSpeed = 5f; //Velocidad de seguimiento
+    public bool reticula = true;
+
+    public bool positionSprite = true;
+    public bool rotationSprite = true;
+    public bool scaleSprite = true;
+
+    public Vector3 positionInt;
+    public Quaternion rotationInt;
+    public Vector3 scaleInt;
+
     private void FUN_380D8(Vector3Int param1, int param2, VigMesh param3, VigTransform param4, int param5)
     {
         Vector3Int vector3Int = Utilities.FUN_24148(param4, param1);
@@ -14548,8 +14569,45 @@ public class GameManager : MonoBehaviour
             Vector3 eulerAngles = Quaternion.LookRotation(vector - LevelManager.instance.defaultCamera.transform.position, Vector3.up).eulerAngles;
             Quaternion q = Quaternion.Euler(eulerAngles.x, eulerAngles.y, (float)param5 * 180f / 256f);
             Vector3 scale = param6.rotation.Scale;
-            Matrix4x4 matrix = Matrix4x4.TRS(Vector3.Lerp(LevelManager.instance.defaultCamera.transform.position, vector, (float)param5 / 256f), q, scale);
-            Graphics.DrawMesh(param3.GetMesh(), matrix, targetHUD, 8);
+
+            matrix = Matrix4x4.TRS(Vector3.Lerp(LevelManager.instance.defaultCamera.transform.position, vector, (float)param5 / 256f), q, scale);
+
+            if (reticula)
+            {
+                Graphics.DrawMesh(param3.GetMesh(), matrix, targetHUD, 8);
+                Debug.Log("targetHUD: " + targetHUD);
+                Debug.Log("matrix: " + matrix);
+            }
+
+            //Obtén una referencia al componente
+            gameTagPlayer = UIManager.instance.gameTagPlayer;
+            spriteLifePlayer = UIManager.instance.spriteLifePlayer;
+
+            //Descomponer la matriz en posición, rotación y escala
+            Debug.Log("matrix Descomp 0: " + matrix.GetColumn(0));
+            Debug.Log("matrix Descomp 1: " + matrix.GetColumn(1));
+            Debug.Log("matrix Descomp 2: " + matrix.GetColumn(2));
+            Debug.Log("matrix Descomp 3: " + matrix.GetColumn(3));
+            Vector3 positionText = matrix.GetColumn(3);
+            Quaternion rotationText = Quaternion.LookRotation(matrix.GetColumn(2), matrix.GetColumn(1));
+            Vector3 scaleText = new Vector3(matrix.GetColumn(0).magnitude, matrix.GetColumn(1).magnitude, matrix.GetColumn(2).magnitude);
+
+            //Aplica la transformación personalizada
+            if (positionSprite)
+            {
+                gameTagPlayer.rectTransform.localPosition = positionText + positionInt;
+                spriteLifePlayer.transform.localPosition = positionText + positionInt;
+            }
+            if (rotationSprite)
+            {
+                gameTagPlayer.rectTransform.localRotation = Quaternion.Euler(eulerAngles) * rotationInt;
+                spriteLifePlayer.transform.localRotation = Quaternion.Euler(eulerAngles) * rotationInt;
+            }
+            if (scaleSprite)
+            {
+                gameTagPlayer.rectTransform.localScale = scaleText + scaleInt;
+                spriteLifePlayer.transform.localScale = scaleText + scaleInt;
+            }
         }
     }
 
@@ -15614,19 +15672,25 @@ public class GameManager : MonoBehaviour
         {
             return;
         }
-        ClientSend.Transform(ref playerObjects[0].vTransform);
-        ClientSend.Physics(ref playerObjects[0].physics1, ref playerObjects[0].physics2);
-        ClientSend.Control(playerObjects[0]);
-        ClientSend.Status(playerObjects[0]);
-        ClientSend.RandomNumber(DAT_63A64, DAT_63A68);
+        if (online)
+        {
+            ClientSend.Transform(ref playerObjects[0].vTransform);
+            ClientSend.Physics(ref playerObjects[0].physics1, ref playerObjects[0].physics2);
+            ClientSend.Control(playerObjects[0]);
+            ClientSend.Status(playerObjects[0]);
+            ClientSend.RandomNumber(DAT_63A64, DAT_63A68);
+        }
         if (gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner())
         {
             for (int n = 0; n < networkEnemies.Count; n++)
             {
-                ClientSend.TransformAI(networkEnemies[n].id, ref networkEnemies[n].vTransform);
-                ClientSend.PhysicsAI(networkEnemies[n].id, ref networkEnemies[n].physics1, ref networkEnemies[n].physics2);
-                ClientSend.ControlAI(networkEnemies[n]);
-                ClientSend.StatusAI(networkEnemies[n]);
+                if (online)
+                {
+                    ClientSend.TransformAI(networkEnemies[n].id, ref networkEnemies[n].vTransform);
+                    ClientSend.PhysicsAI(networkEnemies[n].id, ref networkEnemies[n].physics1, ref networkEnemies[n].physics2);
+                    ClientSend.ControlAI(networkEnemies[n]);
+                    ClientSend.StatusAI(networkEnemies[n]);
+                }
             }
         }
     }
