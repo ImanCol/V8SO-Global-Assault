@@ -591,6 +591,7 @@ public class Vehicle : VigObject
                     {
                         if (base.id > 0 && unit != null)
                         {
+                            Debug.Log("Type unit: " + unit);
                             UIManager.instance.CalculateUnitPosition(unit, this);
                         }
                         FUN_38C40();

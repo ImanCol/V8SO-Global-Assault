@@ -14531,6 +14531,26 @@ public class GameManager : MonoBehaviour
     public Quaternion rotationInt;
     public Vector3 scaleInt;
 
+
+    private void GameTagPlayer(Vector3Int param1, int param2, VigMesh param3, VigTransform param4, int param5, Vehicle vehicle)
+    {
+        Vector3Int vector3Int = Utilities.FUN_24148(param4, param1);
+        Debug.Log("Vehicle Param1: " + param1); //Vehicle Screen
+        Debug.Log("Vehicle Param2: " + param2); //Vehicle DAT_58
+        Debug.Log("Vehicle Param3: " + param3); //LevelManager (VisMesh)
+        Debug.Log("Vehicle Param4: " + param4);
+        Debug.Log("Vehicle Param5: " + param5);
+        Debug.Log("Vehicle vector3Int: " + vector3Int);
+        vector3Int.x = vector3Int.x * param5 >> 8;
+        Debug.Log("Vehicle vector3Int: " + vector3Int.x);
+        vector3Int.y = vector3Int.y * param5 >> 8;
+        Debug.Log("Vehicle vector3Int: " + vector3Int.y);
+        vector3Int.z = vector3Int.z * param5 >> 8;
+        Debug.Log("Vehicle vector3Int: " + vector3Int.z);
+
+        Debug.Log("Tipo de Vehiculo: " + vehicle.vehicle); //Tipo de Vehiculo Señalado
+    }
+
     private void FUN_380D8(Vector3Int param1, int param2, VigMesh param3, VigTransform param4, int param5)
     {
         Vector3Int vector3Int = Utilities.FUN_24148(param4, param1);
@@ -14605,8 +14625,8 @@ public class GameManager : MonoBehaviour
             }
             if (scaleSprite)
             {
-                gameTagPlayer.rectTransform.localScale = scaleText + scaleInt;
-                spriteLifePlayer.transform.localScale = scaleText + scaleInt;
+                gameTagPlayer.rectTransform.localScale = scale + scaleInt;
+                spriteLifePlayer.transform.localScale = scale + scaleInt;
             }
         }
     }
@@ -14614,6 +14634,9 @@ public class GameManager : MonoBehaviour
     public void FUN_3827C(Vehicle param1, VigTransform param2)
     {
         Vehicle vehicle = (Vehicle)param1.target;
+        Debug.Log("Tipo de Vehiculo Objetivo: " + vehicle.vehicle);
+        Debug.Log("Vehiculo Objetivo: " + vehicle.target);
+        Debug.Log("VigTransForm: " + param2);
         if (vehicle != null)
         {
             VigObject vigObject = param1.weapons[param1.weaponSlot];
@@ -14639,11 +14662,16 @@ public class GameManager : MonoBehaviour
                 dAT_ = vehicle.DAT_58;
                 param4 = DAT_1150[2];
             }
+            //Reticula otros Jugadores
             FUN_380D8(param3, dAT_, param4, param2, dAT_C);
+
+            GameTagPlayer(param3, dAT_, param4, param2, dAT_C, vehicle);
         }
         if (param1.jammer != 0 || (DAT_40 & 0x200000) != 0 || enableReticle)
         {
+            //reticula Jugador
             FUN_380D8(param1.screen, param1.DAT_58, DAT_1150[3], param2, 256);
+            GameTagPlayer(param1.screen, param1.DAT_58, DAT_1150[3], param2, 256, vehicle);
         }
     }
 

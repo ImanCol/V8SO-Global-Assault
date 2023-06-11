@@ -134,7 +134,6 @@ public class UIManager : MonoBehaviour
         return component;
     }
 
-
     public void InstantiateCharacter()
     {
         printedChar = UnityEngine.Object.Instantiate(characterPrefab, feedbackRect).GetComponent<Image>();
@@ -327,12 +326,13 @@ public class UIManager : MonoBehaviour
     {
         Vehicle vehicle = GameManager.instance.playerObjects[0];
         float num = Vector3.Angle(vehicle.transform.forward, Vector3.forward);
-        Debug.Log("Player Position: " + num);
+        Debug.Log("Player Position forward: " + num);
         if (Vector3.Cross(vehicle.transform.forward, Vector3.forward).y < 0f)
         {
             num = 0f - num;
         }
         Vector3 b = (Vector3)vehicle.vTransform.position / (float)GameManager.instance.translateFactor;
+        Debug.Log("Player Position position: " + num);
         Vector3 point = (Vector3)obj.screen / (float)GameManager.instance.translateFactor - b;
         point = Quaternion.Euler(0f, num, 0f) * point;
         Vector3 vector = point / units;

@@ -2201,7 +2201,7 @@ MonoBehaviour:
   noHUD: 0
   DriverPlus: 0
   experimentalDakota: 0
-  enableReticle: 1
+  enableReticle: 0
   networkObjs: []
   networkEnemies: []
   leash: 0
@@ -2233,7 +2233,7 @@ MonoBehaviour:
   scaleSprite: 1
   positionInt: {x: 2, y: 8, z: -3}
   rotationInt: {x: 0, y: 0, z: 0, w: 1}
-  scaleInt: {x: 1, y: 1, z: 1}
+  scaleInt: {x: 0.5, y: 0.5, z: 0.5}
   meshHelp: 17
   effectHelp: 0
   sceneBuildIndex: 0
