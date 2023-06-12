@@ -99,6 +99,7 @@ public class UIManager : MonoBehaviour
     }
 
     public TextMeshPro component2;
+
     public TextMeshPro InstantiateGameTag()
     {
         TextMeshPro component = UnityEngine.Object.Instantiate(gameTagPrefab, playerTag).GetComponent<TextMeshPro>();
@@ -278,14 +279,13 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-
         AddUIMessagesScript(this.gameObject);
 
         gameTagPlayer = UIManager.instance.InstantiateGameTag();
         spriteLifePlayer = UIManager.instance.InstantiateSpriteLife();
 
-        gameTagPlayer.text = "ImanCol";
-
+        //gameTagPlayer.text = "ImanCol";
+        gameTagPlayer.text = Demo.instance.lobbyInput.text;
         //GameObject obj = new GameObject("GameTagPlayer");
         //spriteRenderer2 = obj.AddComponent<SpriteRenderer>();
         //Asignar el sprite al SpriteRenderer
@@ -295,7 +295,6 @@ public class UIManager : MonoBehaviour
         //gameTag2 = obj2.AddComponent<TextMeshPro>();
         //Asignar el sprite al SpriteRenderer
         //gameTag2.text = "Player 1";
-
     }
 
     public void WinScreen()
@@ -322,20 +321,167 @@ public class UIManager : MonoBehaviour
         StartCoroutine("_GoodJob");
     }
 
+    public void GameTagPlayer(TextMeshPro gameTag, Vehicle targetPlayer, bool isPlayer)
+    {
+
+        Vector3 extra = new Vector3(0, 0, 0);
+
+        float num = Vector3.Angle(targetPlayer.transform.forward, Vector3.forward);
+
+        string nameTagPlayer = targetPlayer.vehicle.ToString();
+
+        //Debug.Log("Position " + nameTagPlayer + " forward: " + num);
+        //Debug.Log("Vehiculo actualizado: " + targetPlayer.vehicle);
+
+        if (Vector3.Cross(targetPlayer.transform.forward, Vector3.forward).y < 0f)
+        {
+            num = 0f - num;
+        }
+        Vector3 playerPosition = (Vector3)targetPlayer.vTransform.position / (float)GameManager.instance.translateFactor;
+
+        //Debug.Log("Position " + nameTagPlayer + ": " + targetPlayer.vTransform.position);
+        //Debug.Log("Position " + nameTagPlayer + ": " + playerPosition + " | translateFactor");
+
+        Vector3 eulerAngles = Quaternion.LookRotation(playerPosition - LevelManager.instance.defaultCamera.transform.position, Vector3.up).eulerAngles;
+        Vector3 position = GameManager.instance.positionInt;
+        Quaternion rotation = GameManager.instance.rotationInt;
+        Vector3 scale = GameManager.instance.scaleInt;
+
+        Vector3 localPosition = new Vector3(playerPosition.x, -playerPosition.y, playerPosition.z);
+
+        switch (nameTagPlayer)
+        {
+            case "Wonderwagon":
+                if (!isPlayer)
+                    gameTag.text = "Wonderwagon";
+                break;
+            case "Thunderbolt":
+                if (!isPlayer)
+                    gameTag.text = "Thunderbolt";
+                break;
+            case "DakotaCycle":
+                if (!isPlayer)
+                    gameTag.text = "Dakota Cycle";
+                break;
+            case "SamsonTow":
+                if (!isPlayer)
+                    gameTag.text = "Samson Truck";
+                extra = new Vector3(0, 2, 0);
+                break;
+            case "Livingston":
+                if (!isPlayer)
+                    gameTag.text = "Livingston Truck";
+                extra = new Vector3(0, 8, 0);
+                break;
+            case "Xanadu":
+                if (!isPlayer)
+                    gameTag.text = "Xanadu RV";
+                extra = new Vector3(0, 5, 0);
+                break;
+            case "Palomino":
+                if (!isPlayer)
+                    gameTag.text = "Palomino XIII";
+                break;
+            case "ElGuerrero":
+                if (!isPlayer)
+                    gameTag.text = "El Guerrero";
+                break;
+            case "BlueBurro":
+                if (!isPlayer)
+                    gameTag.text = "Blue Bus";
+                extra = new Vector3(0, 8, 0);
+                break;
+            case "Excelsior":
+                if (!isPlayer)
+                    gameTag.text = "Excelsior Stretch";
+                break;
+            case "Tsunami":
+                if (!isPlayer)
+                    gameTag.text = "Tsunami";
+                break;
+            case "Marathon":
+                if (!isPlayer)
+                    gameTag.text = "Marathon";
+                break;
+            case "Trekker":
+                if (!isPlayer)
+                    gameTag.text = "Moon Trekker";
+                break;
+            case "Loader":
+                if (!isPlayer)
+                    gameTag.text = "Grubb Loader";
+                extra = new Vector3(0, 10, 0);
+                break;
+            case "Stinger":
+                if (!isPlayer)
+                    gameTag.text = "Chrono Stinger";
+                break;
+            case "Vertigo":
+                if (!isPlayer)
+                    gameTag.text = "Vertigo";
+                extra = new Vector3(0, -1, 0);
+                break;
+            case "Goliath":
+                if (!isPlayer)
+                    gameTag.text = "Goliath Halftrack";
+                break;
+            case "Wapiti":
+                if (!isPlayer)
+                    gameTag.text = "Wapiti 4WD";
+                break;
+            case "NONE":
+                if (!isPlayer)
+                    gameTag.text = "NONE";
+                break;
+            default:
+                if (!isPlayer)
+                    gameTag.text = "NPC " + targetPlayer.id;
+                break;
+        }
+
+        //Aplica la transformación personalizada
+        if (GameManager.instance.positionSprite)
+        {
+            Debug.Log("Player Tag: " + nameTagPlayer + " Posicion: " + localPosition + " - id: " + targetPlayer.id);
+            gameTag.rectTransform.localPosition = localPosition + extra + position;
+            spriteLifePlayer.transform.localPosition = localPosition + extra + position;
+        }
+
+        if (GameManager.instance.rotationSprite)
+        {
+            gameTag.rectTransform.localRotation = Quaternion.Euler(eulerAngles) * rotation;
+            spriteLifePlayer.transform.localRotation = Quaternion.Euler(eulerAngles) * rotation;
+        }
+
+        if (GameManager.instance.scaleSprite)
+        {
+            //gameTagPlayer.rectTransform.localScale = scale + GameManager.instance.scaleInt;
+            gameTag.rectTransform.localScale = scale;
+            //spriteLifePlayer.transform.localScale = scale + GameManager.instance.scaleInt;
+            spriteLifePlayer.transform.localScale = scale;
+        }
+    }
+
     public void CalculateUnitPosition(RawImage unit, Vehicle obj)
     {
+        //Posicion GameTag
         Vehicle vehicle = GameManager.instance.playerObjects[0];
+        GameTagPlayer(gameTagPlayer, vehicle, true);
+
         float num = Vector3.Angle(vehicle.transform.forward, Vector3.forward);
-        Debug.Log("Player Position forward: " + num);
+
         if (Vector3.Cross(vehicle.transform.forward, Vector3.forward).y < 0f)
         {
             num = 0f - num;
         }
+
         Vector3 b = (Vector3)vehicle.vTransform.position / (float)GameManager.instance.translateFactor;
-        Debug.Log("Player Position position: " + num);
         Vector3 point = (Vector3)obj.screen / (float)GameManager.instance.translateFactor - b;
         point = Quaternion.Euler(0f, num, 0f) * point;
         Vector3 vector = point / units;
+
+        Debug.Log("Units: " + units);
+
         unit.color = ((!(vehicle.target == obj)) ? RED : ((obj.jammer == 0 && (obj.flags & 0x8000000) == 0) ? GREEN : YELLOW));
         Vector3 vector2 = Vector3.ClampMagnitude(vector, radius);
         unit.rectTransform.anchoredPosition = new Vector2(vector2.x, vector2.z);

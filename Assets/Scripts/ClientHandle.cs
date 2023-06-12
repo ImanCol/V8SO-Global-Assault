@@ -13,7 +13,7 @@ public class ClientHandle : MonoBehaviour
             //StatsPanel.instance.SpawnVehicle(2, 0);
         }
         string text = _packet.ReadString();
-        UnityEngine.Debug.Log(text + " joined.");
+        UnityEngine.Debug.Log(text + " joined." + " User ID: " + userId.ToString());
         GameManager.instance.networkMembers.Add(userId, null);
         Demo.instance.playerReady.Add(userId, value: false);
         Demo.instance.playerNames.Add(userId, text);

@@ -187,6 +187,8 @@ public class Demo : MonoBehaviour
     }
     public void MemberLeft(long userId)
     {
+        Debug.Log(userId + " Se ha salido: " + this.playerText[userId].gameObject);
+        Debug.Log(this.playerText[userId].gameObject + " - " + this.playerNames[userId] + " - " + this.playerReady[userId] + " - " + this.playerVehicles[userId]);
         UnityEngine.Object.Destroy(this.playerText[userId].gameObject);
         this.playerText.Remove(userId);
         this.playerNames.Remove(userId);

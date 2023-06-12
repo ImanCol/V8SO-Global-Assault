@@ -14535,20 +14535,21 @@ public class GameManager : MonoBehaviour
     private void GameTagPlayer(Vector3Int param1, int param2, VigMesh param3, VigTransform param4, int param5, Vehicle vehicle)
     {
         Vector3Int vector3Int = Utilities.FUN_24148(param4, param1);
-        Debug.Log("Vehicle Param1: " + param1); //Vehicle Screen
-        Debug.Log("Vehicle Param2: " + param2); //Vehicle DAT_58
-        Debug.Log("Vehicle Param3: " + param3); //LevelManager (VisMesh)
-        Debug.Log("Vehicle Param4: " + param4);
-        Debug.Log("Vehicle Param5: " + param5);
-        Debug.Log("Vehicle vector3Int: " + vector3Int);
-        vector3Int.x = vector3Int.x * param5 >> 8;
-        Debug.Log("Vehicle vector3Int: " + vector3Int.x);
-        vector3Int.y = vector3Int.y * param5 >> 8;
-        Debug.Log("Vehicle vector3Int: " + vector3Int.y);
-        vector3Int.z = vector3Int.z * param5 >> 8;
-        Debug.Log("Vehicle vector3Int: " + vector3Int.z);
-
-        Debug.Log("Tipo de Vehiculo: " + vehicle.vehicle); //Tipo de Vehiculo Señalado
+        //Debug.Log("Vehicle Param1: " + param1); //Vehicle Screen
+        //Debug.Log("Vehicle Param2: " + param2); //Vehicle DAT_58
+        //Debug.Log("Vehicle Param3: " + param3); //LevelManager (VisMesh)
+        //Debug.Log("Vehicle Param4-position: " + param4.position);
+        //Debug.Log("Vehicle Param4-rotation: " + param4.rotation);
+        //Debug.Log("Vehicle Param5: " + param5);
+        //Debug.Log("Vehicle vector3Int: " + vector3Int);
+        //vector3Int.x = vector3Int.x * param5 >> 8;
+        //Debug.Log("Vehicle vector3Int: " + vector3Int.x);
+        //vector3Int.y = vector3Int.y * param5 >> 8;
+        //Debug.Log("Vehicle vector3Int: " + vector3Int.y);
+        //vector3Int.z = vector3Int.z * param5 >> 8;
+        //Debug.Log("Vehicle vector3Int: " + vector3Int.z);
+//
+        //Debug.Log("Tipo de Vehiculo: " + vehicle.vehicle); //Tipo de Vehiculo Señalado
     }
 
     private void FUN_380D8(Vector3Int param1, int param2, VigMesh param3, VigTransform param4, int param5)
@@ -14595,8 +14596,8 @@ public class GameManager : MonoBehaviour
             if (reticula)
             {
                 Graphics.DrawMesh(param3.GetMesh(), matrix, targetHUD, 8);
-                Debug.Log("targetHUD: " + targetHUD);
-                Debug.Log("matrix: " + matrix);
+                //Debug.Log("targetHUD: " + targetHUD); //Material PSXEffects/PS1Screen
+                //Debug.Log("matrix: " + matrix); //Matrix4x4 Vehicle
             }
 
             //Obtén una referencia al componente
@@ -14604,39 +14605,40 @@ public class GameManager : MonoBehaviour
             spriteLifePlayer = UIManager.instance.spriteLifePlayer;
 
             //Descomponer la matriz en posición, rotación y escala
-            Debug.Log("matrix Descomp 0: " + matrix.GetColumn(0));
-            Debug.Log("matrix Descomp 1: " + matrix.GetColumn(1));
-            Debug.Log("matrix Descomp 2: " + matrix.GetColumn(2));
-            Debug.Log("matrix Descomp 3: " + matrix.GetColumn(3));
+            //Debug.Log("matrix Descomp 0: " + matrix.GetColumn(0));
+            //Debug.Log("matrix Descomp 1: " + matrix.GetColumn(1));
+            //Debug.Log("matrix Descomp 2: " + matrix.GetColumn(2));
+            //Debug.Log("matrix Descomp 3: " + matrix.GetColumn(3));
             Vector3 positionText = matrix.GetColumn(3);
             Quaternion rotationText = Quaternion.LookRotation(matrix.GetColumn(2), matrix.GetColumn(1));
             Vector3 scaleText = new Vector3(matrix.GetColumn(0).magnitude, matrix.GetColumn(1).magnitude, matrix.GetColumn(2).magnitude);
 
-            //Aplica la transformación personalizada
-            if (positionSprite)
-            {
-                gameTagPlayer.rectTransform.localPosition = positionText + positionInt;
-                spriteLifePlayer.transform.localPosition = positionText + positionInt;
-            }
-            if (rotationSprite)
-            {
-                gameTagPlayer.rectTransform.localRotation = Quaternion.Euler(eulerAngles) * rotationInt;
-                spriteLifePlayer.transform.localRotation = Quaternion.Euler(eulerAngles) * rotationInt;
-            }
-            if (scaleSprite)
-            {
-                gameTagPlayer.rectTransform.localScale = scale + scaleInt;
-                spriteLifePlayer.transform.localScale = scale + scaleInt;
-            }
+            ////Aplica la transformación personalizada
+            //if (positionSprite)
+            //{
+            //    gameTagPlayer.rectTransform.localPosition = positionText + positionInt;
+            //    spriteLifePlayer.transform.localPosition = positionText + positionInt;
+            //}
+            //if (rotationSprite)
+            //{
+            //    gameTagPlayer.rectTransform.localRotation = Quaternion.Euler(eulerAngles) * rotationInt;
+            //    spriteLifePlayer.transform.localRotation = Quaternion.Euler(eulerAngles) * rotationInt;
+            //}
+            //if (scaleSprite)
+            //{
+            //    gameTagPlayer.rectTransform.localScale = scale + scaleInt;
+            //    spriteLifePlayer.transform.localScale = scale + scaleInt;
+            //}
         }
     }
 
     public void FUN_3827C(Vehicle param1, VigTransform param2)
     {
         Vehicle vehicle = (Vehicle)param1.target;
-        Debug.Log("Tipo de Vehiculo Objetivo: " + vehicle.vehicle);
-        Debug.Log("Vehiculo Objetivo: " + vehicle.target);
-        Debug.Log("VigTransForm: " + param2);
+        //Debug.Log("Tipo de Vehiculo Objetivo: " + vehicle.vehicle);
+        //Debug.Log("Vehiculo Objetivo: " + vehicle.target);
+        //Debug.Log("VigTransForm: position" + param2.position);
+        //Debug.Log("VigTransForm: rotation" + param2.rotation.Matrix2Quaternion);
         if (vehicle != null)
         {
             VigObject vigObject = param1.weapons[param1.weaponSlot];
@@ -14684,33 +14686,33 @@ public class GameManager : MonoBehaviour
             if (num2 == -1)
             {
                 //Error Pickup
-                Debug.Log("Go 1: " + param2);
-                Debug.Log("Go 1: " + num + " - " + num2);
+                //Debug.Log("Go 1: " + param2);
+                //Debug.Log("Go 1: " + num + " - " + num2);
                 return param2;
             }
             do
             {
-                Debug.Log("Go 2: " + param2);
-                Debug.Log("Go 2: " + num + " - " + num2);
+                //Debug.Log("Go 2: " + param2);
+                //Debug.Log("Go 2: " + num + " - " + num2);
                 param2 = FUN_2AC5C() * 18 >> 15;
             }
             while (DAT_63FA4[param2] < 0 || (param1 & (262144 << (int)param2)) == 0L);
             if (param2 == 13)
             {
-                Debug.Log("Go 4: " + param2);
-                Debug.Log("Go 4: " + num + " - " + num2);
+                //Debug.Log("Go 4: " + param2);
+                //Debug.Log("Go 4: " + num + " - " + num2);
                 break;
             }
             num2--;
             if (-1 < (int)param1)
             {
-                Debug.Log("Go 5: " + param2);
-                Debug.Log("Go 5: " + param2);
-                Debug.Log("Go 5: " + num + " - " + num2);
+                //Debug.Log("Go 5: " + param2);
+                //Debug.Log("Go 5: " + param2);
+                //Debug.Log("Go 5: " + num + " - " + num2);
                 return param2;
             }
         }
-        Debug.Log("Config Parameters Pickup: " + num + " - " + num2);
+        //Debug.Log("Config Parameters Pickup: " + num + " - " + num2);
         return 13u;
     }
 
@@ -14757,7 +14759,7 @@ public class GameManager : MonoBehaviour
             if ((param1 & param2.flags) != 0)
             {
                 int num = (int)FUN_4A970(param1 & param2.flags, 0u);
-                Debug.Log("Get Parameters Pickup: " + num + " - " + param1 + " - " + param2 + " - " + param2.name + " - " + param2.flags);
+                //Debug.Log("Get Parameters Pickup: " + num + " - " + param1 + " - " + param2 + " - " + param2.name + " - " + param2.flags);
                 if (num == 3)
                 {
                     DAT_101C++;

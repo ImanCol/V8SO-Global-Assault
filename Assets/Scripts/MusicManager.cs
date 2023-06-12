@@ -223,17 +223,20 @@ public class MusicManager : MonoBehaviour
         {
             if (musicClipsPreloaded)
             {
-                // Verificar si el audio ha terminado de reproducirse
-                if (music.time >= music.clip.length)
-                {
-                    Debug.Log("Finalizo...reproducir siguiente");
-                    PlayNextMusic();
-                }
+                if (nolist)
+                    // Verificar si el audio ha terminado de reproducirse
+                    if (music.time >= music.clip.length)
+                    {
+                        Debug.Log("Finalizo...reproducir siguiente");
+                        PlayNextMusic();
+                    }
             }
         }
+
         //Actualizar el progreso de la barra (debe estar entre 0 y 1)
         //progress += Time.deltaTime * 0.5f; // Solo para demostración, puedes modificar esto según tus necesidades
         //progress = Mathf.Clamp01(progress);
+
     }
 
     public float fadeTrack = 2f;
@@ -530,6 +533,8 @@ public class MusicManager : MonoBehaviour
         musicClipsPreloaded = true; // Actualizar el estado de carga de los clips de música
     }
 
+    private bool nolist = false;
+
     private IEnumerator LoadAudioClip(string trackPath)
     {
         string filePath = Path.Combine(Application.streamingAssetsPath, trackPath);
@@ -539,8 +544,9 @@ public class MusicManager : MonoBehaviour
 
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
-                Debug.LogError(www.error);
+                Debug.LogWarning(www.error);
                 musicClipsPreloaded = false;
+                nolist = false;
                 yield break;
             }
 
@@ -555,48 +561,48 @@ public class MusicManager : MonoBehaviour
         }
     }
 
-    private float progressBarWidth = Screen.width; // Ancho total de la barra de progreso
-    private float progressBarHeight = 20f; // Alto de la barra de progreso
-    private float slideSpeed = 200f; // Velocidad de deslizamiento del slide
-    private float progress = 0f; // Progreso actual de la barra
+    private float progressBarWidth = Screen.width; //Ancho total de la barra de progreso
+    private float progressBarHeight = 20f; //Alto de la barra de progreso
+    private float slideSpeed = 200f; //Velocidad de deslizamiento del slide
+    private float progress = 0f; //Progreso actual de la barra
 
     private void OnGUI()
     {
-        if (!musicClipsPreloaded) // Solo dibujar la barra de progreso si los clips de música no se han cargado completamente
+        if (!musicClipsPreloaded) //Solo dibujar la barra de progreso si los clips de música no se han cargado completamente
         {
-            // Calcular la posición de la barra de progreso en la pantalla
+            //Calcular la posición de la barra de progreso en la pantalla
             float progressBarX = (Screen.width - progressBarWidth) / 2f; // Centrado horizontal
             float progressBarY = (Screen.height - progressBarHeight) / 15f; // Centrado vertical
             Rect progressBarRect = new Rect(progressBarX, progressBarY, progressBarWidth, progressBarHeight);
 
-            // Calcular la cantidad de mosaicos completos y el progreso dentro del mosaico actual
+            //Calcular la cantidad de mosaicos completos y el progreso dentro del mosaico actual
             int completeTiles = Mathf.FloorToInt(currentSceneProgress * progressBarWidth / progressBarTexture.width);
             float partialTileProgress = (currentSceneProgress * progressBarWidth) % progressBarTexture.width;
 
-            // Dibujar los mosaicos completos
+            //Dibujar los mosaicos completos
             for (int i = 0; i < completeTiles; i++)
             {
                 Rect tileRect = new Rect(progressBarRect.x + i * progressBarTexture.width, progressBarRect.y, progressBarTexture.width, progressBarRect.height);
                 GUI.DrawTexture(tileRect, progressBarTexture);
             }
 
-            // Dibujar el mosaico parcial
+            //Dibujar el mosaico parcial
             Rect partialTileRect = new Rect(progressBarRect.x + completeTiles * progressBarTexture.width, progressBarRect.y, partialTileProgress, progressBarRect.height);
             Rect partialTileTexCoords = new Rect(0f, 0f, partialTileProgress / progressBarTexture.width, 1f);
             GUI.DrawTextureWithTexCoords(partialTileRect, progressBarTexture, partialTileTexCoords);
         }
         else
         {
-            // Eliminar la barra de progreso
+            //Eliminar la barra de progreso
             DestroyProgressBar();
         }
     }
     private void DestroyProgressBar()
     {
         progressBarTexture = null;
-        // Realizar aquí cualquier acción necesaria para eliminar la barra de progreso
-        // Por ejemplo, desactivar objetos, limpiar referencias, etc.
-        // ...
+        //Realizar aquí cualquier acción necesaria para eliminar la barra de progreso
+        //Por ejemplo, desactivar objetos, limpiar referencias, etc.
+        //...
     }
     public void LoadMusicList()
     {

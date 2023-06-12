@@ -823,10 +823,11 @@ public class Vehicle : VigObject
             if (id > 0)
             {
                 unint += 1;
-                Debug.Log("instantiateUnit: " + unint);
+                Debug.Log("instantiateunint: " + unint);
                 //Genera Objetivos en Radar
                 unit = UIManager.instance.InstantiateUnit();
-                //gameTag = UIManager.instance.InstantiateGameTag();
+                Debug.Log("instantiateUnit: " + unit);
+                gameTag = UIManager.instance.InstantiateGameTag();
             }
             if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && id == -2)
             {
@@ -970,7 +971,9 @@ public class Vehicle : VigObject
         {
             if (id > 0 && unit != null)
             {
+                Debug.Log("CalculateUnitPosition: " + unit.name + "vehicle: " + this.vehicle);
                 UIManager.instance.CalculateUnitPosition(unit, this);
+                UIManager.instance.GameTagPlayer(gameTag, this, false);
             }
             FUN_41AE8();
         }
@@ -5307,7 +5310,9 @@ public class Vehicle : VigObject
         {
             state = _VEHICLE_TYPE.Chasis;
             UnityEngine.Object.Destroy(unit);
+            UnityEngine.Object.Destroy(gameTag);
             unit = null;
+            gameTag = null;
         }
         else if (maxHalfHealth == 0)
         {
@@ -5717,6 +5722,10 @@ public class Vehicle : VigObject
         if (-1 < id)
         {
             return Utilities.DAT_310[(int)vehicle];
+        }
+        else
+        {
+            return Demo.instance.lobbyInput.text;
         }
         return "PLAYER";
     }
@@ -6350,7 +6359,7 @@ public class Vehicle : VigObject
                 FUN_38A38(param1: true);
             }
             string str = FUN_38398();
-            IEnumerator routine = UIManager.instance.Printf(str + " destroyed!");
+            IEnumerator routine = UIManager.instance.Printf(vehicle + " destroyed! " + str );
             UIManager.instance.StopAllCoroutines();
             UIManager.instance.StartCoroutine(routine);
             FUN_38870();
@@ -6497,7 +6506,9 @@ public class Vehicle : VigObject
         GameManager.instance.FUN_30CB0(this, param);
         state = _VEHICLE_TYPE.Chasis;
         UnityEngine.Object.Destroy(unit);
+        UnityEngine.Object.Destroy(gameTag);
         unit = null;
+        gameTag = null;
         maxHalfHealth = 0;
         acceleration = 0;
         DAT_C8 = 0;
