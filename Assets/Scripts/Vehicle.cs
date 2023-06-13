@@ -899,8 +899,6 @@ public class Vehicle : VigObject
                             FUN_3A844();
                         }
                     }
-
-
                 }
                 else
                 {

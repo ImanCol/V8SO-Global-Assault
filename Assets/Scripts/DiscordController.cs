@@ -91,7 +91,7 @@ public class DiscordController : MonoBehaviour
     StatsPanel statsPanel;
     public void CreateLobby(string lobbyName)
     {
-        Debug.Log("Log...");
+        Debug.Log("Create Lobby: " + lobbyName + "...");
         //statsPanel.SpawnVehicle(1, 1); //Spawn Vehicle Host
         LobbyTransaction lobbyCreateTransaction = this.lobbyManager.GetLobbyCreateTransaction();
         lobbyCreateTransaction.SetCapacity(10U);

@@ -1,0 +1,12 @@
+[13/06/2023 12:13:38 a. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
+[13/06/2023 12:13:38 a. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: -2993882992838910512
+[13/06/2023 12:13:38 a. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
+[13/06/2023 12:13:43 a. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
+[13/06/2023 12:13:43 a. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: 7467139099308363113
+[13/06/2023 12:13:43 a. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
+[13/06/2023 12:13:50 a. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
+[13/06/2023 12:13:50 a. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: 1104132558267658101
+[13/06/2023 12:13:50 a. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
+[13/06/2023 12:13:54 a. m.] - V2UnityDiscordIntercept.Patches.DiscordController_OnApplicationQuit_Patch.OnApplicationQuit - DiscordController.OnApplicationQuit
+[13/06/2023 12:13:54 a. m.] - V2UnityDiscordIntercept.Patches.DiscordController_DisconnectNetwork2_Patch.DisconnectNetwork2 - Disconnecting network
+[13/06/2023 12:13:54 a. m.] - V2UnityDiscordIntercept.Patches.Demo_LeaveLobby_Patch.LeaveLobby - Leaving lobby

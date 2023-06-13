@@ -7,7 +7,7 @@
 [Message: Preloader] Preloader started
 [Info   :AssemblyPatcher] Loaded 1 patcher type from [BepInEx.Preloader.Unity 6.0.0.0]
 [Info   : Preloader] 1 patcher plugin loaded
-[Info   : Preloader] 137 assemblies discovered
+[Info   : Preloader] 139 assemblies discovered
 [Message:AssemblyPatcher] Executing 1 patch(es)
 [Message: Preloader] Preloader finished
 [Message:   BepInEx] Chainloader initialized

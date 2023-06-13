@@ -12,7 +12,9 @@ public class ClientHandle : MonoBehaviour
             GameManager.instance.SetPlayer(_packet);
             //StatsPanel.instance.SpawnVehicle(2, 0);
         }
+
         string text = _packet.ReadString();
+        Demo.instance.lobbyInput.text = text;
         UnityEngine.Debug.Log(text + " joined." + " User ID: " + userId.ToString());
         GameManager.instance.networkMembers.Add(userId, null);
         Demo.instance.playerReady.Add(userId, value: false);
@@ -148,8 +150,11 @@ public class ClientHandle : MonoBehaviour
 
     public static void Spawn(Packet _packet, long userId)
     {
+        Debug.Log("Spawn Packet: " + _packet + " - " + Demo.instance.playerNames[userId] + " User ID: " + userId);
+        //GameManager.instance.playerObjects[0].gameTag = UIManager.instance.InstantiateGameTag();
         byte b = _packet.ReadByte();
         short num = 1;
+
         if (GameManager.instance.networkIds.ContainsKey(userId))
         {
             num = GameManager.instance.networkIds[userId];
@@ -161,11 +166,15 @@ public class ClientHandle : MonoBehaviour
                 num = (short)(num + 1);
             }
         }
+
         if (!GameManager.instance.networkIds.ContainsKey(userId))
         {
             GameManager.instance.networkIds.Add(userId, num);
         }
         Vehicle vehicle = GameManager.instance.networkMembers[userId];
+
+
+
         if (vehicle != null)
         {
             int param = GameManager.instance.FUN_1DD9C();
@@ -173,6 +182,7 @@ public class ClientHandle : MonoBehaviour
             LevelManager.instance.FUN_4DE54(vehicle.vTransform.position, 39);
             GameManager.instance.FUN_309A0(vehicle);
         }
+
         if (GameManager.instance.gameMode == _GAME_MODE.Versus2)
         {
             GameManager.instance.vehicles[num + 1] = b;
@@ -186,11 +196,22 @@ public class ClientHandle : MonoBehaviour
         }
         GameManager.instance.networkMembers[userId].FUN_3066C();
         GameManager.instance.networkMembers[userId].userId = userId;
+
+
+        string nameTagPlayer = Demo.instance.playerNames[userId];
+        vehicle.gameTag = UIManager.instance.InstantiateGameTag();
+        vehicle.gameTag.text = nameTagPlayer;
+        Debug.Log("Spawn Vehicle User: " + nameTagPlayer);
+        GameManager.instance.networkMembers[userId].gameTag = UIManager.instance.InstantiateGameTag();
+        Debug.Log(GameManager.instance.networkMembers[userId].gameTag);
+        GameManager.instance.networkMembers[userId].gameTag.text = nameTagPlayer;
+        Debug.Log("Spawn Done..." + nameTagPlayer);
     }
 
     public static void Transform(Packet _packet, long userId)
     {
         Vehicle vehicle = GameManager.instance.networkMembers[userId];
+        //Debug.Log("Get Control: " + vehicle.vehicle);
         if (vehicle != null)
         {
             vehicle.vTransform.rotation = new Matrix3x3
@@ -843,6 +864,7 @@ public class ClientHandle : MonoBehaviour
     public static void TotaledAI(Packet _packet, long userId)
     {
         Vehicle vehicle = GameManager.instance.enemiesDictionary[_packet.ReadShort()];
+
         if (vehicle.id < 0)
         {
             string str = vehicle.FUN_38398();
@@ -850,6 +872,7 @@ public class ClientHandle : MonoBehaviour
             UIManager.instance.StopAllCoroutines();
             UIManager.instance.StartCoroutine(routine);
         }
+
         vehicle.FUN_38870();
         UIManager.instance.FUN_4E414(vehicle.vTransform.position, new Color32(byte.MaxValue, 0, 0, 8));
         vehicle.physics2.Y = 50000;

@@ -73,6 +73,8 @@ public class Demo : MonoBehaviour
         Plugin.ShowConnectionWindow = true;
         discordController.SearchLobbies();
     }
+
+    public string nametag;
     public void _GetLobbies(List<Lobby> lobbies)
     {
         for (int i = 0; i < lobbies.Count; i++)

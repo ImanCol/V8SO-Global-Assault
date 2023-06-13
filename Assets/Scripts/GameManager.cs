@@ -14548,7 +14548,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("Vehicle vector3Int: " + vector3Int.y);
         //vector3Int.z = vector3Int.z * param5 >> 8;
         //Debug.Log("Vehicle vector3Int: " + vector3Int.z);
-//
+        //
         //Debug.Log("Tipo de Vehiculo: " + vehicle.vehicle); //Tipo de Vehiculo Señalado
     }
 
@@ -14601,8 +14601,8 @@ public class GameManager : MonoBehaviour
             }
 
             //Obtén una referencia al componente
-            gameTagPlayer = UIManager.instance.gameTagPlayer;
-            spriteLifePlayer = UIManager.instance.spriteLifePlayer;
+            //gameTagPlayer = UIManager.instance.gameTagPlayer;
+            //spriteLifePlayer = UIManager.instance.spriteLifePlayer;
 
             //Descomponer la matriz en posición, rotación y escala
             //Debug.Log("matrix Descomp 0: " + matrix.GetColumn(0));
@@ -15468,7 +15468,18 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-
+            //Debug.Log("Miembros en Partida..." + networkMembers.Count);
+            //Debug.Log("Values en Partida..." + networkMembers.Values);
+            //foreach (var value in networkMembers.Values)
+            //{
+            //    Debug.Log("Miembro: " + value);
+            //    Debug.Log("Tipo de Vehiculo: " + value.vehicle);
+            //    //Debug.Log("Nombre de Vehiculo: " + value.userId);
+            //    Debug.Log("userId de Vehiculo: " + value.userId);
+            //    //Debug.Log("userId de Vehiculo: " + value.gameTag);
+            //    //Realizar acciones con el valor
+            //    //...
+            //}
         }
         if (player.GetButton("L2") && player.GetButton("R2") && player.GetButton("L1") && player.GetButton("R1") && !pressed)
         {
@@ -15542,6 +15553,7 @@ public class GameManager : MonoBehaviour
             {
                 if (networkMembers.ContainsValue(null))
                 {
+                    Debug.Log("No hay Miembros en Partida..." + networkMembers.Count);
                     return;
                 }
             }

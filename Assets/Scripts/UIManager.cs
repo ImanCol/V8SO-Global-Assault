@@ -102,7 +102,9 @@ public class UIManager : MonoBehaviour
 
     public TextMeshPro InstantiateGameTag()
     {
+        Debug.Log("Generate GameTag...");
         TextMeshPro component = UnityEngine.Object.Instantiate(gameTagPrefab, playerTag).GetComponent<TextMeshPro>();
+        Debug.Log("Generate GameTag...Done");
         //component.color = RED;
         return component;
     }
@@ -281,11 +283,31 @@ public class UIManager : MonoBehaviour
     {
         AddUIMessagesScript(this.gameObject);
 
-        gameTagPlayer = UIManager.instance.InstantiateGameTag();
-        spriteLifePlayer = UIManager.instance.InstantiateSpriteLife();
+        //gameTagPlayer = UIManager.instance.InstantiateGameTag();
+
+        //Asigna el Gametag a los Jugadores en Partida segun el nombre que tengan
+        foreach (var value in GameManager.instance.networkMembers.Values)
+        {
+            Debug.Log("GameTag Set...");
+            //value.gameTag = UIManager.instance.InstantiateGameTag();
+            Debug.Log("Pass...");
+
+            Debug.Log("Miembro: " + value);
+            Debug.Log("userId de Vehiculo: " + value.userId);
+            Debug.Log("Tipo de Vehiculo: " + value.vehicle);
+
+            Debug.Log("name..." + Demo.instance.playerNames[value.userId]);
+            value.gameTag.text = Demo.instance.playerNames[value.userId];
+            //Debug.Log("Nombre de Vehiculo: " + value.userId);
+            //Debug.Log("userId de Vehiculo: " + value.gameTag);
+            //Realizar acciones con el valor
+            //...
+        }
+
+        //spriteLifePlayer = UIManager.instance.InstantiateSpriteLife();
 
         //gameTagPlayer.text = "ImanCol";
-        gameTagPlayer.text = Demo.instance.lobbyInput.text;
+        //gameTagPlayer.text = Demo.instance.lobbyInput.text;
         //GameObject obj = new GameObject("GameTagPlayer");
         //spriteRenderer2 = obj.AddComponent<SpriteRenderer>();
         //Asignar el sprite al SpriteRenderer
@@ -444,13 +466,13 @@ public class UIManager : MonoBehaviour
         {
             Debug.Log("Player Tag: " + nameTagPlayer + " Posicion: " + localPosition + " - id: " + targetPlayer.id);
             gameTag.rectTransform.localPosition = localPosition + extra + position;
-            spriteLifePlayer.transform.localPosition = localPosition + extra + position;
+            //spriteLifePlayer.transform.localPosition = localPosition + extra + position;
         }
 
         if (GameManager.instance.rotationSprite)
         {
             gameTag.rectTransform.localRotation = Quaternion.Euler(eulerAngles) * rotation;
-            spriteLifePlayer.transform.localRotation = Quaternion.Euler(eulerAngles) * rotation;
+            //spriteLifePlayer.transform.localRotation = Quaternion.Euler(eulerAngles) * rotation;
         }
 
         if (GameManager.instance.scaleSprite)
@@ -458,7 +480,7 @@ public class UIManager : MonoBehaviour
             //gameTagPlayer.rectTransform.localScale = scale + GameManager.instance.scaleInt;
             gameTag.rectTransform.localScale = scale;
             //spriteLifePlayer.transform.localScale = scale + GameManager.instance.scaleInt;
-            spriteLifePlayer.transform.localScale = scale;
+            //spriteLifePlayer.transform.localScale = scale;
         }
     }
 
@@ -466,7 +488,7 @@ public class UIManager : MonoBehaviour
     {
         //Posicion GameTag
         Vehicle vehicle = GameManager.instance.playerObjects[0];
-        GameTagPlayer(gameTagPlayer, vehicle, true);
+        //GameTagPlayer(gameTagPlayer, vehicle, true);
 
         float num = Vector3.Angle(vehicle.transform.forward, Vector3.forward);
 
