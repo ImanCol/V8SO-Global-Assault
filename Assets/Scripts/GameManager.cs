@@ -14514,6 +14514,12 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
+    public string gameTagPlayerLocal;
+
+    public void setPlayerName(string playerName)
+    {
+        gameTagPlayerLocal = playerName;
+    }
     public TextMeshPro gameTagPlayer;
     private SpriteRenderer spriteLifePlayer;
 

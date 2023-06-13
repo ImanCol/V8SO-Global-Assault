@@ -399,9 +399,52 @@ public class Vehicle : VigObject
         base.Start();
     }
 
+    private bool setGameTag = true;
+    private bool setGameTagLocal = true;
+
     protected override void Update()
     {
         base.Update();
+
+        //Asigna GameTag al vehiculo correcto.
+        if (setGameTag)
+        {
+            foreach (var valueVehicle in GameManager.instance.networkMembers.Values)
+            {
+                if (valueVehicle == this)
+                {
+                    Debug.Log("Same Vehicle");
+                    Debug.Log("GameTag Set...");
+                    gameTag = UIManager.instance.InstantiateGameTag();
+                    gameTag.text = Demo.instance.playerNames[valueVehicle.userId];
+                    Debug.Log("Pass...");
+                    Debug.Log("Vehiculo object: " + valueVehicle);
+                    Debug.Log("Vehiculo object local: " + this);
+                    Debug.Log("userId de Vehiculo: " + valueVehicle.userId);
+                    Debug.Log("userId de Vehiculo local: " + this.userId);
+                    Debug.Log("Tipo de Vehiculo: " + valueVehicle.vehicle);
+                    Debug.Log("Tipo de Vehiculo local: " + this.vehicle);
+                    Debug.Log("GameTag: " + valueVehicle.gameTag.text);
+                    Debug.Log("GameTag local: " + gameTag.text);
+                    setGameTag = false;
+                }
+            }
+        }
+
+        if (GameManager.instance.playerObjects[0] == this)
+        {
+            if (setGameTagLocal)
+            {
+                gameTag = UIManager.instance.InstantiateGameTag();
+                gameTag.text = Demo.instance.playerNames[0];
+                Debug.Log("Local Name Player: " + gameTag.text);
+                setGameTag = false;
+            }
+            else
+            {
+                //UIManager.instance.GameTagPlayer(gameTag, this, true);
+            }
+        }
     }
 
     public override uint OnCollision(HitDetection hit)
@@ -971,7 +1014,16 @@ public class Vehicle : VigObject
             {
                 Debug.Log("CalculateUnitPosition: " + unit.name + "vehicle: " + this.vehicle);
                 UIManager.instance.CalculateUnitPosition(unit, this);
-                UIManager.instance.GameTagPlayer(gameTag, this, false);
+
+                //Verifica si es un Miembro o un NPC
+                if (GameManager.instance.networkMembers.TryGetValue(this.userId, out Vehicle value))
+                {
+                    UIManager.instance.GameTagPlayer(gameTag, this, true);
+                }
+                else
+                {
+                    UIManager.instance.GameTagPlayer(gameTag, this, false);
+                }
             }
             FUN_41AE8();
         }
@@ -6357,7 +6409,7 @@ public class Vehicle : VigObject
                 FUN_38A38(param1: true);
             }
             string str = FUN_38398();
-            IEnumerator routine = UIManager.instance.Printf(vehicle + " destroyed! " + str );
+            IEnumerator routine = UIManager.instance.Printf(vehicle + " destroyed! " + str);
             UIManager.instance.StopAllCoroutines();
             UIManager.instance.StartCoroutine(routine);
             FUN_38870();

@@ -283,26 +283,26 @@ public class UIManager : MonoBehaviour
     {
         AddUIMessagesScript(this.gameObject);
 
-        //gameTagPlayer = UIManager.instance.InstantiateGameTag();
+        gameTagPlayer = UIManager.instance.InstantiateGameTag();
 
         //Asigna el Gametag a los Jugadores en Partida segun el nombre que tengan
-        foreach (var value in GameManager.instance.networkMembers.Values)
-        {
-            Debug.Log("GameTag Set...");
-            //value.gameTag = UIManager.instance.InstantiateGameTag();
-            Debug.Log("Pass...");
-
-            Debug.Log("Miembro: " + value);
-            Debug.Log("userId de Vehiculo: " + value.userId);
-            Debug.Log("Tipo de Vehiculo: " + value.vehicle);
-
-            Debug.Log("name..." + Demo.instance.playerNames[value.userId]);
-            value.gameTag.text = Demo.instance.playerNames[value.userId];
-            //Debug.Log("Nombre de Vehiculo: " + value.userId);
-            //Debug.Log("userId de Vehiculo: " + value.gameTag);
-            //Realizar acciones con el valor
-            //...
-        }
+        //foreach (var valueVehicle in GameManager.instance.networkMembers.Values)
+        //{
+        //    Debug.Log("GameTag Set...");
+        //    //value.gameTag = UIManager.instance.InstantiateGameTag();
+        //    Debug.Log("Pass...");
+//
+        //    Debug.Log("Miembro: " + valueVehicle);
+        //    Debug.Log("userId de Vehiculo: " + valueVehicle.userId);
+        //    Debug.Log("Tipo de Vehiculo: " + valueVehicle.vehicle);
+//
+        //    Debug.Log("name..." + Demo.instance.playerNames[valueVehicle.userId]);
+        //    valueVehicle.gameTag.text = Demo.instance.playerNames[valueVehicle.userId];
+        //    //Debug.Log("Nombre de Vehiculo: " + value.userId);
+        //    //Debug.Log("userId de Vehiculo: " + value.gameTag);
+        //    //Realizar acciones con el valor
+        //    //...
+        //}
 
         //spriteLifePlayer = UIManager.instance.InstantiateSpriteLife();
 
@@ -488,7 +488,7 @@ public class UIManager : MonoBehaviour
     {
         //Posicion GameTag
         Vehicle vehicle = GameManager.instance.playerObjects[0];
-        //GameTagPlayer(gameTagPlayer, vehicle, true);
+        GameTagPlayer(gameTagPlayer, vehicle, true);
 
         float num = Vector3.Angle(vehicle.transform.forward, Vector3.forward);
 

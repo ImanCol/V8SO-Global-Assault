@@ -34,6 +34,7 @@ public class ClientSend : MonoBehaviour
     {
         using (Packet packet = new Packet(1))
         {
+            GameManager.instance.setPlayerName(packet.ToString());
             packet.Write(DiscordController.instance.userManager.GetCurrentUser().Username);
             Debug.Log(DiscordController.instance.userManager.GetCurrentUser().Username + " Se unio");
             SendTCPData(packet, 0L);
