@@ -15,6 +15,7 @@ public class ClientHandle : MonoBehaviour
 
         string text = _packet.ReadString();
         Demo.instance.lobbyInput.text = text;
+        Debug.Log("Nuevo Usuario...");
         UnityEngine.Debug.Log(text + " joined." + " User ID: " + userId.ToString());
         GameManager.instance.networkMembers.Add(userId, null);
         Demo.instance.playerReady.Add(userId, value: false);
@@ -151,7 +152,7 @@ public class ClientHandle : MonoBehaviour
     public static void Spawn(Packet _packet, long userId)
     {
         Debug.Log("Spawn Packet: " + _packet + " - " + Demo.instance.playerNames[userId] + " User ID: " + userId);
-        //GameManager.instance.playerObjects[0].gameTag = UIManager.instance.InstantiateGameTag();
+        GameManager.instance.playerObjects[0].gameTag = UIManager.instance.InstantiateGameTag();
         byte b = _packet.ReadByte();
         short num = 1;
 
@@ -257,10 +258,12 @@ public class ClientHandle : MonoBehaviour
         vehicle.weaponSlot = _packet.ReadByte();
         vehicle.breaking = _packet.ReadSByte();
         long num = _packet.ReadLong();
+        Debug.Log("Antes: " + userId);
         if (num != 0L)
         {
             if (num == DiscordController.GetUserId())
             {
+                Debug.Log("Despues: " + userId);
                 vehicle.target = GameManager.instance.playerObjects[0];
             }
             else if (num > 0 && num <= 6)
@@ -485,6 +488,8 @@ public class ClientHandle : MonoBehaviour
         GameManager.instance.networkMembers[userId].FUN_38DA8_2();
     }
 
+
+    //Vehicle Player Combo Destroyed!
     public static void Totaled(Packet _packet, long userId)
     {
         Vehicle vehicle = GameManager.instance.networkMembers[userId];
@@ -637,10 +642,12 @@ public class ClientHandle : MonoBehaviour
         vehicle.weaponSlot = _packet.ReadByte();
         vehicle.breaking = _packet.ReadSByte();
         long num = _packet.ReadLong();
+        Debug.Log("Antes: " + userId);
         if (num != 0L)
         {
             if (num == DiscordController.GetUserId())
             {
+                Debug.Log("Despues: " + userId);
                 vehicle.target = GameManager.instance.playerObjects[0];
             }
             else
@@ -861,6 +868,8 @@ public class ClientHandle : MonoBehaviour
         GameManager.instance.enemiesDictionary[_packet.ReadShort()].FUN_38DA8_2();
     }
 
+
+    //Vehicle AI Combo Destroyed!
     public static void TotaledAI(Packet _packet, long userId)
     {
         Vehicle vehicle = GameManager.instance.enemiesDictionary[_packet.ReadShort()];

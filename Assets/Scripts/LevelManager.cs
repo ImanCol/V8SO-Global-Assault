@@ -232,6 +232,7 @@ public class LevelManager : MonoBehaviour
             {
                 GameManager.instance.playerObjects[0] = GameManager.instance.FUN_3208C(-1, ~DiscordController.GetMemberId());
                 GameManager.instance.playerObjects[0].userId = DiscordController.GetUserId();
+                Debug.Log("User get: " + GameManager.instance.playerObjects[0].userId);
                 GameManager.instance.playerSpawns--;
             }
             else
@@ -277,7 +278,8 @@ public class LevelManager : MonoBehaviour
 
         //Envia Spawn Inicial
         if (GameManager.instance.online)
-            ClientSend.Spawn();
+            Debug.Log("Spawn Vehicle...");
+        ClientSend.Spawn();
         if (!DiscordController.instance)
         {
             Debug.Log("No se encontro DiscordController");

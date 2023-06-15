@@ -11939,16 +11939,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-
-
-
-
-
-
     public void setOnline(bool setOnline)
     {
+#if UNITY_SWITCH
+#elif UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
         online = setOnline;
+#endif
     }
     public bool online = false;
     public void LoadLevel()
@@ -12004,7 +12000,8 @@ public class GameManager : MonoBehaviour
                 SetDifficulty();
             }
             if (online)
-                DiscordController.instance.SetLobbyMetadata("level", Demo.mapNames[map - 1]);
+                //DiscordController.instance.SetLobbyMetadata("level", Demo.mapNames[map - 1]);
+                DiscordController.SetLobbyMetadata("level", Demo.mapNames[map - 1]);
             while (DiscordController.instance.pendingCallbacks)
             {
                 DiscordController.instance.discord.RunCallbacks();
@@ -14029,6 +14026,7 @@ public class GameManager : MonoBehaviour
                 playerObjects[0] = FUN_3208C(-1, ~DiscordController.GetMemberId());
                 playerObjects[0].FUN_3066C();
                 LevelManager.instance.FUN_3D94(playerObjects[0]);
+                Debug.Log("Spawn Vehicle...");
                 ClientSend.Spawn();
             }
             return;
@@ -15160,6 +15158,51 @@ public class GameManager : MonoBehaviour
 
     string sceneName;
 
+    public bool LoadScene = false;
+    private float progressBarWidth = Screen.width; //Ancho total de la barra de progreso
+    private float progressBarHeight = 20f; //Alto de la barra de progreso
+    private float slideSpeed = 200f; //Velocidad de deslizamiento del slide
+    private float progress = 0f; //Progreso actual de la barra
+    private void OnGUI()
+    {
+        if (!LoadScene) // Solo dibujar la barra de progreso si los clips de música no se han cargado completamente
+        {
+            // Calcular la posición de la barra de progreso en la pantalla
+            float progressBarX = (Screen.width - progressBarWidth) / 2f; // Centrado horizontal
+            float progressBarY = (Screen.height - progressBarHeight) / 15f; // Centrado vertical
+            Rect progressBarRect = new Rect(progressBarX, progressBarY, progressBarWidth, progressBarHeight);
+
+            // Calcular la cantidad de mosaicos completos y el progreso dentro del mosaico actual
+            int completeTiles = Mathf.FloorToInt(currentSceneProgress * progressBarWidth / progressBarTexture.width);
+            float partialTileProgress = (currentSceneProgress * progressBarWidth) % progressBarTexture.width;
+
+            // Dibujar los mosaicos completos
+            for (int i = 0; i < completeTiles; i++)
+            {
+                Rect tileRect = new Rect(progressBarRect.x + i * progressBarTexture.width, progressBarRect.y, progressBarTexture.width, progressBarRect.height);
+                GUI.DrawTexture(tileRect, progressBarTexture);
+            }
+
+            // Dibujar el mosaico parcial
+            Rect partialTileRect = new Rect(progressBarRect.x + completeTiles * progressBarTexture.width, progressBarRect.y, partialTileProgress, progressBarRect.height);
+            Rect partialTileTexCoords = new Rect(0f, 0f, partialTileProgress / progressBarTexture.width, 1f);
+            GUI.DrawTextureWithTexCoords(partialTileRect, progressBarTexture, partialTileTexCoords);
+        }
+        else
+        {
+            //Eliminar la barra de progreso
+            DestroyProgressBar();
+        }
+    }
+
+    private void DestroyProgressBar()
+    {
+        progressBarTexture = null;
+        // Realizar aquí cualquier acción necesaria para eliminar la barra de progreso
+        // Por ejemplo, desactivar objetos, limpiar referencias, etc.
+        // ...
+    }
+
     private IEnumerator LoadSceneAsyncWithDelay(int sceneIndex)
     {
         asyncOperation = SceneManager.LoadSceneAsync(sceneIndex);
@@ -15169,68 +15212,39 @@ public class GameManager : MonoBehaviour
         {
             totalSceneProgress = asyncOperation.progress;
 
-            //Si el progreso total es menor a 0.9f, establece el progreso actual de acuerdo al progreso total
+            // Si el progreso total es menor a 0.9f, establece el progreso actual de acuerdo al progreso total
             if (totalSceneProgress < 0.9f)
             {
                 currentSceneProgress = totalSceneProgress;
             }
 
-            //Si el progreso total es igual o mayor a 0.9f, establece el progreso actual en 1.0f para indicar que la escena está completamente cargada
+            // Si el progreso total es igual o mayor a 0.9f, establece el progreso actual en 1.0f para indicar que la escena está completamente cargada
             else if (asyncOperation.progress >= 0.9f)
             {
-
                 inDebug = false;
                 inMenu = false;
+                LoadScene = true;
                 asyncOperation.allowSceneActivation = true;
 
-                //panelOnline.transform.Find("LoadScene").gameObject.SetActive(value: true);
-
-                //Obtener el nombre de la escena por índice de compilación
+                // Obtener el nombre de la escena por índice de compilación
                 sceneName = GetSceneNameByBuildIndex(sceneIndex);
-                Debug.Log("Scene Precargada: " + sceneName);
-                progressBarTexture = null;
-                StopCoroutine(LoadSceneAsyncWithDelay(map));
-                //SceneManager.LoadSceneAsync(sceneIndex);
 
+                progressBarTexture = null;
+
+                StopCoroutine(LoadSceneAsyncWithDelay(sceneIndex));
             }
             else
             {
+                Debug.Log("Escena Precargada: " + sceneName);
                 currentSceneProgress = 1.0f;
             }
-            //Actualiza la barra de progreso en cada iteración del ciclo
+
+            // Actualizar la barra de progreso en cada iteración del ciclo
             yield return null;
         }
 
-        //Activa la escena una vez que la carga esté completa
-        //asyncOperation.allowSceneActivation = true;
-
-        //yield return new WaitForSeconds(3.0f); // Espera 1 segundo (puedes ajustar este valor según tus necesidades)
-        //AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneIndex);
-        //
-        //
-        //inDebug = false;
-        //inMenu = false;
-        //
-        //Espera a que se complete la carga de la escena
-        //while (!asyncOperation.isDone)
-        //{
-        //    yield return null;
-        //}
-        ////La escena se ha cargado correctamente, puedes realizar cualquier otra acción necesaria aquí
+        // La carga de la escena se ha completado correctamente, puedes realizar cualquier otra acción necesaria aquí
         MusicManager.instance.PlayNextMusic();
-    }
-
-    void OnGUI()
-    {
-        if (inDebug && progressBarTexture != null)
-        {
-            float barWidth = 200f;
-            float progressWidth = barWidth * currentSceneProgress;
-
-            //Dibuja la barra de progreso dentro del método OnGUI
-            Rect progressBarRect = new Rect(Screen.width / 2 - barWidth / 2, Screen.height / 2, progressWidth, 20f);
-            GUI.DrawTexture(progressBarRect, progressBarTexture);
-        }
     }
 
     private void Start()
@@ -15495,7 +15509,8 @@ public class GameManager : MonoBehaviour
         {
             if (gameMode >= _GAME_MODE.Versus2)
             {
-                DiscordController.instance.DisconnectNetwork2();
+                //DiscordController.instance.DisconnectNetwork2();
+                DiscordController.DisconnectNetwork2();
             }
             while (DiscordController.instance.pendingCallbacks)
             {
@@ -15560,6 +15575,7 @@ public class GameManager : MonoBehaviour
                 if (networkMembers.ContainsValue(null))
                 {
                     Debug.Log("No hay Miembros en Partida..." + networkMembers.Count);
+                    //Debug.Log("No hay Miembros en Partida..." + networkMembers.name);
                     return;
                 }
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Discord;
 using UnityEngine;
 using UnityEngine.UI;
+using V2UnityDiscordIntercept;
 public class Demo : MonoBehaviour
 {
     private void Awake()
@@ -68,10 +69,13 @@ public class Demo : MonoBehaviour
         int num = (int)GameManager.instance.vehicles[0];
         GameManager.vehicleConfigs[num].DAT_15 = byte.Parse(this.avoidInput.text);
     }
-    public void GetLobbies()
+
+    //public void GetLobbies()
+    public static void GetLobbies()
     {
         Plugin.ShowConnectionWindow = true;
-        discordController.SearchLobbies();
+        //---------//
+        //discordController.SearchLobbies();
     }
 
     public string nametag;
@@ -160,7 +164,7 @@ public class Demo : MonoBehaviour
             });
             component.onClick.AddListener(delegate ()
             {
-                this.JoinLobby(lobby.Id, lobby.Secret);
+                JoinLobby(this, lobby.Id, lobby.Secret);
             });
         }
     }
@@ -171,25 +175,56 @@ public class Demo : MonoBehaviour
             UnityEngine.Object.Destroy(this.lobbyList.GetChild(i).gameObject);
         }
     }
-    public void JoinLobby(long lobbyId, string secret)
+
+
+    //public void JoinLobby(long lobbyId, string secret)
+    public static bool JoinLobby(Demo __instance, long lobbyId, string secret)
     {
-        discordController.lobbyManager.ConnectLobby(lobbyId, secret, delegate (Result result, ref Lobby lobby)
+        Debug.Log("Joining lobby");
+        Debug.Log("Lobby ID: " + lobbyId + " secret: " + secret);
+
+        if (!DiscordController.IsOwner())
         {
-            if (result == Result.Ok)
-            {
-                discordController.InitNetworking(lobby.Id);
-                ClientSend.Joined();
-            }
-        });
+            __instance.componentPanel.gameObject.SetActive(true);
+            __instance.controlPanel.gameObject.SetActive(true);
+            __instance.modeLabel.gameObject.SetActive(false);
+            __instance.stageLabel.gameObject.SetActive(false);
+            __instance.damageLabel.gameObject.SetActive(false);
+            __instance.difficultyLabel.gameObject.SetActive(false);
+            __instance.onlineDmgLabel.gameObject.SetActive(false);
+            __instance.livesLabel.gameObject.SetActive(false);
+            __instance.readyLabel.gameObject.SetActive(true);
+            __instance.notReadyLabel.gameObject.SetActive(false);
+            __instance.settingsText.gameObject.SetActive(true);
+            __instance.mapText.gameObject.SetActive(true);
+            __instance.damageText.gameObject.SetActive(true);
+            __instance.livesText.gameObject.SetActive(true);
+            __instance.lobbyScrollView.gameObject.SetActive(false);
+            __instance.DeleteLobbies();
+            __instance.SetupPlaceholders();
+        }
+        Plugin.Client.JoinLobby(lobbyId, secret);
+        return false;
+        //---------//
+        //discordController.lobbyManager.ConnectLobby(lobbyId, secret, delegate (Result result, ref Lobby lobby)
+        //{
+        //    if (result == Result.Ok)
+        //    {
+        //        discordController.InitNetworking(lobby.Id);
+        //        ClientSend.Joined();
+        //    }
+        //});
     }
+
     public void SetupLobby()
     {
         //Crea el lobby, arreglarlo
-        discordController.CreateLobby(this.lobbyInput.text);
+        //discordController.CreateLobby(this.lobbyInput.text);
+        DiscordController.CreateLobby(lobbyInput.text);
     }
     public void MemberLeft(long userId)
     {
-        Debug.Log(userId + " Se ha salido: " + this.playerText[userId].gameObject);
+        Debug.Log("El Usuario: " + this.playerNames[userId] + " con el ID: " + userId + " Se ha salido: " + this.playerText[userId].gameObject);
         Debug.Log(this.playerText[userId].gameObject + " - " + this.playerNames[userId] + " - " + this.playerReady[userId] + " - " + this.playerVehicles[userId]);
         UnityEngine.Object.Destroy(this.playerText[userId].gameObject);
         this.playerText.Remove(userId);
@@ -202,23 +237,42 @@ public class Demo : MonoBehaviour
             GameManager.instance.networkIds.Remove(userId);
         }
     }
-    public void LeaveLobby(long lobbyId)
+
+    //public void LeaveLobby(long lobbyId)
+    public static bool LeaveLobby(Demo __instance, long lobbyId)
     {
-        LobbyManager lobbyManager = discordController.lobbyManager;
-        for (int i = 0; i < lobbyManager.MemberCount(lobbyId); i++)
+        Debug.Log("Leaving lobby");
+        foreach (long num in __instance.playerText.Keys)
         {
-            long memberUserId = lobbyManager.GetMemberUserId(lobbyId, i);
-            if (GameManager.instance.inDebug && this.playerText.ContainsKey(memberUserId))
+            if (GameManager.instance.inDebug)
             {
-                UnityEngine.Object.Destroy(this.playerText[memberUserId].gameObject);
+                UnityEngine.Object.Destroy(__instance.playerText[num].gameObject);
             }
         }
-        this.playerText.Clear();
-        this.playerNames.Clear();
-        this.playerReady.Clear();
-        this.playerVehicles.Clear();
+        __instance.playerText.Clear();
+        __instance.playerNames.Clear();
+        __instance.playerReady.Clear();
+        __instance.playerVehicles.Clear();
         GameManager.instance.networkMembers.Clear();
         GameManager.instance.networkIds.Clear();
+        return false;
+        //return false;
+        //---------//
+        //LobbyManager lobbyManager = discordController.lobbyManager;
+        //for (int i = 0; i < lobbyManager.MemberCount(lobbyId); i++)
+        //{
+        //    long memberUserId = lobbyManager.GetMemberUserId(lobbyId, i);
+        //    if (GameManager.instance.inDebug && this.playerText.ContainsKey(memberUserId))
+        //    {
+        //        UnityEngine.Object.Destroy(this.playerText[memberUserId].gameObject);
+        //    }
+        //}
+        //this.playerText.Clear();
+        //this.playerNames.Clear();
+        //this.playerReady.Clear();
+        //this.playerVehicles.Clear();
+        //GameManager.instance.networkMembers.Clear();
+        //GameManager.instance.networkIds.Clear();
     }
     public DiscordController discordController;
     public static Demo instance;

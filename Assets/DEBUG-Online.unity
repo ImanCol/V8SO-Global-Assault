@@ -2206,7 +2206,8 @@ MonoBehaviour:
   networkEnemies: []
   leash: 0
   driverPlus: 0
-  online: 1
+  online: 0
+  gameTagPlayerLocal: 
   gameTagPlayer: {fileID: 0}
   matrix:
     e00: 0
@@ -2237,6 +2238,7 @@ MonoBehaviour:
   meshHelp: 17
   effectHelp: 0
   sceneBuildIndex: 0
+  LoadScene: 0
   currentDamageIndex: 2
   currentValueDifficulty: 1
   damageText: Normal
@@ -2726,6 +2728,7 @@ MonoBehaviour:
   play: 1
   musicClipsPreloaded: 0
   fadeTrack: 0.5
+  oggFilePath: 
 --- !u!4 &622600169
 Transform:
   m_ObjectHideFlags: 0
@@ -11494,6 +11497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd7e11a9f34e5014f9613c65c371d4d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nametag: 
   discordController: {fileID: 1791082647559122347}
   playerList: {fileID: 1791082651250110028}
   lobbyList: {fileID: 1791082651250110134}
@@ -16586,15 +16590,15 @@ MonoBehaviour:
     m_Options:
     - m_Text: Totally Random
       m_Image: {fileID: 0}
-    - m_Text: V8:2O DC Beta
-      m_Image: {fileID: 0}
-    - m_Text: V8:2O PS1
+    - m_Text: V8 N64
       m_Image: {fileID: 0}
     - m_Text: V8 PS1
       m_Image: {fileID: 0}
+    - m_Text: V8:2O DC Beta
+      m_Image: {fileID: 0}
     - m_Text: V8:2O N64
       m_Image: {fileID: 0}
-    - m_Text: V8 N64
+    - m_Text: V8:2O PS1
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -19210,6 +19214,7 @@ GameObject:
   - component: {fileID: 507362848}
   - component: {fileID: 479902876}
   - component: {fileID: 1791082647559122347}
+  - component: {fileID: 1791082647559122348}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: 
@@ -21801,6 +21806,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneLoaded: 0
   pendingCallbacks: 0
+--- !u!114 &1791082647559122348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791082647508790554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26c54d2af5f74f94fb56d5e6993bae25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!20 &1791082647827557804
 Camera:
   m_ObjectHideFlags: 0
@@ -22440,11 +22457,11 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1791082647559122347}
         m_TargetAssemblyTypeName: DiscordController, Assembly-CSharp
-        m_MethodName: DisconnectNetwork2
-        m_Mode: 1
+        m_MethodName: OnApplicationQuit
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1791082647559122347}
+          m_ObjectArgumentAssemblyTypeName: DiscordController, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

@@ -2,39 +2,44 @@ using System;
 using System.Collections.Generic;
 using Discord;
 using UnityEngine;
+using System.Reflection;
+using V2UnityDiscordIntercept;
 
 public class DiscordController : MonoBehaviour
 {
-    private void Start()
+    //private void Start()
+    public static bool Start()
     {
 #if UNITY_EDITOR
         Debug.Log("Ejecutando en el editor de Unity");
 #else
         Debug.Log("Ejecutando en la Build");
 #endif
-        discord = new Discord.Discord(814993856163479584L, 0uL);
-        this.activityManager = this.discord.GetActivityManager();
-        Activity activity = new Activity
-        {
-            State = "Vigilante 8: Globbal Assault",
-            Details = "Make by ImanCol"
-        };
-        this.activityManager.UpdateActivity(activity, delegate (Result res)
-        {
-            if (res == Result.Ok)
-            {
-                Debug.Log("Everything is fine!");
-            }
-        });
-        this.lobbyManager = this.discord.GetLobbyManager();
-        this.userManager = this.discord.GetUserManager();
-        this.userManager.OnCurrentUserUpdate += delegate
-        {
-            User currentUser = this.userManager.GetCurrentUser();
-            this.userId = currentUser.Id;
-        };
-        this.ReceiveNetworkMessage();
-        this.MemberDisconnected();
+        return false;
+        //---------//
+        //discord = new Discord.Discord(814993856163479584L, 0uL);
+        //this.activityManager = this.discord.GetActivityManager();
+        //Activity activity = new Activity
+        //{
+        //    State = "Vigilante 8: Globbal Assault",
+        //    Details = "Make by ImanCol"
+        //};
+        //this.activityManager.UpdateActivity(activity, delegate (Result res)
+        //{
+        //    if (res == Result.Ok)
+        //    {
+        //        Debug.Log("Everything is fine!");
+        //    }
+        //});
+        //this.lobbyManager = this.discord.GetLobbyManager();
+        //this.userManager = this.discord.GetUserManager();
+        //this.userManager.OnCurrentUserUpdate += delegate
+        //{
+        //    User currentUser = this.userManager.GetCurrentUser();
+        //    this.userId = currentUser.Id;
+        //};
+        //this.ReceiveNetworkMessage();
+        //this.MemberDisconnected();
     }
 
     private void Awake()
@@ -45,96 +50,121 @@ public class DiscordController : MonoBehaviour
         }
     }
 
-    private void Update()
+    //private void Update()
+    public static bool Update()
     {
-        if (this.sceneLoaded)
-        {
-            if (GameManager.instance.online)
-            {
-                if (DiscordController.instance)
-                    this.discord.RunCallbacks();
-            }
-        }
+        return false;
+        //---------//
+        //if (this.sceneLoaded)
+        //{
+        //    if (GameManager.instance.online)
+        //    {
+        //        if (DiscordController.instance)
+        //            this.discord.RunCallbacks();
+        //    }
+        //}
     }
 
-    private void LateUpdate()
+    //private void LateUpdate()
+    public static bool LateUpdate()
     {
-        if (DiscordController.instance)
-            this.lobbyManager.FlushNetwork();
+        return false;
+        //---------//
+        //if (DiscordController.instance)
+        //    this.lobbyManager.FlushNetwork();
     }
 
 #if UNITY_EDITOR
-#else
-	private void OnApplicationQuit()
-	{
-		this.DisconnectNetwork2();
-		while (this.pendingCallbacks)
-		{
-			this.discord.RunCallbacks();
-		}
-		this.pendingCallbacks = true;
-		this.activityManager.ClearActivity(delegate(Result result)
-		{
-			if (result == Result.Ok)
-			{
-				this.pendingCallbacks = false;
-				return;
-			}
-			this.pendingCallbacks = false;
-		});
-		while (this.pendingCallbacks)
-		{
-			this.discord.RunCallbacks();
-		}
-	}
 #endif
-    StatsPanel statsPanel;
-    public void CreateLobby(string lobbyName)
+    //private void OnApplicationQuit()
+    public static void OnApplicationQuit(DiscordController __instance)
     {
-        Debug.Log("Create Lobby: " + lobbyName + "...");
-        //statsPanel.SpawnVehicle(1, 1); //Spawn Vehicle Host
-        LobbyTransaction lobbyCreateTransaction = this.lobbyManager.GetLobbyCreateTransaction();
-        lobbyCreateTransaction.SetCapacity(10U);
-        lobbyCreateTransaction.SetType(LobbyType.Public);
-        lobbyCreateTransaction.SetMetadata("name", lobbyName);
-        lobbyCreateTransaction.SetMetadata("game", "V8GO");
-        lobbyCreateTransaction.SetMetadata("level", "DEBUG2");
-        this.lobbyManager.CreateLobby(lobbyCreateTransaction, delegate (Result result, ref Lobby lobby)
-        {
-            Debug.Log("lobby " + lobby.Id.ToString() + " created with secret " + lobby.Secret);
-            LobbyTransaction lobbyUpdateTransaction = this.lobbyManager.GetLobbyUpdateTransaction(lobby.Id);
-            lobbyUpdateTransaction.SetCapacity(9U);
-            this.lobbyId = lobby.Id;
-            this.lobbyOwner = true;
-            this.lobbyManager.UpdateLobby(lobby.Id, lobbyUpdateTransaction, delegate (Result result)
-            {
-                Debug.Log("lobby " + this.lobbyId.ToString() + " updated");
-                this.InitNetworking(this.lobbyId);
-            });
-        });
+        Debug.Log("DiscordController.OnApplicationQuit");
+        DisconnectNetwork2();
+        //return false;
+        //---------//
+        //this.DisconnectNetwork2();
+        //while (this.pendingCallbacks)
+        //{
+        //	this.discord.RunCallbacks();
+        //}
+        //this.pendingCallbacks = true;
+        //this.activityManager.ClearActivity(delegate(Result result)
+        //{
+        //	if (result == Result.Ok)
+        //	{
+        //		this.pendingCallbacks = false;
+        //		return;
+        //	}
+        //	this.pendingCallbacks = false;
+        //});
+        //while (this.pendingCallbacks)
+        //{
+        //	this.discord.RunCallbacks();
+        //}
     }
 
-    public void SearchLobbies()
+    StatsPanel statsPanel;
+
+    //public void CreateLobby(string lobbyName)
+    public static bool CreateLobby(string lobbyName)
     {
-        LobbySearchQuery searchQuery = this.lobbyManager.GetSearchQuery();
-        searchQuery.Filter("metadata.game", LobbySearchComparison.Equal, LobbySearchCast.String, "V8SO");
-        searchQuery.Filter("metadata.level", LobbySearchComparison.Equal, LobbySearchCast.String, "DEBUG2");
-        searchQuery.Distance(LobbySearchDistance.Global);
-        this.lobbyManager.Search(searchQuery, delegate (Result res)
-        {
-            if (res == Result.Ok)
-            {
-                List<Lobby> list = new List<Lobby>();
-                for (int i = 0; i < this.lobbyManager.LobbyCount(); i++)
-                {
-                    long num = this.lobbyManager.GetLobbyId(i);
-                    Lobby lobby = this.lobbyManager.GetLobby(num);
-                    list.Add(lobby);
-                }
-                Debug.Log("GetLobbies");
-                Demo.instance._GetLobbies(list);
-            }
-        });
+        Plugin.Username = lobbyName;
+        VigServer vigServer = new VigServer(Plugin.Port);
+        vigServer.CreateLobby();
+        Plugin.Server = vigServer;
+        Plugin.Client = new VigClient();
+        Plugin.Client.ConnectToLobby("localhost", Plugin.Port);
+        DiscordController.SetLobbyOwner(DiscordController.instance, Plugin.Client.Peer.UniqueIdentifier);
+        return false;
+        //---------//
+        //Debug.Log("Create Lobby: " + lobbyName + "...");
+        ////statsPanel.SpawnVehicle(1, 1); //Spawn Vehicle Host
+        //LobbyTransaction lobbyCreateTransaction = this.lobbyManager.GetLobbyCreateTransaction();
+        //lobbyCreateTransaction.SetCapacity(10U);
+        //lobbyCreateTransaction.SetType(LobbyType.Public);
+        //lobbyCreateTransaction.SetMetadata("name", lobbyName);
+        //lobbyCreateTransaction.SetMetadata("game", "V8GO");
+        //lobbyCreateTransaction.SetMetadata("level", "DEBUG2");
+        //this.lobbyManager.CreateLobby(lobbyCreateTransaction, delegate (Result result, ref Lobby lobby)
+        //{
+        //    Debug.Log("lobby " + lobby.Id.ToString() + " created with secret " + lobby.Secret);
+        //    LobbyTransaction lobbyUpdateTransaction = this.lobbyManager.GetLobbyUpdateTransaction(lobby.Id);
+        //    lobbyUpdateTransaction.SetCapacity(9U);
+        //    this.lobbyId = lobby.Id;
+        //    this.lobbyOwner = true;
+        //    this.lobbyManager.UpdateLobby(lobby.Id, lobbyUpdateTransaction, delegate (Result result)
+        //    {
+        //        Debug.Log("lobby " + this.lobbyId.ToString() + " updated");
+        //        this.InitNetworking(this.lobbyId);
+        //    });
+        //});
+    }
+
+    //public void SearchLobbies()
+    public static bool SearchLobbies()
+    {
+        return false;
+        //---------//
+        //LobbySearchQuery searchQuery = this.lobbyManager.GetSearchQuery();
+        //searchQuery.Filter("metadata.game", LobbySearchComparison.Equal, LobbySearchCast.String, "V8SO");
+        //searchQuery.Filter("metadata.level", LobbySearchComparison.Equal, LobbySearchCast.String, "DEBUG2");
+        //searchQuery.Distance(LobbySearchDistance.Global);
+        //this.lobbyManager.Search(searchQuery, delegate (Result res)
+        //{
+        //    if (res == Result.Ok)
+        //    {
+        //        List<Lobby> list = new List<Lobby>();
+        //        for (int i = 0; i < this.lobbyManager.LobbyCount(); i++)
+        //        {
+        //            long num = this.lobbyManager.GetLobbyId(i);
+        //            Lobby lobby = this.lobbyManager.GetLobby(num);
+        //            list.Add(lobby);
+        //        }
+        //        Debug.Log("GetLobbies");
+        //        Demo.instance._GetLobbies(list);
+        //    }
+        //});
     }
 
     public void SetLobbyType(LobbyType lobbyType)
@@ -150,17 +180,22 @@ public class DiscordController : MonoBehaviour
         });
     }
 
-    public void SetLobbyOwner(long userId)
+    //public void SetLobbyOwner(long userId)
+    public static bool SetLobbyOwner(DiscordController __instance, long userId)
     {
-        LobbyTransaction lobbyUpdateTransaction = this.lobbyManager.GetLobbyUpdateTransaction(this.lobbyId);
-        lobbyUpdateTransaction.SetOwner(userId);
-        this.lobbyManager.UpdateLobby(this.lobbyId, lobbyUpdateTransaction, delegate (Result result)
-        {
-            if (result == Result.Ok)
-            {
-                Debug.Log("Lobby owner updated!");
-            }
-        });
+        Debug.Log("Setting lobby owner");
+        __instance.GetType().GetField("lobbyOwner", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(__instance, Plugin.Client.Peer.UniqueIdentifier == userId);
+        return false;
+        //---------//
+        //LobbyTransaction lobbyUpdateTransaction = this.lobbyManager.GetLobbyUpdateTransaction(this.lobbyId);
+        //lobbyUpdateTransaction.SetOwner(userId);
+        //this.lobbyManager.UpdateLobby(this.lobbyId, lobbyUpdateTransaction, delegate (Result result)
+        //{
+        //    if (result == Result.Ok)
+        //    {
+        //        Debug.Log("Lobby owner updated!");
+        //    }
+        //});
     }
 
     public void SetLobbyCapacity(uint capacity)
@@ -176,19 +211,23 @@ public class DiscordController : MonoBehaviour
         });
     }
 
-    public void SetLobbyMetadata(string key, string value)
+    //public void SetLobbyMetadata(string key, string value)
+    public static bool SetLobbyMetadata(string key, string value)
     {
-        LobbyTransaction lobbyUpdateTransaction = this.lobbyManager.GetLobbyUpdateTransaction(this.lobbyId);
-        lobbyUpdateTransaction.SetMetadata(key, value);
-        this.pendingCallbacks = true;
-        this.lobbyManager.UpdateLobby(this.lobbyId, lobbyUpdateTransaction, delegate (Result result)
-        {
-            if (result == Result.Ok)
-            {
-                Debug.Log("Lobby metadata updated!");
-                this.pendingCallbacks = false;
-            }
-        });
+        Plugin.Client.SetLobbyMetadata(key, value);
+        return false;
+        //---------//
+        //LobbyTransaction lobbyUpdateTransaction = this.lobbyManager.GetLobbyUpdateTransaction(this.lobbyId);
+        //lobbyUpdateTransaction.SetMetadata(key, value);
+        //this.pendingCallbacks = true;
+        //this.lobbyManager.UpdateLobby(this.lobbyId, lobbyUpdateTransaction, delegate (Result result)
+        //{
+        //    if (result == Result.Ok)
+        //    {
+        //        Debug.Log("Lobby metadata updated!");
+        //        this.pendingCallbacks = false;
+        //    }
+        //});
     }
 
     public string GetLobbyMetadataValue(long lobbyId, string key)
@@ -248,16 +287,21 @@ public class DiscordController : MonoBehaviour
         });
     }
 
-    public void DeleteLobby()
+    //public void DeleteLobby()
+    public static bool DeleteLobby()
     {
-        this.lobbyManager.DeleteLobby(this.lobbyId, delegate (Result result)
-        {
-            if (result == Result.Ok)
-            {
-                Debug.Log("Lobby deleted!");
-                this.pendingCallbacks = false;
-            }
-        });
+        Debug.Log("Deleting lobby");
+        Plugin.Server.DeleteLobby();
+        return false;
+        //---------//
+        //this.lobbyManager.DeleteLobby(this.lobbyId, delegate (Result result)
+        //{
+        //    if (result == Result.Ok)
+        //    {
+        //        Debug.Log("Lobby deleted!");
+        //        this.pendingCallbacks = false;
+        //    }
+        //});
     }
 
     public void ConnectLobby(long id, string password)
@@ -281,20 +325,26 @@ public class DiscordController : MonoBehaviour
         });
     }
 
-    public void DisconnectLobby(long id)
+    //public void DisconnectLobby(long id)
+    public static void DisconnectLobby()
     {
-        this.lobbyManager.DisconnectLobby(id, delegate (Result result)
-        {
-            if (result == Result.Ok)
-            {
-                Debug.Log("Left lobby!");
-            }
-        });
+        Debug.Log("Disconnect Lobby...");
+        //---------//
+        //this.lobbyManager.DisconnectLobby(id, delegate (Result result)
+        //{
+        //    if (result == Result.Ok)
+        //    {
+        //        Debug.Log("Left lobby!");
+        //    }
+        //});
     }
 
-    public void DisconnectNetwork(long id)
+    //public void DisconnectNetwork(long id)
+    public static void DisconnectNetwork()
     {
-        this.lobbyManager.DisconnectNetwork(id);
+        Debug.Log("DisconnectNetwork");
+        //---------//
+        //this.lobbyManager.DisconnectNetwork(id);
     }
 
     public Lobby GetLobby(long id)
@@ -324,21 +374,31 @@ public class DiscordController : MonoBehaviour
         return user;
     }
 
-    public void SendNetworkMessage(byte channelId, byte[] data)
+    //public void SendNetworkMessage(byte channelId, byte[] data)
+    public static bool SendNetworkMessage(byte channelId, byte[] data)
     {
-        for (int i = 0; i < this.lobbyManager.MemberCount(this.lobbyId); i++)
-        {
-            long memberUserId = this.lobbyManager.GetMemberUserId(this.lobbyId, i);
-            if (memberUserId != this.userManager.GetCurrentUser().Id)
-            {
-                this.lobbyManager.SendNetworkMessage(this.lobbyId, memberUserId, channelId, data);
-            }
-        }
+        Plugin.Client.SendNetworkMessage(channelId, data);
+        return false;
+        //---------//
+        //for (int i = 0; i < this.lobbyManager.MemberCount(this.lobbyId); i++)
+        //{
+        //    long memberUserId = this.lobbyManager.GetMemberUserId(this.lobbyId, i);
+        //    if (memberUserId != this.userManager.GetCurrentUser().Id)
+        //    {
+        //        this.lobbyManager.SendNetworkMessage(this.lobbyId, memberUserId, channelId, data);
+        //    }
+        //}
     }
 
-    public void SendNetworkMessageToUser(long userId, byte channelId, byte[] data)
+    //public void SendNetworkMessageToUser(long userId, byte channelId, byte[] data)
+    public static bool SendNetworkMessageToUser(long userId, byte channelId, byte[] data)
     {
-        this.lobbyManager.SendNetworkMessage(this.lobbyId, userId, channelId, data);
+        //Debug.Log("Identificador: " + Demo.instance.playerNames[userId]);
+        Debug.Log("Sending network message to user: {0}" + userId);
+        Plugin.Client.SendNetworkMessageToUser(userId, channelId, data);
+        return false;
+        //---------//
+        //this.lobbyManager.SendNetworkMessage(this.lobbyId, userId, channelId, data);
     }
 
     public void InitNetworking(long lobbyId)
@@ -352,30 +412,41 @@ public class DiscordController : MonoBehaviour
         this.lobbyManager.OpenNetworkChannel(lobbyId, 1, false);
     }
 
-    public void DisconnectNetwork2()
+    //public void DisconnectNetwork2()
+    public static bool DisconnectNetwork2()
     {
-        if (this.lobbyId != 0L)
+        Debug.Log("Disconnecting network");
+        Demo.LeaveLobby(Demo.instance, 0L);
+        Plugin.Client.Disconnect(Plugin.Username + " has disconnected.");
+        if (DiscordController.IsOwner())
         {
-            this.pendingCallbacks = true;
-            Demo.instance.LeaveLobby(this.lobbyId);
-            this.lobbyManager.DisconnectNetwork(this.lobbyId);
-            this.lobbyManager.DisconnectLobby(this.lobbyId, delegate (Result result)
-            {
-                if (result == Result.Ok)
-                {
-                    Debug.Log("Left lobby!");
-                    this.pendingCallbacks = false;
-                }
-            });
+            Plugin.Server.DeleteLobby();
         }
-        if (this.lobbyOwner)
-        {
-            this.pendingCallbacks = true;
-            this.DeleteLobby();
-        }
-        this.lobbyId = 0L;
-        this.memberId = 0;
-        this.lobbyOwner = false;
+        return false;
+        //---------//
+        //if (this.lobbyId != 0L)
+        //{
+        //    this.pendingCallbacks = true;
+        //    Demo.LeaveLobby(Demo.instance, this.lobbyId);
+        //    this.lobbyManager.DisconnectNetwork(this.lobbyId);
+        //    this.lobbyManager.DisconnectLobby(this.lobbyId, delegate (Result result)
+        //    {
+        //        if (result == Result.Ok)
+        //        {
+        //            Debug.Log("Left lobby!");
+        //            this.pendingCallbacks = false;
+        //        }
+        //    });
+        //}
+        //if (this.lobbyOwner)
+        //{
+        //    this.pendingCallbacks = true;
+        //    //this.DeleteLobby();
+        //    DiscordController.DeleteLobby();
+        //}
+        //this.lobbyId = 0L;
+        //this.memberId = 0;
+        //this.lobbyOwner = false;
     }
 
     public void ReceiveNetworkMessage()
@@ -410,14 +481,25 @@ public class DiscordController : MonoBehaviour
         };
     }
 
+    //public static int GetMemberId()
+    //public static bool GetMemberId(ref int __result)
     public static int GetMemberId()
     {
-        return DiscordController.instance.memberId;
+        int __result = Plugin.Client.MemberId;
+        Debug.Log("Get member id: " + __result.ToString());
+        return __result;
+        //---------//
+        //return DiscordController.instance.memberId;
     }
 
+    //public static long GetUserId()
+    //public static bool GetUserId(ref long __result)
     public static long GetUserId()
     {
-        return DiscordController.instance.userId;
+        long __result = Plugin.Client.Peer.UniqueIdentifier;
+        return __result;
+        //---------//
+        //return DiscordController.instance.userId;
     }
 
     public static bool IsOwner()

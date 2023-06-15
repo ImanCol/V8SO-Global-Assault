@@ -1,19 +1,24 @@
 using UnityEngine;
-
+using V2UnityDiscordIntercept;
 public class ClientSend : MonoBehaviour
 {
     private static void SendTCPData(Packet _packet, long userId)
     {
+        Debug.Log("SendTCPData: " + _packet + " " + userId);
         _packet.WriteLength();
         if (userId == 0L)
         {
+            Debug.Log("Go userId: " + userId);
             if (DiscordController.instance)
-                DiscordController.instance.SendNetworkMessage(0, _packet.ToArray());
+                //DiscordController.instance.SendNetworkMessage(0, _packet.ToArray());
+                DiscordController.SendNetworkMessage(0, _packet.ToArray());
         }
         else
         {
+            Debug.Log("Go else: " + userId);
             if (DiscordController.instance)
-                DiscordController.instance.SendNetworkMessageToUser(userId, 0, _packet.ToArray());
+                //DiscordController.instance.SendNetworkMessageToUser(userId, 0, _packet.ToArray());
+                DiscordController.SendNetworkMessageToUser(userId, 0, _packet.ToArray());
         }
     }
 
@@ -22,35 +27,57 @@ public class ClientSend : MonoBehaviour
         _packet.WriteLength();
         if (userId == 0L)
         {
-            DiscordController.instance.SendNetworkMessage(1, _packet.ToArray());
+            //DiscordController.instance.SendNetworkMessage(1, _packet.ToArray());
+            DiscordController.SendNetworkMessage(1, _packet.ToArray());
         }
         else
         {
-            DiscordController.instance.SendNetworkMessageToUser(userId, 1, _packet.ToArray());
+            //DiscordController.instance.SendNetworkMessageToUser(userId, 1, _packet.ToArray());
+            DiscordController.SendNetworkMessageToUser(userId, 1, _packet.ToArray());
         }
     }
 
-    public static void Joined()
+    //public static void Joined()
+    public static bool Joined()
     {
         using (Packet packet = new Packet(1))
         {
-            GameManager.instance.gameTagPlayerLocal = packet.ToString();
-            packet.Write(DiscordController.instance.userManager.GetCurrentUser().Username);
-            Debug.Log(DiscordController.instance.userManager.GetCurrentUser().Username + " Se unio");
-            SendTCPData(packet, 0L);
+            packet.Write(Plugin.Username);
+            Plugin.Client.SendTCPData(packet, 0L);
         }
+        return false;
+        //---------//
+        //using (Packet packet = new Packet(1))
+        //{
+        //    GameManager.instance.gameTagPlayerLocal = packet.ToString();
+        //    packet.Write(DiscordController.instance.userManager.GetCurrentUser().Username);
+        //    Debug.Log(DiscordController.instance.userManager.GetCurrentUser().Username + " Se unio");
+        //    SendTCPData(packet, 0L);
+        //}
     }
 
-    public static void Welcome(long userId)
+
+    //public static void Welcome(long userId)
+
+    public static bool Welcome(long userId)
     {
         using (Packet packet = new Packet(2))
         {
-            Debug.Log("Welcome " + packet);
-            packet.Write(DiscordController.instance.userManager.GetCurrentUser().Username);
+            packet.Write(Plugin.Username);
             packet.Write(GameManager.instance.ready);
             packet.Write(GameManager.instance.vehicles[0]);
-            SendTCPData(packet, userId);
+            Plugin.Client.SendTCPData(packet, userId);
         }
+        return false;
+        //---------//
+        //using (Packet packet = new Packet(2))
+        //{
+        //    Debug.Log("Welcome " + packet);
+        //    packet.Write(DiscordController.instance.userManager.GetCurrentUser().Username);
+        //    packet.Write(GameManager.instance.ready);
+        //    packet.Write(GameManager.instance.vehicles[0]);
+        //    SendTCPData(packet, userId);
+        //}
     }
 
     public static void Ready(long userId = 0L)
@@ -127,7 +154,11 @@ public class ClientSend : MonoBehaviour
     public static void Spawn()
     {
         using (Packet packet = new Packet(11))
+        //using (Packet packet = new Packet((int)ClientPackets.spawned))
         {
+            //packet.Write(GameManager.instance.vehicles[0]);
+            //Plugin.Client.SendTCPData(packet, 0L);
+            Debug.Log("Spawn Vechile info: " + GameManager.instance.vehicles[0]);
             packet.Write(GameManager.instance.vehicles[0]);
             SendTCPData(packet, 0L);
         }

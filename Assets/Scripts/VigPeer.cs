@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using V2UnityDiscordIntercept;
 
 public abstract class VigPeer
 {
@@ -38,10 +37,12 @@ public abstract class VigPeer
 
         if (userId == 0L)
         {
-            DiscordController.instance.SendNetworkMessage(0, _packet.ToArray());
+            //DiscordController.instance.SendNetworkMessage(0, _packet.ToArray());
+            DiscordController.SendNetworkMessage(0, _packet.ToArray());
             return;
         }
-        DiscordController.instance.SendNetworkMessageToUser(userId, 0, _packet.ToArray());
+        //DiscordController.instance.SendNetworkMessageToUser(userId, 0, _packet.ToArray());
+        DiscordController.SendNetworkMessageToUser(userId, 0, _packet.ToArray());
     }
 
     public void SendUDPData(Packet _packet, long userId)
@@ -49,10 +50,12 @@ public abstract class VigPeer
         _packet.WriteLength();
         if (userId == 0L)
         {
-            DiscordController.instance.SendNetworkMessage(1, _packet.ToArray());
+            //DiscordController.instance.SendNetworkMessage(1, _packet.ToArray());
+            DiscordController.SendNetworkMessage(1, _packet.ToArray());
             return;
         }
-        DiscordController.instance.SendNetworkMessageToUser(userId, 1, _packet.ToArray());
+        //DiscordController.instance.SendNetworkMessageToUser(userId, 1, _packet.ToArray());
+        DiscordController.SendNetworkMessageToUser(userId, 1, _packet.ToArray());
     }
 
     protected static NetDeliveryMethod GetDeliveryMethod(int channelId)

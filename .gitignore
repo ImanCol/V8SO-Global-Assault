@@ -74,3 +74,6 @@ crashlytics-build.properties
 *.nss
 *.nsp
 Build/Nintendo/Switch/repack.exe
+Build/Android/32-bits/*
+BepInEx/*
+Build/Android/32-bits/Vigilante 8 Globbal Offense_BackUpThisFolder_ButDontShipItWithYourGame/il2cppOutput/__Generated.cpp

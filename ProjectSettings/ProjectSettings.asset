@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Otak Team Productions
-  productName: V8SO
+  productName: 'Vigilante 8: Globbal Offense'
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -88,7 +88,7 @@ PlayerSettings:
   bakeCollisionMeshes: 0
   forceSingleInstance: 0
   useFlipModelSwapchain: 1
-  resizableWindow: 0
+  resizableWindow: 1
   useMacAppStoreValidation: 0
   macAppStoreCategory: public.app-category.games
   gpuSkinning: 0
@@ -134,9 +134,11 @@ PlayerSettings:
     16:10: 0
     16:9: 1
     Others: 0
-  bundleVersion: 1.43
+  bundleVersion: 2.0
   preloadedAssets:
   - {fileID: 11400000, guid: df91ce8450a65ce4cb14eb2b212dfdc2, type: 2}
+  - {fileID: 5727806014204970349, guid: 23883badba25b184195a6872c54714ad, type: 2}
+  - {fileID: 11400000, guid: 2248ceb0becc1804da227a75d40eafb0, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -446,7 +448,7 @@ PlayerSettings:
   locationUsageDescription: 
   microphoneUsageDescription: 
   bluetoothUsageDescription: 
-  switchNMETAOverride: 
+  switchNMETAOverride: Application.aarch64.lp64.nmeta
   switchNetLibKey: 
   switchSocketMemoryPoolSize: 6144
   switchSocketAllocatorPoolSize: 128
@@ -455,7 +457,7 @@ PlayerSettings:
   switchUseCPUProfiler: 0
   switchUseGOLDLinker: 0
   switchLTOSetting: 0
-  switchApplicationID: 0x01004b9000490000
+  switchApplicationID: 0x01004b9000470000
   switchNSODependencies: 
   switchTitleNames_0: 
   switchTitleNames_1: 

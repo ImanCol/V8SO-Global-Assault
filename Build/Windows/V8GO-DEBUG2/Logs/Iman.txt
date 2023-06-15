@@ -1,0 +1,25 @@
+[14/06/2023 04:55:04 p. m.] - V2UnityDiscordIntercept.VigServer.CreateLobby - Created server with id: -6489613648669815904
+[14/06/2023 04:55:04 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
+[14/06/2023 04:55:04 p. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: 4151937560887040748
+[14/06/2023 04:55:04 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
+[14/06/2023 04:55:04 p. m.] - V2UnityDiscordIntercept.VigServer.StatusChanged - StatusChanged: RespondedAwaitingApproval:4151937560887040748 - Awaiting approval
+[14/06/2023 04:55:04 p. m.] - V2UnityDiscordIntercept.VigServer.ConnectionApproval - Connection approval requested from 4151937560887040748
+[14/06/2023 04:55:04 p. m.] - V2UnityDiscordIntercept.VigServer.StatusChanged - StatusChanged: RespondedConnect:4151937560887040748 - Remotely requested connect
+[14/06/2023 04:55:04 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Connected - Connected to A04B821DC542F0A5
+[14/06/2023 04:55:04 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - MemberId: 0
+[14/06/2023 04:55:04 p. m.] - V2UnityDiscordIntercept.VigClient.JoinLobby - Joined Lobby
+[14/06/2023 04:55:04 p. m.] - V2UnityDiscordIntercept.VigServer.StatusChanged - StatusChanged: Connected:4151937560887040748 - Connected to EC1A46B636A59E39
+[14/06/2023 04:55:06 p. m.] - V2UnityDiscordIntercept.VigServer.StatusChanged - StatusChanged: RespondedAwaitingApproval:6391256325954095744 - Awaiting approval
+[14/06/2023 04:55:06 p. m.] - V2UnityDiscordIntercept.VigServer.ConnectionApproval - Connection approval requested from 6391256325954095744
+[14/06/2023 04:55:06 p. m.] - V2UnityDiscordIntercept.VigServer.StatusChanged - StatusChanged: RespondedConnect:6391256325954095744 - Remotely requested connect
+[14/06/2023 04:55:06 p. m.] - V2UnityDiscordIntercept.VigServer.StatusChanged - StatusChanged: Connected:6391256325954095744 - Connected to 804AF620C44DB258
+[14/06/2023 04:55:25 p. m.] - V2UnityDiscordIntercept.Plugin.Update - System.NullReferenceException: Object reference not set to an instance of an object
+  at ClientHandle.Spawn (Packet _packet, System.Int64 userId) [0x0021a] in <421484963cd34317ba64d0cc68d3ddd8>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <421484963cd34317ba64d0cc68d3ddd8>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <421484963cd34317ba64d0cc68d3ddd8>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <421484963cd34317ba64d0cc68d3ddd8>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <421484963cd34317ba64d0cc68d3ddd8>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <421484963cd34317ba64d0cc68d3ddd8>:0 
+[14/06/2023 04:56:12 p. m.] - V2UnityDiscordIntercept.VigServer.DeleteLobby - Deleting the lobby
+[14/06/2023 04:56:12 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnecting - Iman has disconnected.
+[14/06/2023 04:56:12 p. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnected - Iman has disconnected.

@@ -1,0 +1,109 @@
+[14/06/2023 03:58:52 a. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
+[14/06/2023 03:58:53 a. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: -2493600523807568342
+[14/06/2023 03:58:53 a. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
+[14/06/2023 03:58:53 a. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Connected - Connected to A04B821DC542F0A5
+[14/06/2023 03:58:53 a. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - MemberId: 11
+[14/06/2023 03:58:53 a. m.] - V2UnityDiscordIntercept.VigClient.JoinLobby - Joined Lobby
+[14/06/2023 03:58:53 a. m.] - V2UnityDiscordIntercept.Plugin.Update - System.ArgumentException: An item with the same key has already been added. Key: 76739045545479948
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].TryInsert (TKey key, TValue value, System.Collections.Generic.InsertionBehavior behavior) [0x000dd] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].Add (TKey key, TValue value) [0x00000] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.Welcome (Packet _packet, System.Int64 userId) [0x00018] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <7de75d4c867943c69941c205f554f003>:0 
+[14/06/2023 03:58:53 a. m.] - V2UnityDiscordIntercept.Plugin.Update - System.ArgumentException: An item with the same key has already been added. Key: -625269871297276284
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].TryInsert (TKey key, TValue value, System.Collections.Generic.InsertionBehavior behavior) [0x000dd] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].Add (TKey key, TValue value) [0x00000] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.Welcome (Packet _packet, System.Int64 userId) [0x00018] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <7de75d4c867943c69941c205f554f003>:0 
+[14/06/2023 03:58:53 a. m.] - V2UnityDiscordIntercept.Plugin.Update - System.ArgumentException: An item with the same key has already been added. Key: 5210082048107411863
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].TryInsert (TKey key, TValue value, System.Collections.Generic.InsertionBehavior behavior) [0x000dd] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].Add (TKey key, TValue value) [0x00000] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.Welcome (Packet _packet, System.Int64 userId) [0x00018] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <7de75d4c867943c69941c205f554f003>:0 
+[14/06/2023 03:58:53 a. m.] - V2UnityDiscordIntercept.Plugin.Update - System.ArgumentException: An item with the same key has already been added. Key: -7847966055231735791
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].TryInsert (TKey key, TValue value, System.Collections.Generic.InsertionBehavior behavior) [0x000dd] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].Add (TKey key, TValue value) [0x00000] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.Welcome (Packet _packet, System.Int64 userId) [0x00018] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <7de75d4c867943c69941c205f554f003>:0 
+[14/06/2023 03:58:53 a. m.] - V2UnityDiscordIntercept.Plugin.Update - System.ArgumentException: An item with the same key has already been added. Key: -4423701138935154638
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].TryInsert (TKey key, TValue value, System.Collections.Generic.InsertionBehavior behavior) [0x000dd] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].Add (TKey key, TValue value) [0x00000] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.Welcome (Packet _packet, System.Int64 userId) [0x00018] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <7de75d4c867943c69941c205f554f003>:0 
+[14/06/2023 03:58:53 a. m.] - V2UnityDiscordIntercept.Plugin.Update - System.ArgumentException: An item with the same key has already been added. Key: -1528671923799517257
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].TryInsert (TKey key, TValue value, System.Collections.Generic.InsertionBehavior behavior) [0x000dd] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].Add (TKey key, TValue value) [0x00000] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at ClientHandle.Welcome (Packet _packet, System.Int64 userId) [0x00018] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x00049] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <7de75d4c867943c69941c205f554f003>:0 
+[14/06/2023 04:05:21 a. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '1952868722' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x0003d] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <7de75d4c867943c69941c205f554f003>:0 
+[14/06/2023 04:05:21 a. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '1414877010' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x0003d] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <7de75d4c867943c69941c205f554f003>:0 
+[14/06/2023 04:05:22 a. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '1414877010' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x0003d] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <7de75d4c867943c69941c205f554f003>:0 
+[14/06/2023 04:05:22 a. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '1749221632' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x0003d] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <7de75d4c867943c69941c205f554f003>:0 
+[14/06/2023 04:05:22 a. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '0' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x0003d] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <7de75d4c867943c69941c205f554f003>:0 
+[14/06/2023 04:05:22 a. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '0' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x0003d] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <7de75d4c867943c69941c205f554f003>:0 
+[14/06/2023 04:05:26 a. m.] - V2UnityDiscordIntercept.Plugin.Update - System.Collections.Generic.KeyNotFoundException: The given key '0' was not present in the dictionary.
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <231f6c5a042647adb84a9cc42c982c35>:0 
+  at V2UnityDiscordIntercept.VigClient.HandleTCPData (System.Byte[] _data, System.Int64 userId) [0x0003d] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.Data (Lidgren.Network.NetIncomingMessage msg) [0x0002f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.VigClient.ReadMessages () [0x0007f] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Network.Update () [0x00009] in <7de75d4c867943c69941c205f554f003>:0 
+  at V2UnityDiscordIntercept.Plugin.Update () [0x0000c] in <7de75d4c867943c69941c205f554f003>:0 

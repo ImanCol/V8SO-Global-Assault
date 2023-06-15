@@ -8,17 +8,20 @@ using UnityEngine;
 
 namespace V2UnityDiscordIntercept
 {
-    public class VigClient : VigPeer
+    public class VigClient : Network
     {
-        protected override NetPeer Peer => client;
+        public override NetPeer Peer => client;
 
         private NetClient client;
         public int MemberId { get; set; }
 
         private Dictionary<string, string> lobbyMetadata = new Dictionary<string, string>();
 
+        public NetConnectionStatus Status => client.ServerConnection.Status;
+
         public void Disconnect(string byeMessage)
         {
+            Debug.Log("Disconnected Message: " + byeMessage);
             client.ServerConnection.Disconnect(byeMessage);
         }
 
@@ -116,7 +119,7 @@ namespace V2UnityDiscordIntercept
                     Plugin.ShowConnectionWindow = false;
                     MemberId = msg.SenderConnection.RemoteHailMessage.ReadInt32();
                     Logger.Log($"MemberId: {MemberId}");
-                    Demo.instance.JoinLobby(0L, null);
+                    Demo.JoinLobby(Demo.instance, 0L, null);
                     break;
                 case NetConnectionStatus.Disconnected:
                     Plugin.ShowConnectionWindow = false;
@@ -210,39 +213,32 @@ namespace V2UnityDiscordIntercept
             NetIncomingMessage msg;
             while ((msg = Peer.ReadMessage()) != null)
             {
-                try
+                switch (msg.MessageType)
                 {
-                    switch (msg.MessageType)
-                    {
-                        case NetIncomingMessageType.DiscoveryResponse:
-                            Logger.Log($"Found server at {msg.SenderEndPoint} with name {msg.ReadString()}");
-                            break;
+                    case NetIncomingMessageType.DiscoveryResponse:
+                        Logger.Log($"Found server at {msg.SenderEndPoint} with name {msg.ReadString()}");
+                        break;
 
-                        case NetIncomingMessageType.VerboseDebugMessage:
-                        case NetIncomingMessageType.DebugMessage:
-                        case NetIncomingMessageType.WarningMessage:
-                        case NetIncomingMessageType.ErrorMessage:
-                            Logger.Log(msg.ReadString());
-                            break;
+                    case NetIncomingMessageType.VerboseDebugMessage:
+                    case NetIncomingMessageType.DebugMessage:
+                    case NetIncomingMessageType.WarningMessage:
+                    case NetIncomingMessageType.ErrorMessage:
+                        Logger.Log(msg.ReadString());
+                        break;
 
-                        case NetIncomingMessageType.StatusChanged:
-                            StatusChanged(msg);
-                            break;
+                    case NetIncomingMessageType.StatusChanged:
+                        StatusChanged(msg);
+                        break;
 
-                        case NetIncomingMessageType.Data:
-                            Data(msg);
-                            break;
+                    case NetIncomingMessageType.Data:
+                        Data(msg);
+                        break;
 
-                        default:
-                            Logger.Log("Unhandled type: " + msg.MessageType + "\n" + msg.ToString());
-                            break;
-                    }
-                    Peer.Recycle(msg);
+                    default:
+                        Logger.Log("Unhandled type: " + msg.MessageType + "\n" + msg.ToString());
+                        break;
                 }
-                catch (Exception e)
-                {
-                    Logger.Log($"Bad message: {string.Join(",", msg.Data)}.\r\n {e}");
-                }
+                Peer.Recycle(msg);
             }
         }
 
@@ -283,7 +279,6 @@ namespace V2UnityDiscordIntercept
         {
             // This method just sends the data to the server. We include the originator id and
             // a zero as the target user id so the server knows to relay it to everybody.
-
             var msg = client.CreateMessage();
             // from
             msg.Write(client.UniqueIdentifier);

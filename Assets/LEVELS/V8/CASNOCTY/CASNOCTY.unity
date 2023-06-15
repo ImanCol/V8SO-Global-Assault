@@ -1811,7 +1811,7 @@ Camera:
   field of view: 50
   orthographic: 0
   orthographic size: 5
-  m_Depth: 1
+  m_Depth: 2
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 64
@@ -1897,7 +1897,7 @@ Camera:
   field of view: 50
   orthographic: 0
   orthographic size: 5
-  m_Depth: 3
+  m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 5
@@ -1940,7 +1940,7 @@ Camera:
   field of view: 50
   orthographic: 0
   orthographic size: 5
-  m_Depth: 2
+  m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 128
@@ -2494,11 +2494,18 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   unitPrefab: {fileID: 5581427073200022357, guid: dfa3c19ed5a95824ab7564d96c124bb7, type: 3}
+  playerTag: {fileID: 0}
+  gameLifePrefab: {fileID: 2573284538133875370, guid: ac0d2de13e8bf6141b81beca101eaf80, type: 3}
+  gameTagPrefab: {fileID: 3704996987938545348, guid: 65ff481159bb43e4eab1a2285fa00c1d, type: 3}
+  gameTagPlayer: {fileID: 0}
+  spriteLifePlayer: {fileID: 0}
+  gameTagSprite: {fileID: 0}
   characterPrefab: {fileID: 2683954695926599478, guid: 9ce2a387c62b2c64493fcebccbdddba5, type: 3}
   weaponRect: {fileID: 1791082649404616189}
   enemyRect: {fileID: 1791082649404616231}
   radarRect: {fileID: 1791082651250109932}
   feedbackRect: {fileID: 1791082651250109872}
+  trackFeedbackRect: {fileID: 0}
   playerHealthSlider: {fileID: 1791082649404616245}
   enemyHealthSlider: {fileID: 1791082649404616221}
   digits:
@@ -2536,6 +2543,10 @@ MonoBehaviour:
   printSpeed: 0.1
   under: 12
   waterOffset: 6
+  printedChar: {fileID: 0}
+  feedbackElements: []
+  trackElements: []
+  uiMessagesScript: {fileID: 0}
 --- !u!114 &1791082649404616181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3755,7 +3766,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cfuStatus: PSXEffects v1.18
   sections: 01010100
-  customRes: {x: 1920, y: 1080}
+  customRes: {x: 1280, y: 720}
   resolutionFactor: 1
   limitFramerate: -1
   skipFrames: 0

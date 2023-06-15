@@ -5,7 +5,7 @@ using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using V2UnityDiscordIntercept;
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
@@ -97,8 +97,6 @@ public class UIManager : MonoBehaviour
         component.color = RED;
         return component;
     }
-
-    public TextMeshPro component2;
 
     public TextMeshPro InstantiateGameTag()
     {
@@ -283,30 +281,17 @@ public class UIManager : MonoBehaviour
     {
         AddUIMessagesScript(this.gameObject);
 
-        gameTagPlayer = UIManager.instance.InstantiateGameTag();
+        //Crea un objeto para insertar los GameTags
+        GameObject obj = new GameObject("GameTagPlayers");
+        obj.AddComponent<RectTransform>();
+        playerTag = obj.GetComponent<RectTransform>();
 
-        //Asigna el Gametag a los Jugadores en Partida segun el nombre que tengan
-        //foreach (var valueVehicle in GameManager.instance.networkMembers.Values)
-        //{
-        //    Debug.Log("GameTag Set...");
-        //    //value.gameTag = UIManager.instance.InstantiateGameTag();
-        //    Debug.Log("Pass...");
-//
-        //    Debug.Log("Miembro: " + valueVehicle);
-        //    Debug.Log("userId de Vehiculo: " + valueVehicle.userId);
-        //    Debug.Log("Tipo de Vehiculo: " + valueVehicle.vehicle);
-//
-        //    Debug.Log("name..." + Demo.instance.playerNames[valueVehicle.userId]);
-        //    valueVehicle.gameTag.text = Demo.instance.playerNames[valueVehicle.userId];
-        //    //Debug.Log("Nombre de Vehiculo: " + value.userId);
-        //    //Debug.Log("userId de Vehiculo: " + value.gameTag);
-        //    //Realizar acciones con el valor
-        //    //...
-        //}
+        gameTagPlayer = UIManager.instance.InstantiateGameTag();
 
         //spriteLifePlayer = UIManager.instance.InstantiateSpriteLife();
 
         //gameTagPlayer.text = "ImanCol";
+        gameTagPlayer.text = Plugin.Username;
         //gameTagPlayer.text = Demo.instance.lobbyInput.text;
         //GameObject obj = new GameObject("GameTagPlayer");
         //spriteRenderer2 = obj.AddComponent<SpriteRenderer>();
@@ -486,7 +471,7 @@ public class UIManager : MonoBehaviour
 
     public void CalculateUnitPosition(RawImage unit, Vehicle obj)
     {
-        //Posicion GameTag
+        //Posicion GameTag Player
         Vehicle vehicle = GameManager.instance.playerObjects[0];
         GameTagPlayer(gameTagPlayer, vehicle, true);
 
@@ -502,7 +487,7 @@ public class UIManager : MonoBehaviour
         point = Quaternion.Euler(0f, num, 0f) * point;
         Vector3 vector = point / units;
 
-        Debug.Log("Units: " + units);
+        //Debug.Log("Units: " + units);
 
         unit.color = ((!(vehicle.target == obj)) ? RED : ((obj.jammer == 0 && (obj.flags & 0x8000000) == 0) ? GREEN : YELLOW));
         Vector3 vector2 = Vector3.ClampMagnitude(vector, radius);

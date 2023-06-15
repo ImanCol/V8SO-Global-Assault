@@ -16,6 +16,21 @@ MonoBehaviour:
   m_AutomaticRunning: 0
   m_Loaders:
   - {fileID: 11400000, guid: e8ef603783e97b446838a441025c3649, type: 2}
+--- !u!114 &-6548577909948838643
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 536372c49e1ca914d822849d36de938c, type: 3}
+  m_Name: Switch Providers
+  m_EditorClassIdentifier: 
+  m_AutomaticLoading: 0
+  m_AutomaticRunning: 0
+  m_Loaders: []
 --- !u!114 &-3017788142349431318
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -57,10 +72,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb0ece14d1f711a4fb9325ca819dee95, type: 3}
   m_Name: AdaptivePerformanceGeneralSettings
   m_EditorClassIdentifier: 
-  Keys: 0700000001000000
+  Keys: 07000000010000001b000000
   Values:
   - {fileID: -1212624330875587516}
   - {fileID: 6072380747485551820}
+  - {fileID: 5727806014204970349}
+--- !u!114 &5727806014204970349
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 179fc3111e144bc4688dca4038b3265d, type: 3}
+  m_Name: Switch Settings
+  m_EditorClassIdentifier: 
+  m_LoaderManagerInstance: {fileID: -6548577909948838643}
+  m_InitManagerOnStart: 1
 --- !u!114 &6072380747485551820
 MonoBehaviour:
   m_ObjectHideFlags: 2
