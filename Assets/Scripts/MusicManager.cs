@@ -7,6 +7,8 @@ using System.IO;
 using UnityEngine.SceneManagement;
 using NVorbis;
 using Time = UnityEngine.Time;
+using Newtonsoft.Json;
+using UnityEditor;
 
 [System.Serializable]
 public class TrackList
@@ -14,6 +16,53 @@ public class TrackList
     public string[] list;
     public TrackList[] tracks;
 }
+
+[System.Serializable]
+public class TrackElement
+{
+    public string audioClipName;
+    public string audioClipPath;
+    public AudioClip audioClip;
+}
+
+[System.Serializable]
+public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
+{
+    [SerializeField]
+    private List<TKey> trackList = new List<TKey>();
+
+    [SerializeField]
+    private List<TValue> trackElement = new List<TValue>();
+
+    public void OnBeforeSerialize()
+    {
+        trackList.Clear();
+        trackElement.Clear();
+
+        foreach (var pair in this)
+        {
+            trackList.Add(pair.Key);
+            trackElement.Add(pair.Value);
+        }
+    }
+
+    public void OnAfterDeserialize()
+    {
+        this.Clear();
+
+        if (trackList.Count != trackElement.Count)
+        {
+            Debug.LogError("Error al deserializar el diccionario. La cantidad de claves y valores no coincide.");
+            return;
+        }
+
+        for (int i = 0; i < trackList.Count; i++)
+        {
+            this[trackList[i]] = trackElement[i];
+        }
+    }
+}
+
 
 public class MusicManager : MonoBehaviour
 {
@@ -33,12 +82,33 @@ public class MusicManager : MonoBehaviour
     public bool musicClipsPreloaded = false;
     private Player player;
 
-    private Dictionary<string, AudioClip> musicClips = new Dictionary<string, AudioClip>();
+    [SerializeField]
+    private SerializableDictionary<string, TrackElement> musicClips = new SerializableDictionary<string, TrackElement>();
+
     private Coroutine preloadCoroutine;
 
     private string canvasKey = "CanvasLink";
     private string musicDropdownKey = "MusicDropdownLink";
     private string musicToggleKey = "MusicToggleLink";
+
+    public bool pressed = false;
+
+    private static int previousDropdownValue;
+    private static bool previousToggleValue;
+
+    public bool boolSet = true;
+
+    public bool P = false;
+    public bool O = false;
+    public bool isDev = false;
+
+    public float playResume = 0f;
+
+    public float fadeTrack = 2f;
+
+    public bool isFading = false;
+    public string songPlay = "";
+    public bool isLoading = false;
 
     private string GetGameObjectLink(Component component)
     {
@@ -62,7 +132,7 @@ public class MusicManager : MonoBehaviour
         play = musicToggle.isOn;
         listID = musicDropdown.value;
         previousDropdownValue = musicDropdown.value;
-        previousToggleValue = musicToggle.isOn; //Actualizar el valor previo
+        previousToggleValue = musicToggle.isOn;
 
         PlayerPrefs.SetInt("MusicDropdownValue", musicDropdown.value);
         PlayerPrefs.SetInt("MusicToggleValue", musicToggle.isOn ? 1 : 0);
@@ -86,7 +156,8 @@ public class MusicManager : MonoBehaviour
             instance = this;
             player = ReInput.players.GetPlayer(0);
         }
-        musicClips = new Dictionary<string, AudioClip>();
+
+        musicClips = new SerializableDictionary<string, TrackElement>();
         musicClipsPreloaded = false;
         DontDestroyOnLoad(this.gameObject);
     }
@@ -137,11 +208,7 @@ public class MusicManager : MonoBehaviour
 
         if (!musicClipsPreloaded)
             preloadCoroutine = StartCoroutine(PreloadMusicClips());
-        //StartCoroutine(PreloadMusicClips());
     }
-
-    private const string DropdownPrefsKey = "MusicDropdownOptions";
-
     private void SetupDropdownOptions()
     {
         List<string> dropdownOptions = new List<string>();
@@ -152,7 +219,6 @@ public class MusicManager : MonoBehaviour
         for (int i = 0; i < musicList.tracks.Length; i++)
         {
             string folderName = Path.GetDirectoryName(musicList.tracks[i].list[0]);
-            Debug.Log("folderName: " + folderName);
 
             if (folderName == "Music\\V82DCProto")
             {
@@ -223,25 +289,20 @@ public class MusicManager : MonoBehaviour
         musicDropdown.AddOptions(dropdownOptions);
     }
 
-    private bool pressed = false;
-
-    private static int previousDropdownValue;
-    private static bool previousToggleValue;
-
-    private bool boolSet = true;
-
     private void Update()
     {
         if (SceneManager.GetActiveScene().buildIndex == 0)
         {
-
             //Obtener los enlaces guardados en PlayerPrefs
             string canvasLink = PlayerPrefs.GetString(canvasKey);
             string musicDropdownLink = PlayerPrefs.GetString(musicDropdownKey);
             string musicToggleLink = PlayerPrefs.GetString(musicToggleKey);
 
-            //Buscar los GameObjects en función de los enlaces guardados
-            canvas = GameObject.Find(canvasLink)?.GetComponent<CanvasGroup>();
+            if (canvas == GameObject.Find(canvasLink)?.GetComponent<CanvasGroup>())
+            {
+                //Buscar los GameObjects en función de los enlaces guardados
+                canvas = GameObject.Find(canvasLink)?.GetComponent<CanvasGroup>();
+            }
 
             if (musicDropdown == null)
             {
@@ -251,8 +312,6 @@ public class MusicManager : MonoBehaviour
             {
                 if (boolSet)
                 {
-                    Debug.Log("Cargar...");
-
                     LoadDropdownOptions();
 
                     int savedDropdownValue = PlayerPrefs.GetInt("MusicDropdownValue", 0);
@@ -275,6 +334,8 @@ public class MusicManager : MonoBehaviour
                 }
             }
 
+
+
             if (musicToggle == null)
             {
                 musicToggle = GameObject.Find(musicToggleLink)?.GetComponent<Toggle>();
@@ -290,8 +351,15 @@ public class MusicManager : MonoBehaviour
 
             if (musicClipsPreloaded)
             {
-                canvas.alpha = 1f;
-                canvas.interactable = true;
+                if (canvas == null)
+                {
+                    canvas = GameObject.Find("Canvas")?.GetComponent<CanvasGroup>();
+                }
+                else
+                {
+                    canvas.alpha = 1f;
+                    canvas.interactable = true;
+                }
             }
         }
         else
@@ -330,9 +398,22 @@ public class MusicManager : MonoBehaviour
                     }
             }
         }
-    }
+        if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.O) && isDev)
+        {
+            isFading = false;
+        }
 
-    public float fadeTrack = 2f;
+        if (Input.GetKeyDown(KeyCode.P) && !Input.GetKeyDown(KeyCode.O) && isDev)
+        {
+            P = true;
+            PlayNextMusic();
+        }
+        else if (!Input.GetKeyDown(KeyCode.P) && Input.GetKeyDown(KeyCode.O))
+        {
+            O = true;
+            PlayNextMusic();
+        }
+    }
 
     private IEnumerator FadeOutAndIn(AudioClip newClip)
     {
@@ -377,7 +458,7 @@ public class MusicManager : MonoBehaviour
                 rndList = Random.Range(0, musicList.tracks.Length);
                 rndTrack = Random.Range(0, musicList.tracks[rndList].list.Length);
                 songPlay = musicList.tracks[rndList].list[rndTrack];
-                AudioClip randomClip = musicClips[songPlay];
+                AudioClip randomClip = musicClips[songPlay].audioClip;
                 music.clip = randomClip;
                 StartCoroutine(FadeOutAndIn(music.clip));
 
@@ -389,7 +470,7 @@ public class MusicManager : MonoBehaviour
                 {
                     rndTrack = Random.Range(0, musicList.tracks[index].list.Length);
                     songPlay = musicList.tracks[index].list[rndTrack];
-                    AudioClip randomClip = musicClips[songPlay];
+                    AudioClip randomClip = musicClips[songPlay].audioClip;
                     music.clip = randomClip;
                     StartCoroutine(FadeOutAndIn(music.clip));
                 }
@@ -412,7 +493,6 @@ public class MusicManager : MonoBehaviour
         yield return new WaitForSeconds(clipDuration);
         PlayNextMusic();
     }
-    private bool isFading = false;
 
     public void PlayNextMusic()
     {
@@ -428,7 +508,7 @@ public class MusicManager : MonoBehaviour
                 rndList = Random.Range(0, musicList.tracks.Length);
                 rndTrack = (rndTrack + 1) % musicList.tracks[rndList].list.Length;
                 songPlay = musicList.tracks[rndList].list[rndTrack];
-                AudioClip randomClip = musicClips[songPlay];
+                AudioClip randomClip = musicClips[songPlay].audioClip;
                 music.clip = randomClip;
                 //StartCoroutine(FadeOutAndIn(music.clip));
                 StartCoroutine(PlayNextMusicWithFade());
@@ -441,7 +521,7 @@ public class MusicManager : MonoBehaviour
                 {
                     rndTrack = (rndTrack + 1) % musicList.tracks[index].list.Length;
                     songPlay = musicList.tracks[index].list[rndTrack];
-                    AudioClip randomClip = musicClips[songPlay];
+                    AudioClip randomClip = musicClips[songPlay].audioClip;
                     music.clip = randomClip;
                     //StartCoroutine(FadeOutAndIn(music.clip));
                     StartCoroutine(PlayNextMusicWithFade());
@@ -460,12 +540,10 @@ public class MusicManager : MonoBehaviour
 
     }
 
-    public string songPlay = "";
-
     private IEnumerator PlayNextMusicWithFade()
     {
         isFading = true;
-        // Desvanecer la música actual
+        //Desvanecer la música actual
         float elapsedTime = 0f;
         float startVolume = music.volume;
         while (elapsedTime < fadeTrack)
@@ -478,13 +556,13 @@ public class MusicManager : MonoBehaviour
 
         music.Stop();
 
-        // Reproducir la siguiente pista
+        //Reproducir la siguiente pista
         if (listID == 0) // Lista aleatoria
         {
             rndList = Random.Range(0, musicList.tracks.Length);
             rndTrack = (rndTrack + 1) % musicList.tracks[rndList].list.Length;
             songPlay = musicList.tracks[rndList].list[rndTrack];
-            AudioClip randomClip = musicClips[songPlay];
+            AudioClip randomClip = musicClips[songPlay].audioClip;
             music.clip = randomClip;
         }
         else if (listID > 0 && listID <= musicList.tracks.Length) // Lista específica
@@ -494,7 +572,7 @@ public class MusicManager : MonoBehaviour
             {
                 rndTrack = (rndTrack + 1) % musicList.tracks[index].list.Length;
                 songPlay = musicList.tracks[index].list[rndTrack];
-                AudioClip randomClip = musicClips[songPlay];
+                AudioClip randomClip = musicClips[songPlay].audioClip;
                 music.clip = randomClip;
             }
             else
@@ -555,8 +633,23 @@ public class MusicManager : MonoBehaviour
             yield return null;
         }
 
-        music.volume = startVolume;
-        music.Play(); // Mover la reproducción aquí
+        if (P = isDev)
+        {
+            Debug.Log("Resume Audio: " + playResume);
+            P = false;
+          
+        }
+        else if (O = isDev)
+        {
+            Debug.Log("Load Audio: " + music.clip);
+            O = false;
+        }
+        else
+        {
+            Debug.Log("Load music..." + music.clip);
+            music.volume = startVolume;
+            music.Play(); // Mover la reproducción aquí
+        }
 
         isFading = false;
     }
@@ -573,64 +666,73 @@ public class MusicManager : MonoBehaviour
         if (AreMusicListsDifferent(savedMusicList, currentMusicList))
         {
             Debug.Log("La lista es diferente...");
-            // Actualizar las pistas de audio en los datos persistentes
             SaveMusicListToPersistentData(currentMusicList);
 
-            // Cargar las pistas de audio actualizadas
+            //Cargar las pistas de audio actualizadas
             yield return StartCoroutine(LoadMusicClips(currentMusicList));
+
+            //guardar el diccionario en un archivo binario
+            string savePath = Path.Combine(Application.streamingAssetsPath, "Jukebox.dat");
+            yield return StartCoroutine(SaveMusicClipsToRawFileAsync(savePath));
         }
         else
         {
-            // Cargar las pistas de audio desde los datos persistentes
-            yield return StartCoroutine(LoadMusicClips(savedMusicList));
+            isLoading = true;
+            // O cargar desde el archivo binario
+            string loadPath = Path.Combine(Application.streamingAssetsPath, "Jukebox.dat");
+
+            yield return StartCoroutine(LoadMusicClipsFromRawFileAsync(loadPath));
         }
 
-        // Finalizar la carga de pistas de audio
-        musicClipsPreloaded = true;
-        StartCoroutine(FadeCanvasGroup());
-
-        if (musicClipsPreloaded)
+        //Finalizar la carga de pistas de audio
         {
-            Debug.Log("Music clip loaded successfully.");
-            if (SceneManager.GetActiveScene().buildIndex != 0)
-            {
-                string path = musicList.tracks[rndList].list[rndTrack];
-                string trackName = Path.GetFileNameWithoutExtension(path);
-                PlayNextMusic();
+            musicClipsPreloaded = true;
+            StartCoroutine(FadeCanvasGroup());
 
-                // Eliminar parte de la dirección si es necesario
-                for (int i = 0; i < musicList.tracks.Length; i++)
-                {
-                    string folderName = Path.GetDirectoryName(musicList.tracks[i].list[0]);
-                    trackName = trackName.Replace(folderName, "");
-                }
-                // Eliminar caracteres especiales
-                trackName = trackName.Replace(".", "");
-                trackName = trackName.Replace("/", "");
-                trackName = trackName.Replace("\\", "");
-                trackName = trackName.Replace("'", "");
-                trackName = trackName.Replace("(", "");
-                trackName = trackName.Replace(")", "");
-
-                // Eliminar dígitos al principio del nombre (dos caracteres)
-                if (trackName.Length >= 2 && char.IsDigit(trackName[0]) && char.IsDigit(trackName[1]))
-                {
-                    trackName = trackName.Substring(2);
-                }
-                string str = trackName;
-                UIMessage.instance.track = true;
-                IEnumerator routineTrack = UIMessage.instance.PrintfTrack(str + " Played!");
-                UIMessage.instance.StopAllCoroutines();
-                UIMessage.instance.StartCoroutine(routineTrack);
-            }
-            else if (SceneManager.GetActiveScene().buildIndex == 0)
+            if (musicClipsPreloaded)
             {
-                string path = musicList.tracks[0].list[0];
-                string trackName = Path.GetFileNameWithoutExtension(path);
-                PlayNextMusic();
+                Debug.Log("Music clip loaded successfully.");
+                if (SceneManager.GetActiveScene().buildIndex != 0)
+                {
+                    string path = musicList.tracks[rndList].list[rndTrack];
+                    string trackName = Path.GetFileNameWithoutExtension(path);
+                    PlayNextMusic();
+
+                    // Eliminar parte de la dirección si es necesario
+                    for (int i = 0; i < musicList.tracks.Length; i++)
+                    {
+                        string folderName = Path.GetDirectoryName(musicList.tracks[i].list[0]);
+                        trackName = trackName.Replace(folderName, "");
+                    }
+                    // Eliminar caracteres especiales
+                    trackName = trackName.Replace(".", "");
+                    trackName = trackName.Replace("/", "");
+                    trackName = trackName.Replace("\\", "");
+                    trackName = trackName.Replace("'", "");
+                    trackName = trackName.Replace("(", "");
+                    trackName = trackName.Replace(")", "");
+
+                    // Eliminar dígitos al principio del nombre (dos caracteres)
+                    if (trackName.Length >= 2 && char.IsDigit(trackName[0]) && char.IsDigit(trackName[1]))
+                    {
+                        trackName = trackName.Substring(2);
+                    }
+                    string str = trackName;
+                    UIMessage.instance.track = true;
+                    IEnumerator routineTrack = UIMessage.instance.PrintfTrack(str + " Played!");
+                    UIMessage.instance.StopAllCoroutines();
+                    UIMessage.instance.StartCoroutine(routineTrack);
+                }
+                else if (SceneManager.GetActiveScene().buildIndex == 0)
+                {
+                    string path = musicList.tracks[0].list[0];
+                    string trackName = Path.GetFileNameWithoutExtension(path);
+                    PlayNextMusic();
+                }
             }
         }
     }
+
     private IEnumerator PreloadCoroutine()
     {
         foreach (TrackList trackList in musicList.tracks)
@@ -647,41 +749,31 @@ public class MusicManager : MonoBehaviour
         musicClipsPreloaded = true; // Actualizar el estado de carga de los clips de música
     }
 
-    //PRecargar Audios Guardados
+    //Precargar Audios Guardados
     private List<string> LoadMusicListFromPersistentData()
     {
-        // Implementa la carga de la lista de pistas de audio desde los datos persistentes
-        // Puedes utilizar archivos JSON, PlayerPrefs o una base de datos local para almacenar la lista
-        // Retorna una lista de strings que representan las pistas de audio almacenadas
-        // Si no hay datos persistentes, retorna una lista vacía
-
-        // Ejemplo de carga desde PlayerPrefs
-        string musicListJson = PlayerPrefs.GetString("MusicList");
-        if (!string.IsNullOrEmpty(musicListJson))
+        string savedMusicListJson = PlayerPrefs.GetString("SavedMusicList");
+        if (!string.IsNullOrEmpty(savedMusicListJson))
         {
-            Debug.Log("Carga Lista...");
-
-            return JsonUtility.FromJson<List<string>>(musicListJson);
+            Debug.Log("Lista de pistas de audio cargadas: " + savedMusicListJson);
+            return JsonConvert.DeserializeObject<List<string>>(savedMusicListJson);
         }
         else
         {
-            Debug.Log("Crea Lista...");
+            Debug.Log("Lista de pistas de audio vacía");
             return new List<string>();
         }
     }
 
-
+    //Preguardar Audios Guardados
     private void SaveMusicListToPersistentData(List<string> musicList)
     {
-        // Implementa el guardado de la lista de pistas de audio en los datos persistentes
-        // Puedes utilizar archivos JSON, PlayerPrefs o una base de datos local para almacenar la lista
-        // Convierte la lista de strings a un formato adecuado para guardar (como JSON) y almacénala en los datos persistentes
-
-        // Ejemplo de guardado en PlayerPrefs
-        string musicListJson = JsonUtility.ToJson(musicList);
-        Debug.Log("Guardando MusicList: " + musicListJson);
-        PlayerPrefs.SetString("MusicList", musicListJson);
+        string musicListJson = JsonConvert.SerializeObject(musicList);
+        Debug.Log("Guardando lista de pistas de audio: " + musicListJson);
+        PlayerPrefs.SetString("SavedMusicList", musicListJson);
+        PlayerPrefs.Save();
     }
+
     private List<string> GetAvailableMusicList()
     {
         List<string> availableMusicList = new List<string>();
@@ -719,9 +811,6 @@ public class MusicManager : MonoBehaviour
 
         // Verifica el Arreglo del Dropdown y lo modifica
         SetupDropdownOptions();
-
-        Debug.Log("Lista: " + string.Join(", ", availableMusicList));
-
         return availableMusicList;
     }
 
@@ -738,7 +827,7 @@ public class MusicManager : MonoBehaviour
     {
         // Verifica si dos listas de pistas de audio son diferentes
         // Compara el contenido de las listas y retorna true si son diferentes, o false si son iguales
-        Debug.Log("Verifica diferencia de : " + list1 + " | en: " + list2);
+        Debug.Log("Verifica diferencia...");
 
         // Si la cantidad de elementos es diferente, las listas son diferentes
         if (list1.Count != list2.Count)
@@ -776,7 +865,6 @@ public class MusicManager : MonoBehaviour
     {
         Debug.Log("Cargando Pista: " + trackPath);
         string filePath = Path.Combine(Application.streamingAssetsPath, trackPath);
-        Debug.Log("Ruta Pista: " + filePath);
         AudioClip audioClip = null;
 
 #if UNITY_EDITOR || UNITY_STANDALONE || UNITY_SWITCH
@@ -807,14 +895,165 @@ public class MusicManager : MonoBehaviour
             yield break;
         }
 
-        Debug.Log("Load AudioClip...");
-        musicClips.Add(trackPath, audioClip);
+        TrackElement trackElement = new TrackElement();
+        trackElement.audioClip = audioClip;
+
+        musicClips.Add(trackPath, trackElement);
 
         if (preloadCoroutine != null)
         {
             float progress = (float)musicClips.Count / 63f;
             currentSceneProgress = progress;
         }
+    }
+
+    //Guardar AudioClip
+    private void SaveMusicClipsToPlayerPrefs()
+    {
+        string serializedDict = JsonUtility.ToJson(musicClips);
+        PlayerPrefs.SetString("MusicClips", serializedDict);
+        PlayerPrefs.Save();
+    }
+
+    private IEnumerator SaveMusicClipsToRawFileAsync(string filePath)
+    {
+        // Directorio donde se guardarán los archivos de audio
+        string audioDirectory = Path.Combine(Application.streamingAssetsPath, "AudioClips");
+        if (!Directory.Exists(audioDirectory))
+            Directory.CreateDirectory(audioDirectory);
+
+        // Crear una lista auxiliar para guardar los elementos de pista en formato serializado
+        List<TrackElement> serializedTrackElements = new List<TrackElement>();
+
+        int indexList = 0;
+        int indexTrack = 0;
+
+        // Guardar los archivos de audio en formato .raw y las referencias en los TrackElements
+        foreach (var pair in musicClips)
+        {
+            AudioClip audioClip = pair.Value.audioClip;
+            string audioClipName = pair.Key;
+
+            // Obtener el nombre de la pista
+            string trackName = musicList.tracks[indexTrack].list[indexList]; // Aquí asumimos que solo quieres el primer nombre de pista del arreglo
+
+            // Generar un nombre de archivo único
+            int trackElementIndex = serializedTrackElements.Count;
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(audioClipName);
+            string audioClipPath = Path.Combine(audioDirectory, trackElementIndex + "_" + fileNameWithoutExtension + ".raw");
+
+            // Guardar el AudioClip en un archivo .raw
+            using (FileStream fileStream = new FileStream(audioClipPath, FileMode.Create))
+            {
+                float[] samples = new float[audioClip.samples];
+                audioClip.GetData(samples, 0);
+
+                // Convertir y escribir los datos de audio en el archivo .raw
+                byte[] buffer = new byte[audioClip.samples * audioClip.channels * sizeof(short)];
+                int bufferIndex = 0;
+
+                foreach (var sample in samples)
+                {
+                    short value = (short)(sample * 44100f);
+                    buffer[bufferIndex++] = (byte)(value & 0xff);
+                    buffer[bufferIndex++] = (byte)(value >> 8);
+                }
+
+                fileStream.Write(buffer, 0, buffer.Length);
+            }
+
+            // Crear un TrackElement y asignar la información necesaria
+            TrackElement trackElement = new TrackElement();
+            trackElement.audioClipName = fileNameWithoutExtension;
+            trackElement.audioClipPath = audioClipPath;
+
+            // Asignar cualquier otra información adicional de trackElement que desees guardar
+            // ...
+
+            // Agregar el elemento de pista a la lista
+            serializedTrackElements.Add(trackElement);
+
+            // Incrementar los índices
+            indexList++;
+            if (indexList >= musicList.tracks[indexTrack].list.Length)
+            {
+                indexList = 0;
+                indexTrack++;
+            }
+
+            // Pausar la ejecución para evitar ralentizaciones
+            yield return null;
+        }
+
+        // Serializar la lista de elementos de pista en formato JSON
+        string serializedData = JsonConvert.SerializeObject(serializedTrackElements);
+
+        // Guardar los datos serializados en un archivo
+        File.WriteAllText(filePath, serializedData);
+        isLoading = false;
+    }
+
+    private IEnumerator LoadMusicClipsFromRawFileAsync(string filePath)
+    {
+        // Directorio donde se encuentran los archivos de audio
+        string audioDirectory = Path.Combine(Application.streamingAssetsPath, "");
+
+        // Leer los datos serializados desde el archivo
+        string serializedData = File.ReadAllText(filePath);
+
+        // Deserializar los datos en una lista de elementos de pista
+        List<TrackElement> serializedTrackElements = JsonConvert.DeserializeObject<List<TrackElement>>(serializedData);
+        int indexList = 0;
+        int indexTrack = 0;
+
+        // Cargar los archivos de audio desde los archivos .raw y asignarlos a las pistas correspondientes
+        foreach (var trackElement in serializedTrackElements)
+        {
+            string audioClipName = trackElement.audioClipName;
+            string audioClipPath = Path.Combine(audioDirectory, trackElement.audioClipPath);
+
+            string trackName = musicList.tracks[indexTrack].list[indexList]; // Aquí asumimos que solo quieres el primer nombre de pista del arreglo
+
+            // Leer los datos de audio del archivo .raw
+            byte[] rawData = File.ReadAllBytes(audioClipPath);
+
+            // Crear un AudioClip y asignar los datos de audio
+            AudioClip audioClip = AudioClip.Create(audioClipName, rawData.Length / 2, 1, AudioSettings.outputSampleRate, false);
+            float[] samples = new float[rawData.Length / 2];
+
+            int sampleIndex = 0;
+            for (int i = 0; i < rawData.Length; i += 2)
+            {
+                short value = (short)((rawData[i + 1] << 8) | rawData[i]);
+                samples[sampleIndex++] = value / 44100f;
+            }
+
+            audioClip.SetData(samples, 0);
+
+            trackElement.audioClip = audioClip;
+
+            musicClips.Add(trackName, trackElement);
+
+            // Incrementar los índices
+            indexList++;
+            if (indexList >= musicList.tracks[indexTrack].list.Length)
+            {
+                indexList = 0;
+                indexTrack++;
+            }
+
+            if (preloadCoroutine != null)
+            {
+                float progress = (float)musicClips.Count / 63f;
+                currentSceneProgress = progress;
+            }
+
+            // Pausar la ejecución para evitar ralentizaciones
+            yield return null;
+            Debug.Log("Cargando... " + audioClipName);
+        }
+        isLoading = false;
+        music.pitch = 1.85f;
     }
 
     private IEnumerator LoadAudioClipLocalAsync(string filePath, System.Action<AudioClip> callback)
@@ -872,7 +1111,6 @@ public class MusicManager : MonoBehaviour
         }
     }
 #endif
-
 #if UNITY_IOS
     private IEnumerator LoadAudioClipIOSAsync(string filePath, Action<AudioClip> callback)
     {
@@ -884,7 +1122,6 @@ public class MusicManager : MonoBehaviour
         }
     }
 #endif
-
     private AudioClip ConvertOggToAudioClip(byte[] oggData)
     {
         using (MemoryStream stream = new MemoryStream(oggData))
@@ -920,9 +1157,6 @@ public class MusicManager : MonoBehaviour
             return audioClip;
         }
     }
-
-
-
 
     private static string GetTrack(string trackPath)
     {
@@ -991,8 +1225,6 @@ public class MusicManager : MonoBehaviour
     private void DestroyProgressBar()
     {
         progressBarTexture = null;
-        //Realizar aquí cualquier acción necesaria para eliminar la barra de progreso
-        //Por ejemplo, desactivar objetos, limpiar referencias, etc.
         //...
     }
     public void LoadMusicList()
