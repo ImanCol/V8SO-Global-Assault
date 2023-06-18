@@ -1,16 +1,19 @@
 ﻿using Lidgren.Network;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Unity.Burst;
+using UnityEngine;
+using V2UnityDiscordIntercept;
 
 namespace V2UnityDiscordIntercept
 {
+    [BurstCompile]
     public class VigServer : Network
     {
         public override NetPeer Peer => server;
         public int Port { get; }
-        private NetServer server;        
+        private NetServer server;
+        public int MemberId { get; set; }
 
         public VigServer(int port)
         {
@@ -57,14 +60,18 @@ namespace V2UnityDiscordIntercept
         private void ConnectionApproval(NetIncomingMessage msg)
         {
             Logger.Log($"Connection approval requested from {msg.SenderConnection.RemoteUniqueIdentifier}");
-
+            Debug.Log("Buscando...");
             // Only allow new connections if we are still in the debug menu.
             if (GameManager.instance.inDebug)
             {
+                //GameManager.instance.isParty = true;
                 // Provide the new client with a member id.
                 var hail = server.CreateMessage();
                 hail.Write(server.ConnectionsCount);
                 msg.SenderConnection.Approve(hail);
+                //GameManager.instance.LoadMultiplayerLevel(isHosting: false);
+                //ClientSend.waitLoad();
+                Debug.Log("Joined Party...");
             }
             else
             {

@@ -1,7 +1,10 @@
+using Unity.Burst;
 using UnityEngine;
 
+[BurstCompile]
 public class VigCamera : VigObject
 {
+
     public struct CAMERA_PATHWAY
     {
         public int[] DAT_00;

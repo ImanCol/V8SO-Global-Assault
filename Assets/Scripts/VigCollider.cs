@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.Burst;
 
 public struct BoundingBox
 {
@@ -35,7 +36,7 @@ public class HitDetection
 
     public int distance;
 
-//Colision hacia los objetos. Priorizar
+    //Colision hacia los objetos. Priorizar
     public HitDetection(byte[] b)
     {
         self = null;
@@ -51,6 +52,7 @@ public class HitDetection
 }
 
 [Serializable]
+[BurstCompile]
 public class VigCollider
 {
     public byte[] buffer;

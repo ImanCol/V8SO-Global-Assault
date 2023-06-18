@@ -41,5 +41,7 @@ public enum ClientPackets
 	wrecked2,
 	totaled2,
 	dropWeapon2,
-	paused
+	paused,
+	none,
+	waitLoad
 }

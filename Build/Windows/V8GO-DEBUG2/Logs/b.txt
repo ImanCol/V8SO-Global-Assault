@@ -1,8 +1,0 @@
-[14/06/2023 05:47:56 a. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
-[14/06/2023 05:47:56 a. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: 6508600606027386162
-[14/06/2023 05:47:56 a. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
-[14/06/2023 05:48:11 a. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnected - Failed to establish connection - no response from remote host
-[14/06/2023 06:02:34 a. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Connecting to server at localhost:14697
-[14/06/2023 06:02:34 a. m.] - V2UnityDiscordIntercept.VigClient.ConnectToLobby - Created connection with id: -2834730087872436127
-[14/06/2023 06:02:34 a. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: InitiatedConnect - Locally requested connect
-[14/06/2023 06:02:49 a. m.] - V2UnityDiscordIntercept.VigClient.StatusChanged - StatusChanged: Disconnected - Failed to establish connection - no response from remote host

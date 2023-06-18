@@ -1,13 +1,13 @@
-﻿using Discord;
-using Lidgren.Network;
+﻿using Lidgren.Network;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Unity.Burst;
 using UnityEngine;
 
 namespace V2UnityDiscordIntercept
 {
+
+    [BurstCompile]
     public class VigClient : Network
     {
         public override NetPeer Peer => client;
@@ -104,27 +104,59 @@ namespace V2UnityDiscordIntercept
                 {41, new PacketHandler(ClientHandle.DropWeaponAI)},
                 {42, new PacketHandler(ClientHandle.Pause)},
                 {43, new PacketHandler(HandleLobbyMetadata) },
-                {44, new PacketHandler(HandleMemberDisconnected) }
+                {44, new PacketHandler(HandleMemberDisconnected) },
+                {45, new PacketHandler(ClientHandle.waitLoad)}
+
             };
         }
 
+
+        private void Go(NetIncomingMessage msg)
+        {
+            var newStatus = (NetConnectionStatus)msg.ReadByte();
+            Logger.Log($"StatusChanged: {newStatus} - {msg.ReadString()}");
+
+
+            Plugin.ShowConnectionWindow = false;
+            MemberId = msg.SenderConnection.RemoteHailMessage.ReadInt32();
+            Logger.Log($"MemberId: {MemberId}");
+            Demo.JoinLobby(Demo.instance, 0L, null);
+
+        }
         private void StatusChanged(NetIncomingMessage msg)
         {
             var newStatus = (NetConnectionStatus)msg.ReadByte();
             Logger.Log($"StatusChanged: {newStatus} - {msg.ReadString()}");
 
-            switch (newStatus)
+            //if (GameManager.instance.isParty)
+            //{
+            //    Debug.Log("Conectando...");
+            //    GameManager.instance.isParty = false;
+            //    Plugin.ShowConnectionWindow = false;
+            //    MemberId = msg.SenderConnection.RemoteHailMessage.ReadInt32();
+            //    Logger.Log($"MemberId: {MemberId}");
+            //    Demo.JoinLobby(Demo.instance, 0L, null);
+            //}
+            //else
             {
-                case NetConnectionStatus.Connected:
-                    Plugin.ShowConnectionWindow = false;
-                    MemberId = msg.SenderConnection.RemoteHailMessage.ReadInt32();
-                    Logger.Log($"MemberId: {MemberId}");
-                    Demo.JoinLobby(Demo.instance, 0L, null);
-                    break;
-                case NetConnectionStatus.Disconnected:
-                    Plugin.ShowConnectionWindow = false;
-                    GameManager.instance.LoadDebug();
-                    break;
+                switch (newStatus)
+                {
+                    case NetConnectionStatus.Connected:
+                        Debug.Log("Conectando...");
+                        Plugin.ShowConnectionWindow = false;
+                        MemberId = msg.SenderConnection.RemoteHailMessage.ReadInt32();
+                        Logger.Log($"MemberId: {MemberId}");
+                        Demo.JoinLobby(Demo.instance, 0L, null);
+                        break;
+                    case NetConnectionStatus.Disconnected:
+
+                        Debug.Log("Desconectando...");
+                        if (Demo.instance.titleLobby)
+                            Demo.instance.titleLobby.text = "Connection timeout";
+                        Plugin.ShowConnectionWindow = false;
+                        GameManager.instance.LoadDebug();
+                        break;
+                }
             }
         }
 
@@ -173,6 +205,7 @@ namespace V2UnityDiscordIntercept
                 using (Packet packet = new Packet(receivedData.ReadBytes(num, true)))
                 {
                     int key = packet.ReadInt(true);
+                    Debug.Log("Key: " + key);
                     packetHandlers[key](packet, userId);
                 }
                 num = 0;
@@ -208,8 +241,10 @@ namespace V2UnityDiscordIntercept
             }
         }
 
+        private int timeOutConnected = 4;
         public override void ReadMessages()
         {
+
             NetIncomingMessage msg;
             while ((msg = Peer.ReadMessage()) != null)
             {
@@ -223,8 +258,24 @@ namespace V2UnityDiscordIntercept
                     case NetIncomingMessageType.DebugMessage:
                     case NetIncomingMessageType.WarningMessage:
                     case NetIncomingMessageType.ErrorMessage:
-                        Logger.Log(msg.ReadString());
-                        break;
+                        {
+                            //Debug.Log("Connected..." + timeOutConnected);
+                            //Debug.Log("Connected..." + msg.ReadString());
+                            if (msg.ReadString() == "Resending Connect...")
+                            {
+                                Debug.Log("Connected..." + timeOutConnected);
+                                if (Demo.instance.titleLobby)
+                                    Demo.instance.titleLobby.text = "Connected... " + timeOutConnected;
+                                timeOutConnected--;
+                                Logger.Log("Resending Connect...");
+                            }
+                            if (timeOutConnected == 0)
+                            {
+                                timeOutConnected = 3;
+                            }
+                            Logger.Log(msg.ReadString());
+                            break;
+                        }
 
                     case NetIncomingMessageType.StatusChanged:
                         StatusChanged(msg);

@@ -1,10 +1,12 @@
-using System;
 using System.Collections.Generic;
 using Discord;
 using UnityEngine;
 using System.Reflection;
 using V2UnityDiscordIntercept;
+using UnityEngine.SceneManagement;
+using Unity.Burst;
 
+[BurstCompile]
 public class DiscordController : MonoBehaviour
 {
     //private void Start()
@@ -79,8 +81,10 @@ public class DiscordController : MonoBehaviour
     //private void OnApplicationQuit()
     public static void OnApplicationQuit(DiscordController __instance)
     {
-        Debug.Log("DiscordController.OnApplicationQuit");
-        DisconnectNetwork2();
+        //if (Demo.instance.componentPanel.gameObject.activeSelf || SceneManager.GetActiveScene().name != "MENU-Driver" || SceneManager.GetActiveScene().name != "DEBUG-Online") //si el componente Lobby esta activo
+       
+         DisconnectNetwork2();
+        
         //return false;
         //---------//
         //this.DisconnectNetwork2();
@@ -451,8 +455,10 @@ public class DiscordController : MonoBehaviour
 
     public void ReceiveNetworkMessage()
     {
+        Debug.Log("Get ReceiveNetworkMessage...");
         this.lobbyManager.OnNetworkMessage += delegate (long lobbyId, long userId, byte channelId, byte[] data)
         {
+            Debug.Log("Get ReceiveNetworkMessage..." + lobbyId + " - " + userId + " - " + channelId + " - " + data);
             if (channelId == 0)
             {
                 this.receivedData.Reset(this.HandleTCPData(data, userId));
@@ -524,6 +530,7 @@ public class DiscordController : MonoBehaviour
             using (Packet packet = new Packet(this.receivedData.ReadBytes(num, true)))
             {
                 int num2 = packet.ReadInt(true);
+                Debug.Log("HandleTCPData: " + num2);
                 DiscordController.packetHandlers[num2](packet, userId);
             }
             num = 0;
@@ -549,6 +556,7 @@ public class DiscordController : MonoBehaviour
         using (Packet packet2 = new Packet(_data))
         {
             int num2 = packet2.ReadInt(true);
+            Debug.Log("HandleUDPData: " + num2);
             DiscordController.packetHandlers[num2](packet2, userId);
         }
     }
@@ -724,6 +732,10 @@ public class DiscordController : MonoBehaviour
             {
                 42,
                 new DiscordController.PacketHandler(ClientHandle.Pause)
+            },
+            {
+                44,
+                new DiscordController.PacketHandler(ClientHandle.waitLoad)
             }
         };
         Debug.Log("Initialized packets.");

@@ -1,7 +1,9 @@
 using System.Collections;
+using Unity.Burst;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[BurstCompile]
 public class ClientHandle : MonoBehaviour
 {
     public static void Joined(Packet _packet, long userId)
@@ -82,9 +84,12 @@ public class ClientHandle : MonoBehaviour
 
     public static void Load(Packet _packet, long userId)
     {
-        GameManager.instance.LoadMultiplayerLevel(isHost: false);
+        GameManager.instance.LoadMultiplayerLevel(isHosting: false);
     }
-
+    public static void waitLoad(Packet _packet, long userId)
+    {
+        GameManager.instance.waitLoadMultiplayerLevel(isWaitHost: true);
+    }
     public static void Mode(Packet _packet, long userId)
     {
         _GAME_MODE gAME_MODE = (_GAME_MODE)_packet.ReadInt();
@@ -258,7 +263,6 @@ public class ClientHandle : MonoBehaviour
         vehicle.weaponSlot = _packet.ReadByte();
         vehicle.breaking = _packet.ReadSByte();
         long num = _packet.ReadLong();
-        Debug.Log("Antes: " + userId);
         if (num != 0L)
         {
             if (num == DiscordController.GetUserId())
@@ -642,7 +646,6 @@ public class ClientHandle : MonoBehaviour
         vehicle.weaponSlot = _packet.ReadByte();
         vehicle.breaking = _packet.ReadSByte();
         long num = _packet.ReadLong();
-        Debug.Log("Antes: " + userId);
         if (num != 0L)
         {
             if (num == DiscordController.GetUserId())
@@ -925,6 +928,7 @@ public class ClientHandle : MonoBehaviour
 
     public static void Pause(Packet _packet, long userId)
     {
+        GameManager.instance.isWait = !GameManager.instance.isWait;
         GameManager.instance.paused = !GameManager.instance.paused;
     }
 }

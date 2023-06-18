@@ -1,7 +1,6 @@
 using Lidgren.Network;
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
 
 namespace V2UnityDiscordIntercept
 {
@@ -12,13 +11,16 @@ namespace V2UnityDiscordIntercept
         protected delegate void PacketHandler(Packet _packet, long userId);
 
         protected IDictionary<int, PacketHandler> packetHandlers = new Dictionary<int, PacketHandler>();
-        
 
         public void Update()
         {
             if (Peer == null)
-                return;
+            {
+                //Debug.LogWarning("Network Peer Update..." + Peer);
 
+                return;
+            }
+            //Debug.Log("Network Peer Update..." + Peer);
             ReadMessages();
         }
 
@@ -34,8 +36,8 @@ namespace V2UnityDiscordIntercept
 
         public void SendTCPData(Packet _packet, long userId)
         {
+            Debug.Log("SendTCPData..." + _packet + " - " + userId);
             _packet.WriteLength();
-
             if (userId == 0L)
             {
                 DiscordController.SendNetworkMessage(0, _packet.ToArray());
@@ -46,6 +48,7 @@ namespace V2UnityDiscordIntercept
 
         public void SendUDPData(Packet _packet, long userId)
         {
+            Debug.Log("SendUDPData..." + _packet + " - " + userId);
             _packet.WriteLength();
             if (userId == 0L)
             {

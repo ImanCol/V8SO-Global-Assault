@@ -1,9 +1,13 @@
-using System;
 using System.Collections.Generic;
 using Discord;
+using TMPro;
+using Unity.Burst;
 using UnityEngine;
 using UnityEngine.UI;
 using V2UnityDiscordIntercept;
+
+
+[BurstCompile]
 public class Demo : MonoBehaviour
 {
     private void Awake()
@@ -15,6 +19,13 @@ public class Demo : MonoBehaviour
     }
     private void Start()
     {
+
+        //Desactiva Debug
+#if DEBUG
+#else
+       GameObject.Find("IngameDebugConsole").gameObject.SetActive(false);
+#endif
+
         this.playerReady = new Dictionary<long, bool>();
         this.playerText = new Dictionary<long, Text>();
         this.playerNames = new Dictionary<long, string>();
@@ -25,7 +36,16 @@ public class Demo : MonoBehaviour
     }
     private void Update()
     {
+        if (titleLobby.text == "Connection timeout")
+            StartCoroutine(ChangeTextAfterDelay());
     }
+
+    private System.Collections.IEnumerator ChangeTextAfterDelay()
+    {
+        yield return new WaitForSeconds(3f); // Esperar 3 segundos
+        titleLobby.text = "Network Connection";
+    }
+
     public void InstantiateText(long userId)
     {
         Text component = UnityEngine.Object.Instantiate<GameObject>(this.playerTextPrefab).GetComponent<Text>();
@@ -180,12 +200,12 @@ public class Demo : MonoBehaviour
     //public void JoinLobby(long lobbyId, string secret)
     public static bool JoinLobby(Demo __instance, long lobbyId, string secret)
     {
-        Debug.Log("Joining lobby");
         Debug.Log("Lobby ID: " + lobbyId + " secret: " + secret);
 
         if (!DiscordController.IsOwner())
         {
             __instance.componentPanel.gameObject.SetActive(true);
+            __instance.join.gameObject.SetActive(false);
             __instance.controlPanel.gameObject.SetActive(true);
             __instance.modeLabel.gameObject.SetActive(false);
             __instance.stageLabel.gameObject.SetActive(false);
@@ -274,6 +294,31 @@ public class Demo : MonoBehaviour
         //GameManager.instance.networkMembers.Clear();
         //GameManager.instance.networkIds.Clear();
     }
+
+    public void ConnectLobby()
+    {
+        Plugin.Username = UsernameInputField.text;
+        Plugin.ipAddress = ipAddressInputField.text;
+
+        string inputText = PortInputField.text; // Obtener el texto del InputField
+
+        int port;
+        if (int.TryParse(inputText, out port))
+        {
+            // La conversión fue exitosa, 'port' contiene el valor entero
+            Plugin.Port = port;
+        }
+        else
+        {
+            // La conversión falló, mostrar un mensaje de error o realizar alguna acción apropiada
+            Debug.LogError("El valor ingresado no es un número entero válido.");
+            return;
+        }
+        GameManager.instance.online = true;
+        Plugin.Client = new VigClient();
+        Plugin.Client.ConnectToLobby(Plugin.ipAddress, Plugin.Port);
+    }
+
     public DiscordController discordController;
     public static Demo instance;
     public Dictionary<long, bool> playerReady;
@@ -311,6 +356,15 @@ public class Demo : MonoBehaviour
     public InputField avoidInput;
     public GameObject playerTextPrefab;
     public GameObject lobbyButtonPrefab;
+
+    public RectTransform join;
+    public TextMeshProUGUI titleLobby;
+    public InputField UsernameInputField;
+    public InputField ipAddressInputField;
+    public InputField PortInputField;
+    public Button joinLobbyButton;
+    public Button backButton;
+
     public static string[] vehicleNames = new string[]
     {
         "WUNDER",

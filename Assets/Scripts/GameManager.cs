@@ -13,7 +13,8 @@ using Unity.Burst;
 using TMPro;
 using Rewired;
 using System.Threading;
-using Rewired;
+using System.Threading.Tasks;
+
 
 public delegate VigObject _VEHICLE_INIT(XOBF_DB param1, int param2, uint param3); //needs parameters
 public delegate VigObject _SPECIAL_INIT(XOBF_DB param1, int param2);
@@ -136,6 +137,7 @@ public class BSP
 }
 
 
+[BurstCompile]
 public class GameManager : MonoBehaviour
 {
     [Header("Frame Settings")]
@@ -11947,7 +11949,7 @@ public class GameManager : MonoBehaviour
 #endif
     }
     public bool online = false;
-    public void LoadLevel()
+    public async Task LoadLevelAsync()
     {
         online = false;
         SetDriver();
@@ -11967,9 +11969,19 @@ public class GameManager : MonoBehaviour
         RandomizeEnemies(1);
         totalSpawns = DAT_1030[0] + DAT_1030[1] + DAT_1030[2] + DAT_1030[3];
         UnityEngine.Object.DontDestroyOnLoad(base.gameObject);
-        StartCoroutine(LoadSceneAsyncWithDelay(map));
+        await LoadSceneAsyncWithDelay(map);
     }
-    public void LoadMultiplayerLevel(bool isHost)
+    public bool isHost = false;
+
+    public bool isParty = false;
+
+    public void waitLoadMultiplayerLevel(bool isWaitHost)
+    {
+        asyncOperation.allowSceneActivation = true;
+        isHost = isWaitHost;
+        Debug.Log("El Host hizo algo!");
+    }
+    public async void LoadMultiplayerLevel(bool isHosting)
     {
         //online = true;
         //Debug.Log("Set Player: " + statsPanel.cursor);
@@ -11984,7 +11996,7 @@ public class GameManager : MonoBehaviour
 
         if (online)
             ClientSend.Ready(0L);
-        if (isHost)
+        if (isHosting)
         {
             SetMultiplayerMode();
             //gameMode = _GAME_MODE.Quest;
@@ -12023,7 +12035,9 @@ public class GameManager : MonoBehaviour
         UnityEngine.Object.DontDestroyOnLoad(base.gameObject);
         //StartCoroutine(UpdateReflections());
         //StartCoroutine(LoadSceneAsyncWithDelay(map));
-        StartCoroutine(LoadSceneAsyncWithDelay(map));
+        isHost = isHosting;
+        Debug.Log("Es Host?: " + isHost);
+        await LoadSceneAsyncWithDelay(map);
 
     }
 
@@ -14556,6 +14570,8 @@ public class GameManager : MonoBehaviour
         //Debug.Log("Tipo de Vehiculo: " + vehicle.vehicle); //Tipo de Vehiculo Señalado
     }
 
+    public AudioVisualizer audioVisualizer;
+
     private void FUN_380D8(Vector3Int param1, int param2, VigMesh param3, VigTransform param4, int param5)
     {
         Vector3Int vector3Int = Utilities.FUN_24148(param4, param1);
@@ -14599,50 +14615,33 @@ public class GameManager : MonoBehaviour
 
             if (reticula)
             {
-                Graphics.DrawMesh(param3.GetMesh(), matrix, targetHUD, 8);
-                //Debug.Log("targetHUD: " + targetHUD); //Material PSXEffects/PS1Screen
-                //Debug.Log("matrix: " + matrix); //Matrix4x4 Vehicle
+                //Mesh Personalizado
+                Mesh meshAudio = new Mesh();
+                if (audioVisualizer.isMeshAudio)
+                {
+                    audioVisualizer.matrix = matrix;
+                    meshAudio = audioVisualizer.updateMesh();
+                }
+                else
+                {
+                    meshAudio = param3.GetMesh();
+                }
+
+                //Graphics.DrawMesh(param3.GetMesh(), matrix, targetHUD, 8);
+                Graphics.DrawMesh(meshAudio, matrix, targetHUD, 8);
+
             }
 
-            //Obtén una referencia al componente
-            //gameTagPlayer = UIManager.instance.gameTagPlayer;
-            //spriteLifePlayer = UIManager.instance.spriteLifePlayer;
-
-            //Descomponer la matriz en posición, rotación y escala
-            //Debug.Log("matrix Descomp 0: " + matrix.GetColumn(0));
-            //Debug.Log("matrix Descomp 1: " + matrix.GetColumn(1));
-            //Debug.Log("matrix Descomp 2: " + matrix.GetColumn(2));
-            //Debug.Log("matrix Descomp 3: " + matrix.GetColumn(3));
             Vector3 positionText = matrix.GetColumn(3);
             Quaternion rotationText = Quaternion.LookRotation(matrix.GetColumn(2), matrix.GetColumn(1));
             Vector3 scaleText = new Vector3(matrix.GetColumn(0).magnitude, matrix.GetColumn(1).magnitude, matrix.GetColumn(2).magnitude);
-
-            ////Aplica la transformación personalizada
-            //if (positionSprite)
-            //{
-            //    gameTagPlayer.rectTransform.localPosition = positionText + positionInt;
-            //    spriteLifePlayer.transform.localPosition = positionText + positionInt;
-            //}
-            //if (rotationSprite)
-            //{
-            //    gameTagPlayer.rectTransform.localRotation = Quaternion.Euler(eulerAngles) * rotationInt;
-            //    spriteLifePlayer.transform.localRotation = Quaternion.Euler(eulerAngles) * rotationInt;
-            //}
-            //if (scaleSprite)
-            //{
-            //    gameTagPlayer.rectTransform.localScale = scale + scaleInt;
-            //    spriteLifePlayer.transform.localScale = scale + scaleInt;
-            //}
         }
     }
 
     public void FUN_3827C(Vehicle param1, VigTransform param2)
     {
         Vehicle vehicle = (Vehicle)param1.target;
-        //Debug.Log("Tipo de Vehiculo Objetivo: " + vehicle.vehicle);
-        //Debug.Log("Vehiculo Objetivo: " + vehicle.target);
-        //Debug.Log("VigTransForm: position" + param2.position);
-        //Debug.Log("VigTransForm: rotation" + param2.rotation.Matrix2Quaternion);
+
         if (vehicle != null)
         {
             VigObject vigObject = param1.weapons[param1.weaponSlot];
@@ -14958,6 +14957,7 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
             player = ReInput.players.GetPlayer(0);
+            audioVisualizer = GameObject.Find("MusicManager").gameObject.GetComponent<AudioVisualizer>();
         }
         DAT_08 = new ushort[2, 6]
         {
@@ -15200,10 +15200,11 @@ public class GameManager : MonoBehaviour
         progressBarTexture = null;
         // Realizar aquí cualquier acción necesaria para eliminar la barra de progreso
         // Por ejemplo, desactivar objetos, limpiar referencias, etc.
+        //Demo.instance.controlPanel();
         // ...
     }
 
-    private IEnumerator LoadSceneAsyncWithDelay(int sceneIndex)
+    private async Task LoadSceneAsyncWithDelay(int sceneIndex)
     {
         asyncOperation = SceneManager.LoadSceneAsync(sceneIndex);
         asyncOperation.allowSceneActivation = false;
@@ -15224,14 +15225,19 @@ public class GameManager : MonoBehaviour
                 inDebug = false;
                 inMenu = false;
                 LoadScene = true;
-                asyncOperation.allowSceneActivation = true;
+                if (Input.GetKeyDown(KeyCode.Space) && isHost)
+                {
+                    Debug.Log("Es el Host!");
+                    asyncOperation.allowSceneActivation = true;
+                    ClientSend.waitLoad();
+                }
 
                 // Obtener el nombre de la escena por índice de compilación
                 sceneName = GetSceneNameByBuildIndex(sceneIndex);
 
                 progressBarTexture = null;
 
-                StopCoroutine(LoadSceneAsyncWithDelay(sceneIndex));
+                //StopCoroutine(LoadSceneAsyncWithDelay(sceneIndex));
             }
             else
             {
@@ -15240,11 +15246,11 @@ public class GameManager : MonoBehaviour
             }
 
             // Actualizar la barra de progreso en cada iteración del ciclo
-            yield return null;
+            await Task.Yield(); // Esperar un frame
         }
 
         // La carga de la escena se ha completado correctamente, puedes realizar cualquier otra acción necesaria aquí
-        MusicManager.instance.PlayNextMusic();
+        await MusicManager.instance.PlayNextMusic();
     }
 
     private void Start()
@@ -15521,10 +15527,14 @@ public class GameManager : MonoBehaviour
         FUN_3827C(playerObjects[0], DAT_F00);
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            paused = !paused;
-            if (gameMode >= _GAME_MODE.Versus2)
+            if (isHost)
             {
-                ClientSend.Pause();
+                paused = !paused;
+                isWait = !isWait;
+                if (gameMode >= _GAME_MODE.Versus2)
+                {
+                    ClientSend.Pause();
+                }
             }
         }
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -15551,6 +15561,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public bool isWait = false;
+
     private void FixedUpdate()
     {
         if (inDebug || inMenu || SceneManager.GetActiveScene().name == "MENU-Driver" || SceneManager.GetActiveScene().name == "DEBUG-Online")
@@ -15559,201 +15571,209 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        //Debug.Log("Continue...");
-
-        Color32 color = UIManager.instance.flash.color;
-
-        if (color.r != 0 || color.g != 0 || color.b != 0 || color.a != 0)
+        if (Input.GetKeyDown(KeyCode.H))
         {
-            UIManager.instance.flash.color = new Color32(0, 0, 0, 0);
+            isWait = !isWait;
         }
 
-        if (gameMode >= _GAME_MODE.Versus2)
+        if (isWait)
         {
-            for (int i = 0; i < networkMembers.Count; i++)
-            {
-                if (networkMembers.ContainsValue(null))
-                {
-                    Debug.Log("No hay Miembros en Partida..." + networkMembers.Count);
-                    //Debug.Log("No hay Miembros en Partida..." + networkMembers.name);
-                    return;
-                }
-            }
-        }
+            //Debug.Log("Continue...");
 
-        if (!paused)
-        {
-            uint num = 1u;
-            for (int j = 0; j < num; j++)
+            Color32 color = UIManager.instance.flash.color;
+
+            if (color.r != 0 || color.g != 0 || color.b != 0 || color.a != 0)
             {
-                DAT_28++;
-                timer = (ushort)DAT_28;
-                uint param = 0u;
-                if (j == num - 1)
-                {
-                    param = num;
-                }
-                FUN_313C8((int)param);
-                FUN_31440((uint)DAT_28);
-                FUN_31728();
-                for (int k = 0; k < worldObjs_tmp.Count; k++)
-                {
-                    worldObjs.Remove(worldObjs_tmp[k]);
-                }
-                worldObjs_tmp.Clear();
-                if (playerObjects[0] != null && (InputManager.controllers[0].DAT_A & 0x80) != 0)
-                {
-                    playerObjects[0].view = 3 - playerObjects[0].view;
-                }
+                UIManager.instance.flash.color = new Color32(0, 0, 0, 0);
             }
-        }
-        else
-        {
-            cameraObjects[0].vTransform.rotation = Utilities.RotMatrixYXZ_gte(cameraObjects[0].vr);
-        }
-        FUN_31360((ushort)(DAT_28 & 0xFFFF));
-        DAT_24 = 1 - DAT_24;
-        if (screenMode == _SCREEN_MODE.Horizontal)
-        {
-            int param2 = 320;
-            int param3 = 160;
-            int param4 = 120;
-            int param5 = 60;
-            FUN_2DF30(param2, param4, param3, param5);
-        }
-        else if (screenMode < _SCREEN_MODE.Vertical)
-        {
-            int param2 = 512;
-            if (screenMode == _SCREEN_MODE.Whole)
+
+            if (gameMode >= _GAME_MODE.Versus2)
             {
-                int param4 = 240;
-                int param3 = 160;
-                int param5 = 120;
-                FUN_2DF30(param2, param4, param3, param5);
-            }
-        }
-        else
-        {
-            int param2;
-            if (screenMode == _SCREEN_MODE.Vertical)
-            {
-                param2 = 160;
-                int param4 = 240;
-                int param3 = 80;
-                int param5 = 120;
-                FUN_2DF30(param2, param4, param3, param5);
-            }
-            param2 = 160;
-            if (screenMode == _SCREEN_MODE.Unknown)
-            {
-                int param3 = 80;
-                int param4 = 120;
-                int param5 = 60;
-                FUN_2DF30(param2, param4, param3, param5);
-            }
-        }
-        if (screenMode == _SCREEN_MODE.Whole)
-        {
-            Vehicle vehicle;
-            VigObject vigObject;
-            if (gameMode < _GAME_MODE.Versus || playerObjects[0].maxHalfHealth != 0 || gameMode >= _GAME_MODE.Versus2)
-            {
-                vehicle = playerObjects[0];
-                if (playerObjects[1] != null)
+                for (int i = 0; i < networkMembers.Count; i++)
                 {
-                    uint flags = playerObjects[1].flags;
-                    vigObject = playerObjects[1];
-                    if ((flags & 0x2000000) == 0)
+                    if (networkMembers.ContainsValue(null))
                     {
-                        vigObject.flags = (uint)((int)flags & -3);
+                        Debug.Log("No hay Miembros en Partida..." + networkMembers.Count);
+                        //Debug.Log("No hay Miembros en Partida..." + networkMembers.name);
+                        return;
+                    }
+                }
+            }
+
+            if (!paused)
+            {
+                uint num = 1u;
+                for (int j = 0; j < num; j++)
+                {
+                    DAT_28++;
+                    timer = (ushort)DAT_28;
+                    uint param = 0u;
+                    if (j == num - 1)
+                    {
+                        param = num;
+                    }
+                    FUN_313C8((int)param);
+                    FUN_31440((uint)DAT_28);
+                    FUN_31728();
+                    for (int k = 0; k < worldObjs_tmp.Count; k++)
+                    {
+                        worldObjs.Remove(worldObjs_tmp[k]);
+                    }
+                    worldObjs_tmp.Clear();
+                    if (playerObjects[0] != null && (InputManager.controllers[0].DAT_A & 0x80) != 0)
+                    {
+                        playerObjects[0].view = 3 - playerObjects[0].view;
                     }
                 }
             }
             else
             {
-                uint flags = playerObjects[0].flags;
-                vigObject = playerObjects[0];
-                vehicle = playerObjects[1];
-                if ((flags & 0x2000000) == 0)
-                {
-                    vigObject.flags = (uint)((int)flags & -3);
-                }
+                cameraObjects[0].vTransform.rotation = Utilities.RotMatrixYXZ_gte(cameraObjects[0].vr);
             }
-            short fieldOfView;
-            if (vehicle.view == _CAR_VIEW.Close)
+            FUN_31360((ushort)(DAT_28 & 0xFFFF));
+            DAT_24 = 1 - DAT_24;
+            if (screenMode == _SCREEN_MODE.Horizontal)
             {
-                if ((vehicle.flags & 0x2000000) != 0)
+                int param2 = 320;
+                int param3 = 160;
+                int param4 = 120;
+                int param5 = 60;
+                FUN_2DF30(param2, param4, param3, param5);
+            }
+            else if (screenMode < _SCREEN_MODE.Vertical)
+            {
+                int param2 = 512;
+                if (screenMode == _SCREEN_MODE.Whole)
                 {
-                    VigCamera vCamera = vehicle.vCamera;
-                    fieldOfView = vCamera.fieldOfView;
-                    vigObject = vCamera;
-                }
-                else
-                {
-                    vigObject = vehicle.closeViewer;
-                    vehicle.flags |= 2u;
-                    fieldOfView = vehicle.vCamera.fieldOfView;
+                    int param4 = 240;
+                    int param3 = 160;
+                    int param5 = 120;
+                    FUN_2DF30(param2, param4, param3, param5);
                 }
             }
             else
             {
-                if ((vehicle.flags & 0x2000000) == 0)
+                int param2;
+                if (screenMode == _SCREEN_MODE.Vertical)
                 {
-                    vehicle.flags &= 4294967293u;
+                    param2 = 160;
+                    int param4 = 240;
+                    int param3 = 80;
+                    int param5 = 120;
+                    FUN_2DF30(param2, param4, param3, param5);
                 }
-                VigCamera vCamera2 = vehicle.vCamera;
-                fieldOfView = vCamera2.fieldOfView;
-                vigObject = vCamera2;
-            }
-            LevelManager.instance.defaultCamera.transform.SetParent(vigObject.transform, worldPositionStays: false);
-            FUN_2D278(vigObject, fieldOfView);
-            terrain.DAT_BDFF0[0] = DAT_F00;
-            FUN_31678();
-            atStart = true;
-            if (DAT_1084 < 0)
-            {
-                DAT_1084 = 0;
-            }
-            if (vehicle.view != 0)
-            {
-                UIManager.instance.UpdateHUD(playerObjects[0], DAT_28);
-            }
-            UIManager.instance.RefreshFlares(DAT_28);
-            UIManager.instance.RefreshCameras();
-            UIManager.instance.RefreshDestroyed(this.EnemyKill);
-        }
-        for (int l = 0; l < DAT_1088_tmp.Count; l++)
-        {
-            DAT_1088.Remove(DAT_1088_tmp[l]);
-        }
-        DAT_1088_tmp.Clear();
-        for (int m = 0; m < DAT_1110_tmp.Count; m++)
-        {
-            DAT_1110.Remove(DAT_1110_tmp[m]);
-        }
-        DAT_1110_tmp.Clear();
-        if (gameMode < _GAME_MODE.Versus2)
-        {
-            return;
-        }
-        if (online)
-        {
-            ClientSend.Transform(ref playerObjects[0].vTransform);
-            ClientSend.Physics(ref playerObjects[0].physics1, ref playerObjects[0].physics2);
-            ClientSend.Control(playerObjects[0]);
-            ClientSend.Status(playerObjects[0]);
-            ClientSend.RandomNumber(DAT_63A64, DAT_63A68);
-        }
-        if (gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner())
-        {
-            for (int n = 0; n < networkEnemies.Count; n++)
-            {
-                if (online)
+                param2 = 160;
+                if (screenMode == _SCREEN_MODE.Unknown)
                 {
-                    ClientSend.TransformAI(networkEnemies[n].id, ref networkEnemies[n].vTransform);
-                    ClientSend.PhysicsAI(networkEnemies[n].id, ref networkEnemies[n].physics1, ref networkEnemies[n].physics2);
-                    ClientSend.ControlAI(networkEnemies[n]);
-                    ClientSend.StatusAI(networkEnemies[n]);
+                    int param3 = 80;
+                    int param4 = 120;
+                    int param5 = 60;
+                    FUN_2DF30(param2, param4, param3, param5);
+                }
+            }
+            if (screenMode == _SCREEN_MODE.Whole)
+            {
+                Vehicle vehicle;
+                VigObject vigObject;
+                if (gameMode < _GAME_MODE.Versus || playerObjects[0].maxHalfHealth != 0 || gameMode >= _GAME_MODE.Versus2)
+                {
+                    vehicle = playerObjects[0];
+                    if (playerObjects[1] != null)
+                    {
+                        uint flags = playerObjects[1].flags;
+                        vigObject = playerObjects[1];
+                        if ((flags & 0x2000000) == 0)
+                        {
+                            vigObject.flags = (uint)((int)flags & -3);
+                        }
+                    }
+                }
+                else
+                {
+                    uint flags = playerObjects[0].flags;
+                    vigObject = playerObjects[0];
+                    vehicle = playerObjects[1];
+                    if ((flags & 0x2000000) == 0)
+                    {
+                        vigObject.flags = (uint)((int)flags & -3);
+                    }
+                }
+                short fieldOfView;
+                if (vehicle.view == _CAR_VIEW.Close)
+                {
+                    if ((vehicle.flags & 0x2000000) != 0)
+                    {
+                        VigCamera vCamera = vehicle.vCamera;
+                        fieldOfView = vCamera.fieldOfView;
+                        vigObject = vCamera;
+                    }
+                    else
+                    {
+                        vigObject = vehicle.closeViewer;
+                        vehicle.flags |= 2u;
+                        fieldOfView = vehicle.vCamera.fieldOfView;
+                    }
+                }
+                else
+                {
+                    if ((vehicle.flags & 0x2000000) == 0)
+                    {
+                        vehicle.flags &= 4294967293u;
+                    }
+                    VigCamera vCamera2 = vehicle.vCamera;
+                    fieldOfView = vCamera2.fieldOfView;
+                    vigObject = vCamera2;
+                }
+                LevelManager.instance.defaultCamera.transform.SetParent(vigObject.transform, worldPositionStays: false);
+                FUN_2D278(vigObject, fieldOfView);
+                terrain.DAT_BDFF0[0] = DAT_F00;
+                FUN_31678();
+                atStart = true;
+                if (DAT_1084 < 0)
+                {
+                    DAT_1084 = 0;
+                }
+                if (vehicle.view != 0)
+                {
+                    UIManager.instance.UpdateHUD(playerObjects[0], DAT_28);
+                }
+                UIManager.instance.RefreshFlares(DAT_28);
+                UIManager.instance.RefreshCameras();
+                UIManager.instance.RefreshDestroyed(this.EnemyKill);
+            }
+            for (int l = 0; l < DAT_1088_tmp.Count; l++)
+            {
+                DAT_1088.Remove(DAT_1088_tmp[l]);
+            }
+            DAT_1088_tmp.Clear();
+            for (int m = 0; m < DAT_1110_tmp.Count; m++)
+            {
+                DAT_1110.Remove(DAT_1110_tmp[m]);
+            }
+            DAT_1110_tmp.Clear();
+            if (gameMode < _GAME_MODE.Versus2)
+            {
+                return;
+            }
+            if (online)
+            {
+                ClientSend.Transform(ref playerObjects[0].vTransform);
+                ClientSend.Physics(ref playerObjects[0].physics1, ref playerObjects[0].physics2);
+                ClientSend.Control(playerObjects[0]);
+                ClientSend.Status(playerObjects[0]);
+                ClientSend.RandomNumber(DAT_63A64, DAT_63A68);
+            }
+            if (gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner())
+            {
+                for (int n = 0; n < networkEnemies.Count; n++)
+                {
+                    if (online)
+                    {
+                        ClientSend.TransformAI(networkEnemies[n].id, ref networkEnemies[n].vTransform);
+                        ClientSend.PhysicsAI(networkEnemies[n].id, ref networkEnemies[n].physics1, ref networkEnemies[n].physics2);
+                        ClientSend.ControlAI(networkEnemies[n]);
+                        ClientSend.StatusAI(networkEnemies[n]);
+                    }
                 }
             }
         }

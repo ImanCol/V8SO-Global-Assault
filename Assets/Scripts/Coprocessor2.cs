@@ -1,6 +1,8 @@
 using System;
 using Types;
+using Unity.Burst;
 
+[BurstCompile]
 public class Coprocessor2
 {
     public static Cop2Vector0 vector0;

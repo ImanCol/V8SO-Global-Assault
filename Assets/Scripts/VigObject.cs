@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using MathExtended.Matrices;
 using UnityEngine.UI;
+using Unity.Burst;
 
 [Serializable]
 public struct Matrix3x3
@@ -484,6 +485,8 @@ public struct VigTransform
     public Vector3Int position;
 }
 
+
+[BurstCompile]
 public class VigObject : MonoBehaviour
 {
     private float forceModifier = 1; // Valor predeterminado en caso de que no se establezca otro valor

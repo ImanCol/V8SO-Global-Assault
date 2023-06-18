@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 using Photon.Pun;
 using Photon.Realtime;
-using UnityEngine.InputSystem;
+using Unity.Burst;
 
 [Serializable]
+[BurstCompile]
 public class StatsPanel : MonoBehaviour
 {
     [Header("Photon")]
@@ -502,7 +502,7 @@ public class StatsPanel : MonoBehaviour
             //Posicion?
             //Debug.Log("Vehicle Position : " + vehicle.vTransform.position.y);
             vehicle.vTransform.position.z = 67108864; //unknow
-                                                      //vehicle.vTransform.position.y = 3080659; //unknow
+            //vehicle.vTransform.position.y = 3080659; //unknow
             vehicle.vTransform.position.x = 67108864; //unknow
             GameManager.instance.FUN_2DE18(); //Shadow?
 

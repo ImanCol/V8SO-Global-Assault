@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst;
 using UnityEngine;
 
 public enum _CHILD_TYPE
@@ -7,6 +8,8 @@ public enum _CHILD_TYPE
     Child, //FUN_4CA10
     Default
 }
+
+[BurstCompile]
 public class VigChild : VigObject
 {
     public _CHILD_TYPE state;

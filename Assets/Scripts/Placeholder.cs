@@ -1,6 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst;
 using UnityEngine;
 
 public enum _PLACEHOLDER_TYPE
@@ -25,6 +24,7 @@ public enum _PLACEHOLDER_TYPE
     LoadWapiti, //FUN_36B1C
 }
 
+[BurstCompile]
 public class Placeholder : VigObject
 {
     public static Dictionary<_PLACEHOLDER_TYPE, _VEHICLE_INIT> vehicleInit = new Dictionary<_PLACEHOLDER_TYPE, _VEHICLE_INIT>

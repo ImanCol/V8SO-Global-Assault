@@ -1,13 +1,13 @@
-//using BepInEx;
-//using HarmonyLib;
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst;
 using UnityEngine;
+
 
 namespace V2UnityDiscordIntercept
 {
     //[BepInPlugin("c1b6540e-a6ed-4f10-89b3-8e715ee70a78", "V2Unity Discord Intercept", "0.0.7-alpha")]
+    [BurstCompile]
     public class Plugin : MonoBehaviour//: BaseUnityPlugin
     {
         public const string AppIdentifier = "V2Unity-Discord-Patch";
@@ -17,12 +17,15 @@ namespace V2UnityDiscordIntercept
 
         public static bool ShowConnectionWindow { get; set; }
         private Rect connectionWindowRect = new Rect(100, 100, 300, 180);
-        private string ipAddress = "localhost";
+        public static string ipAddress = "localhost";
         public static int Port { get; set; } = 14697;
         public static string Username = "Player";
 
         public static bool LogErrors { get; set; } = true;
         public static bool ShowErrorWindow { get; set; }
+
+        public static bool saveLogger = false;
+
         private float secondsToShowWindow = -1;
         private Rect errorWindowRect = new Rect(200, 200, 800, 400);
         private Vector2 errorWindowScrollPos = Vector2.zero;
@@ -37,19 +40,23 @@ namespace V2UnityDiscordIntercept
 
         private void OnGUI()
         {
-            if (ShowConnectionWindow)
-                connectionWindowRect = GUILayout.Window(1, connectionWindowRect, ConnectionWindow, "Network Connection");
+            //if (ShowConnectionWindow)
+            //    connectionWindowRect = GUILayout.Window(1, connectionWindowRect, ConnectionWindow, "Network Connection");
 
             if (ShowErrorWindow)
                 errorWindowRect = GUILayout.Window(2, errorWindowRect, ErrorWindow, "Errors");
 
         }
-
+        public void ConnectLobby()
+        {
+            GameManager.instance.online = true;
+            Client = new VigClient();
+            Client.ConnectToLobby(ipAddress, Port);
+        }
         private void ConnectionWindow(int windowId)
         {
             if (Client == null)
             {
-
                 GUILayout.Label("Username");
                 Username = GUILayout.TextField(Username);
 
@@ -104,24 +111,33 @@ namespace V2UnityDiscordIntercept
         {
             try
             {
+                //Debug.LogWarning("Plugin Client Update..." + Client);
+                //Debug.LogWarning("Server Client Update..." + Server);
                 if (Client != null)
                 {
+                    //Debug.Log("Plugin Client Update..." + Client);
                     Client.Update();
                 }
 
                 if (Server != null)
                 {
+                    //Debug.Log("Server Client Update..." + Server);
                     Server.Update();
                 }
             }
             catch (Exception e)
             {
-                V2UnityDiscordIntercept.Logger.Log(e.ToString());
+                Logger.Log(e.ToString());
                 errors.Add(e);
 
+                //string scriptName = "Plugin.cs";
+                //int lineNumber = 123;
+                //string errorMessage = string.Format("<color=blue><b>{0}:{1}</b></color>: Error en el script", scriptName, lineNumber);
+                //Debug.LogError(errorMessage);
+
 #if DEBUG
-                secondsToShowWindow = 3;
-                ShowErrorWindow = true;
+                //secondsToShowWindow = 3;
+                //ShowErrorWindow = true;
 #endif
             }
 

@@ -1,8 +1,8 @@
 ﻿using Lidgren.Network;
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using Unity.Burst;
 
+[BurstCompile]
 public abstract class VigPeer
 {
     protected abstract NetPeer Peer { get; }

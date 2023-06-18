@@ -1,12 +1,12 @@
 using System;
 using System.IO;
 using System.Text;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Burst;
 
 [Serializable]
-
+[BurstCompile]
 public class LevelManager : MonoBehaviour
 {
     public static LevelManager instance;

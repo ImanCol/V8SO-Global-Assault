@@ -1,5 +1,7 @@
+using Unity.Burst;
 using UnityEngine;
 
+[BurstCompile]
 public class VigShadow : MonoBehaviour
 {
     public VigMesh vMesh;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 //Para Debugging
@@ -23,8 +22,12 @@ namespace V2UnityDiscordIntercept
 #elif UNITY_SWITCH
             Debug.LogWarning(string.Format(message));
 #elif UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-            Directory.CreateDirectory("Logs");
-            File.AppendAllText($"Logs/{Plugin.Username}.txt", message);
+            Debug.LogWarning(string.Format(message));
+            if (Plugin.saveLogger)
+            {
+                Directory.CreateDirectory("Logs");
+                File.AppendAllText($"Logs/{Plugin.Username}.txt", message);
+            }
 #endif
         }
     }

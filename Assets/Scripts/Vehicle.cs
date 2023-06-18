@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using UnityEngine.UI;
 using TMPro;
 using V2UnityDiscordIntercept;
+using Unity.Burst;
 
 public enum _WHEELS
 {
@@ -101,7 +102,7 @@ public enum _VEHICLE_TYPE
     Factory
 }
 
-
+[BurstCompile]
 public class Vehicle : VigObject
 {
     public struct AI

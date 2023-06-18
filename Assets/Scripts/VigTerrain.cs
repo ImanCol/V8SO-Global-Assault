@@ -1,7 +1,10 @@
 using System.Collections.Generic;
+using Unity.Burst;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+[BurstCompile]
 public class VigTerrain : MonoBehaviour
 {
 	public static VigTerrain instance;

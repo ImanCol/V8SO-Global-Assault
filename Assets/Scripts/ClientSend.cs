@@ -1,5 +1,8 @@
+using Unity.Burst;
 using UnityEngine;
 using V2UnityDiscordIntercept;
+
+[BurstCompile]
 public class ClientSend : MonoBehaviour
 {
     private static void SendTCPData(Packet _packet, long userId)
@@ -105,7 +108,6 @@ public class ClientSend : MonoBehaviour
             SendTCPData(packet, 0L);
         }
     }
-
     public static void Mode(long userId = 0L)
     {
         using (Packet packet = new Packet(6))
@@ -575,4 +577,14 @@ public class ClientSend : MonoBehaviour
             SendTCPData(packet, 0L);
         }
     }
+
+    //Espera al Host
+    public static void waitLoad()
+    {
+        using (Packet packet = new Packet(45))
+        {
+            SendTCPData(packet, 0L);
+        }
+    }
+
 }

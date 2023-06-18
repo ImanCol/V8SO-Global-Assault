@@ -2,6 +2,7 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Burst;
 
 public enum _WHEEL_TYPE
 {
@@ -9,6 +10,7 @@ public enum _WHEEL_TYPE
     Flatten //FUN_395E0
 }
 
+[BurstCompile]
 public class Wheel : VigObject
 {
     public _WHEEL_TYPE state;
@@ -23,7 +25,7 @@ public class Wheel : VigObject
         base.Update();
     }
 
-//Wheels Pinchadas
+    //Wheels Pinchadas
     public override uint UpdateW(int arg1, int arg2)
     {
         if (state == _WHEEL_TYPE.Flatten)

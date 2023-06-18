@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Types;
+using Unity.Burst;
 using static Types.TypesClass;
 
 public struct Cop2Vector0
@@ -120,6 +121,7 @@ public enum _MVMVA_TRANSLATION_VECTOR
     None
 }
 
+[BurstCompile]
 public class Coprocessor
 {
     public static Cop2Vector0 vector0;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Net;
+using UnityEngine;
 
 #if !__NOIPENDPOINT__
 using NetEndPoint = System.Net.IPEndPoint;

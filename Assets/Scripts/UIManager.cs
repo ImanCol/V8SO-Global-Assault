@@ -6,6 +6,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using V2UnityDiscordIntercept;
+using Unity.Burst;
+
+[BurstCompile]
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
@@ -449,7 +452,9 @@ public class UIManager : MonoBehaviour
         //Aplica la transformación personalizada
         if (GameManager.instance.positionSprite)
         {
-            Debug.Log("Player Tag: " + nameTagPlayer + " Posicion: " + localPosition + " - id: " + targetPlayer.id);
+#if DEBUG
+            //Debug.Log("Player Tag: " + nameTagPlayer + " Posicion: " + localPosition + " - id: " + targetPlayer.id);
+#endif
             gameTag.rectTransform.localPosition = localPosition + extra + position;
             //spriteLifePlayer.transform.localPosition = localPosition + extra + position;
         }
