@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using Rewired;
+g Beebyte;
+g Beebyte.Obfuscator;
+
 public enum _CONTROLLER_TYPE
 {
     None,
@@ -67,6 +70,8 @@ public struct PSXInput
     public byte DAT_06; //0x06
     public byte DAT_07; //0x07
 }
+
+[SkipRename]
 public class InputManager : MonoBehaviour
 {
     public static InputManager instance;

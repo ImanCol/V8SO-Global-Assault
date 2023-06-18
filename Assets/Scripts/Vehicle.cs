@@ -402,6 +402,7 @@ public class Vehicle : VigObject
         base.Start();
     }
 
+    public string namePlayer = " ";
     private bool setGameTag = true;
     private bool setGameTagLocal = true;
 
@@ -421,6 +422,7 @@ public class Vehicle : VigObject
                     Debug.Log("GameTag Set...");
                     gameTag = UIManager.instance.InstantiateGameTag();
                     gameTag.text = Demo.instance.playerNames[valueVehicle.userId];
+                    namePlayer = gameTag.text;
                     Debug.Log("Pass...");
                     Debug.Log("Vehiculo object: " + valueVehicle);
                     Debug.Log("Vehiculo object local: " + this);
@@ -1022,11 +1024,21 @@ public class Vehicle : VigObject
                 //Verifica si es un Miembro o un NPC
                 if (GameManager.instance.networkMembers.TryGetValue(this.userId, out Vehicle value))
                 {
-                    UIManager.instance.GameTagPlayer(gameTag, this, true);
+                    if (UIManager.instance.isGameTagPlayers)
+                        if (gameTag.text == "")
+                        {
+                            gameTag.text = namePlayer;
+                            UIManager.instance.GameTagPlayer(gameTag, this, true);
+                        }
+                        else
+                            gameTag.text = "";
                 }
                 else
                 {
-                    UIManager.instance.GameTagPlayer(gameTag, this, false);
+                    if (UIManager.instance.isGameTagNPC)
+                        UIManager.instance.GameTagPlayer(gameTag, this, false);
+                    else
+                        gameTag.text = "";
                 }
             }
             FUN_41AE8();

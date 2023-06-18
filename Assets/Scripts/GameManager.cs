@@ -136,7 +136,6 @@ public class BSP
     public BSP DAT_0C; //0x0C
 }
 
-
 [BurstCompile]
 public class GameManager : MonoBehaviour
 {
@@ -11975,6 +11974,8 @@ public class GameManager : MonoBehaviour
 
     public bool isParty = false;
 
+    public bool sceneLoadedDone = false;
+
     public void waitLoadMultiplayerLevel(bool isWaitHost)
     {
         asyncOperation.allowSceneActivation = true;
@@ -15198,6 +15199,7 @@ public class GameManager : MonoBehaviour
     private void DestroyProgressBar()
     {
         progressBarTexture = null;
+
         // Realizar aquí cualquier acción necesaria para eliminar la barra de progreso
         // Por ejemplo, desactivar objetos, limpiar referencias, etc.
         //Demo.instance.controlPanel();
@@ -15225,6 +15227,13 @@ public class GameManager : MonoBehaviour
                 inDebug = false;
                 inMenu = false;
                 LoadScene = true;
+                Demo.instance.loadButtonOnline.gameObject.SetActive(false);
+                Demo.instance.loadTextOnline.gameObject.SetActive(true);
+                if (isHost)
+                    Demo.instance.loadTextOnline.text = "Press BackSpace to Continue...";
+                else
+                    Demo.instance.loadTextOnline.text = "Waiting Host...";
+
                 if (Input.GetKeyDown(KeyCode.Space) && isHost)
                 {
                     Debug.Log("Es el Host!");

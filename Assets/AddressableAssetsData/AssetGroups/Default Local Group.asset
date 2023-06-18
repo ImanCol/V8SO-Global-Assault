@@ -15,16 +15,8 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_Data:
     m_SerializedData: []
-  m_GUID: e2765684679f27d4cafd518f641c73bb
-  m_SerializeEntries:
-  - m_GUID: c8cf41b734c578c4dabd9e23eef8aba7
-    m_Address: Assets/SHELL/MENU/Render.mat
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 0ea12fd903c613b489e6b15665da7f64
-    m_Address: Assets/Scripts
-    m_ReadOnly: 0
-    m_SerializedLabels: []
+  m_GUID: f52ab10e3dc56b8488ab8991a8dd3497
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 1c227065345a491458dee94b1e60c603, type: 2}
   m_SchemaSet:

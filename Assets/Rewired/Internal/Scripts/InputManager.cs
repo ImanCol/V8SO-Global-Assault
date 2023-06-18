@@ -1,5 +1,4 @@
 ﻿// Copyright (c) 2014 Augie R. Maddox, Guavaman Enterprises. All rights reserved.
-
 #if UNITY_2020 || UNITY_2021 || UNITY_2022 || UNITY_2023 || UNITY_2024 || UNITY_2025
 #define UNITY_2020_PLUS
 #endif
@@ -72,10 +71,13 @@ namespace Rewired {
     using Rewired.Utils;
     using Rewired.Utils.Interfaces;
     using System;
+    using Beebyte;
+    using Beebyte.Obfuscator;
 #if SUPPORTS_SCENE_MANAGEMENT
     using UnityEngine.SceneManagement;
 #endif
 
+[SkipRename]
     [AddComponentMenu("Rewired/Input Manager")]
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public sealed class InputManager : InputManager_Base {

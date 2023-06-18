@@ -8,7 +8,10 @@ using UnityEngine.SceneManagement;
 using Time = UnityEngine.Time;
 using System.Threading.Tasks;
 using Unity.Burst;
+using Beebyte;
+using Beebyte.Obfuscator;
 
+[SkipRename]
 [System.Serializable]
 public class TrackList
 {
@@ -65,10 +68,10 @@ public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IS
 [BurstCompile]
 public class MusicManager : MonoBehaviour
 {
+    [Header("Asset")]
     public CanvasGroup canvas;
     public float fadeDuration = 2f;
-    public Texture2D progressBarTexture;
-    private float currentSceneProgress;
+    public float currentSceneProgress;
     public static MusicManager instance;
     public TrackList musicList;
     public AudioSource music;
@@ -76,8 +79,8 @@ public class MusicManager : MonoBehaviour
     public Toggle musicToggle;
     public int listID;
     public bool play;
-    private int rndList;
-    private int rndTrack;
+    public int rndList;
+    public int rndTrack;
     public bool musicClipsPreloaded = false;
     private Player player;
 
@@ -813,10 +816,13 @@ public class MusicManager : MonoBehaviour
         }
     }
 
-    private float progressBarWidth = Screen.width; //Ancho total de la barra de progreso
-    private float progressBarHeight = 20f; //Alto de la barra de progreso
-    private float slideSpeed = 200f; //Velocidad de deslizamiento del slide
-    private float progress = 0f; //Progreso actual de la barra
+
+    [Header("Progres Bar")]
+    public Texture2D progressBarTexture;
+    public float progressBarWidth = Screen.width; //Ancho total de la barra de progreso
+    public float progressBarHeight = 20f; //Alto de la barra de progreso
+    public float slideSpeed = 200f; //Velocidad de deslizamiento del slide
+    public float progress = 0f; //Progreso actual de la barra
 
     private void OnGUI()
     {

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Discord;
 using TMPro;
@@ -5,7 +6,8 @@ using Unity.Burst;
 using UnityEngine;
 using UnityEngine.UI;
 using V2UnityDiscordIntercept;
-
+using Beebyte;
+using Beebyte.Obfuscator;
 
 [BurstCompile]
 public class Demo : MonoBehaviour
@@ -40,7 +42,7 @@ public class Demo : MonoBehaviour
             StartCoroutine(ChangeTextAfterDelay());
     }
 
-    private System.Collections.IEnumerator ChangeTextAfterDelay()
+    private IEnumerator ChangeTextAfterDelay()
     {
         yield return new WaitForSeconds(3f); // Esperar 3 segundos
         titleLobby.text = "Network Connection";
@@ -205,6 +207,8 @@ public class Demo : MonoBehaviour
         if (!DiscordController.IsOwner())
         {
             __instance.componentPanel.gameObject.SetActive(true);
+            //__instance.loadButtonOnline.gameObject.SetActive(true);
+            __instance.loadTextOnline.gameObject.SetActive(false);
             __instance.join.gameObject.SetActive(false);
             __instance.controlPanel.gameObject.SetActive(true);
             __instance.modeLabel.gameObject.SetActive(false);
@@ -319,6 +323,7 @@ public class Demo : MonoBehaviour
         Plugin.Client.ConnectToLobby(Plugin.ipAddress, Plugin.Port);
     }
 
+    [Header("Lobby Manager")]
     public DiscordController discordController;
     public static Demo instance;
     public Dictionary<long, bool> playerReady;
@@ -357,6 +362,8 @@ public class Demo : MonoBehaviour
     public GameObject playerTextPrefab;
     public GameObject lobbyButtonPrefab;
 
+
+    [Header("Lobby Create")]
     public RectTransform join;
     public TextMeshProUGUI titleLobby;
     public InputField UsernameInputField;
@@ -364,6 +371,8 @@ public class Demo : MonoBehaviour
     public InputField PortInputField;
     public Button joinLobbyButton;
     public Button backButton;
+    public Button loadButtonOnline;
+    public TextMeshProUGUI loadTextOnline;
 
     public static string[] vehicleNames = new string[]
     {

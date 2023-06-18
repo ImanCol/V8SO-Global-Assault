@@ -82,9 +82,15 @@ public class DiscordController : MonoBehaviour
     public static void OnApplicationQuit(DiscordController __instance)
     {
         //if (Demo.instance.componentPanel.gameObject.activeSelf || SceneManager.GetActiveScene().name != "MENU-Driver" || SceneManager.GetActiveScene().name != "DEBUG-Online") //si el componente Lobby esta activo
-       
-         DisconnectNetwork2();
-        
+        if (Demo.instance.componentPanel)
+        {
+            if (Demo.instance.componentPanel.gameObject.activeSelf)
+                DisconnectNetwork2();
+            return;
+        }
+        else if (SceneManager.GetActiveScene().name != "MENU-Driver" || SceneManager.GetActiveScene().name != "DEBUG-Online")
+            DisconnectNetwork2();
+
         //return false;
         //---------//
         //this.DisconnectNetwork2();

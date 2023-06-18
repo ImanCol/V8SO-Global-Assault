@@ -25,6 +25,11 @@ public class UIManager : MonoBehaviour
     public GameObject unitPrefab;
 
 
+    [Header("PlayerTags")]
+    public bool isGameTagThis = false;
+    public bool isGameTagPlayers = true;
+    public bool isGameTagNPC = true;
+
     public RectTransform playerTag;
     public GameObject gameLifePrefab;
     public GameObject gameTagPrefab;
@@ -340,6 +345,12 @@ public class UIManager : MonoBehaviour
 
         string nameTagPlayer = targetPlayer.vehicle.ToString();
 
+
+
+
+
+
+
         //Debug.Log("Position " + nameTagPlayer + " forward: " + num);
         //Debug.Log("Vehiculo actualizado: " + targetPlayer.vehicle);
 
@@ -478,7 +489,18 @@ public class UIManager : MonoBehaviour
     {
         //Posicion GameTag Player
         Vehicle vehicle = GameManager.instance.playerObjects[0];
-        GameTagPlayer(gameTagPlayer, vehicle, true);
+
+        //GameTag You
+        if (isGameTagThis)
+        {
+            if (gameTagPlayer.text == "")
+                gameTagPlayer.text = Plugin.Username;
+            GameTagPlayer(gameTagPlayer, vehicle, true);
+        }
+        else
+        {
+            gameTagPlayer.text = "";
+        }
 
         float num = Vector3.Angle(vehicle.transform.forward, Vector3.forward);
 
