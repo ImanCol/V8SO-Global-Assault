@@ -123,8 +123,11 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    public bool isEnabled = false;
+
+    public void dev()
     {
+        Debug.Log("Iniciando LevelManager...");
         GameManager.instance.levelManager = this;
         GameManager.instance.terrain = terrain;
         if (GameManager.instance.inMenu)

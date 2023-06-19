@@ -176,8 +176,10 @@ public class StatsPanel : MonoBehaviour
         StartCoroutine(UpdateReflections());
 
         for (int i = 0; i <= 9; i++)
+        {
             vehicles.Add(vehicle);
-        Debug.Log("Add: " + vehicles);
+            Debug.Log("Add: " + vehicles);
+        }
 
         //Vehiculo inicial
         //SetPlayer();

@@ -14,7 +14,7 @@ using TMPro;
 using Rewired;
 using System.Threading;
 using System.Threading.Tasks;
-
+using Beebyte.Obfuscator;
 
 public delegate VigObject _VEHICLE_INIT(XOBF_DB param1, int param2, uint param3); //needs parameters
 public delegate VigObject _SPECIAL_INIT(XOBF_DB param1, int param2);
@@ -137,6 +137,7 @@ public class BSP
 }
 
 [BurstCompile]
+[SkipRename]
 public class GameManager : MonoBehaviour
 {
     [Header("Frame Settings")]
@@ -11237,7 +11238,6 @@ public class GameManager : MonoBehaviour
         Players += 1;
         statsPanel.SpawnVehicle(Players, 0);
     }
-
     public void SetDriver()
     {
         if (SceneManager.GetActiveScene().name == "MENU-Driver")
@@ -11978,7 +11978,9 @@ public class GameManager : MonoBehaviour
 
     public void waitLoadMultiplayerLevel(bool isWaitHost)
     {
-        asyncOperation.allowSceneActivation = true;
+        inDebug = false;
+        inMenu = false;
+        asyncSceneMap.allowSceneActivation = true;
         isHost = isWaitHost;
         Debug.Log("El Host hizo algo!");
     }
@@ -12039,8 +12041,9 @@ public class GameManager : MonoBehaviour
         isHost = isHosting;
         Debug.Log("Es Host?: " + isHost);
         await LoadSceneAsyncWithDelay(map);
-
     }
+
+
 
     public void LoadDebug()
     {
@@ -14641,6 +14644,8 @@ public class GameManager : MonoBehaviour
 
     public void FUN_3827C(Vehicle param1, VigTransform param2)
     {
+        if (!LevelManager.instance.isEnabled)
+            return;
         Vehicle vehicle = (Vehicle)param1.target;
 
         if (vehicle != null)
@@ -15102,7 +15107,8 @@ public class GameManager : MonoBehaviour
 
     float totalSceneProgress = 0f; //Progreso total de la carga de la escena
     float currentSceneProgress = 0f; //Progreso actual de la carga de la escena
-    AsyncOperation asyncOperation;
+    AsyncOperation asyncSceneMap;
+    AsyncOperation asyncLoadScene;
     public int sceneBuildIndex;
     Scene loadedScene;
 
@@ -15208,12 +15214,20 @@ public class GameManager : MonoBehaviour
 
     private async Task LoadSceneAsyncWithDelay(int sceneIndex)
     {
-        asyncOperation = SceneManager.LoadSceneAsync(sceneIndex);
-        asyncOperation.allowSceneActivation = false;
+        asyncSceneMap = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Single);
+        asyncLoadScene = SceneManager.LoadSceneAsync("LoadScene", LoadSceneMode.Additive);
+        asyncSceneMap.allowSceneActivation = false;
+        Demo.instance.loadButtonOnline.gameObject.SetActive(false);
+        Demo.instance.loadTextOnline.gameObject.SetActive(true);
+        Demo.instance.backButton.gameObject.SetActive(false);
+        if (isHost)
+            Demo.instance.loadTextOnline.text = "Press BackSpace to Continue...";
+        else
+            Demo.instance.loadTextOnline.text = "Waiting Host...";
 
-        while (!asyncOperation.isDone)
+        while (!asyncSceneMap.isDone)
         {
-            totalSceneProgress = asyncOperation.progress;
+            totalSceneProgress = asyncSceneMap.progress;
 
             // Si el progreso total es menor a 0.9f, establece el progreso actual de acuerdo al progreso total
             if (totalSceneProgress < 0.9f)
@@ -15222,22 +15236,30 @@ public class GameManager : MonoBehaviour
             }
 
             // Si el progreso total es igual o mayor a 0.9f, establece el progreso actual en 1.0f para indicar que la escena está completamente cargada
-            else if (asyncOperation.progress >= 0.9f)
+            else if (asyncSceneMap.progress >= 0.9f)
             {
-                inDebug = false;
-                inMenu = false;
                 LoadScene = true;
-                Demo.instance.loadButtonOnline.gameObject.SetActive(false);
-                Demo.instance.loadTextOnline.gameObject.SetActive(true);
-                if (isHost)
-                    Demo.instance.loadTextOnline.text = "Press BackSpace to Continue...";
-                else
-                    Demo.instance.loadTextOnline.text = "Waiting Host...";
-
                 if (Input.GetKeyDown(KeyCode.Space) && isHost)
                 {
                     Debug.Log("Es el Host!");
-                    asyncOperation.allowSceneActivation = true;
+                    Scene thisScene = SceneManager.GetSceneByBuildIndex(0);
+                    Scene asyncScene = SceneManager.GetSceneByBuildIndex(sceneIndex);
+                    //SceneManager.UnloadSceneAsync(sceneIndex);
+                    //Debug.Log("Get Scene: " + thisScene + " - " + asyncScene);
+
+                    //SceneManager.LoadScene(sceneIndex, LoadSceneMode.Additive);
+                    //SceneManager.activeSceneChanged(thisScene, asyncScene) += slideSpeed;
+                    //asyncSceneMap.allowSceneActivation = true;
+                    //SceneManager.SetActiveScene(asyncScene);
+                    //SceneManager.UnloadSceneAsync(0);
+                    //await Task.Yield(5);
+
+                    asyncLoadScene.allowSceneActivation = true;
+                    await Task.Delay(System.TimeSpan.FromSeconds(1));
+                    inDebug = false;
+                    inMenu = false;
+                    asyncSceneMap.allowSceneActivation = true;
+                    await Task.Delay(System.TimeSpan.FromSeconds(5));
                     ClientSend.waitLoad();
                 }
 
@@ -15246,7 +15268,7 @@ public class GameManager : MonoBehaviour
 
                 progressBarTexture = null;
 
-                //StopCoroutine(LoadSceneAsyncWithDelay(sceneIndex));
+                // StopCoroutine(LoadSceneAsyncWithDelay(sceneIndex));
             }
             else
             {
@@ -15574,7 +15596,7 @@ public class GameManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (inDebug || inMenu || SceneManager.GetActiveScene().name == "MENU-Driver" || SceneManager.GetActiveScene().name == "DEBUG-Online")
+        if (inDebug || inMenu || SceneManager.GetActiveScene().name == "MENU-Driver" || SceneManager.GetActiveScene().name == "DEBUG-Online" || SceneManager.GetActiveScene().name == "LoadScene")
         {
             //Debug.Log("In Debug Return");
             return;
@@ -15587,6 +15609,15 @@ public class GameManager : MonoBehaviour
 
         if (isWait)
         {
+            //Retiene la funcion de LevelManager
+            if (!LevelManager.instance.isEnabled)
+            {
+                GameObject.Find("CanvasLoadScene").gameObject.SetActive(false);
+                //SceneManager.UnloadScene("LoadScene");
+                Debug.Log("Continue...");
+                LevelManager.instance.isEnabled = true;
+                LevelManager.instance.dev();
+            }
             //Debug.Log("Continue...");
 
             Color32 color = UIManager.instance.flash.color;

@@ -23,7 +23,9 @@ public class UIManager : MonoBehaviour
     public List<Sprite> slotSprites;
     public List<Sprite> asciiSprites;
     public GameObject unitPrefab;
-
+    public GameObject loadPanel;
+    public bool loadScene = true;
+    public bool startScene = false;
 
     [Header("PlayerTags")]
     public bool isGameTagThis = false;
@@ -283,11 +285,71 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    private void makeLoadscene()
+    {
+        // Obtener el tamaño de la pantalla
+        float screenWidth = Screen.width;
+        float screenHeight = Screen.height;
+        Vector2 sizeScreen = new Vector2(screenWidth, screenHeight);
+
+        // Crear el objeto Canvas
+        GameObject canvasObject = new GameObject("Canvas");
+
+        // Obtener el RectTransform del Canvas
+        RectTransform canvasRectTransform = canvasObject.AddComponent<RectTransform>();
+        // Obtener el tamaño del Canvas
+        Vector2 canvasSize = canvasRectTransform.sizeDelta;
+
+        Canvas canvas = canvasObject.AddComponent<Canvas>();
+        canvasObject.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+        canvasObject.GetComponent<RectTransform>().sizeDelta = sizeScreen;
+
+        // Calcular la posición central
+        Vector2 centerPosition = new Vector2(screenWidth / 2f, screenHeight / 2f);
+        // Calcular la posición de anclaje central
+        Vector2 anchorPosition = new Vector2(canvasSize.x / 2f, -canvasSize.y / 2f);
+        // Establecer la posición y el anclaje del Canvas
+        canvasRectTransform.anchoredPosition = centerPosition;
+        canvasRectTransform.anchorMin = anchorPosition / canvasSize;
+        canvasRectTransform.anchorMax = anchorPosition / canvasSize;
+
+        // Crear el objeto Panel como child del Canvas
+        GameObject panelObject = new GameObject("Panel");
+        RectTransform reactTransform = panelObject.AddComponent<RectTransform>();
+        panelObject.transform.SetParent(canvasObject.transform);
+        panelObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+
+        // Agregar el componente Image al objeto Panel
+        Image panelImage = panelObject.AddComponent<Image>();
+        panelImage.sprite = Resources.Load<Sprite>("Assets/Images/XBGM00.png"); //Assets/Images/XBGM00.png
+        panelImage.color = Color.black;
+        panelImage.GetComponent<RectTransform>().sizeDelta = new Vector2(screenWidth, screenHeight);
+
+        // Crear el objeto RAW Image como child del Panel
+        GameObject rawImageObject = new GameObject("RAW Image");
+        rawImageObject.transform.SetParent(panelObject.transform);
+
+        // Agregar el componente Raw Image al objeto RAW Image
+        RawImage rawImage = rawImageObject.AddComponent<RawImage>();
+        rawImage.gameObject.SetActive(false);
+
+        GameObject textScene = new GameObject("TextScene");
+        textScene.transform.SetParent(panelObject.transform);
+        TextMeshPro textStartScene = textScene.AddComponent<TextMeshPro>();
+        textStartScene.text = "Press BackSpace to Continue...";
+        textStartScene.font = Resources.Load<TMP_FontAsset>("ds");
+
+        loadPanel = canvasObject;
+    }
+
+
+
     public UIMessage uiMessagesScript;
 
     private void Start()
     {
         AddUIMessagesScript(this.gameObject);
+        makeLoadscene();
 
         //Crea un objeto para insertar los GameTags
         GameObject obj = new GameObject("GameTagPlayers");
@@ -310,6 +372,17 @@ public class UIManager : MonoBehaviour
         //gameTag2 = obj2.AddComponent<TextMeshPro>();
         //Asignar el sprite al SpriteRenderer
         //gameTag2.text = "Player 1";
+    }
+
+
+    private void Update()
+    {
+        if (GameManager.instance.paused)
+            if (!startScene)
+            {
+                startScene = true;
+                loadPanel.gameObject.SetActive(false);
+            }
     }
 
     public void WinScreen()
@@ -344,12 +417,6 @@ public class UIManager : MonoBehaviour
         float num = Vector3.Angle(targetPlayer.transform.forward, Vector3.forward);
 
         string nameTagPlayer = targetPlayer.vehicle.ToString();
-
-
-
-
-
-
 
         //Debug.Log("Position " + nameTagPlayer + " forward: " + num);
         //Debug.Log("Vehiculo actualizado: " + targetPlayer.vehicle);

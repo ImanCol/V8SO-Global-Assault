@@ -8,7 +8,7 @@ public class ClientHandle : MonoBehaviour
 {
     public static void Joined(Packet _packet, long userId)
     {
-        if (SceneManager.GetActiveScene().name == "MENU-Driver")
+        if (SceneManager.GetActiveScene().name != "MENU-Driver" || SceneManager.GetActiveScene().name != "DEBUG-Online" || SceneManager.GetActiveScene().name != "LoadScene")
         {
             //Get Username
             GameManager.instance.SetPlayer(_packet);

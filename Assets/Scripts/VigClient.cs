@@ -23,6 +23,7 @@ namespace V2UnityDiscordIntercept
         {
             Debug.Log("Disconnected Message: " + byeMessage);
             client.ServerConnection.Disconnect(byeMessage);
+            //GameManager.instance.LoadDebug();
         }
 
         private void HandleMemberDisconnected(Packet _packet, long userId)

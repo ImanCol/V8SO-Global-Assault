@@ -18,7 +18,7 @@ MonoBehaviour:
   fields: 1
   properties: 1
   events: 1
-  skipRenameOfAllPublicMonobehaviourMethods: 0
+  skipRenameOfAllPublicMonobehaviourMethods: 1
   skipRenameOfAllPublicMonobehaviourFields: 1
   searchForUnityReflectionMethods: 1
   obfuscateLiterals: 1
@@ -207,7 +207,7 @@ MonoBehaviour:
   includeProtectedFields: 1
   includeProtectedProperties: 1
   includeProtectedEvents: 1
-  enabled: 1
+  enabled: 0
   onlyObfuscatedSpecifiedNamespaces: 0
   skipNamespacesRecursively: 1
   obfuscateSpecifiedNamespacesRecursively: 1
@@ -238,7 +238,7 @@ MonoBehaviour:
   skipEnums: 1
   maxInstructionsForCloning: 2000
   preserveNamespaces: 0
-  obfuscateMonoBehaviourClassNames: 1
+  obfuscateMonoBehaviourClassNames: 0
   replaceLiterals:
   - OnHover
   - OnSelect
@@ -270,10 +270,9 @@ MonoBehaviour:
   equivalentAttributesForSkip: []
   equivalentAttributesForSkipRename:
   - Newtonsoft.Json.JsonPropertyAttribute
-  includeCompilationPipelineAssemblies: 0
+  includeCompilationPipelineAssemblies: 1
   assemblies:
   - Assembly-CSharp.dll
-  - Assembly-CSharp-firstpass.dll
   compiledAssemblies: []
   extraAssemblyDirectories: []
   referencedAssemblies: []

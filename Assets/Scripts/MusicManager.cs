@@ -183,10 +183,12 @@ public class MusicManager : MonoBehaviour
 
     private void Start()
     {
-        //Guardar el valor inicial del Dropdown y del Toggle
-        previousDropdownValue = musicDropdown.value;
-        previousToggleValue = musicToggle.isOn;
-
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            //Guardar el valor inicial del Dropdown y del Toggle
+            previousDropdownValue = musicDropdown.value;
+            previousToggleValue = musicToggle.isOn;
+        }
         // Guardar los enlaces de los GameObjects en PlayerPrefs
         if (canvas != null)
         {
@@ -297,6 +299,7 @@ public class MusicManager : MonoBehaviour
 
     private async void Update()
     {
+        //cambiar para otros Menus
         if (SceneManager.GetActiveScene().buildIndex == 0)
         {
             //Obtener los enlaces guardados en PlayerPrefs
@@ -395,11 +398,12 @@ public class MusicManager : MonoBehaviour
             {
                 if (nolist)
                     // Verificar si el audio ha terminado de reproducirse
-                    if (music.time >= music.clip.length)
-                    {
-                        Debug.Log("Finalizo...reproducir siguiente");
-                        await PlayNextMusic();
-                    }
+                    if (music)
+                        if (music.time >= music.clip.length)
+                        {
+                            Debug.Log("Finalizo...reproducir siguiente");
+                            await PlayNextMusic();
+                        }
             }
         }
         if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.O) && isDev)
@@ -588,7 +592,7 @@ public class MusicManager : MonoBehaviour
         }
 
         Debug.Log("Music clip loaded successfully.");
-        if (SceneManager.GetActiveScene().buildIndex != 0)
+        if (SceneManager.GetActiveScene().name != "MENU-Driver" && SceneManager.GetActiveScene().name != "DEBUG-Online" && SceneManager.GetActiveScene().name != "LoadScene")
         {
             string path = songPlay;
             string trackName = Path.GetFileNameWithoutExtension(path);
@@ -664,13 +668,12 @@ public class MusicManager : MonoBehaviour
 
         //Finalizar la carga de pistas de audio
         {
+            musicClipsPreloaded = true;
             if (GameManager.instance.inDebug)
                 await FadeCanvasGroup();
-            musicClipsPreloaded = true;
             if (musicClipsPreloaded)
             {
-                Debug.Log("Music clip loaded successfully.");
-                if (SceneManager.GetActiveScene().buildIndex != 0)
+                if (SceneManager.GetActiveScene().name != "MENU-Driver" && SceneManager.GetActiveScene().name != "DEBUG-Online" && SceneManager.GetActiveScene().name != "LoadScene")
                 {
                     string path = musicList.tracks[rndList].list[rndTrack];
                     string trackName = Path.GetFileNameWithoutExtension(path);
@@ -702,7 +705,8 @@ public class MusicManager : MonoBehaviour
                     UIMessage.instance.StopAllCoroutines();
                     UIMessage.instance.StartCoroutine(routineTrack);
                 }
-                else if (SceneManager.GetActiveScene().buildIndex == 0)
+                //cambiar para otros Menus
+                else if (SceneManager.GetActiveScene().name == "MENU-Driver" || SceneManager.GetActiveScene().name == "DEBUG-Online" || SceneManager.GetActiveScene().name == "LoadScene")
                 {
                     string path = musicList.tracks[0].list[0];
                     string trackName = Path.GetFileNameWithoutExtension(path);
@@ -744,8 +748,8 @@ public class MusicManager : MonoBehaviour
             musicList.tracks[index].list = kvp.Value.ToArray();
             index++;
         }
-
-        SetupDropdownOptions();
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+            SetupDropdownOptions();
     }
 
     private async Task ProcessAudioFilesCoroutine(string[] audioFiles, string streamingAssetsPath, Dictionary<string, List<string>> trackDictionary, List<string> availableMusicList)

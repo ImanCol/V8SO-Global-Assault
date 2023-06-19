@@ -43,5 +43,6 @@ public enum ServerPackets
 	wrecked2,
 	totaled2,
 	dropWeapon2,
-	paused
+	paused,
+	isWait
 }

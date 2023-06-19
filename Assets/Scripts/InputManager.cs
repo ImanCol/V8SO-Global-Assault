@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Rewired;
-g Beebyte;
-g Beebyte.Obfuscator;
+using Beebyte;
+using Beebyte.Obfuscator;
 
 public enum _CONTROLLER_TYPE
 {

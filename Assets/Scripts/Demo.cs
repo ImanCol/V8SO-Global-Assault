@@ -8,6 +8,8 @@ using UnityEngine.UI;
 using V2UnityDiscordIntercept;
 using Beebyte;
 using Beebyte.Obfuscator;
+using Lidgren.Network;
+using UnityEngine.SceneManagement;
 
 [BurstCompile]
 public class Demo : MonoBehaviour
@@ -38,8 +40,12 @@ public class Demo : MonoBehaviour
     }
     private void Update()
     {
-        if (titleLobby.text == "Connection timeout")
-            StartCoroutine(ChangeTextAfterDelay());
+        //Texto Unirse a Lobby
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            if (titleLobby.text == "Connection timeout")
+                StartCoroutine(ChangeTextAfterDelay());
+        }
     }
 
     private IEnumerator ChangeTextAfterDelay()
@@ -240,10 +246,12 @@ public class Demo : MonoBehaviour
         //});
     }
 
+    public static bool setLobby = false;
     public void SetupLobby()
     {
         //Crea el lobby, arreglarlo
         //discordController.CreateLobby(this.lobbyInput.text);
+        //if (NetPeer.setLobby)
         DiscordController.CreateLobby(lobbyInput.text);
     }
     public void MemberLeft(long userId)

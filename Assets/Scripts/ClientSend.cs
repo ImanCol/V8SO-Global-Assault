@@ -7,7 +7,7 @@ public class ClientSend : MonoBehaviour
 {
     private static void SendTCPData(Packet _packet, long userId)
     {
-        Debug.Log("SendTCPData: " + _packet + " " + userId);
+        Debug.Log("SendTCPData: " + _packet.ToArray() + " " + userId);
         _packet.WriteLength();
         if (userId == 0L)
         {

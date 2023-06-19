@@ -6624,6 +6624,7 @@ public class Vehicle : VigObject
             }
             else if (GameManager.instance.gameMode > _GAME_MODE.Versus2)
             {
+                //Originalmente era [1] pero daba error
                 if (GameManager.instance.playerObjects[1].maxHalfHealth == 0)
                 {
                     bool num2 = GameManager.instance.gameMode < _GAME_MODE.Unk2;
