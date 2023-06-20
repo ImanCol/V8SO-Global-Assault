@@ -98,7 +98,7 @@ public class MusicManager : MonoBehaviour
     private static int previousDropdownValue;
     private static bool previousToggleValue;
 
-    public bool boolSet = true;
+    public bool setDropdown = true;
 
     public bool P = false;
     public bool O = false;
@@ -112,7 +112,7 @@ public class MusicManager : MonoBehaviour
     public string songPlay = "";
     public bool isLoading = false;
 
-    public bool nolist = true;
+    public bool noLobby = false;
 
 
     private string GetGameObjectLink(Component component)
@@ -302,6 +302,7 @@ public class MusicManager : MonoBehaviour
         //cambiar para otros Menus
         if (SceneManager.GetActiveScene().buildIndex == 0)
         {
+            noLobby = false;
             //Obtener los enlaces guardados en PlayerPrefs
             string canvasLink = PlayerPrefs.GetString(canvasKey);
             string musicDropdownLink = PlayerPrefs.GetString(musicDropdownKey);
@@ -319,7 +320,7 @@ public class MusicManager : MonoBehaviour
             }
             else
             {
-                if (boolSet)
+                if (setDropdown)
                 {
                     LoadDropdownOptions();
 
@@ -334,7 +335,7 @@ public class MusicManager : MonoBehaviour
                         musicDropdown.gameObject.SetActive(value: musicToggle.isOn);
                     }
 
-                    boolSet = false;
+                    setDropdown = false;
                 }
 
                 if (musicDropdown.value != previousDropdownValue)
@@ -371,9 +372,10 @@ public class MusicManager : MonoBehaviour
         }
         else
         {
-            if (!boolSet)
+            noLobby = true;
+            if (!setDropdown)
             {
-                boolSet = true;
+                setDropdown = true;
             }
         }
 
@@ -396,14 +398,15 @@ public class MusicManager : MonoBehaviour
         {
             if (musicClipsPreloaded)
             {
-                if (nolist)
-                    // Verificar si el audio ha terminado de reproducirse
-                    if (music)
-                        if (music.time >= music.clip.length)
-                        {
-                            Debug.Log("Finalizo...reproducir siguiente");
-                            await PlayNextMusic();
-                        }
+                if (noLobby) //Si no es el Lobby
+                    if (play) //Si esta activa la reproduccion
+                        // Verificar si el audio ha terminado de reproducirse
+                        if (music)
+                            if (music.time >= music.clip.length)
+                            {
+                                Debug.Log("Finalizo...reproducir siguiente");
+                                await PlayNextMusic();
+                            }
             }
         }
         if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.O) && isDev)
@@ -657,7 +660,6 @@ public class MusicManager : MonoBehaviour
             music.volume = startVolume;
             music.Play(); // Mover la reproducción aquí
         }
-
         isFading = false;
     }
 
@@ -668,9 +670,12 @@ public class MusicManager : MonoBehaviour
 
         //Finalizar la carga de pistas de audio
         {
-            musicClipsPreloaded = true;
+
             if (GameManager.instance.inDebug)
+            {
                 await FadeCanvasGroup();
+            }
+            musicClipsPreloaded = true;
             if (musicClipsPreloaded)
             {
                 if (SceneManager.GetActiveScene().name != "MENU-Driver" && SceneManager.GetActiveScene().name != "DEBUG-Online" && SceneManager.GetActiveScene().name != "LoadScene")

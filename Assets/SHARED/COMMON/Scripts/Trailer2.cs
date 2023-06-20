@@ -44,11 +44,11 @@ public class Trailer2 : Destructible
 			}
 			if (GameManager.instance.gameMode >= _GAME_MODE.Versus2 && id2 == -1)
 			{
-				ClientSend.TrailerTransform(ref vTransform);
+				ClientSend.TrailerTransform(vTransform);
 			}
 			else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && id2 > 0)
 			{
-				ClientSend.TrailerTransformAI(id2, ref vTransform);
+				ClientSend.TrailerTransformAI(id2, vTransform);
 			}
 			result = 0u;
 			break;

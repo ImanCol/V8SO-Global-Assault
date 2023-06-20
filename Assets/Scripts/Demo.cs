@@ -200,6 +200,7 @@ public class Demo : MonoBehaviour
     {
         for (int i = 0; i < this.lobbyList.childCount; i++)
         {
+            Debug.Log("Delete Lobby: " + this.lobbyList.GetChild(i).gameObject.GetComponent<Text>().text);
             UnityEngine.Object.Destroy(this.lobbyList.GetChild(i).gameObject);
         }
     }

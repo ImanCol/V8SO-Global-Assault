@@ -15,6 +15,7 @@ using Rewired;
 using System.Threading;
 using System.Threading.Tasks;
 using Beebyte.Obfuscator;
+using LoadMap; //Administra Carga de Mapa
 
 public delegate VigObject _VEHICLE_INIT(XOBF_DB param1, int param2, uint param3); //needs parameters
 public delegate VigObject _SPECIAL_INIT(XOBF_DB param1, int param2);
@@ -11948,6 +11949,8 @@ public class GameManager : MonoBehaviour
 #endif
     }
     public bool online = false;
+
+    [Obsolete]
     public async Task LoadLevelAsync()
     {
         online = false;
@@ -11978,12 +11981,22 @@ public class GameManager : MonoBehaviour
 
     public void waitLoadMultiplayerLevel(bool isWaitHost)
     {
-        inDebug = false;
-        inMenu = false;
-        asyncSceneMap.allowSceneActivation = true;
-        isHost = isWaitHost;
+        isWait = !isWait;
+        DestroyProgressBar();
+        MusicManager.instance.PlayNextMusic().ContinueWith(Task =>
+                   {
+
+                   });
+        //SceneManager.UnloadSceneAsync(19);
+        //inDebug = false;
+        //inMenu = false;
+        //asyncLoadScene.allowSceneActivation = true;
+        //asyncSceneMap.allowSceneActivation = true;
+        //isHost = isWaitHost;
         Debug.Log("El Host hizo algo!");
     }
+
+    [Obsolete]
     public async void LoadMultiplayerLevel(bool isHosting)
     {
         //online = true;
@@ -12050,6 +12063,7 @@ public class GameManager : MonoBehaviour
         //StopCoroutine(UpdateReflections());
         inDebug = true;
         Destroy(this.gameObject);
+        Destroy(SceneLoader.instance.gameObject);
         //Destroy(MusicManager.instance.gameObject);
         SceneManager.LoadScene(0, LoadSceneMode.Single);
         //StartCoroutine(LoadSceneAsyncWithDelay(0));
@@ -14644,45 +14658,50 @@ public class GameManager : MonoBehaviour
 
     public void FUN_3827C(Vehicle param1, VigTransform param2)
     {
-        if (!LevelManager.instance.isEnabled)
+        if (!isWait)
+        {
             return;
-        Vehicle vehicle = (Vehicle)param1.target;
-
-        if (vehicle != null)
-        {
-            VigObject vigObject = param1.weapons[param1.weaponSlot];
-            Vector3Int param3 = vehicle.screen;
-            short dAT_C;
-            int dAT_;
-            VigMesh param4;
-            if (vehicle.jammer == 0)
-            {
-                int num = 0;
-                param3 = vehicle.vTransform.position;
-                if (vigObject != null)
-                {
-                    num = (((vigObject.flags & 0x4000) != 0) ? 1 : 0);
-                }
-                dAT_C = param1.DAT_C6;
-                dAT_ = vehicle.DAT_58;
-                param4 = DAT_1150[num];
-            }
-            else
-            {
-                dAT_C = param1.DAT_C6;
-                dAT_ = vehicle.DAT_58;
-                param4 = DAT_1150[2];
-            }
-            //Reticula otros Jugadores
-            FUN_380D8(param3, dAT_, param4, param2, dAT_C);
-
-            GameTagPlayer(param3, dAT_, param4, param2, dAT_C, vehicle);
         }
-        if (param1.jammer != 0 || (DAT_40 & 0x200000) != 0 || enableReticle)
+        Vehicle vehicle = new Vehicle();
+        if (!paused)
         {
-            //reticula Jugador
-            FUN_380D8(param1.screen, param1.DAT_58, DAT_1150[3], param2, 256);
-            GameTagPlayer(param1.screen, param1.DAT_58, DAT_1150[3], param2, 256, vehicle);
+            if ((Vehicle)param1 != null)
+            {
+                vehicle = (Vehicle)param1.target;
+                VigObject vigObject = param1.weapons[param1.weaponSlot];
+                Vector3Int param3 = vehicle.screen;
+                short dAT_C;
+                int dAT_;
+                VigMesh param4;
+                if (vehicle.jammer == 0)
+                {
+                    int num = 0;
+                    param3 = vehicle.vTransform.position;
+                    if (vigObject != null)
+                    {
+                        num = (((vigObject.flags & 0x4000) != 0) ? 1 : 0);
+                    }
+                    dAT_C = param1.DAT_C6;
+                    dAT_ = vehicle.DAT_58;
+                    param4 = DAT_1150[num];
+                }
+                else
+                {
+                    dAT_C = param1.DAT_C6;
+                    dAT_ = vehicle.DAT_58;
+                    param4 = DAT_1150[2];
+                }
+                //Reticula otros Jugadores
+                FUN_380D8(param3, dAT_, param4, param2, dAT_C);
+
+                GameTagPlayer(param3, dAT_, param4, param2, dAT_C, vehicle);
+            }
+            if (param1.jammer != 0 || (DAT_40 & 0x200000) != 0 || enableReticle)
+            {
+                //reticula Jugador
+                FUN_380D8(param1.screen, param1.DAT_58, DAT_1150[3], param2, 256);
+                GameTagPlayer(param1.screen, param1.DAT_58, DAT_1150[3], param2, 256, vehicle);
+            }
         }
     }
 
@@ -15163,20 +15182,27 @@ public class GameManager : MonoBehaviour
         return null;
     }
 
-    string sceneName;
+    public string sceneName;
 
+    [Header("ProgressBarGui")]
     public bool LoadScene = false;
-    private float progressBarWidth = Screen.width; //Ancho total de la barra de progreso
-    private float progressBarHeight = 20f; //Alto de la barra de progreso
-    private float slideSpeed = 200f; //Velocidad de deslizamiento del slide
-    private float progress = 0f; //Progreso actual de la barra
+    public float progressBarWidth = Screen.width; //Ancho total de la barra de progreso
+    public float progressBarHeight = 20f; //Alto de la barra de progreso
+    public float progressBarHorizontal = 2f; //Alto de la barra de progreso
+    public float progressBarVertical = 15f; //Alto de la barra de progreso
+    public float slideSpeed = 200f; //Velocidad de deslizamiento del slide
+    public float progress = 0f; //Progreso actual de la barra
+    public Texture2D loadingTexture;
+    public Image loadingBarImage;
+    public Texture2D progressBarTexture;
+
     private void OnGUI()
     {
-        if (!LoadScene) // Solo dibujar la barra de progreso si los clips de música no se han cargado completamente
+        if (!LoadScene || !isWait) // Solo dibujar la barra de progreso si los clips de música no se han cargado completamente
         {
             // Calcular la posición de la barra de progreso en la pantalla
-            float progressBarX = (Screen.width - progressBarWidth) / 2f; // Centrado horizontal
-            float progressBarY = (Screen.height - progressBarHeight) / 15f; // Centrado vertical
+            float progressBarX = (Screen.width - progressBarWidth) / progressBarHorizontal; // Centrado horizontal
+            float progressBarY = (Screen.height - progressBarHeight) / progressBarVertical; // Centrado vertical
             Rect progressBarRect = new Rect(progressBarX, progressBarY, progressBarWidth, progressBarHeight);
 
             // Calcular la cantidad de mosaicos completos y el progreso dentro del mosaico actual
@@ -15198,35 +15224,58 @@ public class GameManager : MonoBehaviour
         else
         {
             //Eliminar la barra de progreso
-            DestroyProgressBar();
+            //DestroyProgressBar();
         }
     }
 
     private void DestroyProgressBar()
     {
+
         progressBarTexture = null;
 
         // Realizar aquí cualquier acción necesaria para eliminar la barra de progreso
         // Por ejemplo, desactivar objetos, limpiar referencias, etc.
         //Demo.instance.controlPanel();
         // ...
+
     }
 
+    [Obsolete]
     private async Task LoadSceneAsyncWithDelay(int sceneIndex)
     {
+        SceneLoader.staticCanvasLoadScene.enabled = true;
+        Debug.Log("Obtener mapa cargado...");
+        await SceneLoader.getMap(sceneIndex);
+        Debug.Log("obtenido mapa cargado...");
+
+        //SceneLoader.canvasLoadScene.GetComponent<Canvas>().gameObject.SetActive(false);
+        sceneMap = sceneIndex;
+        //asyncLoadScene = SceneManager.LoadSceneAsync("LoadScene", LoadSceneMode.Single);
         asyncSceneMap = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Single);
-        asyncLoadScene = SceneManager.LoadSceneAsync("LoadScene", LoadSceneMode.Additive);
+        //asyncLoadScene.allowSceneActivation = false;
         asyncSceneMap.allowSceneActivation = false;
+
         Demo.instance.loadButtonOnline.gameObject.SetActive(false);
         Demo.instance.loadTextOnline.gameObject.SetActive(true);
         Demo.instance.backButton.gameObject.SetActive(false);
+
         if (isHost)
             Demo.instance.loadTextOnline.text = "Press BackSpace to Continue...";
         else
             Demo.instance.loadTextOnline.text = "Waiting Host...";
 
+        //while (!asyncLoadScene.isDone)
+        //{
+        //    if (asyncLoadScene.progress < 0.9f)
+        //        Debug.Log("Cargando LoadScene..." + asyncLoadScene.progress);
+        //    else if (asyncLoadScene.progress >= 0.9f)
+        //        asyncLoadScene.allowSceneActivation = true;
+        //    await Task.Yield(); // Esperar un frame
+        //}
+
         while (!asyncSceneMap.isDone)
         {
+            //SceneManager.SetActiveScene(SceneManager.GetSceneAt(19));
             totalSceneProgress = asyncSceneMap.progress;
 
             // Si el progreso total es menor a 0.9f, establece el progreso actual de acuerdo al progreso total
@@ -15238,12 +15287,17 @@ public class GameManager : MonoBehaviour
             // Si el progreso total es igual o mayor a 0.9f, establece el progreso actual en 1.0f para indicar que la escena está completamente cargada
             else if (asyncSceneMap.progress >= 0.9f)
             {
+                Debug.Log("Termino la carga de la Escena.");
                 LoadScene = true;
+                inDebug = false;
+                inMenu = false;
+                asyncSceneMap.allowSceneActivation = true;
                 if (Input.GetKeyDown(KeyCode.Space) && isHost)
                 {
                     Debug.Log("Es el Host!");
                     Scene thisScene = SceneManager.GetSceneByBuildIndex(0);
                     Scene asyncScene = SceneManager.GetSceneByBuildIndex(sceneIndex);
+
                     //SceneManager.UnloadSceneAsync(sceneIndex);
                     //Debug.Log("Get Scene: " + thisScene + " - " + asyncScene);
 
@@ -15254,19 +15308,18 @@ public class GameManager : MonoBehaviour
                     //SceneManager.UnloadSceneAsync(0);
                     //await Task.Yield(5);
 
-                    asyncLoadScene.allowSceneActivation = true;
+
+                    //asyncLoadScene.allowSceneActivation = true;
+
                     await Task.Delay(System.TimeSpan.FromSeconds(1));
-                    inDebug = false;
-                    inMenu = false;
-                    asyncSceneMap.allowSceneActivation = true;
-                    await Task.Delay(System.TimeSpan.FromSeconds(5));
-                    ClientSend.waitLoad();
+
+                    //SceneManager.UnloadSceneAsync("LoadScene");
+                    //await Task.Delay(System.TimeSpan.FromSeconds(5));
                 }
 
                 // Obtener el nombre de la escena por índice de compilación
                 sceneName = GetSceneNameByBuildIndex(sceneIndex);
 
-                progressBarTexture = null;
 
                 // StopCoroutine(LoadSceneAsyncWithDelay(sceneIndex));
             }
@@ -15276,12 +15329,13 @@ public class GameManager : MonoBehaviour
                 currentSceneProgress = 1.0f;
             }
 
+            Debug.Log("Cargando Mapa..." + asyncSceneMap.progress);
+
             // Actualizar la barra de progreso en cada iteración del ciclo
             await Task.Yield(); // Esperar un frame
         }
-
+        //SceneManager.SetActiveScene(SceneManager.GetSceneAt(sceneMap));
         // La carga de la escena se ha completado correctamente, puedes realizar cualquier otra acción necesaria aquí
-        await MusicManager.instance.PlayNextMusic();
     }
 
     private void Start()
@@ -15297,6 +15351,7 @@ public class GameManager : MonoBehaviour
                 gameMode = _GAME_MODE.Versus2;
 
                 SetStage();
+
                 //selectOptions.transform.Find("Map/Preview").GetComponent<Image>().sprite = statsPanel.maps[map];
                 //selectOptions.transform.Find("Map/Text (TMP)").GetComponent<TextMeshProUGUI>().text = mapText;
                 selectOptions.transform.Find("Mode/Text (TMP)").GetComponent<TextMeshProUGUI>().text = gameMode.ToString().Substring(0, gameMode.ToString().Length - 1);
@@ -15310,6 +15365,7 @@ public class GameManager : MonoBehaviour
                 //selectOptions.transform.Find("Mode/Text (TMP)").GetComponent<TextMeshProUGUI>().text = gameMode.ToString();
                 //gameMode = _GAME_MODE.Arcade;
                 //}
+
             }
         }
     }
@@ -15503,10 +15559,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log(ReInput.players.GetPlayer(0).GetButtonDown("Mode-Touch LEFT"));
     }
 
-    [Header("Progress Bar")]
-    public Texture2D loadingTexture;
-    public Image loadingBarImage;
-    public Texture2D progressBarTexture;
+    [Header("Spawn IA Combo L1+R1+L2+R2")]
     private bool pressed = false;
 
     private void Update()
@@ -15541,32 +15594,38 @@ public class GameManager : MonoBehaviour
         if (player.GetButton("L2") && player.GetButton("R2") && player.GetButton("L1") && player.GetButton("R1") && !pressed)
         {
             DAT_1030[0] = 1;
+            DAT_1030[2] = 1;
+            DAT_1030[3] = 1;
+            DAT_1030[4] = 1;
+            DAT_1030[5] = 1;
+            DAT_1030[6] = 1;
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (gameMode >= _GAME_MODE.Versus2)
+        if (isWait)
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                //DiscordController.instance.DisconnectNetwork2();
-                DiscordController.DisconnectNetwork2();
-            }
-            while (DiscordController.instance.pendingCallbacks)
-            {
-                DiscordController.instance.discord.RunCallbacks();
-            }
-            LoadDebug();
-        }
-        FUN_3827C(playerObjects[0], DAT_F00);
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (isHost)
-            {
-                paused = !paused;
-                isWait = !isWait;
                 if (gameMode >= _GAME_MODE.Versus2)
                 {
-                    ClientSend.Pause();
+                    //DiscordController.instance.DisconnectNetwork2();
+                    DiscordController.DisconnectNetwork2();
                 }
+                while (DiscordController.instance.pendingCallbacks)
+                {
+                    DiscordController.instance.discord.RunCallbacks();
+                }
+                LoadDebug();
             }
+        FUN_3827C(playerObjects[0], DAT_F00); //PointPotitionMap?
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (isWait)
+                if (isHost)
+                {
+                    paused = !paused;
+                    if (gameMode >= _GAME_MODE.Versus2)
+                    {
+                        ClientSend.Pause();
+                    }
+                }
         }
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -15593,32 +15652,56 @@ public class GameManager : MonoBehaviour
     }
 
     public bool isWait = false;
+    int sceneMap = new int();
 
-    private void FixedUpdate()
+    private async void FixedUpdate()
     {
-        if (inDebug || inMenu || SceneManager.GetActiveScene().name == "MENU-Driver" || SceneManager.GetActiveScene().name == "DEBUG-Online" || SceneManager.GetActiveScene().name == "LoadScene")
+        if (inDebug || inMenu || SceneManager.GetActiveScene().name == "MENU-Driver" || SceneManager.GetActiveScene().name == "DEBUG-Online")
         {
             //Debug.Log("In Debug Return");
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            isWait = !isWait;
-        }
+        if (!isWait)
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                {
+                    DestroyProgressBar();
+                    isWait = !isWait;
+                    await new ClientSend().waitLoad();
+                    //SceneManager.UnloadSceneAsync(19);
+                    MusicManager.instance.PlayNextMusic().ContinueWith(Task =>
+                    {
+
+                    });
+                }
+            }
 
         if (isWait)
         {
             //Retiene la funcion de LevelManager
-            if (!LevelManager.instance.isEnabled)
+            if (!LevelManager.instance)
             {
-                GameObject.Find("CanvasLoadScene").gameObject.SetActive(false);
-                //SceneManager.UnloadScene("LoadScene");
-                Debug.Log("Continue...");
-                LevelManager.instance.isEnabled = true;
-                LevelManager.instance.dev();
+                Debug.Log("Return...");
+                return;
             }
-            //Debug.Log("Continue...");
+            else
+            {
+                Debug.Log("NoReturn...");
+                if (!LevelManager.instance.isEnabled)
+                {
+                    if (SceneLoader.staticCanvasLoadScene.enabled)
+                        SceneLoader.staticCanvasLoadScene.enabled = false;
+                    //SceneLoader.staticCanvasLoadScene = null;
+                    //SceneManager.UnloadScene("LoadScene");
+                    Debug.Log("Continue...");
+                    if (UIManager.instance)
+                        UIManager.instance.UiInitiate();
+                    LevelManager.instance.dev();
+                    LevelManager.instance.isEnabled = true;
+                }
+            }
+            //Debug.Log("isWait...Done");
 
             Color32 color = UIManager.instance.flash.color;
 
@@ -15637,6 +15720,7 @@ public class GameManager : MonoBehaviour
                         //Debug.Log("No hay Miembros en Partida..." + networkMembers.name);
                         return;
                     }
+                    Debug.Log("Miembros en Partida..." + networkMembers.Count);
                 }
             }
 
@@ -15797,8 +15881,8 @@ public class GameManager : MonoBehaviour
             }
             if (online)
             {
-                ClientSend.Transform(ref playerObjects[0].vTransform);
-                ClientSend.Physics(ref playerObjects[0].physics1, ref playerObjects[0].physics2);
+                ClientSend.Transform(playerObjects[0].vTransform);
+                ClientSend.Physics(playerObjects[0].physics1, playerObjects[0].physics2);
                 ClientSend.Control(playerObjects[0]);
                 ClientSend.Status(playerObjects[0]);
                 ClientSend.RandomNumber(DAT_63A64, DAT_63A68);
@@ -15809,8 +15893,8 @@ public class GameManager : MonoBehaviour
                 {
                     if (online)
                     {
-                        ClientSend.TransformAI(networkEnemies[n].id, ref networkEnemies[n].vTransform);
-                        ClientSend.PhysicsAI(networkEnemies[n].id, ref networkEnemies[n].physics1, ref networkEnemies[n].physics2);
+                        ClientSend.TransformAI(networkEnemies[n].id, networkEnemies[n].vTransform);
+                        ClientSend.PhysicsAI(networkEnemies[n].id, networkEnemies[n].physics1, networkEnemies[n].physics2);
                         ClientSend.ControlAI(networkEnemies[n]);
                         ClientSend.StatusAI(networkEnemies[n]);
                     }
@@ -16195,7 +16279,7 @@ public class GameManager : MonoBehaviour
         {
             num = FUN_1E354(v);
             num2 = (short)FUN_1E354(v2);
-            return (uint)((num << 16) | num2);
+            return (uint)((num << 16) | (ushort)num2);
         }
         num2 = (short)FUN_1E354(v);
         short num3 = (short)FUN_1E354(v2);
@@ -16259,7 +16343,7 @@ public class GameManager : MonoBehaviour
         Vector3Int param3 = Utilities.FUN_24148(terrain.DAT_BDFF0[0], param1);
         int num = FUN_1E67C(param2);
         short num2 = (short)FUN_1E67C(param3);
-        return (uint)((num << 16) | num2);
+        return (uint)(((uint)num << 16) | (ushort)num2);
     }
 
     public void FUN_15B00(int param1, byte param2, byte param3, byte param4)
@@ -16498,7 +16582,6 @@ public class GameManager : MonoBehaviour
         hit.collider2.Seek(position2, SeekOrigin.Begin);
         return hit;
     }
-
 
     public void FUN_2D778(VigObject param1, VigTransform param2)
     {

@@ -6,9 +6,11 @@ using UnityEngine.SceneManagement;
 [BurstCompile]
 public class ClientHandle : MonoBehaviour
 {
-    public static void Joined(Packet _packet, long userId)
+    public static async void Joined(Packet _packet, long userId)
     {
-        if (SceneManager.GetActiveScene().name != "MENU-Driver" || SceneManager.GetActiveScene().name != "DEBUG-Online" || SceneManager.GetActiveScene().name != "LoadScene")
+
+        //Solo funcionar Para Lobby de Vehiculos
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
         {
             //Get Username
             GameManager.instance.SetPlayer(_packet);
@@ -17,7 +19,6 @@ public class ClientHandle : MonoBehaviour
 
         string text = _packet.ReadString();
         Demo.instance.lobbyInput.text = text;
-        Debug.Log("Nuevo Usuario...");
         UnityEngine.Debug.Log(text + " joined." + " User ID: " + userId.ToString());
         GameManager.instance.networkMembers.Add(userId, null);
         Demo.instance.playerReady.Add(userId, value: false);
@@ -25,23 +26,23 @@ public class ClientHandle : MonoBehaviour
         Demo.instance.playerVehicles.Add(userId, 0);
         Demo.instance.InstantiateText(userId);
 
-        ClientSend.Welcome(userId);
+        await ClientSend.Welcome(userId);
 
         if (GameManager.instance.ready)
         {
-            ClientSend.Ready(userId);
+            await ClientSend.Ready(userId);
         }
         else
         {
-            ClientSend.NotReady(userId);
+            await ClientSend.NotReady(userId);
         }
         if (DiscordController.IsOwner())
         {
-            ClientSend.Mode(userId);
-            ClientSend.Map(userId);
-            ClientSend.Damage(userId);
-            ClientSend.Difficulty(userId);
-            ClientSend.Lives(GameManager.instance.playerSpawns, userId);
+            await ClientSend.Mode(userId);
+            await ClientSend.Map(userId);
+            await ClientSend.Damage(userId);
+            await ClientSend.Difficulty(userId);
+            await ClientSend.Lives(GameManager.instance.playerSpawns, userId);
         }
     }
 
@@ -82,6 +83,7 @@ public class ClientHandle : MonoBehaviour
         }
     }
 
+    [System.Obsolete]
     public static void Load(Packet _packet, long userId)
     {
         GameManager.instance.LoadMultiplayerLevel(isHosting: false);
@@ -928,7 +930,10 @@ public class ClientHandle : MonoBehaviour
 
     public static void Pause(Packet _packet, long userId)
     {
-        GameManager.instance.isWait = !GameManager.instance.isWait;
+        if (!GameManager.instance.isWait)
+        {
+            GameManager.instance.isWait = !GameManager.instance.isWait;
+        }
         GameManager.instance.paused = !GameManager.instance.paused;
     }
 }

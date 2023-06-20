@@ -5,73 +5,129 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEditor;
 
-public class SceneLoader : MonoBehaviour
+namespace LoadMap
 {
-    public List<Sprite> Map;
-    public RawImage setMap;
-    public TextMeshProUGUI mapDescription;
-    public TextMeshProUGUI loadingStatus;
-
-    private float loadingProgress = 0f;
-
-    private Task map2()
+    public class SceneLoader : MonoBehaviour
     {
-        foreach (Scene item in SceneManager.GetAllScenes())
+
+        public static SceneLoader instance;
+
+        [SerializeField]
+        public Canvas canvasLoadScene;
+        public static Canvas staticCanvasLoadScene;
+
+        [SerializeField]
+        public List<Sprite> Map;
+        public static List<Sprite> staticMap;
+
+        [SerializeField]
+        public RawImage setMap;
+        public static RawImage staticSetMap;
+
+        [SerializeField]
+        public TextMeshProUGUI mapDescription;
+        public static TextMeshProUGUI staticMapDescription;
+
+        [SerializeField]
+        public TextMeshProUGUI loadingStatus;
+        public static TextMeshProUGUI staticLoadingStatus;
+
+        private float loadingProgress = 0f;
+
+
+        public static Task destroy()
         {
-            if (item.buildIndex >= 1 && item.buildIndex < 19)
+            UnityEngine.Object.DontDestroyOnLoad(instance.gameObject);
+            return Task.CompletedTask;
+        }
+
+        [System.Obsolete]
+        public static Task getMap(int sceneIndex)
+        {
+            Debug.Log("Obteniendo...");
+            //canvasLoadScene.gameObject.SetActive(false);
+            //foreach (Scene item in SceneManager.GetAllScenes())
+            //{
+            //    if (item.buildIndex >= 1 && item.buildIndex < 19)
+            //    {
+            //        setMap.texture = Map[item.buildIndex - 1].texture;
+            //        Debug.Log("Scene: " + item.buildIndex);
+            //        switch (item.buildIndex)
+            //        {
+            //            case 1:
+            //                mapDescription.text = "";
+            //                break;
+            //            default:
+            //                mapDescription.text = "";
+            //                break;
+            //
+            //        }
+            //    }
+            //}
+            staticSetMap.texture = staticMap[sceneIndex - 1].texture;
+
+            //Descripcion Mapa
+            switch (sceneIndex)
             {
-                setMap.texture = Map[item.buildIndex - 1].texture;
-                Debug.Log("Scene: " + item.buildIndex);
-                switch (item.buildIndex)
+                case 1:
+                    staticMapDescription.text = "";
+                    break;
+                default:
+                    staticMapDescription.text = "";
+                    break;
+            }
+            if (GameManager.instance)
+            {
+                if (GameManager.instance.isHost)
                 {
-                    case 1:
-                        mapDescription.text = "";
-                        break;
-                    default:
-                        mapDescription.text = "";
-                        break;
-
+                    staticLoadingStatus.text = "Press BackSpace to Start";
                 }
+                else { staticLoadingStatus.text = "Waiting Host..."; }
             }
+            return Task.CompletedTask;
         }
-        return Task.CompletedTask;
 
-    }
-
-    private void Start()
-    {
-        map2();
-        if (GameManager.instance)
+        private void Awake()
         {
-            if (GameManager.instance.isHost)
+            if (instance == null)
             {
-                loadingStatus.text = "Press BackSpace to Start";
+                instance = this;
+                UnityEngine.Object.DontDestroyOnLoad(base.gameObject);
+                canvasLoadScene = this.gameObject.GetComponent<Canvas>();
+                staticCanvasLoadScene = canvasLoadScene;
+                staticMap = Map;
+                staticSetMap = setMap;
+                staticMapDescription = mapDescription;
+                staticLoadingStatus = loadingStatus;
             }
-            else { loadingStatus.text = "Waiting Host..."; }
         }
-        //Debug.Log("Get Scene: " + SceneManager.sceneCount.ToString() + " - " + SceneManager.GetActiveScene().buildIndex);
+
+
+        private void Start()
+        {
+            //Debug.Log("Get Scene: " + SceneManager.sceneCount.ToString() + " - " + SceneManager.GetActiveScene().buildIndex);
+        }
+
+        //public IEnumerator LoadScene(int map)
+        //{
+        //    AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(map);
+        //    asyncLoad.allowSceneActivation = false;
+        //
+        //    while (!asyncLoad.isDone)
+        //    {
+        //        loadingProgress = asyncLoad.progress;
+        //
+        //        // Si la carga está completa (progreso igual a 0.9), permitir la activación de la escena
+        //        if (asyncLoad.progress >= 0.9f)
+        //        {
+        //            asyncLoad.allowSceneActivation = true;
+        //        }
+        //
+        //        yield return null;
+        //    }
+        //}
 
     }
-
-    //public IEnumerator LoadScene(int map)
-    //{
-    //    AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(map);
-    //    asyncLoad.allowSceneActivation = false;
-    //
-    //    while (!asyncLoad.isDone)
-    //    {
-    //        loadingProgress = asyncLoad.progress;
-    //
-    //        // Si la carga está completa (progreso igual a 0.9), permitir la activación de la escena
-    //        if (asyncLoad.progress >= 0.9f)
-    //        {
-    //            asyncLoad.allowSceneActivation = true;
-    //        }
-    //
-    //        yield return null;
-    //    }
-    //}
-
 }
-

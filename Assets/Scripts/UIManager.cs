@@ -23,7 +23,6 @@ public class UIManager : MonoBehaviour
     public List<Sprite> slotSprites;
     public List<Sprite> asciiSprites;
     public GameObject unitPrefab;
-    public GameObject loadPanel;
     public bool loadScene = true;
     public bool startScene = false;
 
@@ -339,17 +338,15 @@ public class UIManager : MonoBehaviour
         textStartScene.text = "Press BackSpace to Continue...";
         textStartScene.font = Resources.Load<TMP_FontAsset>("ds");
 
-        loadPanel = canvasObject;
+        // loadPanel = canvasObject;
     }
-
-
 
     public UIMessage uiMessagesScript;
 
-    private void Start()
+    public void UiInitiate()
     {
         AddUIMessagesScript(this.gameObject);
-        makeLoadscene();
+        //makeLoadscene();
 
         //Crea un objeto para insertar los GameTags
         GameObject obj = new GameObject("GameTagPlayers");
@@ -372,17 +369,21 @@ public class UIManager : MonoBehaviour
         //gameTag2 = obj2.AddComponent<TextMeshPro>();
         //Asignar el sprite al SpriteRenderer
         //gameTag2.text = "Player 1";
+        isEnabled = true;
     }
 
-
+    public static bool isEnabled = false;
     private void Update()
     {
-        if (GameManager.instance.paused)
-            if (!startScene)
-            {
-                startScene = true;
-                loadPanel.gameObject.SetActive(false);
-            }
+        if (GameManager.instance.isWait)
+        {
+            if (GameManager.instance.paused)
+                if (!startScene)
+                {
+                    startScene = true;
+                    //loadPanel.gameObject.SetActive(false);
+                }
+        }
     }
 
     public void WinScreen()
