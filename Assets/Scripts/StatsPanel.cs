@@ -403,6 +403,9 @@ public class StatsPanel : MonoBehaviour
     public float reflectionUpdateTime = 0.1f;
     public int Vehiclereflection = 0;
 
+    //await Task.Delay(TimeSpan.FromSeconds(clipDuration));
+    //await Task.Yield(); // Esperar un frame
+
     IEnumerator UpdateReflections()
     {
         while (true)

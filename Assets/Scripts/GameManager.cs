@@ -33,6 +33,8 @@ public struct VehicleStats
     public byte avoidance;
 }
 
+[Serializable]
+
 public struct VehicleData
 {
     // Token: 0x04000414 RID: 1044
@@ -146,6 +148,21 @@ public class GameManager : MonoBehaviour
     public float TargetFrameRate = 60.0f;
     float currentFrameTime;
 
+    private async Task WaitForNextFrame()
+    {
+        while (true)
+        {
+            await Task.Yield(); // Esperar un frame
+            currentFrameTime += 1.0f / TargetFrameRate;
+            var t = Time.realtimeSinceStartup;
+            var sleepTime = currentFrameTime - t - 0.01f;
+            if (sleepTime > 0)
+                Thread.Sleep((int)(sleepTime * 1000));
+            while (t < currentFrameTime)
+                t = Time.realtimeSinceStartup;
+            Debug.Log("frame per second... currentFrameTime:" + currentFrameTime + " - t:" + t + " - sleepTime:" + sleepTime);
+        }
+    }
 
     public struct TerrainJob : IJob
     {
@@ -11263,7 +11280,7 @@ public class GameManager : MonoBehaviour
         Players += 1;
         statsPanel.SpawnVehicle(Players, 0);
     }
-    public void SetDriver()
+    public async void SetDriver()
     {
         if (SceneManager.GetActiveScene().name == "MENU-Driver")
         {
@@ -11381,7 +11398,10 @@ public class GameManager : MonoBehaviour
             }
             //driverDropdown.value = vehicles[0];
             if (online)
-                ClientSend.NotReady(0L);
+                await ClientSend.NotReady(0L).ContinueWith(Task =>
+                    {
+
+                    });
             Demo.instance.readyLabel.gameObject.SetActive(value: true);
             Demo.instance.notReadyLabel.gameObject.SetActive(value: false);
             Demo.instance.SetupPlaceholders();
@@ -11446,14 +11466,18 @@ public class GameManager : MonoBehaviour
                     break;
             }
             if (online)
-                ClientSend.NotReady(0L);
+                await ClientSend.NotReady(0L).ContinueWith(Task =>
+                    {
+
+                    });
             Demo.instance.readyLabel.gameObject.SetActive(value: true);
             Demo.instance.notReadyLabel.gameObject.SetActive(value: false);
             Demo.instance.SetupPlaceholders();
         }
+        await Task.Yield(); // Esperar un frame
     }
 
-    public void SetStage()
+    public async void SetStage()
     {
         if (SceneManager.GetActiveScene().name == "MENU-Driver")
         {
@@ -11528,7 +11552,11 @@ public class GameManager : MonoBehaviour
             Debug.Log("Scene Set: " + map);
         }
         if (online)
-            ClientSend.Map(0L);
+            await ClientSend.Map(0L).ContinueWith(Task =>
+                    {
+
+                    });
+        await Task.Yield(); // Esperar un frame
     }
 
     public void SetDithering()
@@ -11554,7 +11582,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SetLives()
+    public async void SetLives()
     {
         if (SceneManager.GetActiveScene().name == "MENU-Driver")
         {
@@ -11575,7 +11603,11 @@ public class GameManager : MonoBehaviour
             }
         }
         if (online)
-            ClientSend.Lives(playerSpawns, 0L);
+            await ClientSend.Lives(playerSpawns, 0L).ContinueWith(Task =>
+                    {
+
+                    });
+        await Task.Yield(); // Esperar un frame
     }
 
     public void SetGameMode()
@@ -11616,7 +11648,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SetMultiplayerMode()
+    public async void SetMultiplayerMode()
     {
         if (SceneManager.GetActiveScene().name == "MENU-Driver")
         {
@@ -11662,7 +11694,10 @@ public class GameManager : MonoBehaviour
             }
             selectOptions.transform.Find("Mode/Text (TMP)").GetComponent<TextMeshProUGUI>().text = gameMode.ToString().Substring(0, gameMode.ToString().Length - 1);
             if (online)
-                ClientSend.Mode(0L);
+                await ClientSend.Mode(0L).ContinueWith(Task =>
+                    {
+
+                    });
         }
         else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
         {
@@ -11702,11 +11737,15 @@ public class GameManager : MonoBehaviour
                     break;
             }
             if (online)
-                ClientSend.Mode(0L);
+                await ClientSend.Mode(0L).ContinueWith(Task =>
+                    {
+
+                    });
         }
+        await Task.Yield(); // Esperar un frame
     }
 
-    public void SetDamage()
+    public async void SetDamage()
     {
         if (SceneManager.GetActiveScene().name == "MENU-Driver")
         {
@@ -11724,7 +11763,10 @@ public class GameManager : MonoBehaviour
             }
             selectOptions.transform.Find("Damages/Text (TMP)").GetComponent<TextMeshProUGUI>().text = damageText;
             if (online)
-                ClientSend.Damage(0L);
+                await ClientSend.Damage(0L).ContinueWith(Task =>
+                    {
+
+                    });
         }
         else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
         {
@@ -11732,11 +11774,15 @@ public class GameManager : MonoBehaviour
             damageMode[0] = (sbyte)value;
             damageMode[1] = (sbyte)value;
             if (online)
-                ClientSend.Damage(0L);
+                await ClientSend.Damage(0L).ContinueWith(Task =>
+                    {
+
+                    });
         }
+        await Task.Yield(); // Esperar un frame
     }
 
-    public void SetDifficulty()
+    public async void SetDifficulty()
     {
         if (SceneManager.GetActiveScene().name == "MENU-Driver")
         {
@@ -11756,18 +11802,25 @@ public class GameManager : MonoBehaviour
             this.difficultyMode = (byte)value;
             selectOptions.transform.Find("Difficulty/Text (TMP)").GetComponent<TextMeshProUGUI>().text = difficultyInt.ToString();
             if (online)
-                ClientSend.Difficulty(0L);
+                await ClientSend.Difficulty(0L).ContinueWith(Task =>
+                    {
+
+                    });
         }
         else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
         {
             int value = difficultyDropdown.value;
             this.difficultyMode = (byte)value;
             if (online)
-                ClientSend.Difficulty(0L);
+                await ClientSend.Difficulty(0L).ContinueWith(Task =>
+                    {
+
+                    });
         }
+        await Task.Yield(); // Esperar un frame
     }
 
-    public void SetOnlineDamage()
+    public async void SetOnlineDamage()
     {
         if (SceneManager.GetActiveScene().name == "MENU-Driver")
         {
@@ -11795,7 +11848,11 @@ public class GameManager : MonoBehaviour
             this.difficultyMode = (byte)value;
         }
         if (online)
-            ClientSend.Difficulty(0L);
+            await ClientSend.Difficulty(0L).ContinueWith(Task =>
+                    {
+
+                    });
+        await Task.Yield(); // Esperar un frame
     }
     public void SetDrawPlayer()
     {
@@ -11898,19 +11955,26 @@ public class GameManager : MonoBehaviour
     }
 
     [Obsolete]
-    public void SetPlayerReady(bool ready)
+    public async void SetPlayerReady(bool ready)
     {
         this.ready = ready;
         if (ready)
         {
             if (online)
-                ClientSend.Ready(0L);
+                await ClientSend.Ready(0L).ContinueWith(Task =>
+                    {
+
+                    });
         }
         else
         {
             if (online)
-                ClientSend.NotReady(0L);
+                await ClientSend.NotReady(0L).ContinueWith(Task =>
+                    {
+
+                    });
         }
+        await Task.Yield(); // Esperar un frame
     }
 
     public void RandomizeEnemies(int players)
@@ -11996,6 +12060,7 @@ public class GameManager : MonoBehaviour
         totalSpawns = DAT_1030[0] + DAT_1030[1] + DAT_1030[2] + DAT_1030[3];
         UnityEngine.Object.DontDestroyOnLoad(base.gameObject);
         await LoadSceneAsyncWithDelay(map);
+        await Task.Yield(); // Esperar un frame
     }
     public bool isHost = false;
 
@@ -12023,9 +12088,12 @@ public class GameManager : MonoBehaviour
     [Obsolete]
     public async void LoadMultiplayerLevel(bool isHosting)
     {
+
         //online = true;
         //Debug.Log("Set Player: " + statsPanel.cursor);
+
         SetDriver();
+        SetPLUS();
         if (DriverPlus)
             vehicles[0] += 21;
         SetDPAD();
@@ -12035,7 +12103,10 @@ public class GameManager : MonoBehaviour
         SetDrawPlayer();
 
         if (online)
-            ClientSend.Ready(0L);
+            await ClientSend.Ready(0L).ContinueWith(Task =>
+                    {
+
+                    });
         if (isHosting)
         {
             SetMultiplayerMode();
@@ -12060,7 +12131,10 @@ public class GameManager : MonoBehaviour
             }
             RandomizeEnemies(2);
             if (online)
-                ClientSend.Load();
+                await ClientSend.Load().ContinueWith(Task =>
+                    {
+
+                    });
         }
         for (short num = 1; num <= 6; num = (short)(num + 1))
         {
@@ -12078,6 +12152,7 @@ public class GameManager : MonoBehaviour
         isHost = isHosting;
         Debug.Log("Es Host?: " + isHost);
         await LoadSceneAsyncWithDelay(map);
+        await Task.Yield(); // Esperar un frame
     }
 
 
@@ -15098,20 +15173,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    IEnumerator WaitForNextFrame()
-    {
-        while (true)
-        {
-            yield return new WaitForEndOfFrame();
-            currentFrameTime += 1.0f / TargetFrameRate;
-            var t = Time.realtimeSinceStartup;
-            var sleepTime = currentFrameTime - t - 0.01f;
-            if (sleepTime > 0)
-                Thread.Sleep((int)(sleepTime * 1000));
-            while (t < currentFrameTime)
-                t = Time.realtimeSinceStartup;
-        }
-    }
 
     int setTouch;
     public void setMapOnLeftButtonPressed()
@@ -15238,7 +15299,7 @@ public class GameManager : MonoBehaviour
     public float progress = 0f; //Progreso actual de la barra
     public Texture2D progressBarTexture;
 
-    private void OnGUI()
+    private async void OnGUI()
     {
         if (!LoadScene || !isWait) // Solo dibujar la barra de progreso si no se han cargado completamente o esta esperando el Host
         {
@@ -15269,6 +15330,7 @@ public class GameManager : MonoBehaviour
             //Eliminar la barra de progreso
             //DestroyProgressBar();
         }
+        await Task.Yield(); // Esperar un frame
     }
 
     private void DestroyProgressBar()
@@ -15375,7 +15437,7 @@ public class GameManager : MonoBehaviour
             await Task.Yield(); // Esperar un frame
         }
         await SceneLoader.setLoadingStatus(isHost);
-
+        await Task.Yield(); // Esperar un frame
         //SceneManager.SetActiveScene(SceneManager.GetSceneAt(sceneMap));
         // La carga de la escena se ha completado correctamente, puedes realizar cualquier otra acción necesaria aquí
     }
@@ -15423,7 +15485,7 @@ public class GameManager : MonoBehaviour
 
     //List<Sprite> Maps = StatsPanel.instance.maps;
 
-    private void UpdateOptions()
+    private async void UpdateOptions()
     {
         if (setTouch <= 2)
             FUN_1E098(1, Menu.instance.sounds, 7, 4095);
@@ -15500,7 +15562,10 @@ public class GameManager : MonoBehaviour
                     DAT_1030[i] = b;
                 }
                 //touchMessage = "Damages Left: " + currentValueLives;
-                ClientSend.Lives(playerSpawns, 0L);
+                await ClientSend.Lives(playerSpawns, 0L).ContinueWith(Task =>
+                    {
+
+                    });
             }
             else
             {
@@ -15519,7 +15584,10 @@ public class GameManager : MonoBehaviour
                     DAT_1030[i] = b;
                 }
                 //touchMessage = "Damages Left: " + currentValueLives;
-                ClientSend.Lives(playerSpawns, 0L);
+                await ClientSend.Lives(playerSpawns, 0L).ContinueWith(Task =>
+                    {
+
+                    });
 
             }
             else
@@ -15535,7 +15603,10 @@ public class GameManager : MonoBehaviour
                 currentDamageIndex -= 1;
                 damageMode[0] = (sbyte)currentDamageIndex;
                 damageMode[1] = (sbyte)currentDamageIndex;
-                ClientSend.Damage(0L);
+                await ClientSend.Damage(0L).ContinueWith(Task =>
+                    {
+
+                    });
                 //touchMessage = "Damages Left: " + currentDamageIndex;
             }
             else
@@ -15551,7 +15622,10 @@ public class GameManager : MonoBehaviour
                 currentDamageIndex += 1;
                 damageMode[0] = (sbyte)currentDamageIndex;
                 damageMode[1] = (sbyte)currentDamageIndex;
-                ClientSend.Damage(0L);
+                await ClientSend.Damage(0L).ContinueWith(Task =>
+                    {
+
+                    });
                 //touchMessage = "Damages Right: " + currentDamageIndex;
             }
             else
@@ -15742,10 +15816,11 @@ public class GameManager : MonoBehaviour
                     DestroyProgressBar();
                     isWait = !isWait;
                     await new ClientSend().waitLoad();
+                    await Task.Yield(); // Esperar un frame
                     reflectionsCoroutine = StartCoroutine(UpdateReflections());
                     StartCoroutine(UpdateReflections());
                     //SceneManager.UnloadSceneAsync(19);
-                    MusicManager.instance.PlayNextMusic().ContinueWith(Task =>
+                    await MusicManager.instance.PlayNextMusic().ContinueWith(Task =>
                     {
 
                     });
@@ -15758,6 +15833,7 @@ public class GameManager : MonoBehaviour
             if (!LevelManager.instance)
             {
                 Debug.Log("Return...");
+                await Task.Yield(); // Esperar un frame
                 return;
             }
             else
@@ -15793,6 +15869,7 @@ public class GameManager : MonoBehaviour
                     {
                         Debug.Log("No hay Miembros en Partida..." + networkMembers.Count);
                         //Debug.Log("No hay Miembros en Partida..." + networkMembers.name);
+                        await Task.Yield(); // Esperar un frame
                         return;
                     }
                     Debug.Log("Miembros en Partida..." + networkMembers.Count);
@@ -15923,7 +16000,7 @@ public class GameManager : MonoBehaviour
                     fieldOfView = vCamera2.fieldOfView;
                     vigObject = vCamera2;
                 }
-                LevelManager.instance.defaultCamera.transform.SetParent(vigObject.transform, worldPositionStays: false);
+                LevelManager.instance.defaultCamera.transform.SetParent(vigObject.transform, worldPositionStays: false); //error?
                 FUN_2D278(vigObject, fieldOfView);
                 terrain.DAT_BDFF0[0] = DAT_F00;
                 FUN_31678();
@@ -15950,8 +16027,11 @@ public class GameManager : MonoBehaviour
                 DAT_1110.Remove(DAT_1110_tmp[m]);
             }
             DAT_1110_tmp.Clear();
+
+            //Si no son los modos Online
             if (gameMode < _GAME_MODE.Versus2)
             {
+                await Task.Yield(); // Esperar un frame
                 return;
             }
             if (online)
@@ -15976,6 +16056,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        await Task.Yield(); // Esperar un frame
     }
 
     private Coroutine reflectionsCoroutine;

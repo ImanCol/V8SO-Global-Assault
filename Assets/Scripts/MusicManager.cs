@@ -12,16 +12,17 @@ using Beebyte;
 using Beebyte.Obfuscator;
 using System;
 using Random = UnityEngine.Random;
+using UnityEngine.Networking;
 
 [SkipRename]
-[System.Serializable]
+[Serializable]
 public class TrackList
 {
     public string[] list;
     public TrackList[] tracks;
 }
 
-[System.Serializable]
+[Serializable]
 public class TrackElement
 {
     public string audioClipName;
@@ -183,6 +184,7 @@ public class MusicManager : MonoBehaviour
 
     }
 
+    [Obsolete]
     private void Start()
     {
         if (SceneManager.GetActiveScene().buildIndex == 0)
@@ -505,7 +507,7 @@ public class MusicManager : MonoBehaviour
     }
     public async Task PlayNextMusicAfterClipDuration(float clipDuration)
     {
-        await Task.Delay(System.TimeSpan.FromSeconds(clipDuration));
+        await Task.Delay(TimeSpan.FromSeconds(clipDuration));
         await PlayNextMusic();
     }
 
@@ -668,6 +670,7 @@ public class MusicManager : MonoBehaviour
         isFading = false;
     }
 
+    [Obsolete]
     private async Task PreloadMusicClips()
     {
         // Obtener la lista de pistas de audio disponibles actualmente
@@ -729,12 +732,13 @@ public class MusicManager : MonoBehaviour
     private string GetRelativePath(string absolutePath, string basePath)
     {
         // Obtener la ruta relativa de un archivo o carpeta en relación a una carpeta base
-        System.Uri baseUri = new System.Uri(basePath + "/");
-        System.Uri absoluteUri = new System.Uri(absolutePath);
-        System.Uri relativeUri = baseUri.MakeRelativeUri(absoluteUri);
-        return System.Uri.UnescapeDataString(relativeUri.ToString());
+        Uri baseUri = new Uri(basePath + "/");
+        Uri absoluteUri = new Uri(absolutePath);
+        Uri relativeUri = baseUri.MakeRelativeUri(absoluteUri);
+        return Uri.UnescapeDataString(relativeUri.ToString());
     }
 
+    [Obsolete]
     private async Task GetAvailableMusicList()
     {
         List<string> availableMusicList = new List<string>();
@@ -762,6 +766,7 @@ public class MusicManager : MonoBehaviour
             SetupDropdownOptions();
     }
 
+    [Obsolete]
     private async Task ProcessAudioFilesCoroutine(string[] audioFiles, string streamingAssetsPath, Dictionary<string, List<string>> trackDictionary, List<string> availableMusicList)
     {
         foreach (string audioFilePath in audioFiles)
@@ -784,51 +789,58 @@ public class MusicManager : MonoBehaviour
         }
     }
 
+    [Obsolete]
     private async Task LoadMusicClipFromFilePathAsync(string filePath, string relativePath)
     {
         string trackName = Path.GetFileNameWithoutExtension(relativePath);
-        using (var www = new WWW("file://" + filePath))
+
+        string url;
+#if UNITY_ANDROID && !UNITY_EDITOR
+    url = Path.Combine(Application.streamingAssetsPath, filePath);
+#else
+        url = "file://" + filePath;
+#endif
+
+        using (var webRequest = UnityWebRequestMultimedia.GetAudioClip(url, AudioType.UNKNOWN))
         {
             TaskCompletionSource<bool> taskCompletionSource = new TaskCompletionSource<bool>();
-            // Corutina para comprobar el estado de WWW y completar la tarea
-            IEnumerator CheckWWWStatus()
+            // Envía la solicitud
+            var asyncOperation = webRequest.SendWebRequest();
+
+            // Espera a que se complete la solicitud
+            asyncOperation.completed += (operation) =>
             {
-                yield return www;
-                taskCompletionSource.SetResult(true);
-            }
-            // Iniciar la corutina
-            Coroutine coroutine = StartCoroutine(CheckWWWStatus());
-            // Esperar a que se complete la tarea
-            await taskCompletionSource.Task;
-            // Detener la corutina
-            StopCoroutine(coroutine);
-
-            if (string.IsNullOrEmpty(www.error))
-            {
-                AudioClip audioClip = www.GetAudioClip(false);
-
-                Debug.Log("Audio clip loaded: " + relativePath);
-
-                TrackElement trackElement = new TrackElement();
-                trackElement.audioClipName = trackName;
-                trackElement.audioClipPath = relativePath;
-                trackElement.audioClip = audioClip;
-
-                musicClips.Add(relativePath, trackElement);
-
-                if (preloadCoroutine != null)
+                if (!webRequest.isNetworkError && !webRequest.isHttpError)
                 {
-                    float progress = (float)musicClips.Count / 63f;
-                    currentSceneProgress = progress;
+                    AudioClip audioClip = DownloadHandlerAudioClip.GetContent(webRequest);
+                    Debug.Log("Audio clip loaded: " + relativePath);
+
+                    TrackElement trackElement = new TrackElement();
+                    trackElement.audioClipName = trackName;
+                    trackElement.audioClipPath = relativePath;
+                    trackElement.audioClip = audioClip;
+
+                    musicClips.Add(relativePath, trackElement);
+
+                    if (preloadCoroutine != null)
+                    {
+                        float progress = (float)musicClips.Count / 63f;
+                        currentSceneProgress = progress;
+                    }
                 }
-            }
-            else
-            {
-                Debug.LogError("Error al cargar el archivo de audio: " + filePath);
-                Debug.Log("Error loading audio clip: " + www.error);
-            }
+                else
+                {
+                    Debug.LogError("Error al cargar el archivo de audio: " + filePath);
+                    Debug.Log("Error loading audio clip: " + webRequest.error);
+                }
+
+                taskCompletionSource.SetResult(true);
+            };
+
+            await taskCompletionSource.Task;
         }
     }
+
 
 
     [Header("Progres Bar")]

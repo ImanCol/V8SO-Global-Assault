@@ -3,7 +3,7 @@
   <Core>
     <Name>Application</Name>
     <Is64BitInstruction>True</Is64BitInstruction>
-    <ApplicationId>0x01004b9000590000</ApplicationId>
+    <ApplicationId>0x01004b9000490000</ApplicationId>
     <ProgramIndex>0</ProgramIndex>
     <MainThreadStackSize>0x00100000</MainThreadStackSize>
     <ProcessAddressSpace>AddressSpace64Bit</ProcessAddressSpace>
@@ -24,7 +24,6 @@
     <StartupUserAccount>RequiredWithNetworkServiceAccountAvailable</StartupUserAccount>
     <UserAccountSwitchLock>Disable</UserAccountSwitchLock>
     <SupportedLanguage>AmericanEnglish</SupportedLanguage>
-    <PresenceGroupId>0x01004b9000590000</PresenceGroupId>
     <Screenshot>Allow</Screenshot>
     <DataLossConfirmation>Required</DataLossConfirmation>
     <UserAccountSaveDataSize>0x0000000009600000</UserAccountSaveDataSize>
