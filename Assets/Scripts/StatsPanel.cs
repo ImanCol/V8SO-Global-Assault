@@ -401,7 +401,7 @@ public class StatsPanel : MonoBehaviour
     public float fixedUpdateRate = 1f / 60f; // Tasa de fotogramas fija de 60 fps
     public float timeSinceLastUpdate = 0f;
     public float reflectionUpdateTime = 0.1f;
-    public int Vehiclerelfection = 0;
+    public int Vehiclereflection = 0;
 
     IEnumerator UpdateReflections()
     {
@@ -410,7 +410,7 @@ public class StatsPanel : MonoBehaviour
             for (int i = 0; i < vehicles.Count; i++)
             {
                 Vehicle vehicle = this.vehicles[i];
-                if (i == Vehiclerelfection)
+                if (i == Vehiclereflection)
                 {
                     if (vehicle == null)
                     {
@@ -429,10 +429,10 @@ public class StatsPanel : MonoBehaviour
                 }
             }
             yield return new WaitForSeconds(reflectionUpdateTime);
-            Vehiclerelfection += 1;
-            if (Vehiclerelfection == 10)
+            Vehiclereflection += 1;
+            if (Vehiclereflection == 10)
             {
-                Vehiclerelfection = 0;
+                Vehiclereflection = 0;
             }
         }
     }

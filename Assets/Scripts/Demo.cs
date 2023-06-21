@@ -196,6 +196,7 @@ public class Demo : MonoBehaviour
             });
         }
     }
+
     public void DeleteLobbies()
     {
         for (int i = 0; i < this.lobbyList.childCount; i++)
@@ -204,7 +205,6 @@ public class Demo : MonoBehaviour
             UnityEngine.Object.Destroy(this.lobbyList.GetChild(i).gameObject);
         }
     }
-
 
     //public void JoinLobby(long lobbyId, string secret)
     public static bool JoinLobby(Demo __instance, long lobbyId, string secret)

@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using Unity.Burst;
 using Beebyte;
 using Beebyte.Obfuscator;
+using System;
+using Random = UnityEngine.Random;
 
 [SkipRename]
 [System.Serializable]
@@ -27,7 +29,7 @@ public class TrackElement
     public AudioClip audioClip;
 }
 
-[System.Serializable]
+[Serializable]
 public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
 {
     [SerializeField]
@@ -402,11 +404,14 @@ public class MusicManager : MonoBehaviour
                     if (play) //Si esta activa la reproduccion
                         // Verificar si el audio ha terminado de reproducirse
                         if (music)
-                            if (music.time >= music.clip.length)
-                            {
-                                Debug.Log("Finalizo...reproducir siguiente");
-                                await PlayNextMusic();
-                            }
+                            if (GameManager.instance.isWait)
+                                if (musicClips.Count != 0)
+                                    if (music.clip == null)
+                                        if (music.time >= music.clip.length)
+                                        {
+                                            Debug.Log("Finalizo...reproducir siguiente");
+                                            await PlayNextMusic();
+                                        }
             }
         }
         if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.O) && isDev)

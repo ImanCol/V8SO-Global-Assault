@@ -103,6 +103,7 @@ public enum _VEHICLE_TYPE
 }
 
 [BurstCompile]
+[System.Serializable]
 public class Vehicle : VigObject
 {
     public struct AI

@@ -78,14 +78,6 @@ namespace LoadMap
                     staticMapDescription.text = "";
                     break;
             }
-            if (GameManager.instance)
-            {
-                if (GameManager.instance.isHost)
-                {
-                    staticLoadingStatus.text = "Press BackSpace to Start";
-                }
-                else { staticLoadingStatus.text = "Waiting Host..."; }
-            }
             return Task.CompletedTask;
         }
 
@@ -101,6 +93,8 @@ namespace LoadMap
                 staticSetMap = setMap;
                 staticMapDescription = mapDescription;
                 staticLoadingStatus = loadingStatus;
+                staticLoadingStatus.text = "";
+                staticMapDescription.text = "";
             }
         }
 
@@ -108,6 +102,20 @@ namespace LoadMap
         private void Start()
         {
             //Debug.Log("Get Scene: " + SceneManager.sceneCount.ToString() + " - " + SceneManager.GetActiveScene().buildIndex);
+        }
+
+        public static Task setLoadingStatus(bool isHost)
+        {
+            if (GameManager.instance)
+            {
+                if (isHost)
+                {
+                    staticLoadingStatus.text = "Press BackSpace to Start";
+                }
+                else { staticLoadingStatus.text = "Waiting Host..."; }
+            }
+            return Task.CompletedTask;
+
         }
 
         //public IEnumerator LoadScene(int map)

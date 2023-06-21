@@ -125,6 +125,7 @@ public class PSXEffectsEditor : Editor {
 			if (worldSpaceSnapping.boolValue) {
 				camSnapping.boolValue = EditorGUILayout.Toggle("Camera-Based Snapping", camSnapping.boolValue);
 			}
+			maxDarkness.intValue = EditorGUILayout.IntSlider("Saturated Diffuse", maxDarkness.intValue, 0, 100);
 			shadowType.intValue = EditorGUILayout.Popup("Shadow Type", shadowType.intValue, Enum.GetNames(typeof(ShadowTypes)));
 			EditorGUILayout.Separator();
 		}
@@ -174,7 +175,7 @@ public class PSXEffectsEditor : Editor {
 				Application.OpenURL("https://twitter.com/tripleaxis");
 			}
 			if (GUILayout.Button("Check for Updates")) {
-				psfx.CheckForUpdates();
+				//psfx.CheckForUpdates();
 			}
 		}
 		if (GUILayout.Button(psfx.cfuStatus, tinyStyle)) {
@@ -184,7 +185,6 @@ public class PSXEffectsEditor : Editor {
 		}
 
 		serializedObject.ApplyModifiedProperties();
-		psfx.UpdateProperties();
 		foStyle.fontStyle = prevFoStyle;
 		tinyStyle = prevTinyStyle;
 	}

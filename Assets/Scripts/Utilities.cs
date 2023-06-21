@@ -12,6 +12,7 @@ using UnityEditor;
 
 //Bastantes datos para optimizar?
 [BurstCompile]
+[Serializable]
 public static class Utilities
 {
     public static ushort DAT_10390 = 0;
@@ -3914,6 +3915,7 @@ public class BufferedBinaryReader : IDisposable
     }
 }
 
+[Serializable]
 public class VigTuple
 {
     public VigObject vObject;
@@ -3927,6 +3929,7 @@ public class VigTuple
     }
 }
 
+[Serializable]
 public class VigTuple2
 {
     public short type;
@@ -3943,6 +3946,7 @@ public class VigTuple2
     }
 }
 
+[Serializable]
 public class Navigation
 {
     public Navigation next;

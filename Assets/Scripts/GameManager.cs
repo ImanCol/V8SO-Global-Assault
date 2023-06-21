@@ -11103,30 +11103,13 @@ public class GameManager : MonoBehaviour
 
     public int DAT_1038;
 
-    public List<VigTuple> DAT_1068;
 
-    public List<VigTuple> DAT_1078;
 
     public int DAT_1084;
 
-    public List<VigTuple> DAT_1088;
 
-    public List<VigTuple> DAT_1098;
-
-    public List<VigTuple> DAT_10A8;
-
-    public List<VigTuple> DAT_10C8;
-
-    public List<VigTuple2> DAT_10D8;
-
-    public List<VigTuple> DAT_1088_tmp;
-
-    public List<VigTuple> DAT_1110_tmp;
-
-    public List<VigTuple> worldObjs_tmp;
 
     public int DAT_10F0;
-    public List<VigTuple> DAT_1110;
     public sbyte DAT_111C;
     public SunLensFlare DAT_1124;
     public sbyte[] DAT_1128;
@@ -11208,11 +11191,52 @@ public class GameManager : MonoBehaviour
     public bool DriverPlus;
     public bool experimentalDakota;
     public bool enableReticle;
-    public Dictionary<long, Vehicle> networkMembers;
+
+    [Serializable]
+    public class SerializableVehicle<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
+    {
+        [SerializeField]
+        private List<TKey> vehicleList = new List<TKey>();
+
+        [SerializeField]
+        private List<TValue> vehicleElement = new List<TValue>();
+
+        public void OnBeforeSerialize()
+        {
+            vehicleList.Clear();
+            vehicleElement.Clear();
+
+            foreach (var pair in this)
+            {
+                vehicleList.Add(pair.Key);
+                vehicleElement.Add(pair.Value);
+            }
+        }
+
+        public void OnAfterDeserialize()
+        {
+            this.Clear();
+
+            if (vehicleList.Count != vehicleElement.Count)
+            {
+                Debug.LogError("Error al deserializar el diccionario. La cantidad de claves y valores no coincide.");
+                return;
+            }
+
+            for (int i = 0; i < vehicleList.Count; i++)
+            {
+                this[vehicleList[i]] = vehicleElement[i];
+            }
+        }
+    }
+
+    [Header("Network Members")]
+    [SerializeField]
+    public SerializableVehicle<long, Vehicle> networkMembers = new SerializableVehicle<long, Vehicle>();
     public List<VigObject> networkObjs;
-    public Dictionary<long, short> networkIds;
+    public SerializableVehicle<long, short> networkIds = new SerializableVehicle<long, short>();
     public List<Vehicle> networkEnemies;
-    public Dictionary<short, Vehicle> enemiesDictionary;
+    public SerializableVehicle<short, Vehicle> enemiesDictionary = new SerializableVehicle<short, Vehicle>();
     public int leash;
     private bool atStart;
     public int driverPlus = 0;
@@ -12393,6 +12417,8 @@ public class GameManager : MonoBehaviour
         }
         while (child != null);
     }
+
+
     public void FUN_2DE18()
     {
         Utilities.SetColorMatrix(DAT_FA8);
@@ -13126,16 +13152,32 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    [Header("VigTuple")]
+
+    [SerializeField]
+    public List<VigTuple> DAT_1068;
+    public List<VigTuple> DAT_1078;
+    public List<VigTuple> DAT_1088;
+    public List<VigTuple> DAT_1098;
+    public List<VigTuple> DAT_10A8;
+    public List<VigTuple> DAT_10C8;
+    public List<VigTuple2> DAT_10D8;
+    public List<VigTuple> DAT_1088_tmp;
+    public List<VigTuple> DAT_1110_tmp;
+    public List<VigTuple> worldObjs_tmp;
+    public List<VigTuple> DAT_1110;
+    public VigTuple vigTupleUpdate;
+
     public void FUN_31440(uint param1)
     {
         for (int i = 0; i < DAT_1110.Count; i++)
         {
-            VigTuple vigTuple = DAT_1110[i];
-            if (param1 < vigTuple.flag)
+            vigTupleUpdate = DAT_1110[i];
+            if (param1 < vigTupleUpdate.flag)
             {
                 continue;
             }
-            VigObject vObject = vigTuple.vObject;
+            VigObject vObject = vigTupleUpdate.vObject;
             if (!(vObject == null))
             {
                 vObject.flags &= 4294967294u;
@@ -14665,7 +14707,8 @@ public class GameManager : MonoBehaviour
         Vehicle vehicle = new Vehicle();
         if (!paused)
         {
-            if ((Vehicle)param1 != null)
+            //Verifica si hay objetivos
+            if ((Vehicle)param1.target != null)
             {
                 vehicle = (Vehicle)param1.target;
                 VigObject vigObject = param1.weapons[param1.weaponSlot];
@@ -15033,11 +15076,11 @@ public class GameManager : MonoBehaviour
         worldObjs_tmp = new List<VigTuple>();
         interObjs = new List<VigTuple>();
         hit = new HitDetection(new byte[0]);
-        networkMembers = new Dictionary<long, Vehicle>();
-        networkIds = new Dictionary<long, short>();
+        networkMembers = new SerializableVehicle<long, Vehicle>();
+        networkIds = new SerializableVehicle<long, short>();
         networkObjs = new List<VigObject>();
         networkEnemies = new List<Vehicle>();
-        enemiesDictionary = new Dictionary<short, Vehicle>();
+        enemiesDictionary = new SerializableVehicle<short, Vehicle>();
         noHUD = true;
         DAT_D18 = new byte[2];
         DAT_D19 = new byte[2];
@@ -15122,12 +15165,13 @@ public class GameManager : MonoBehaviour
         UpdateOptions();
     }
 
-    private float loadingProgress = 0f;
 
-    float totalSceneProgress = 0f; //Progreso total de la carga de la escena
-    float currentSceneProgress = 0f; //Progreso actual de la carga de la escena
-    AsyncOperation asyncSceneMap;
-    AsyncOperation asyncLoadScene;
+    [Header("Scene Loading Progress")]
+    public float loadingProgress = 0f;
+    public float totalSceneProgress = 0f; //Progreso total de la carga de la escena
+    public float currentSceneProgress = 0f; //Progreso actual de la carga de la escena
+    public AsyncOperation asyncSceneMap;
+    public AsyncOperation asyncLoadScene;
     public int sceneBuildIndex;
     Scene loadedScene;
 
@@ -15192,14 +15236,13 @@ public class GameManager : MonoBehaviour
     public float progressBarVertical = 15f; //Alto de la barra de progreso
     public float slideSpeed = 200f; //Velocidad de deslizamiento del slide
     public float progress = 0f; //Progreso actual de la barra
-    public Texture2D loadingTexture;
-    public Image loadingBarImage;
     public Texture2D progressBarTexture;
 
     private void OnGUI()
     {
-        if (!LoadScene || !isWait) // Solo dibujar la barra de progreso si los clips de música no se han cargado completamente
+        if (!LoadScene || !isWait) // Solo dibujar la barra de progreso si no se han cargado completamente o esta esperando el Host
         {
+            GUI.depth = 0;
             // Calcular la posición de la barra de progreso en la pantalla
             float progressBarX = (Screen.width - progressBarWidth) / progressBarHorizontal; // Centrado horizontal
             float progressBarY = (Screen.height - progressBarHeight) / progressBarVertical; // Centrado vertical
@@ -15322,9 +15365,6 @@ public class GameManager : MonoBehaviour
 
 
                 // StopCoroutine(LoadSceneAsyncWithDelay(sceneIndex));
-            }
-            else
-            {
                 Debug.Log("Escena Precargada: " + sceneName);
                 currentSceneProgress = 1.0f;
             }
@@ -15334,6 +15374,8 @@ public class GameManager : MonoBehaviour
             // Actualizar la barra de progreso en cada iteración del ciclo
             await Task.Yield(); // Esperar un frame
         }
+        await SceneLoader.setLoadingStatus(isHost);
+
         //SceneManager.SetActiveScene(SceneManager.GetSceneAt(sceneMap));
         // La carga de la escena se ha completado correctamente, puedes realizar cualquier otra acción necesaria aquí
     }
@@ -15654,6 +15696,37 @@ public class GameManager : MonoBehaviour
     public bool isWait = false;
     int sceneMap = new int();
 
+
+    //IEnumerator UpdateReflections()
+    //{
+    //    while (true)
+    //    {
+    //        //updateReflections = true;
+    //        yield return new WaitForSeconds(reflectionUpdateTime);
+    //        //shouldRunCoroutine = true;
+    //    }
+    //}
+    IEnumerator UpdateReflections()
+    {
+        while (true)
+        {
+            //updateReflections = true;
+            yield return new WaitForSeconds(reflectionUpdateTime);
+            //shouldRunCoroutine = true;
+        }
+    }
+
+    private void StopReflections()
+    {
+        if (reflectionsCoroutine != null)
+        {
+            StopCoroutine(reflectionsCoroutine);
+            reflectionsCoroutine = null;
+        }
+    }
+
+
+
     private async void FixedUpdate()
     {
         if (inDebug || inMenu || SceneManager.GetActiveScene().name == "MENU-Driver" || SceneManager.GetActiveScene().name == "DEBUG-Online")
@@ -15669,6 +15742,8 @@ public class GameManager : MonoBehaviour
                     DestroyProgressBar();
                     isWait = !isWait;
                     await new ClientSend().waitLoad();
+                    reflectionsCoroutine = StartCoroutine(UpdateReflections());
+                    StartCoroutine(UpdateReflections());
                     //SceneManager.UnloadSceneAsync(19);
                     MusicManager.instance.PlayNextMusic().ContinueWith(Task =>
                     {
@@ -15736,8 +15811,8 @@ public class GameManager : MonoBehaviour
                     {
                         param = num;
                     }
-                    FUN_313C8((int)param);
-                    FUN_31440((uint)DAT_28);
+                    FUN_313C8((int)param); //Actualiza World?
+                    FUN_31440((uint)DAT_28); //Actualiza Movimiento
                     FUN_31728();
                     for (int k = 0; k < worldObjs_tmp.Count; k++)
                     {
@@ -15907,25 +15982,10 @@ public class GameManager : MonoBehaviour
 
     private bool shouldRunCoroutine = true;
 
-    IEnumerator UpdateReflections()
-    {
-        while (true)
-        {
-            //updateReflections = true;
-            yield return new WaitForSeconds(reflectionUpdateTime);
-            //shouldRunCoroutine = true;
-        }
-    }
-    private void StopReflections()
-    {
-        if (reflectionsCoroutine != null)
-        {
-            StopCoroutine(reflectionsCoroutine);
-            reflectionsCoroutine = null;
-        }
-    }
+
     private void FUN_1C158()
     {
+        //Posiblemente establece la cantidad de objetos dibujados en la escena?
         if (gameMode < _GAME_MODE.Coop || gameMode >= _GAME_MODE.Versus2)
         {
             DAT_DB4 = 80;
