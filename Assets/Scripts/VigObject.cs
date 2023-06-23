@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text;
 using System.Collections;
@@ -487,6 +487,7 @@ public struct VigTransform
 
 
 [BurstCompile]
+[Serializable]
 public class VigObject : MonoBehaviour
 {
     private float forceModifier = 1; // Valor predeterminado en caso de que no se establezca otro valor

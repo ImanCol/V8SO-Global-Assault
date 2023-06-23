@@ -387,7 +387,8 @@ public class DiscordController : MonoBehaviour
     //public void SendNetworkMessage(byte channelId, byte[] data)
     public static bool SendNetworkMessage(byte channelId, byte[] data)
     {
-        Plugin.Client.SendNetworkMessage(channelId, data);
+        if (GameManager.instance.online)
+            Plugin.Client.SendNetworkMessage(channelId, data);
         return false;
         //---------//
         //for (int i = 0; i < this.lobbyManager.MemberCount(this.lobbyId); i++)
@@ -411,6 +412,7 @@ public class DiscordController : MonoBehaviour
         //this.lobbyManager.SendNetworkMessage(this.lobbyId, userId, channelId, data);
     }
 
+    [System.Obsolete]
     public void InitNetworking(long lobbyId)
     {
         this.lobbyManager.ConnectNetwork(lobbyId);
@@ -425,12 +427,15 @@ public class DiscordController : MonoBehaviour
     //public void DisconnectNetwork2()
     public static bool DisconnectNetwork2()
     {
-        Debug.Log("Disconnecting network");
-        Demo.LeaveLobby(Demo.instance, 0L);
-        Plugin.Client.Disconnect(Plugin.Username + " has disconnected.");
-        if (DiscordController.IsOwner())
+        if (GameManager.instance.online)
         {
-            Plugin.Server.DeleteLobby();
+            Debug.Log("Disconnecting network");
+            Demo.LeaveLobby(Demo.instance, 0L);
+            Plugin.Client.Disconnect(Plugin.Username + " has disconnected.");
+            if (DiscordController.IsOwner())
+            {
+                Plugin.Server.DeleteLobby();
+            }
         }
         return false;
         //---------//
@@ -567,6 +572,7 @@ public class DiscordController : MonoBehaviour
         }
     }
 
+    [System.Obsolete]
     private void InitializeClientData()
     {
         DiscordController.packetHandlers = new Dictionary<int, DiscordController.PacketHandler>

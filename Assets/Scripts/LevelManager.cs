@@ -125,7 +125,7 @@ public class LevelManager : MonoBehaviour
 
     public bool isEnabled = false;
 
-    public void dev()
+    public void Start()
     {
         Debug.Log("Iniciando LevelManager...");
         GameManager.instance.levelManager = this;
@@ -281,7 +281,7 @@ public class LevelManager : MonoBehaviour
 
         //Envia Spawn Inicial
         if (GameManager.instance.online)
-            Debug.Log("Spawn Vehicle...");
+            Debug.Log("Send Spawn Vehicle...");
         ClientSend.Spawn();
         if (!DiscordController.instance)
         {

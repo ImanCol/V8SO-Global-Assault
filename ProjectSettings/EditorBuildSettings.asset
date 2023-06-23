@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/LEVELS/ROUTE66/ROUTE66-GameTags.unity
     guid: 85459086993ce7241a98896c7340ebf8
+  - enabled: 0
+    path: Assets/LEVELS/ROUTE66/ROUTE66 - New UI.unity
+    guid: e87fdbb963edc62468501c13f0fc2285
   - enabled: 1
     path: Assets/LEVELS/ROUTE66/ROUTE66.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
@@ -74,7 +77,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/LEVELS/V8/SKIRESRT/SKIRESRT.unity
     guid: e7793772f10272d4982e27fa72421382
-  - enabled: 1
+  - enabled: 0
     path: Assets/LoadScene.unity
     guid: e0efa1595aa50214bb6fbcc7425e0ceb
   m_configObjects:

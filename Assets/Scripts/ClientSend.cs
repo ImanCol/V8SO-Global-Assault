@@ -23,6 +23,7 @@ public class ClientSend : MonoBehaviour
             if (DiscordController.instance)
                 DiscordController.SendNetworkMessageToUser(userId, 0, _packet.ToArray());
         }
+        await Task.Yield();
     }
 
     private static async Task SendUDPData(Packet _packet, long userId)
@@ -36,6 +37,7 @@ public class ClientSend : MonoBehaviour
         {
             DiscordController.SendNetworkMessageToUser(userId, 1, _packet.ToArray());
         }
+        await Task.Yield();
     }
 
     //public static void Joined()
@@ -148,6 +150,7 @@ public class ClientSend : MonoBehaviour
             await SendTCPData(packet, 0L);
         }
     }
+
     public static async Task Respawn(long userId = 0L)
     {
         using (Packet packet = new Packet(11))
@@ -155,7 +158,6 @@ public class ClientSend : MonoBehaviour
             await SendTCPData(packet, userId);
         }
     }
-
 
     public static async void Transform(VigTransform vTransform)
     {
@@ -177,7 +179,7 @@ public class ClientSend : MonoBehaviour
         }
     }
 
-    public static async void Physics(Matrix2x4 m1,Matrix2x4 m2)
+    public static async void Physics(Matrix2x4 m1, Matrix2x4 m2)
     {
         using (Packet packet = new Packet(13))
         {

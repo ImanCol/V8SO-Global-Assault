@@ -1,11 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEditor;
 
 namespace LoadMap
 {
@@ -35,7 +32,6 @@ namespace LoadMap
         public static TextMeshProUGUI staticLoadingStatus;
 
         private float loadingProgress = 0f;
-
 
         public static Task destroy()
         {
@@ -97,7 +93,6 @@ namespace LoadMap
                 staticMapDescription.text = "";
             }
         }
-
 
         private void Start()
         {

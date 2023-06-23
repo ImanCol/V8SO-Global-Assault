@@ -1,8 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Burst;
 using UnityEngine;
+
+
 
 public struct Primitive
 {
@@ -12,306 +12,255 @@ public struct Primitive
 }
 
 [BurstCompile]
+
+// Token: 0x020001F1 RID: 497
 public class Water : MonoBehaviour
 {
-    public static Water instance;
-
-    public Transform lod;
-
-    public Vector3 lodOffset;
-
-    public bool topView;
-
-    public int width;
-
-    public int height;
-
-    public int cellSize;
-
-    public short[] DAT_B5570;
-
-    public byte[] DAT_B5D70;
-
-    private Mesh mesh;
-
-    private Mesh LOD;
-
-    private Vector3[] newVertices;
-
-    private Vector2[] newUVs;
-
-    private Color32[] newColors;
-
-    private int[] newIndices;
-
-    private Vector3[] newLODVertices;
-
-    private Vector2[] newLODUVs;
-
-    private Color32[] newLODColors;
-
-    private int[] newLODIndices;
-
-    private VigTerrain terrain;
-
-    private Primitive[] primitives;
-
-    private Texture2D mainT;
-
-    private float lod_y;
-
-    private Vector3 masterPosition;
-
-    private Quaternion masterRotation;
-
-    private Vector3 masterScale;
-
-    private Transform lod2;
-
+    // Token: 0x06000C02 RID: 3074 RVA: 0x000A5504 File Offset: 0x000A3704
     private void Start()
     {
-        if (instance == null)
+        if (Water.instance == null)
         {
-            instance = this;
-            mesh = new Mesh();
-            GetComponent<MeshFilter>().mesh = mesh;
+            Water.instance = this;
+            this.mesh = new Mesh();
+            base.GetComponent<MeshFilter>().mesh = this.mesh;
             int num = 6000;
-            newVertices = new Vector3[num];
-            newColors = new Color32[num];
-            newUVs = new Vector2[num];
-            newIndices = new int[num];
-            primitives = new Primitive[num];
-            DAT_B5D70 = new byte[1024];
-            DAT_B5570 = new short[1024];
+            this.newVertices = new Vector3[num];
+            this.newColors = new Color32[num];
+            this.newUVs = new Vector2[num];
+            this.newIndices = new int[num];
+            this.primitives = new Primitive[num];
+            this.DAT_B5D70 = new byte[1024];
+            this.DAT_B5570 = new short[1024];
             for (int i = 0; i < num; i += 6)
             {
-                newColors[i] = new Color32(128, 128, 128, byte.MaxValue);
-                newColors[i + 1] = new Color32(128, 128, 128, byte.MaxValue);
-                newColors[i + 2] = new Color32(128, 128, 128, byte.MaxValue);
-                newColors[i + 3] = new Color32(128, 128, 128, byte.MaxValue);
-                newColors[i + 4] = new Color32(128, 128, 128, byte.MaxValue);
-                newColors[i + 5] = new Color32(128, 128, 128, byte.MaxValue);
-                newIndices[i] = i;
-                newIndices[i + 1] = i + 1;
-                newIndices[i + 2] = i + 2;
-                newIndices[i + 3] = i + 3;
-                newIndices[i + 4] = i + 4;
-                newIndices[i + 5] = i + 5;
+                this.newColors[i] = new Color32(128, 128, 128, byte.MaxValue);
+                this.newColors[i + 1] = new Color32(128, 128, 128, byte.MaxValue);
+                this.newColors[i + 2] = new Color32(128, 128, 128, byte.MaxValue);
+                this.newColors[i + 3] = new Color32(128, 128, 128, byte.MaxValue);
+                this.newColors[i + 4] = new Color32(128, 128, 128, byte.MaxValue);
+                this.newColors[i + 5] = new Color32(128, 128, 128, byte.MaxValue);
+                this.newIndices[i] = i;
+                this.newIndices[i + 1] = i + 1;
+                this.newIndices[i + 2] = i + 2;
+                this.newIndices[i + 3] = i + 3;
+                this.newIndices[i + 4] = i + 4;
+                this.newIndices[i + 5] = i + 5;
             }
-            LOD = new Mesh();
-            lod.GetComponent<MeshFilter>().mesh = LOD;
-            int num2 = width * height * 4;
-            newLODVertices = new Vector3[num2];
-            newLODColors = new Color32[num2];
-            newLODUVs = new Vector2[num2];
-            newLODIndices = new int[num2 * 2];
-            Color32 dAT_DE = LevelManager.instance.DAT_DE0;
-            dAT_DE.a = 128;
+            this.LOD = new Mesh();
+            this.lod.GetComponent<MeshFilter>().mesh = this.LOD;
+            int num2 = this.width * this.height * 4;
+            this.newLODVertices = new Vector3[num2];
+            this.newLODColors = new Color32[num2];
+            this.newLODUVs = new Vector2[num2];
+            this.newLODIndices = new int[num2 * 2];
+            Color32 dat_DE = LevelManager.instance.DAT_DE0;
+            dat_DE.a = 128;
             for (int j = 0; j < num2; j += 4)
             {
-                newLODColors[j] = dAT_DE;
-                newLODColors[j + 1] = dAT_DE;
-                newLODColors[j + 2] = dAT_DE;
-                newLODColors[j + 3] = dAT_DE;
-                newLODUVs[j] = new Vector2(0f, 0f);
-                newLODUVs[j + 1] = new Vector2(0f, 0f);
-                newLODUVs[j + 2] = new Vector2(0f, 0f);
-                newLODUVs[j + 3] = new Vector2(0f, 0f);
+                this.newLODColors[j] = dat_DE;
+                this.newLODColors[j + 1] = dat_DE;
+                this.newLODColors[j + 2] = dat_DE;
+                this.newLODColors[j + 3] = dat_DE;
+                this.newLODUVs[j] = new Vector2(0f, 0f);
+                this.newLODUVs[j + 1] = new Vector2(0f, 0f);
+                this.newLODUVs[j + 2] = new Vector2(0f, 0f);
+                this.newLODUVs[j + 3] = new Vector2(0f, 0f);
             }
-            for (int k = 0; k < height; k++)
+            for (int k = 0; k < this.height; k++)
             {
-                for (int l = 0; l < width; l++)
+                for (int l = 0; l < this.width; l++)
                 {
-                    int num3 = l + k * height;
-                    int num4 = (l < width / 2) ? (-l - 1) : (l - width / 2);
-                    newLODVertices[num3 * 4] = new Vector3(cellSize * num4, 0f, cellSize * k);
-                    newLODVertices[num3 * 4 + 1] = new Vector3(cellSize * num4 + cellSize, 0f, cellSize * k);
-                    newLODVertices[num3 * 4 + 2] = new Vector3(cellSize * num4, 0f, cellSize * k + cellSize);
-                    newLODVertices[num3 * 4 + 3] = new Vector3(cellSize * num4 + cellSize, 0f, cellSize * k + cellSize);
+                    int num3 = l + k * this.height;
+                    int num4 = ((l < this.width / 2) ? (-l - 1) : (l - this.width / 2));
+                    this.newLODVertices[num3 * 4] = new Vector3((float)(this.cellSize * num4), 0f, (float)(this.cellSize * k));
+                    this.newLODVertices[num3 * 4 + 1] = new Vector3((float)(this.cellSize * num4 + this.cellSize), 0f, (float)(this.cellSize * k));
+                    this.newLODVertices[num3 * 4 + 2] = new Vector3((float)(this.cellSize * num4), 0f, (float)(this.cellSize * k + this.cellSize));
+                    this.newLODVertices[num3 * 4 + 3] = new Vector3((float)(this.cellSize * num4 + this.cellSize), 0f, (float)(this.cellSize * k + this.cellSize));
                 }
             }
-            int indicesLength = 0;
             int num5 = 0;
+            int num6 = 0;
             for (int m = 0; m < num2; m += 4)
             {
-                newLODIndices[num5] = m + 2;
-                newLODIndices[num5 + 1] = m + 1;
-                newLODIndices[num5 + 2] = m;
-                newLODIndices[num5 + 3] = m + 1;
-                newLODIndices[num5 + 4] = m + 2;
-                newLODIndices[num5 + 5] = m + 3;
-                indicesLength = num5 + 6;
-                num5 += 6;
+                this.newLODIndices[num6] = m + 2;
+                this.newLODIndices[num6 + 1] = m + 1;
+                this.newLODIndices[num6 + 2] = m;
+                this.newLODIndices[num6 + 3] = m + 1;
+                this.newLODIndices[num6 + 4] = m + 2;
+                this.newLODIndices[num6 + 5] = m + 3;
+                num5 = num6 + 6;
+                num6 += 6;
             }
-            LOD.SetVertices(newLODVertices, 0, num2);
-            LOD.SetColors(newLODColors, 0, num2);
-            LOD.SetUVs(0, newLODUVs, 0, num2);
-            LOD.SetIndices(newLODIndices, 0, indicesLength, MeshTopology.Triangles, 0);
+            this.LOD.SetVertices(this.newLODVertices, 0, num2);
+            this.LOD.SetColors(this.newLODColors, 0, num2);
+            this.LOD.SetUVs(0, this.newLODUVs, 0, num2);
+            this.LOD.SetIndices(this.newLODIndices, 0, num5, MeshTopology.Triangles, 0, true, 0);
         }
-        terrain = UnityEngine.Object.FindObjectOfType<VigTerrain>();
-        mainT = (Texture2D)UnityEngine.Object.FindObjectOfType<LevelManager>().DAT_DC0.mainTexture;
-        lod2 = UnityEngine.Object.Instantiate(lod.gameObject, lod).transform;
-        lod2.localEulerAngles = new Vector3(0f, 180f, 0f);
+        this.terrain = UnityEngine.Object.FindObjectOfType<VigTerrain>();
+        this.mainT = (Texture2D)UnityEngine.Object.FindObjectOfType<LevelManager>().DAT_DC0.mainTexture;
+        this.lod2 = UnityEngine.Object.Instantiate<GameObject>(this.lod.gameObject, this.lod).transform;
+        this.lod2.localEulerAngles = new Vector3(0f, 180f, 0f);
     }
 
+    // Token: 0x06000C03 RID: 3075 RVA: 0x0000796D File Offset: 0x00005B6D
     private void Update()
     {
     }
 
+    // Token: 0x06000C04 RID: 3076 RVA: 0x000A5AAC File Offset: 0x000A3CAC
     public void UpdatePosition(Vector3 pos)
     {
-        Vector3 a = new Vector3(pos.x, 0f - pos.y, pos.z);
-        Vector3 position = masterRotation * Vector3.Scale(a, masterScale) + masterPosition;
-        base.transform.position = position;
+        Vector3 vector = new Vector3(pos.x, -pos.y, pos.z);
+        Vector3 vector2 = this.masterRotation * Vector3.Scale(vector, this.masterScale) + this.masterPosition;
+        base.transform.position = vector2;
     }
 
+    // Token: 0x06000C05 RID: 3077 RVA: 0x000A5B04 File Offset: 0x000A3D04
     public void FUN_15F28(VigTransform param1, int param2)
     {
-        masterPosition = new Vector3((float)param1.position.x / (float)GameManager.instance.translateFactor, (float)(-param1.position.y) / (float)GameManager.instance.translateFactor, (float)param1.position.z / (float)GameManager.instance.translateFactor);
-        masterRotation = param1.rotation.Matrix2Quaternion;
-        masterRotation.eulerAngles = new Vector3(0f - masterRotation.eulerAngles.x, masterRotation.eulerAngles.y, 0f - masterRotation.eulerAngles.z);
-        masterScale = param1.rotation.Scale;
-        lod_y = (float)GameManager.instance.DAT_DB0 / (float)GameManager.instance.translateFactor;
-        Vector3 a = new Vector3(lodOffset.x, 0f - lodOffset.y, lodOffset.z);
-        Vector3 position = masterRotation * Vector3.Scale(a, masterScale) + masterPosition;
-        position.y = 0f - lod_y;
-        lod.position = position;
-        lod.localEulerAngles = new Vector3(0f, masterRotation.eulerAngles.y, 0f);
-        if (!topView)
+        this.masterPosition = new Vector3((float)param1.position.x / (float)GameManager.instance.translateFactor, (float)(-(float)param1.position.y) / (float)GameManager.instance.translateFactor, (float)param1.position.z / (float)GameManager.instance.translateFactor);
+        this.masterRotation = param1.rotation.Matrix2Quaternion;
+        this.masterRotation.eulerAngles = new Vector3(-this.masterRotation.eulerAngles.x, this.masterRotation.eulerAngles.y, -this.masterRotation.eulerAngles.z);
+        this.masterScale = param1.rotation.Scale;
+        this.lod_y = (float)GameManager.instance.DAT_DB0 / (float)GameManager.instance.translateFactor;
+        Vector3 vector = new Vector3(this.lodOffset.x, -this.lodOffset.y, this.lodOffset.z);
+        Vector3 vector2 = this.masterRotation * Vector3.Scale(vector, this.masterScale) + this.masterPosition;
+        vector2.y = -this.lod_y;
+        this.lod.position = vector2;
+        this.lod.localEulerAngles = new Vector3(0f, this.masterRotation.eulerAngles.y, 0f);
+        if (!this.topView)
         {
-            if (lod2.gameObject.activeSelf)
+            if (this.lod2.gameObject.activeSelf)
             {
-                lod2.gameObject.SetActive(value: false);
+                this.lod2.gameObject.SetActive(false);
             }
-            UIManager.instance.Underwater(masterPosition.y, lod.position.y);
+            UIManager.instance.Underwater(this.masterPosition.y, this.lod.position.y);
+            return;
         }
-        else if (!lod2.gameObject.activeSelf)
+        if (!this.lod2.gameObject.activeSelf)
         {
-            lod2.gameObject.SetActive(value: true);
+            this.lod2.gameObject.SetActive(true);
         }
     }
 
+    // Token: 0x06000C06 RID: 3078 RVA: 0x000A5CF0 File Offset: 0x000A3EF0
     public void FUN_16664(Vector3Int param1, int param2)
     {
-        int dAT_F = GameManager.instance.DAT_F20;
-        int dAT_EDC = GameManager.instance.DAT_EDC;
-        int dAT_ED = GameManager.instance.DAT_ED8;
-        int num = 0;
-        int num2 = 0;
+        int num = GameManager.instance.DAT_F20;
+        int num2 = GameManager.instance.DAT_EDC;
+        int num3 = GameManager.instance.DAT_ED8;
+        int num4 = 0;
         Utilities.FUN_246BC(GameManager.instance.DAT_F28);
         Vector3Int vector3Int = param1;
         Vector3Int vector3Int2;
         Vector3Int vector3Int3;
         Vector3Int vector3Int4;
-        Vector3Int v;
+        Vector3Int vector3Int5;
         if (vector3Int.z < 4081)
         {
-            int y = vector3Int.y;
-            int x = vector3Int.x;
-            int num3 = y;
-            if (y < 0)
+            int num5 = vector3Int.y;
+            int num6 = vector3Int.x;
+            int num7 = num5;
+            if (num5 < 0)
             {
-                num3 = -y;
+                num7 = -num5;
             }
-            int num4 = x;
-            if (x < 0)
+            int num8 = num6;
+            if (num6 < 0)
             {
-                num4 = -x;
+                num8 = -num6;
             }
-            v = default(Vector3Int);
-            if (num4 < num3)
+            vector3Int2 = default(Vector3Int);
+            if (num8 < num7)
             {
-                v.x = dAT_EDC * -256 / 2;
-                v.z = dAT_ED << 8;
+                vector3Int2.x = num2 * -256 / 2;
+                vector3Int2.z = num3 << 8;
                 param2 *= 4096;
-                v.y = (param2 - x * v.x - vector3Int.z * v.z) / y;
-                vector3Int2 = Utilities.FUN_24008(v);
-                v.x = dAT_EDC * 128;
-                v.y = (param2 - vector3Int.x * v.x - vector3Int.z * v.z) / vector3Int.y;
-                vector3Int3 = Utilities.FUN_24008(v);
-                v.x = dAT_EDC * -3072 / 2;
-                v.z = (dAT_ED << 1) + dAT_ED << 10;
-                v.y = (param2 - vector3Int.x * v.x - vector3Int.z * v.z) / vector3Int.y;
-                vector3Int4 = Utilities.FUN_24008(v);
-                v.x = dAT_EDC * 1536;
-                v.y = (param2 - vector3Int.x * v.x - vector3Int.z * v.z) / vector3Int.y;
+                vector3Int2.y = (param2 - num6 * vector3Int2.x - vector3Int.z * vector3Int2.z) / num5;
+                vector3Int3 = Utilities.FUN_24008(vector3Int2);
+                vector3Int2.x = num2 * 128;
+                vector3Int2.y = (param2 - vector3Int.x * vector3Int2.x - vector3Int.z * vector3Int2.z) / vector3Int.y;
+                vector3Int4 = Utilities.FUN_24008(vector3Int2);
+                vector3Int2.x = num2 * -3072 / 2;
+                vector3Int2.z = (num3 << 1) + num3 << 10;
+                vector3Int2.y = (param2 - vector3Int.x * vector3Int2.x - vector3Int.z * vector3Int2.z) / vector3Int.y;
+                vector3Int5 = Utilities.FUN_24008(vector3Int2);
+                vector3Int2.x = num2 * 1536;
+                vector3Int2.y = (param2 - vector3Int.x * vector3Int2.x - vector3Int.z * vector3Int2.z) / vector3Int.y;
             }
             else
             {
-                v.y = dAT_F * -256 / 2;
-                v.z = dAT_ED << 8;
+                vector3Int2.y = num * -256 / 2;
+                vector3Int2.z = num3 << 8;
                 param2 *= 4096;
-                v.x = (param2 - y * v.y - vector3Int.z * v.z) / x;
-                vector3Int2 = Utilities.FUN_24008(v);
-                v.y = dAT_F * 128;
-                v.x = (param2 - vector3Int.y * v.y - vector3Int.z * v.z) / vector3Int.x;
-                vector3Int3 = Utilities.FUN_24008(v);
-                v.y = dAT_F * -3072 / 2;
-                v.z = (dAT_ED << 1) + dAT_ED << 10;
-                v.x = (param2 - vector3Int.y * v.y - vector3Int.z * v.z) / vector3Int.x;
-                vector3Int4 = Utilities.FUN_24008(v);
-                v.y = dAT_F * 1536;
-                v.x = (param2 - vector3Int.y * v.y - vector3Int.z * v.z) / vector3Int.x;
+                vector3Int2.x = (param2 - num5 * vector3Int2.y - vector3Int.z * vector3Int2.z) / num6;
+                vector3Int3 = Utilities.FUN_24008(vector3Int2);
+                vector3Int2.y = num * 128;
+                vector3Int2.x = (param2 - vector3Int.y * vector3Int2.y - vector3Int.z * vector3Int2.z) / vector3Int.x;
+                vector3Int4 = Utilities.FUN_24008(vector3Int2);
+                vector3Int2.y = num * -3072 / 2;
+                vector3Int2.z = (num3 << 1) + num3 << 10;
+                vector3Int2.x = (param2 - vector3Int.y * vector3Int2.y - vector3Int.z * vector3Int2.z) / vector3Int.x;
+                vector3Int5 = Utilities.FUN_24008(vector3Int2);
+                vector3Int2.y = num * 1536;
+                vector3Int2.x = (param2 - vector3Int.y * vector3Int2.y - vector3Int.z * vector3Int2.z) / vector3Int.x;
             }
         }
         else
         {
-            v = default(Vector3Int);
-            int num3 = -dAT_EDC;
-            param2 = dAT_ED * param2 << 12;
-            v.z = param2 / (num3 * vector3Int.x / 2 - dAT_F * vector3Int.y / 2 + dAT_ED * vector3Int.z);
-            v.x = num3 * v.z / dAT_ED;
-            v.y = -dAT_F * v.z / dAT_ED;
-            vector3Int2 = Utilities.FUN_24008(v);
-            v.z = param2 / (dAT_EDC * vector3Int.x / 2 - dAT_F * vector3Int.y / 2 + dAT_ED * vector3Int.z);
-            v.x = dAT_EDC * v.z / dAT_ED;
-            v.y = -dAT_F * v.z / dAT_ED;
-            vector3Int3 = Utilities.FUN_24008(v);
-            v.z = param2 / (num3 * vector3Int.x / 2 + dAT_F * vector3Int.y / 2 + dAT_ED * vector3Int.z);
-            v.x = num3 * v.z / dAT_ED;
-            v.y = dAT_F * v.z / dAT_ED;
-            vector3Int4 = Utilities.FUN_24008(v);
-            v.z = param2 / (dAT_EDC * vector3Int.x / 2 + dAT_F * vector3Int.y / 2 + dAT_ED * vector3Int.z);
-            v.x = dAT_EDC * v.z / dAT_ED;
-            v.y = dAT_F * v.z / dAT_ED;
+            vector3Int2 = default(Vector3Int);
+            int num7 = -num2;
+            param2 = num3 * param2 << 12;
+            vector3Int2.z = param2 / (num7 * vector3Int.x / 2 - num * vector3Int.y / 2 + num3 * vector3Int.z);
+            vector3Int2.x = num7 * vector3Int2.z / num3;
+            vector3Int2.y = -num * vector3Int2.z / num3;
+            vector3Int3 = Utilities.FUN_24008(vector3Int2);
+            vector3Int2.z = param2 / (num2 * vector3Int.x / 2 - num * vector3Int.y / 2 + num3 * vector3Int.z);
+            vector3Int2.x = num2 * vector3Int2.z / num3;
+            vector3Int2.y = -num * vector3Int2.z / num3;
+            vector3Int4 = Utilities.FUN_24008(vector3Int2);
+            vector3Int2.z = param2 / (num7 * vector3Int.x / 2 + num * vector3Int.y / 2 + num3 * vector3Int.z);
+            vector3Int2.x = num7 * vector3Int2.z / num3;
+            vector3Int2.y = num * vector3Int2.z / num3;
+            vector3Int5 = Utilities.FUN_24008(vector3Int2);
+            vector3Int2.z = param2 / (num2 * vector3Int.x / 2 + num * vector3Int.y / 2 + num3 * vector3Int.z);
+            vector3Int2.x = num2 * vector3Int2.z / num3;
+            vector3Int2.y = num * vector3Int2.z / num3;
         }
-        Vector3Int vector3Int5 = Utilities.FUN_24008(v);
-        dAT_EDC = vector3Int3.x;
-        if (vector3Int2.x < vector3Int3.x)
+        Vector3Int vector3Int6 = Utilities.FUN_24008(vector3Int2);
+        num2 = vector3Int4.x;
+        if (vector3Int3.x < vector3Int4.x)
         {
-            dAT_EDC = vector3Int2.x;
+            num2 = vector3Int3.x;
         }
-        dAT_F = vector3Int4.x;
-        if (dAT_EDC < vector3Int4.x)
+        num = vector3Int5.x;
+        if (num2 < vector3Int5.x)
         {
-            dAT_F = dAT_EDC;
+            num = num2;
         }
-        dAT_EDC = vector3Int5.x;
-        if (dAT_F < vector3Int5.x)
+        num2 = vector3Int6.x;
+        if (num < vector3Int6.x)
         {
-            dAT_EDC = dAT_F;
+            num2 = num;
         }
-        int num5 = dAT_EDC >> 16;
-        dAT_EDC = vector3Int3.z;
-        if (vector3Int2.z < vector3Int3.z)
+        int num9 = num2 >> 16;
+        num2 = vector3Int4.z;
+        if (vector3Int3.z < vector3Int4.z)
         {
-            dAT_EDC = vector3Int2.z;
+            num2 = vector3Int3.z;
         }
-        dAT_F = vector3Int4.z;
-        if (dAT_EDC < vector3Int4.z)
+        num = vector3Int5.z;
+        if (num2 < vector3Int5.z)
         {
-            dAT_F = dAT_EDC;
+            num = num2;
         }
-        int num6 = vector3Int5.z;
-        if (dAT_F < vector3Int5.z)
+        int num10 = vector3Int6.z;
+        if (num < vector3Int6.z)
         {
-            num6 = dAT_F;
+            num10 = num;
         }
-        num6 >>= 16;
-        if (vector3Int3.x < vector3Int2.x)
-        {
-            vector3Int3.x = vector3Int2.x;
-        }
+        num10 >>= 16;
         if (vector3Int4.x < vector3Int3.x)
         {
             vector3Int4.x = vector3Int3.x;
@@ -320,11 +269,11 @@ public class Water : MonoBehaviour
         {
             vector3Int5.x = vector3Int4.x;
         }
-        int num7 = vector3Int5.x + 65535 >> 16;
-        if (vector3Int3.z < vector3Int2.z)
+        if (vector3Int6.x < vector3Int5.x)
         {
-            vector3Int3.z = vector3Int2.z;
+            vector3Int6.x = vector3Int5.x;
         }
+        int num11 = vector3Int6.x + 65535 >> 16;
         if (vector3Int4.z < vector3Int3.z)
         {
             vector3Int4.z = vector3Int3.z;
@@ -333,686 +282,776 @@ public class Water : MonoBehaviour
         {
             vector3Int5.z = vector3Int4.z;
         }
-        dAT_EDC = GameManager.instance.DAT_DA0 >> 16;
-        int num8 = vector3Int5.z + 65535 >> 16;
-        if (num8 <= dAT_EDC || num6 < dAT_EDC)
+        if (vector3Int6.z < vector3Int5.z)
         {
-            if (num8 > dAT_EDC)
+            vector3Int6.z = vector3Int5.z;
+        }
+        num2 = GameManager.instance.DAT_DA0 >> 16;
+        int num12 = vector3Int6.z + 65535 >> 16;
+        if (num12 <= num2 || num10 < num2)
+        {
+            if (num12 > num2)
             {
-                num8 = dAT_EDC;
+                num12 = num2;
             }
-            if (31 < num7 - num5)
+            if (31 < num11 - num9)
             {
-                num7 = num5 + 31;
+                num11 = num9 + 31;
             }
-            if (31 < num8 - num6)
+            if (31 < num12 - num10)
             {
-                num8 = num6 + 31;
+                num12 = num10 + 31;
             }
             Utilities.SetRotMatrix(GameManager.instance.DAT_F00.rotation);
-            v.x = num5 << 8;
-            v.y = GameManager.instance.DAT_DB0;
+            vector3Int2.x = num9 << 8;
+            vector3Int2.y = GameManager.instance.DAT_DB0;
             if (GameManager.instance.DAT_DB0 < 0)
             {
-                v.y = GameManager.instance.DAT_DB0 + 255;
+                vector3Int2.y = GameManager.instance.DAT_DB0 + 255;
             }
-            v.y >>= 8;
-            v.z = num6 << 8;
-            v = Utilities.FUN_23F7C(v);
-            int num9 = GameManager.instance.DAT_F00.position.x;
-            if (num9 < 0)
+            vector3Int2.y >>= 8;
+            vector3Int2.z = num10 << 8;
+            vector3Int2 = Utilities.FUN_23F7C(vector3Int2);
+            int num13 = GameManager.instance.DAT_F00.position.x;
+            if (num13 < 0)
             {
-                num9 += 255;
+                num13 += 255;
             }
-            v.x += num9 >> 8;
-            num9 = GameManager.instance.DAT_F00.position.y;
-            if (num9 < 0)
+            vector3Int2.x += num13 >> 8;
+            num13 = GameManager.instance.DAT_F00.position.y;
+            if (num13 < 0)
             {
-                num9 += 255;
+                num13 += 255;
             }
-            v.y += num9 >> 8;
-            num9 = GameManager.instance.DAT_F00.position.z;
-            if (num9 < 0)
+            vector3Int2.y += num13 >> 8;
+            num13 = GameManager.instance.DAT_F00.position.z;
+            if (num13 < 0)
             {
-                num9 += 255;
+                num13 += 255;
             }
-            v.z += num9 >> 8;
-            UpdatePosition((Vector3)new Vector3Int(v.x << 8, v.y << 8, v.z << 8) / (float)GameManager.instance.translateFactor);
-            Coprocessor.translationVector._trx = v.x;
-            Coprocessor.translationVector._try = v.y;
-            Coprocessor.translationVector._trz = v.z;
-            dAT_EDC = GameManager.instance.DAT_DB0;
+            vector3Int2.z += num13 >> 8;
+            this.UpdatePosition((Vector3)new Vector3Int(vector3Int2.x << 8, vector3Int2.y << 8, vector3Int2.z << 8) / (float)GameManager.instance.translateFactor);
+            Coprocessor.translationVector._trx = vector3Int2.x;
+            Coprocessor.translationVector._try = vector3Int2.y;
+            Coprocessor.translationVector._trz = vector3Int2.z;
+            num2 = GameManager.instance.DAT_DB0;
             if (GameManager.instance.DAT_DB0 < 0)
             {
-                dAT_EDC = GameManager.instance.DAT_DB0 + 2047;
+                num2 = GameManager.instance.DAT_DB0 + 2047;
             }
-            int num10 = dAT_EDC >> 11;
-            dAT_F = 0;
-            if (-1 < num8 - num6)
+            int num14 = num2 >> 11;
+            num = 0;
+            if (-1 < num12 - num10)
             {
-                num9 = (dAT_ED << 1) + dAT_ED << 2;
-                int num3 = 0;
+                num13 = (num3 << 1) + num3 << 2;
+                int num7 = 0;
                 do
                 {
-                    Coprocessor.vector0.vz0 = (short)(dAT_F << 8);
-                    int x = 0;
-                    if (-1 < num7 - num5)
+                    Coprocessor.vector0.vz0 = (short)(num << 8);
+                    int num6 = 0;
+                    if (-1 < num11 - num9)
                     {
-                        int num11 = num3;
+                        int num15 = num7;
                         do
                         {
-                            Coprocessor.vector0.vx0 = (short)(x << 8);
-                            Coprocessor.vector0.vy0 = (short)(x << 8 >> 16);
-                            Coprocessor.ExecuteRTPS(12, lm: false);
+                            Coprocessor.vector0.vx0 = (short)(num6 << 8);
+                            Coprocessor.vector0.vy0 = (short)(num6 << 8 >> 16);
+                            Coprocessor.ExecuteRTPS(12, false);
                             Cop2SxyFIFO screenXYFIFO = Coprocessor.screenXYFIFO;
-                            num3 = Coprocessor.screenXYFIFO.sy2;
-                            int y = Coprocessor.screenZFIFO.sz3;
-                            byte b = (byte)(((terrain.vertices[terrain.chunks[((uint)(x + num5) >> 6) * 32 + ((uint)(dAT_F + num6) >> 6)] * 4096 + (((dAT_F + num6) & 0x3F) * 2 + ((x + num5) & 0x3F) * 128) / 2] & 0x7FF) < num10) ? 1 : 0);
-                            b = 0;
-                            x++;
-                            DAT_B5D70[num11] = b;
-                            num11++;
+                            num7 = (int)Coprocessor.screenXYFIFO.sy2;
+                            int num5 = (int)Coprocessor.screenZFIFO.sz3;
+                            int num16 = (((int)(this.terrain.vertices[(int)(this.terrain.chunks[(int)(((uint)(num6 + num9) >> 6) * 32U + ((uint)(num + num10) >> 6))] * 4096) + (((num + num10) & 63) * 2 + ((num6 + num9) & 63) * 128) / 2] & 2047) < num14) ? 1 : 0);
+                            byte b = 0;
+                            num6++;
+                            this.DAT_B5D70[num15] = b;
+                            num15++;
                         }
-                        while (x <= num8 - num6);
+                        while (num6 <= num12 - num10);
                     }
-                    dAT_F++;
-                    num3 = dAT_F * 32;
+                    num++;
+                    num7 = num * 32;
                 }
-                while (dAT_F <= num8 - num6);
+                while (num <= num12 - num10);
             }
-            int num12 = GameManager.instance.DAT_28 << 12;
-            int num13 = (int)((long)num12 * -2004318071L >> 32) + num12;
-            num12 >>= 31;
-            num13 = (num13 >> 7) - num12;
-            int num14 = num6 * 873 + num13;
-            dAT_EDC = 0;
-            if (-1 < num8 - num6)
+            int num17 = GameManager.instance.DAT_28 << 12;
+            int num18 = (int)((long)num17 * -2004318071L >> 32) + num17;
+            num17 >>= 31;
+            num18 = (num18 >> 7) - num17;
+            int num19 = num10 * 873 + num18;
+            num2 = 0;
+            if (-1 < num12 - num10)
             {
-                dAT_ED = num5 * 873;
-                num10 = -1610571775;
+                num3 = num9 * 873;
+                num14 = -1610571775;
                 do
                 {
-                    num12 = GameManager.instance.DAT_28 << 12;
-                    num13 = (int)((long)num12 * -2004318071L >> 32) + num12;
-                    num12 >>= 31;
-                    num13 = (num13 >> 7) - num12;
-                    int num15 = dAT_ED + num13;
-                    dAT_F = 0;
-                    int num16 = dAT_EDC * 32;
-                    int num11 = dAT_EDC * 32;
-                    if (-1 < num7 - num5)
+                    num17 = GameManager.instance.DAT_28 << 12;
+                    num18 = (int)((long)num17 * -2004318071L >> 32) + num17;
+                    num17 >>= 31;
+                    num18 = (num18 >> 7) - num17;
+                    int num20 = num3 + num18;
+                    num = 0;
+                    int num21 = num2 * 32;
+                    int num15 = num2 * 32;
+                    if (-1 < num11 - num9)
                     {
-                        int num17 = 33 + dAT_EDC * 32;
+                        int num22 = 33 + num2 * 32;
                         do
                         {
-                            if ((DAT_B5D70[num17] & DAT_B5D70[num17 - 1] & DAT_B5D70[num11] & DAT_B5D70[num17 - 32]) != 0)
+                            if ((this.DAT_B5D70[num22] & this.DAT_B5D70[num22 - 1] & this.DAT_B5D70[num15] & this.DAT_B5D70[num22 - 32]) != 0)
                             {
-                                DAT_B5D70[num11] |= 128;
+                                byte[] dat_B5D = this.DAT_B5D70;
+                                int num23 = num15;
+                                dat_B5D[num23] |= 128;
                             }
-                            int num18 = num15 & 0xFFF;
-                            int num19 = (int)((ulong)((long)(GameManager.DAT_65C90[num18 * 4 / 2] * GameManager.DAT_65C90[(num14 & 0xFFF) * 4 / 2]) * (long)num10) >> 32);
-                            dAT_F++;
-                            num17++;
-                            num11++;
-                            num15 += 873;
-                            num13 = GameManager.DAT_65C90[num18 * 4 / 2] * GameManager.DAT_65C90[(num14 & 0xFFF) * 4 / 2];
-                            num12 = num19 + num13 >> 14;
-                            num12 -= num13 >> 31;
-                            DAT_B5570[num16] = (short)num12;
-                            num16++;
+                            int num24 = num20 & 4095;
+                            int num25 = (int)((ulong)((long)(GameManager.DAT_65C90[num24 * 4 / 2] * GameManager.DAT_65C90[(num19 & 4095) * 4 / 2]) * (long)num14) >> 32);
+                            num++;
+                            num22++;
+                            num15++;
+                            num20 += 873;
+                            num18 = (int)(GameManager.DAT_65C90[num24 * 4 / 2] * GameManager.DAT_65C90[(num19 & 4095) * 4 / 2]);
+                            num17 = num25 + num18 >> 14;
+                            num17 -= num18 >> 31;
+                            this.DAT_B5570[num21] = (short)num17;
+                            num21++;
                         }
-                        while (dAT_F <= num7 - num5);
+                        while (num <= num11 - num9);
                     }
-                    dAT_EDC++;
-                    num14 += 873;
+                    num2++;
+                    num19 += 873;
                 }
-                while (dAT_EDC <= num8 - num6);
+                while (num2 <= num12 - num10);
             }
-            num12 = GameManager.instance.DAT_28 << 12;
-            num13 = (int)((long)num12 * -1677082467L >> 32) + num12;
-            num12 >>= 31;
-            num13 = (num13 >> 8) - num12;
-            num14 = num6 * 1456 + num13;
-            dAT_EDC = 0;
-            if (-1 < num8 - num6)
+            num17 = GameManager.instance.DAT_28 << 12;
+            num18 = (int)((long)num17 * -1677082467L >> 32) + num17;
+            num17 >>= 31;
+            num18 = (num18 >> 8) - num17;
+            num19 = num10 * 1456 + num18;
+            num2 = 0;
+            if (-1 < num12 - num10)
             {
-                dAT_ED = num5 * 1456;
+                num3 = num9 * 1456;
                 do
                 {
-                    dAT_F = 0;
-                    int num20 = dAT_EDC * 32;
-                    int num11 = dAT_EDC * 32;
-                    num12 = GameManager.instance.DAT_28 << 12;
-                    num13 = (int)((long)num12 * -1677082467L >> 32) + num12;
-                    num12 >>= 31;
-                    num13 = (num13 >> 8) - num12;
-                    int num15 = dAT_ED + num13;
-                    if (-1 < num7 - num5)
+                    num = 0;
+                    int num26 = num2 * 32;
+                    int num15 = num2 * 32;
+                    num17 = GameManager.instance.DAT_28 << 12;
+                    num18 = (int)((long)num17 * -1677082467L >> 32) + num17;
+                    num17 >>= 31;
+                    num18 = (num18 >> 8) - num17;
+                    int num20 = num3 + num18;
+                    if (-1 < num11 - num9)
                     {
                         do
                         {
-                            if ((DAT_B5D70[num11] & 4) == 0)
+                            if ((this.DAT_B5D70[num15] & 4) == 0)
                             {
-                                int num3 = GameManager.DAT_65C90[(num15 & 0xFFF) * 4 / 2] * GameManager.DAT_65C90[(num14 & 0xFFF) * 4 / 2];
-                                if (num3 < 0)
+                                int num7 = (int)(GameManager.DAT_65C90[(num20 & 4095) * 4 / 2] * GameManager.DAT_65C90[(num19 & 4095) * 4 / 2]);
+                                if (num7 < 0)
                                 {
-                                    num3 += 131071;
+                                    num7 += 131071;
                                 }
-                                DAT_B5570[num20] += (short)(num3 >> 17);
+                                short[] dat_B = this.DAT_B5570;
+                                int num27 = num26;
+                                dat_B[num27] += (short)(num7 >> 17);
                             }
                             else
                             {
-                                DAT_B5570[num20] = 0;
+                                this.DAT_B5570[num26] = 0;
                             }
-                            dAT_F++;
-                            num11++;
-                            num20++;
-                            num15 += 1456;
+                            num++;
+                            num15++;
+                            num26++;
+                            num20 += 1456;
                         }
-                        while (dAT_F <= num7 - num5);
+                        while (num <= num11 - num9);
                     }
-                    dAT_EDC++;
-                    num14 += 1456;
+                    num2++;
+                    num19 += 1456;
                 }
-                while (dAT_EDC <= num8 - num6);
+                while (num2 <= num12 - num10);
             }
-            num10 = GameManager.instance.DAT_DB0;
+            num14 = GameManager.instance.DAT_DB0;
             if (GameManager.instance.DAT_DB0 < 0)
             {
-                num10 = GameManager.instance.DAT_DB0 + 15;
+                num14 = GameManager.instance.DAT_DB0 + 15;
             }
-            num10 >>= 4;
-            dAT_EDC = 0;
-            if (0 < num8 - num6)
+            num14 >>= 4;
+            num2 = 0;
+            if (0 < num12 - num10)
             {
-                int num21 = 256;
+                int num28 = 256;
                 do
                 {
-                    int num20 = dAT_EDC * 32;
-                    int num22 = dAT_EDC * 32;
-                    num14 = 0;
-                    if (0 < num7 - num5)
+                    int num26 = num2 * 32;
+                    int num29 = num2 * 32;
+                    num19 = 0;
+                    if (0 < num11 - num9)
                     {
-                        int num23 = dAT_EDC << 8;
-                        int num24 = 33 + dAT_EDC * 32;
-                        int num11 = 33 + dAT_EDC * 32;
-                        int num18 = 256;
-                        num2 = num + 2;
-                        int num25 = dAT_EDC + num6;
-                        int num26 = (int)((uint)num25 >> 6 << 2);
-                        int num27 = num21;
-                        int num15 = num5;
+                        int num30 = num2 << 8;
+                        int num31 = 33 + num2 * 32;
+                        int num15 = 33 + num2 * 32;
+                        int num24 = 256;
+                        int num32 = num4 + 2;
+                        int num33 = num2 + num10;
+                        int num34 = (int)((int)((uint)num33 >> 6) << 2);
+                        int num35 = num28;
+                        int num20 = num9;
                         do
                         {
-                            if ((DAT_B5D70[num22] & 0x80) == 0)
+                            if ((this.DAT_B5D70[num29] & 128) == 0)
                             {
-                                dAT_F = DAT_B5570[num20];
-                                int num3 = (num14 & 0xFF) * 256;
-                                if (dAT_F < 0)
+                                num = (int)this.DAT_B5570[num26];
+                                int num7 = (num19 & 255) * 256;
+                                if (num < 0)
                                 {
-                                    dAT_F += 15;
+                                    num += 15;
                                 }
-                                Coprocessor.vector0.vx0 = (short)num3;
-                                Coprocessor.vector0.vy0 = (short)(dAT_F >> 4);
-                                Coprocessor.vector0.vz0 = (short)num23;
-                                dAT_F = DAT_B5570[num24 - 32];
-                                if (dAT_F < 0)
+                                Coprocessor.vector0.vx0 = (short)num7;
+                                Coprocessor.vector0.vy0 = (short)(num >> 4);
+                                Coprocessor.vector0.vz0 = (short)num30;
+                                num = (int)this.DAT_B5570[num31 - 32];
+                                if (num < 0)
                                 {
-                                    dAT_F += 15;
+                                    num += 15;
                                 }
-                                Coprocessor.vector1.vx1 = (short)num18;
-                                Coprocessor.vector1.vy1 = (short)(dAT_F >> 4);
-                                Coprocessor.vector1.vz1 = (short)num23;
-                                dAT_F = DAT_B5570[num24 - 1];
-                                if (dAT_F < 0)
+                                Coprocessor.vector1.vx1 = (short)num24;
+                                Coprocessor.vector1.vy1 = (short)(num >> 4);
+                                Coprocessor.vector1.vz1 = (short)num30;
+                                num = (int)this.DAT_B5570[num31 - 1];
+                                if (num < 0)
                                 {
-                                    dAT_F += 15;
+                                    num += 15;
                                 }
-                                Coprocessor.vector2.vx2 = (short)num3;
-                                Coprocessor.vector2.vy2 = (short)(dAT_F >> 4);
-                                Coprocessor.vector2.vz2 = (short)num27;
-                                Coprocessor.ExecuteRTPT(12, lm: false);
-                                num12 = 0;
-                                if (num24 - 34 >= 0)
+                                Coprocessor.vector2.vx2 = (short)num7;
+                                Coprocessor.vector2.vy2 = (short)(num >> 4);
+                                Coprocessor.vector2.vz2 = (short)num35;
+                                Coprocessor.ExecuteRTPT(12, false);
+                                num17 = 0;
+                                if (num31 - 34 >= 0)
                                 {
-                                    num12 = DAT_B5570[num24 - 34];
+                                    num17 = (int)this.DAT_B5570[num31 - 34];
                                 }
-                                dAT_F = DAT_B5570[num24 - 32] - num12;
-                                if (dAT_F < 0)
+                                num = (int)this.DAT_B5570[num31 - 32] - num17;
+                                if (num < 0)
                                 {
-                                    dAT_F += 15;
+                                    num += 15;
                                 }
-                                dAT_F = (dAT_F >> 4) + 32;
-                                if (dAT_F < 0)
+                                num = (num >> 4) + 32;
+                                if (num < 0)
                                 {
-                                    num3 = 0;
-                                }
-                                else
-                                {
-                                    num3 = 63;
-                                    if (dAT_F < 64)
-                                    {
-                                        num3 = dAT_F;
-                                    }
-                                }
-                                num12 = 0;
-                                if (num24 - 65 >= 0)
-                                {
-                                    num12 = DAT_B5570[num24 - 65];
-                                }
-                                dAT_F = DAT_B5570[num24 - 1] - num12;
-                                if (dAT_F < 0)
-                                {
-                                    dAT_F += 15;
-                                }
-                                dAT_F = (dAT_F >> 4) + 32;
-                                ushort num28;
-                                if (dAT_F < 0)
-                                {
-                                    dAT_F = 0;
-                                    num28 = (ushort)(dAT_F << 8);
+                                    num7 = 0;
                                 }
                                 else
                                 {
-                                    num28 = 16128;
-                                    if (dAT_F < 64)
+                                    num7 = 63;
+                                    if (num < 64)
                                     {
-                                        num28 = (ushort)(dAT_F << 8);
+                                        num7 = num;
                                     }
                                 }
-                                primitives[num2 - 2].uvs = new Vector2Int(num3, num28 >> 8);
-                                dAT_F = DAT_B5570[num24 - 31] - DAT_B5570[num20];
-                                if (dAT_F < 0)
+                                num17 = 0;
+                                if (num31 - 65 >= 0)
                                 {
-                                    dAT_F += 15;
+                                    num17 = (int)this.DAT_B5570[num31 - 65];
                                 }
-                                dAT_F = (dAT_F >> 4) + 32;
-                                if (dAT_F < 0)
+                                num = (int)this.DAT_B5570[num31 - 1] - num17;
+                                if (num < 0)
                                 {
-                                    num3 = 0;
+                                    num += 15;
+                                }
+                                num = (num >> 4) + 32;
+                                ushort num36;
+                                if (num < 0)
+                                {
+                                    num = 0;
+                                    num36 = (ushort)(num << 8);
                                 }
                                 else
                                 {
-                                    num3 = 63;
-                                    if (dAT_F < 64)
+                                    num36 = 16128;
+                                    if (num < 64)
                                     {
-                                        num3 = dAT_F;
+                                        num36 = (ushort)(num << 8);
                                     }
                                 }
-                                num12 = 0;
-                                if (num24 - 64 >= 0)
+                                this.primitives[num32 - 2].uvs = new Vector2Int(num7, num36 >> 8);
+                                num = (int)(this.DAT_B5570[num31 - 31] - this.DAT_B5570[num26]);
+                                if (num < 0)
                                 {
-                                    num12 = DAT_B5570[num24 - 64];
+                                    num += 15;
                                 }
-                                dAT_F = DAT_B5570[num24] - num12;
-                                if (dAT_F < 0)
+                                num = (num >> 4) + 32;
+                                if (num < 0)
                                 {
-                                    dAT_F += 15;
-                                }
-                                dAT_F = (dAT_F >> 4) + 32;
-                                if (dAT_F < 0)
-                                {
-                                    dAT_F = 0;
-                                    num28 = (ushort)(dAT_F << 8);
+                                    num7 = 0;
                                 }
                                 else
                                 {
-                                    num28 = 16128;
-                                    if (dAT_F < 64)
+                                    num7 = 63;
+                                    if (num < 64)
                                     {
-                                        num28 = (ushort)(dAT_F << 8);
+                                        num7 = num;
                                     }
                                 }
-                                primitives[num2 - 1].uvs = new Vector2Int(num3, num28 >> 8);
-                                dAT_F = DAT_B5570[num24] - DAT_B5570[num24 - 2];
-                                if (dAT_F < 0)
+                                num17 = 0;
+                                if (num31 - 64 >= 0)
                                 {
-                                    dAT_F += 15;
+                                    num17 = (int)this.DAT_B5570[num31 - 64];
                                 }
-                                dAT_F = (dAT_F >> 4) + 32;
-                                if (dAT_F < 0)
+                                num = (int)this.DAT_B5570[num31] - num17;
+                                if (num < 0)
                                 {
-                                    num3 = 0;
+                                    num += 15;
+                                }
+                                num = (num >> 4) + 32;
+                                if (num < 0)
+                                {
+                                    num = 0;
+                                    num36 = (ushort)(num << 8);
                                 }
                                 else
                                 {
-                                    num3 = 63;
-                                    if (dAT_F < 64)
+                                    num36 = 16128;
+                                    if (num < 64)
                                     {
-                                        num3 = dAT_F;
+                                        num36 = (ushort)(num << 8);
                                     }
                                 }
-                                dAT_F = DAT_B5570[num24 + 31] - DAT_B5570[num20];
-                                if (dAT_F < 0)
+                                this.primitives[num32 - 1].uvs = new Vector2Int(num7, num36 >> 8);
+                                num = (int)(this.DAT_B5570[num31] - this.DAT_B5570[num31 - 2]);
+                                if (num < 0)
                                 {
-                                    dAT_F += 15;
+                                    num += 15;
                                 }
-                                dAT_F = (dAT_F >> 4) + 32;
-                                if (dAT_F < 0)
+                                num = (num >> 4) + 32;
+                                if (num < 0)
                                 {
-                                    dAT_F = 0;
-                                    num28 = (ushort)(dAT_F << 8);
+                                    num7 = 0;
                                 }
                                 else
                                 {
-                                    num28 = 16128;
-                                    if (dAT_F < 64)
+                                    num7 = 63;
+                                    if (num < 64)
                                     {
-                                        num28 = (ushort)(dAT_F << 8);
+                                        num7 = num;
                                     }
                                 }
-                                primitives[num2].uvs = new Vector2Int(num3, num28 >> 8);
+                                num = (int)(this.DAT_B5570[num31 + 31] - this.DAT_B5570[num26]);
+                                if (num < 0)
+                                {
+                                    num += 15;
+                                }
+                                num = (num >> 4) + 32;
+                                if (num < 0)
+                                {
+                                    num = 0;
+                                    num36 = (ushort)(num << 8);
+                                }
+                                else
+                                {
+                                    num36 = 16128;
+                                    if (num < 64)
+                                    {
+                                        num36 = (ushort)(num << 8);
+                                    }
+                                }
+                                this.primitives[num32].uvs = new Vector2Int(num7, num36 >> 8);
                                 Coprocessor.ExecuteAVSZ3();
-                                if (((DAT_B5D70[num11 - 1] | DAT_B5D70[num22] | DAT_B5D70[num11 - 32]) & 1) == 0)
+                                if (((this.DAT_B5D70[num15 - 1] | this.DAT_B5D70[num29] | this.DAT_B5D70[num15 - 32]) & 1) == 0)
                                 {
-                                    primitives[num2 - 2].screen = new Vector2Int(Coprocessor.screenXYFIFO.sx0, Coprocessor.screenXYFIFO.sy0);
-                                    primitives[num2 - 2].verts = new Vector3Int(Coprocessor.screenXYZFIFO.sx0, Coprocessor.screenXYZFIFO.sy0, Coprocessor.screenXYZFIFO.sz0);
-                                    primitives[num2 - 1].screen = new Vector2Int(Coprocessor.screenXYFIFO.sx1, Coprocessor.screenXYFIFO.sy1);
-                                    primitives[num2 - 1].verts = new Vector3Int(Coprocessor.screenXYZFIFO.sx1, Coprocessor.screenXYZFIFO.sy1, Coprocessor.screenXYZFIFO.sz1);
-                                    primitives[num2].screen = new Vector2Int(Coprocessor.screenXYFIFO.sx2, Coprocessor.screenXYFIFO.sy2);
-                                    primitives[num2].verts = new Vector3Int(Coprocessor.screenXYZFIFO.sx2, Coprocessor.screenXYZFIFO.sy2, Coprocessor.screenXYZFIFO.sz2);
-                                    newIndices[num] = num;
-                                    newIndices[num + 1] = num + 1;
-                                    newIndices[num + 2] = num + 2;
-                                    dAT_F = DAT_B5570[num24];
-                                    if (dAT_F < 0)
+                                    this.primitives[num32 - 2].screen = new Vector2Int((int)Coprocessor.screenXYFIFO.sx0, (int)Coprocessor.screenXYFIFO.sy0);
+                                    this.primitives[num32 - 2].verts = new Vector3Int((int)Coprocessor.screenXYZFIFO.sx0, (int)Coprocessor.screenXYZFIFO.sy0, (int)Coprocessor.screenXYZFIFO.sz0);
+                                    this.primitives[num32 - 1].screen = new Vector2Int((int)Coprocessor.screenXYFIFO.sx1, (int)Coprocessor.screenXYFIFO.sy1);
+                                    this.primitives[num32 - 1].verts = new Vector3Int((int)Coprocessor.screenXYZFIFO.sx1, (int)Coprocessor.screenXYZFIFO.sy1, (int)Coprocessor.screenXYZFIFO.sz1);
+                                    this.primitives[num32].screen = new Vector2Int((int)Coprocessor.screenXYFIFO.sx2, (int)Coprocessor.screenXYFIFO.sy2);
+                                    this.primitives[num32].verts = new Vector3Int((int)Coprocessor.screenXYZFIFO.sx2, (int)Coprocessor.screenXYZFIFO.sy2, (int)Coprocessor.screenXYZFIFO.sz2);
+                                    this.newIndices[num4] = num4;
+                                    this.newIndices[num4 + 1] = num4 + 1;
+                                    this.newIndices[num4 + 2] = num4 + 2;
+                                    num = (int)this.DAT_B5570[num31];
+                                    if (num < 0)
                                     {
-                                        dAT_F += 15;
+                                        num += 15;
                                     }
-                                    Coprocessor.vector0.vx0 = (short)num18;
-                                    Coprocessor.vector0.vy0 = (short)(dAT_F >> 4);
-                                    Coprocessor.vector0.vz0 = (short)num27;
-                                    Coprocessor.ExecuteRTPS(12, lm: false);
-                                    dAT_F = Coprocessor.averageZ;
-                                    num2 += 3;
-                                    num += 3;
+                                    Coprocessor.vector0.vx0 = (short)num24;
+                                    Coprocessor.vector0.vy0 = (short)(num >> 4);
+                                    Coprocessor.vector0.vz0 = (short)num35;
+                                    Coprocessor.ExecuteRTPS(12, false);
+                                    num = (int)Coprocessor.averageZ;
+                                    num32 += 3;
+                                    num4 += 3;
                                 }
                                 else
                                 {
-                                    num3 = (num15 & 0x3F) * 128;
-                                    dAT_F = (num25 & 0x3F) * 2;
-                                    dAT_F = Utilities.FUN_26B80(num, (terrain.vertices[terrain.chunks[(num26 + (int)(((uint)num15 >> 6) * 128)) / 4] * 4096 + (dAT_F + num3) / 2] & 0x7FF) * 128 - num10 - DAT_B5570[num20], (terrain.vertices[terrain.chunks[(num26 + (int)(((uint)(num15 + 1) >> 6) * 128)) / 4] * 4096 + (dAT_F + ((num15 + 1) & 0x3F) * 128) / 2] & 0x7FF) * 128 - num10 - DAT_B5570[num24 - 32], (terrain.vertices[terrain.chunks[((uint)num15 >> 6) * 32 + ((uint)(num25 + 1) >> 6)] * 4096 + (((num25 + 1) & 0x3F) * 2 + num3) / 2] & 0x7FF) * 128 - num10 - DAT_B5570[num24 - 1], primitives);
-                                    num3 = Coprocessor.averageZ;
-                                    int x = DAT_B5570[num24 - 32];
-                                    if (x < 0)
+                                    num7 = (num20 & 63) * 128;
+                                    num = (num33 & 63) * 2;
+                                    num = Utilities.FUN_26B80(num4, (int)((this.terrain.vertices[(int)(this.terrain.chunks[(num34 + (int)(((uint)num20 >> 6) * 128U)) / 4] * 4096) + (num + num7) / 2] & 2047) * 128) - num14 - (int)this.DAT_B5570[num26], (int)((this.terrain.vertices[(int)(this.terrain.chunks[(num34 + (int)(((uint)(num20 + 1) >> 6) * 128U)) / 4] * 4096) + (num + ((num20 + 1) & 63) * 128) / 2] & 2047) * 128) - num14 - (int)this.DAT_B5570[num31 - 32], (int)((this.terrain.vertices[(int)(this.terrain.chunks[(int)(((uint)num20 >> 6) * 32U + ((uint)(num33 + 1) >> 6))] * 4096) + (((num33 + 1) & 63) * 2 + num7) / 2] & 2047) * 128) - num14 - (int)this.DAT_B5570[num31 - 1], this.primitives);
+                                    num7 = (int)Coprocessor.averageZ;
+                                    int num6 = (int)this.DAT_B5570[num31 - 32];
+                                    if (num6 < 0)
                                     {
-                                        x += 15;
+                                        num6 += 15;
                                     }
-                                    Coprocessor.vector0.vx0 = (short)num18;
-                                    Coprocessor.vector0.vy0 = (short)(x >> 4);
-                                    Coprocessor.vector0.vz0 = (short)num23;
-                                    num3 = DAT_B5570[num24 - 1];
-                                    if (num3 < 0)
+                                    Coprocessor.vector0.vx0 = (short)num24;
+                                    Coprocessor.vector0.vy0 = (short)(num6 >> 4);
+                                    Coprocessor.vector0.vz0 = (short)num30;
+                                    num7 = (int)this.DAT_B5570[num31 - 1];
+                                    if (num7 < 0)
                                     {
-                                        num3 += 15;
+                                        num7 += 15;
                                     }
-                                    Coprocessor.vector1.vx1 = (short)((num14 & 0xFF) * 256);
-                                    Coprocessor.vector1.vy1 = (short)(num3 >> 4);
-                                    Coprocessor.vector1.vz1 = (short)num27;
-                                    num3 = DAT_B5570[num24];
-                                    if (num3 < 0)
+                                    Coprocessor.vector1.vx1 = (short)((num19 & 255) * 256);
+                                    Coprocessor.vector1.vy1 = (short)(num7 >> 4);
+                                    Coprocessor.vector1.vz1 = (short)num35;
+                                    num7 = (int)this.DAT_B5570[num31];
+                                    if (num7 < 0)
                                     {
-                                        num3 += 15;
+                                        num7 += 15;
                                     }
-                                    Coprocessor.vector2.vx2 = (short)num18;
-                                    Coprocessor.vector2.vy2 = (short)(num3 >> 4);
-                                    Coprocessor.vector2.vz2 = (short)num27;
-                                    Coprocessor.ExecuteRTPT(12, lm: false);
-                                    switch (dAT_F)
+                                    Coprocessor.vector2.vx2 = (short)num24;
+                                    Coprocessor.vector2.vy2 = (short)(num7 >> 4);
+                                    Coprocessor.vector2.vz2 = (short)num35;
+                                    Coprocessor.ExecuteRTPT(12, false);
+                                    if (num != 0)
                                     {
-                                        default:
-                                            newIndices[num] = num;
-                                            newIndices[num + 1] = num + 1;
-                                            newIndices[num + 2] = num + 2;
-                                            num2 += 3;
-                                            num += 3;
-                                            break;
-                                        case 4:
-                                            primitives[num + 5].verts = primitives[num + 3].verts;
-                                            primitives[num + 4].verts = primitives[num + 2].verts;
-                                            primitives[num + 3].verts = primitives[num + 1].verts;
-                                            primitives[num + 5].uvs = primitives[num + 3].uvs;
-                                            primitives[num + 4].uvs = primitives[num + 2].uvs;
-                                            primitives[num + 3].uvs = primitives[num + 1].uvs;
-                                            newIndices[num] = num;
-                                            newIndices[num + 1] = num + 1;
-                                            newIndices[num + 2] = num + 2;
-                                            newIndices[num + 3] = num + 5;
-                                            newIndices[num + 4] = num + 4;
-                                            newIndices[num + 5] = num + 3;
-                                            num2 += 6;
-                                            num += 6;
-                                            break;
-                                        case 0:
-                                            break;
+                                        if (num != 4)
+                                        {
+                                            this.newIndices[num4] = num4;
+                                            this.newIndices[num4 + 1] = num4 + 1;
+                                            this.newIndices[num4 + 2] = num4 + 2;
+                                            num32 += 3;
+                                            num4 += 3;
+                                        }
+                                        else
+                                        {
+                                            this.primitives[num4 + 5].verts = this.primitives[num4 + 3].verts;
+                                            this.primitives[num4 + 4].verts = this.primitives[num4 + 2].verts;
+                                            this.primitives[num4 + 3].verts = this.primitives[num4 + 1].verts;
+                                            this.primitives[num4 + 5].uvs = this.primitives[num4 + 3].uvs;
+                                            this.primitives[num4 + 4].uvs = this.primitives[num4 + 2].uvs;
+                                            this.primitives[num4 + 3].uvs = this.primitives[num4 + 1].uvs;
+                                            this.newIndices[num4] = num4;
+                                            this.newIndices[num4 + 1] = num4 + 1;
+                                            this.newIndices[num4 + 2] = num4 + 2;
+                                            this.newIndices[num4 + 3] = num4 + 5;
+                                            this.newIndices[num4 + 4] = num4 + 4;
+                                            this.newIndices[num4 + 5] = num4 + 3;
+                                            num32 += 6;
+                                            num4 += 6;
+                                        }
                                     }
                                 }
-                                dAT_F = DAT_B5570[num24 - 31] - DAT_B5570[num20];
-                                if (dAT_F < 0)
+                                num = (int)(this.DAT_B5570[num31 - 31] - this.DAT_B5570[num26]);
+                                if (num < 0)
                                 {
-                                    dAT_F += 15;
+                                    num += 15;
                                 }
-                                dAT_F = (dAT_F >> 4) + 32;
-                                if (dAT_F < 0)
+                                num = (num >> 4) + 32;
+                                if (num < 0)
                                 {
-                                    num3 = 0;
+                                    num7 = 0;
                                 }
                                 else
                                 {
-                                    num3 = 63;
-                                    if (dAT_F < 64)
+                                    num7 = 63;
+                                    if (num < 64)
                                     {
-                                        num3 = dAT_F;
+                                        num7 = num;
                                     }
                                 }
-                                num12 = 0;
-                                if (num24 - 64 >= 0)
+                                num17 = 0;
+                                if (num31 - 64 >= 0)
                                 {
-                                    num12 = DAT_B5570[num24 - 64];
+                                    num17 = (int)this.DAT_B5570[num31 - 64];
                                 }
-                                dAT_F = DAT_B5570[num24] - num12;
-                                if (dAT_F < 0)
+                                num = (int)this.DAT_B5570[num31] - num17;
+                                if (num < 0)
                                 {
-                                    dAT_F += 15;
+                                    num += 15;
                                 }
-                                dAT_F = (dAT_F >> 4) + 32;
-                                if (dAT_F < 0)
+                                num = (num >> 4) + 32;
+                                if (num < 0)
                                 {
-                                    dAT_F = 0;
-                                    num28 = (ushort)(dAT_F << 8);
+                                    num = 0;
+                                    num36 = (ushort)(num << 8);
                                 }
                                 else
                                 {
-                                    num28 = 16128;
-                                    if (dAT_F < 64)
+                                    num36 = 16128;
+                                    if (num < 64)
                                     {
-                                        num28 = (ushort)(dAT_F << 8);
+                                        num36 = (ushort)(num << 8);
                                     }
                                 }
-                                primitives[num2 - 2].uvs = new Vector2Int(num3, num28 >> 8);
-                                dAT_F = DAT_B5570[num24] - DAT_B5570[num24 - 2];
-                                if (dAT_F < 0)
+                                this.primitives[num32 - 2].uvs = new Vector2Int(num7, num36 >> 8);
+                                num = (int)(this.DAT_B5570[num31] - this.DAT_B5570[num31 - 2]);
+                                if (num < 0)
                                 {
-                                    dAT_F += 15;
+                                    num += 15;
                                 }
-                                dAT_F = (dAT_F >> 4) + 32;
-                                if (dAT_F < 0)
+                                num = (num >> 4) + 32;
+                                if (num < 0)
                                 {
-                                    num3 = 0;
+                                    num7 = 0;
                                 }
                                 else
                                 {
-                                    num3 = 63;
-                                    if (dAT_F < 64)
+                                    num7 = 63;
+                                    if (num < 64)
                                     {
-                                        num3 = dAT_F;
+                                        num7 = num;
                                     }
                                 }
-                                dAT_F = DAT_B5570[num24 + 31] - DAT_B5570[num20];
-                                if (dAT_F < 0)
+                                num = (int)(this.DAT_B5570[num31 + 31] - this.DAT_B5570[num26]);
+                                if (num < 0)
                                 {
-                                    dAT_F += 15;
+                                    num += 15;
                                 }
-                                dAT_F = (dAT_F >> 4) + 32;
-                                if (dAT_F < 0)
+                                num = (num >> 4) + 32;
+                                if (num < 0)
                                 {
-                                    dAT_F = 0;
-                                    num28 = (ushort)(dAT_F << 8);
+                                    num = 0;
+                                    num36 = (ushort)(num << 8);
                                 }
                                 else
                                 {
-                                    num28 = 16128;
-                                    if (dAT_F < 64)
+                                    num36 = 16128;
+                                    if (num < 64)
                                     {
-                                        num28 = (ushort)(dAT_F << 8);
+                                        num36 = (ushort)(num << 8);
                                     }
                                 }
-                                primitives[num2 - 1].uvs = new Vector2Int(num3, num28 >> 8);
-                                dAT_F = DAT_B5570[num24 + 1] - DAT_B5570[num24 - 1];
-                                if (dAT_F < 0)
+                                this.primitives[num32 - 1].uvs = new Vector2Int(num7, num36 >> 8);
+                                num = (int)(this.DAT_B5570[num31 + 1] - this.DAT_B5570[num31 - 1]);
+                                if (num < 0)
                                 {
-                                    dAT_F += 15;
+                                    num += 15;
                                 }
-                                dAT_F = (dAT_F >> 4) + 32;
-                                if (dAT_F < 0)
+                                num = (num >> 4) + 32;
+                                if (num < 0)
                                 {
-                                    num3 = 0;
+                                    num7 = 0;
                                 }
                                 else
                                 {
-                                    num3 = 63;
-                                    if (dAT_F < 64)
+                                    num7 = 63;
+                                    if (num < 64)
                                     {
-                                        num3 = dAT_F;
+                                        num7 = num;
                                     }
                                 }
-                                dAT_F = DAT_B5570[num24 + 32] - DAT_B5570[num24 - 32];
-                                if (dAT_F < 0)
+                                num = (int)(this.DAT_B5570[num31 + 32] - this.DAT_B5570[num31 - 32]);
+                                if (num < 0)
                                 {
-                                    dAT_F += 15;
+                                    num += 15;
                                 }
-                                dAT_F = (dAT_F >> 4) + 32;
-                                if (dAT_F < 0)
+                                num = (num >> 4) + 32;
+                                if (num < 0)
                                 {
-                                    dAT_F = 0;
-                                    num28 = (ushort)(dAT_F << 8);
+                                    num = 0;
+                                    num36 = (ushort)(num << 8);
                                 }
                                 else
                                 {
-                                    num28 = 16128;
-                                    if (dAT_F < 64)
+                                    num36 = 16128;
+                                    if (num < 64)
                                     {
-                                        num28 = (ushort)(dAT_F << 8);
+                                        num36 = (ushort)(num << 8);
                                     }
                                 }
-                                primitives[num2].uvs = new Vector2Int(num3, num28 >> 8);
+                                this.primitives[num32].uvs = new Vector2Int(num7, num36 >> 8);
                                 Coprocessor.ExecuteAVSZ3();
-                                if (((DAT_B5D70[num11] | DAT_B5D70[num11 - 32] | DAT_B5D70[num11 - 1]) & 1) == 0)
+                                if (((this.DAT_B5D70[num15] | this.DAT_B5D70[num15 - 32] | this.DAT_B5D70[num15 - 1]) & 1) == 0)
                                 {
-                                    primitives[num2 - 2].screen = new Vector2Int(Coprocessor.screenXYFIFO.sx0, Coprocessor.screenXYFIFO.sy0);
-                                    primitives[num2 - 2].verts = new Vector3Int(Coprocessor.screenXYZFIFO.sx0, Coprocessor.screenXYZFIFO.sy0, Coprocessor.screenXYZFIFO.sz0);
-                                    primitives[num2 - 1].screen = new Vector2Int(Coprocessor.screenXYFIFO.sx1, Coprocessor.screenXYFIFO.sy1);
-                                    primitives[num2 - 1].verts = new Vector3Int(Coprocessor.screenXYZFIFO.sx1, Coprocessor.screenXYZFIFO.sy1, Coprocessor.screenXYZFIFO.sz1);
-                                    primitives[num2].screen = new Vector2Int(Coprocessor.screenXYFIFO.sx2, Coprocessor.screenXYFIFO.sy2);
-                                    primitives[num2].verts = new Vector3Int(Coprocessor.screenXYZFIFO.sx2, Coprocessor.screenXYZFIFO.sy2, Coprocessor.screenXYZFIFO.sz2);
-                                    newIndices[num] = num + 2;
-                                    newIndices[num + 1] = num + 1;
-                                    newIndices[num + 2] = num;
-                                    dAT_F = Coprocessor.averageZ;
-                                    num2 += 3;
-                                    num += 3;
+                                    this.primitives[num32 - 2].screen = new Vector2Int((int)Coprocessor.screenXYFIFO.sx0, (int)Coprocessor.screenXYFIFO.sy0);
+                                    this.primitives[num32 - 2].verts = new Vector3Int((int)Coprocessor.screenXYZFIFO.sx0, (int)Coprocessor.screenXYZFIFO.sy0, (int)Coprocessor.screenXYZFIFO.sz0);
+                                    this.primitives[num32 - 1].screen = new Vector2Int((int)Coprocessor.screenXYFIFO.sx1, (int)Coprocessor.screenXYFIFO.sy1);
+                                    this.primitives[num32 - 1].verts = new Vector3Int((int)Coprocessor.screenXYZFIFO.sx1, (int)Coprocessor.screenXYZFIFO.sy1, (int)Coprocessor.screenXYZFIFO.sz1);
+                                    this.primitives[num32].screen = new Vector2Int((int)Coprocessor.screenXYFIFO.sx2, (int)Coprocessor.screenXYFIFO.sy2);
+                                    this.primitives[num32].verts = new Vector3Int((int)Coprocessor.screenXYZFIFO.sx2, (int)Coprocessor.screenXYZFIFO.sy2, (int)Coprocessor.screenXYZFIFO.sz2);
+                                    this.newIndices[num4] = num4 + 2;
+                                    this.newIndices[num4 + 1] = num4 + 1;
+                                    this.newIndices[num4 + 2] = num4;
+                                    num = (int)Coprocessor.averageZ;
+                                    num32 += 3;
+                                    num4 += 3;
                                 }
                                 else
                                 {
-                                    num3 = DAT_B5570[num24 - 32];
-                                    dAT_F = num3;
-                                    if (num3 < 0)
+                                    num7 = (int)this.DAT_B5570[num31 - 32];
+                                    num = num7;
+                                    if (num7 < 0)
                                     {
-                                        dAT_F = num3 + 15;
+                                        num = num7 + 15;
                                     }
-                                    Coprocessor.vector0.vx0 = (short)num18;
-                                    Coprocessor.vector0.vy0 = (short)(dAT_F >> 4);
-                                    Coprocessor.vector0.vz0 = (short)num23;
-                                    int x = DAT_B5570[num24 - 1];
-                                    dAT_F = x;
-                                    if (x < 0)
+                                    Coprocessor.vector0.vx0 = (short)num24;
+                                    Coprocessor.vector0.vy0 = (short)(num >> 4);
+                                    Coprocessor.vector0.vz0 = (short)num30;
+                                    int num6 = (int)this.DAT_B5570[num31 - 1];
+                                    num = num6;
+                                    if (num6 < 0)
                                     {
-                                        dAT_F = x + 15;
+                                        num = num6 + 15;
                                     }
-                                    Coprocessor.vector1.vx1 = (short)((num14 & 0xFF) * 256);
-                                    Coprocessor.vector1.vy1 = (short)(dAT_F >> 4);
-                                    Coprocessor.vector1.vz1 = (short)num27;
-                                    int y = DAT_B5570[num24];
-                                    dAT_F = y;
-                                    if (y < 0)
+                                    Coprocessor.vector1.vx1 = (short)((num19 & 255) * 256);
+                                    Coprocessor.vector1.vy1 = (short)(num >> 4);
+                                    Coprocessor.vector1.vz1 = (short)num35;
+                                    int num5 = (int)this.DAT_B5570[num31];
+                                    num = num5;
+                                    if (num5 < 0)
                                     {
-                                        dAT_F = y + 15;
+                                        num = num5 + 15;
                                     }
-                                    Coprocessor.vector2.vx2 = (short)num18;
-                                    Coprocessor.vector2.vy2 = (short)(dAT_F >> 4);
-                                    Coprocessor.vector2.vz2 = (short)num27;
-                                    uint num29 = (uint)(num5 + num14 + 1);
-                                    uint num30 = (uint)(num25 + 1) >> 6;
-                                    dAT_F = ((num25 + 1) & 0x3F) * 2;
-                                    switch (Utilities.FUN_26B80(num, (terrain.vertices[(long)checked((IntPtr)unchecked(terrain.chunks[(num26 + (int)((num29 >> 6) * 128)) / 4] * 4096 + ((num25 & 0x3F) * 2 + (num29 & 0x3F) * 128) / 2))] & 0x7FF) * 128 - num10 - num3, (terrain.vertices[terrain.chunks[((uint)num15 >> 6) * 32 + num30] * 4096 + (dAT_F + (num15 & 0x3F) * 128) / 2] & 0x7FF) * 128 - num10 - x, (terrain.vertices[terrain.chunks[((uint)(num15 + 1) >> 6) * 32 + num30] * 4096 + (dAT_F + ((num15 + 1) & 0x3F) * 128) / 2] & 0x7FF) * 128 - num10 - y, primitives))
+                                    Coprocessor.vector2.vx2 = (short)num24;
+                                    Coprocessor.vector2.vy2 = (short)(num >> 4);
+                                    Coprocessor.vector2.vz2 = (short)num35;
+                                    uint num37 = (uint)(num9 + num19 + 1);
+                                    uint num38 = (uint)(num33 + 1) >> 6;
+                                    num = ((num33 + 1) & 63) * 2;
+                                    num = Utilities.FUN_26B80(num4, (int)((this.terrain.vertices[(int)(checked((IntPtr)(unchecked((long)(this.terrain.chunks[(num34 + (int)((num37 >> 6) * 128U)) / 4] * 4096) + ((long)((num33 & 63) * 2) + (long)((ulong)((num37 & 63U) * 128U))) / 2L))))] & 2047) * 128) - num14 - num7, (int)((this.terrain.vertices[(int)(this.terrain.chunks[(int)(((uint)num20 >> 6) * 32U + num38)] * 4096) + (num + (num20 & 63) * 128) / 2] & 2047) * 128) - num14 - num6, (int)((this.terrain.vertices[(int)(this.terrain.chunks[(int)(((uint)(num20 + 1) >> 6) * 32U + num38)] * 4096) + (num + ((num20 + 1) & 63) * 128) / 2] & 2047) * 128) - num14 - num5, this.primitives);
+                                    if (num != 0)
                                     {
-                                        default:
-                                            dAT_F = Coprocessor.averageZ;
-                                            newIndices[num] = num + 2;
-                                            newIndices[num + 1] = num + 1;
-                                            newIndices[num + 2] = num;
-                                            num2 += 3;
-                                            num += 3;
-                                            break;
-                                        case 4:
-                                            primitives[num + 5].verts = primitives[num + 3].verts;
-                                            primitives[num + 4].verts = primitives[num + 2].verts;
-                                            primitives[num + 3].verts = primitives[num + 1].verts;
-                                            primitives[num + 5].uvs = primitives[num + 3].uvs;
-                                            primitives[num + 4].uvs = primitives[num + 2].uvs;
-                                            primitives[num + 3].uvs = primitives[num + 1].uvs;
-                                            newIndices[num] = num + 2;
-                                            newIndices[num + 1] = num + 1;
-                                            newIndices[num + 2] = num;
-                                            newIndices[num + 3] = num + 3;
-                                            newIndices[num + 4] = num + 4;
-                                            newIndices[num + 5] = num + 5;
-                                            dAT_F = Coprocessor.averageZ;
-                                            num2 += 6;
-                                            num += 6;
-                                            break;
-                                        case 0:
-                                            break;
+                                        if (num != 4)
+                                        {
+                                            num = (int)Coprocessor.averageZ;
+                                            this.newIndices[num4] = num4 + 2;
+                                            this.newIndices[num4 + 1] = num4 + 1;
+                                            this.newIndices[num4 + 2] = num4;
+                                            num32 += 3;
+                                            num4 += 3;
+                                        }
+                                        else
+                                        {
+                                            this.primitives[num4 + 5].verts = this.primitives[num4 + 3].verts;
+                                            this.primitives[num4 + 4].verts = this.primitives[num4 + 2].verts;
+                                            this.primitives[num4 + 3].verts = this.primitives[num4 + 1].verts;
+                                            this.primitives[num4 + 5].uvs = this.primitives[num4 + 3].uvs;
+                                            this.primitives[num4 + 4].uvs = this.primitives[num4 + 2].uvs;
+                                            this.primitives[num4 + 3].uvs = this.primitives[num4 + 1].uvs;
+                                            this.newIndices[num4] = num4 + 2;
+                                            this.newIndices[num4 + 1] = num4 + 1;
+                                            this.newIndices[num4 + 2] = num4;
+                                            this.newIndices[num4 + 3] = num4 + 3;
+                                            this.newIndices[num4 + 4] = num4 + 4;
+                                            this.newIndices[num4 + 5] = num4 + 5;
+                                            num = (int)Coprocessor.averageZ;
+                                            num32 += 6;
+                                            num4 += 6;
+                                        }
                                     }
                                 }
                             }
-                            num15++;
-                            num18 += 256;
-                            num14++;
-                            num11++;
-                            num24++;
                             num20++;
-                            num22++;
+                            num24 += 256;
+                            num19++;
+                            num15++;
+                            num31++;
+                            num26++;
+                            num29++;
                         }
-                        while (num14 < num7 - num5);
+                        while (num19 < num11 - num9);
                     }
-                    dAT_EDC++;
-                    num21 += 256;
+                    num2++;
+                    num28 += 256;
                 }
-                while (dAT_EDC < num8 - num6);
+                while (num2 < num12 - num10);
             }
         }
-        int num31 = num;
+        int num39 = num4;
         int translateFactor = GameManager.instance.translateFactor2;
-        for (int i = 0; i < num31; i++)
+        for (int i = 0; i < num39; i++)
         {
-            newVertices[i] = new Vector3(primitives[i].verts.x, 0f - primitives[i].verts.y, primitives[i].verts.z) / translateFactor;
-            newUVs[i] = new Vector2((float)primitives[i].uvs.x / (float)(mainT.width - 1), 1f - (float)primitives[i].uvs.y / (float)(mainT.height - 1));
+            this.newVertices[i] = new Vector3(this.primitives[i].verts.x, -this.primitives[i].verts.y, this.primitives[i].verts.z) / (float)translateFactor;
+            this.newUVs[i] = new Vector2((float)this.primitives[i].uvs.x / (float)(this.mainT.width - 1), 1f - (float)this.primitives[i].uvs.y / (float)(this.mainT.height - 1));
         }
-        mesh.Clear();
-        mesh.SetVertices(newVertices, 0, num31);
-        mesh.SetColors(newColors, 0, num31);
-        mesh.SetUVs(0, newUVs, 0, num31);
-        mesh.SetTriangles(newIndices, 0, num31, 0);
+        this.mesh.Clear();
+        this.mesh.SetVertices(this.newVertices, 0, num39);
+        this.mesh.SetColors(this.newColors, 0, num39);
+        this.mesh.SetUVs(0, this.newUVs, 0, num39);
+        this.mesh.SetTriangles(this.newIndices, 0, num39, 0, true, 0);
     }
+
+    // Token: 0x0400088C RID: 2188
+    public static Water instance;
+
+    // Token: 0x0400088D RID: 2189
+    public Transform lod;
+
+    // Token: 0x0400088E RID: 2190
+    public Vector3 lodOffset;
+
+    // Token: 0x0400088F RID: 2191
+    public bool topView;
+
+    // Token: 0x04000890 RID: 2192
+    public int width;
+
+    // Token: 0x04000891 RID: 2193
+    public int height;
+
+    // Token: 0x04000892 RID: 2194
+    public int cellSize;
+
+    // Token: 0x04000893 RID: 2195
+    public short[] DAT_B5570;
+
+    // Token: 0x04000894 RID: 2196
+    public byte[] DAT_B5D70;
+
+    // Token: 0x04000895 RID: 2197
+    private Mesh mesh;
+
+    // Token: 0x04000896 RID: 2198
+    private Mesh LOD;
+
+    // Token: 0x04000897 RID: 2199
+    private Vector3[] newVertices;
+
+    // Token: 0x04000898 RID: 2200
+    private Vector2[] newUVs;
+
+    // Token: 0x04000899 RID: 2201
+    private Color32[] newColors;
+
+    // Token: 0x0400089A RID: 2202
+    private int[] newIndices;
+
+    // Token: 0x0400089B RID: 2203
+    private Vector3[] newLODVertices;
+
+    // Token: 0x0400089C RID: 2204
+    private Vector2[] newLODUVs;
+
+    // Token: 0x0400089D RID: 2205
+    private Color32[] newLODColors;
+
+    // Token: 0x0400089E RID: 2206
+    private int[] newLODIndices;
+
+    // Token: 0x0400089F RID: 2207
+    private VigTerrain terrain;
+
+    // Token: 0x040008A0 RID: 2208
+    private Primitive[] primitives;
+
+    // Token: 0x040008A1 RID: 2209
+    private Texture2D mainT;
+
+    // Token: 0x040008A2 RID: 2210
+    private float lod_y;
+
+    // Token: 0x040008A3 RID: 2211
+    private Vector3 masterPosition;
+
+    // Token: 0x040008A4 RID: 2212
+    private Quaternion masterRotation;
+
+    // Token: 0x040008A5 RID: 2213
+    private Vector3 masterScale;
+
+    // Token: 0x040008A6 RID: 2214
+    private Transform lod2;
 }

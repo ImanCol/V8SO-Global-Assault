@@ -3765,6 +3765,7 @@ public class FixedSizedQueue<T>
     }
 }
 
+[Serializable]
 public class BufferedBinaryReader : IDisposable
 {
     private readonly Stream stream;

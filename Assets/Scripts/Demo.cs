@@ -10,6 +10,7 @@ using Beebyte;
 using Beebyte.Obfuscator;
 using Lidgren.Network;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 [BurstCompile]
 public class Demo : MonoBehaviour
@@ -24,12 +25,14 @@ public class Demo : MonoBehaviour
     private void Start()
     {
 
-        //Desactiva Debug
-#if DEBUG
-#else
-       GameObject.Find("IngameDebugConsole").gameObject.SetActive(false);
-#endif
+        //backButton.onClick.SetPersistentListenerState();
 
+#if DEBUG
+        backButton.onClick.SetPersistentListenerState(13, UnityEventCallState.RuntimeOnly);
+#else
+        GameObject.Find("MODE OFFLINE").gameObject.SetActive(false);
+        GameObject.Find("IngameDebugConsole").gameObject.SetActive(false);
+#endif
         this.playerReady = new Dictionary<long, bool>();
         this.playerText = new Dictionary<long, Text>();
         this.playerNames = new Dictionary<long, string>();
@@ -199,10 +202,13 @@ public class Demo : MonoBehaviour
 
     public void DeleteLobbies()
     {
-        for (int i = 0; i < this.lobbyList.childCount; i++)
+        if (GameManager.instance.online)
         {
-            Debug.Log("Delete Lobby: " + this.lobbyList.GetChild(i).gameObject.GetComponent<Text>().text);
-            UnityEngine.Object.Destroy(this.lobbyList.GetChild(i).gameObject);
+            for (int i = 0; i < this.lobbyList.childCount; i++)
+            {
+                Debug.Log("Delete Lobby: " + this.lobbyList.GetChild(i).gameObject.GetComponent<Text>().text);
+                UnityEngine.Object.Destroy(this.lobbyList.GetChild(i).gameObject);
+            }
         }
     }
 
@@ -310,7 +316,7 @@ public class Demo : MonoBehaviour
 
     public void ConnectLobby()
     {
-        Plugin.Username = UsernameInputField.text;
+        Plugin.Username = usernameInputField.text;
         Plugin.ipAddress = ipAddressInputField.text;
 
         string inputText = PortInputField.text; // Obtener el texto del InputField
@@ -375,7 +381,7 @@ public class Demo : MonoBehaviour
     [Header("Lobby Create")]
     public RectTransform join;
     public TextMeshProUGUI titleLobby;
-    public InputField UsernameInputField;
+    public InputField usernameInputField;
     public InputField ipAddressInputField;
     public InputField PortInputField;
     public Button joinLobbyButton;

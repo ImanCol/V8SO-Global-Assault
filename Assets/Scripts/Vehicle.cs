@@ -3391,33 +3391,33 @@ public class Vehicle : VigObject
     private void FUN_41B0C()
     {
         short num = 84;
-        if (-1 < acceleration)
+        if (-1 < this.acceleration)
         {
             num = 85;
-            if (-1 < direction)
+            if (-1 < this.direction)
             {
                 num = 0;
-                if ((DAT_F6 & 0x80) != 0)
+                if ((this.DAT_F6 & 128) != 0)
                 {
                     num = 86;
                 }
             }
         }
-        VigObject vigObject = body[1];
+        VigObject vigObject = this.body[1];
         if (vigObject != null)
         {
-            VigObject pDAT_ = vigObject.PDAT_74;
-            if (pDAT_ != null && (num == 0 || pDAT_.DAT_1A != num))
+            VigObject vigObject2 = vigObject.PDAT_74;
+            if (vigObject2 != null && (num == 0 || vigObject2.DAT_1A != num))
             {
-                VigObject param = pDAT_.FUN_2CCBC();
-                GameManager.instance.FUN_2C4B4(param);
+                VigObject vigObject3 = vigObject2.FUN_2CCBC();
+                GameManager.instance.FUN_2C4B4(vigObject3);
                 vigObject.PDAT_74 = null;
             }
-            pDAT_ = vigObject.PDAT_78;
-            if (pDAT_ != null && (num == 0 || pDAT_.DAT_1A != num))
+            vigObject2 = vigObject.PDAT_78;
+            if (vigObject2 != null && (num == 0 || vigObject2.DAT_1A != num))
             {
-                VigObject param = pDAT_.FUN_2CCBC();
-                GameManager.instance.FUN_2C4B4(param);
+                VigObject vigObject3 = vigObject2.FUN_2CCBC();
+                GameManager.instance.FUN_2C4B4(vigObject3);
                 vigObject.PDAT_78 = null;
             }
             if (num != 0)
@@ -3427,10 +3427,11 @@ public class Vehicle : VigObject
                     ConfigContainer configContainer = vigObject.FUN_2C5F4(32834);
                     if (configContainer != null)
                     {
-                        VigObject vigObject2 = vigObject.PDAT_74 = LevelManager.instance.xobfList[18].ini.FUN_2C17C((ushort)num, typeof(VigObject), 0u);
-                        Utilities.FUN_2CB04(vigObject, configContainer, vigObject2);
+                        VigObject vigObject4 = LevelManager.instance.xobfList[18].ini.FUN_2C17C((ushort)num, typeof(VigObject), 0U);
+                        vigObject.PDAT_74 = vigObject4;
+                        Utilities.FUN_2CB04(vigObject, configContainer, vigObject4);
                         Utilities.ParentChildren(vigObject, vigObject);
-                        vigObject2.vMesh.DAT_02 = -1;
+                        vigObject4.vMesh.DAT_02 = -1;
                     }
                 }
                 if (num != 0 && vigObject.PDAT_78 == null)
@@ -3438,83 +3439,74 @@ public class Vehicle : VigObject
                     ConfigContainer configContainer = vigObject.FUN_2C5F4(32835);
                     if (configContainer != null)
                     {
-                        VigObject vigObject2 = vigObject.PDAT_78 = LevelManager.instance.xobfList[18].ini.FUN_2C17C((ushort)num, typeof(VigObject), 0u);
-                        Utilities.FUN_2CB04(vigObject, configContainer, vigObject2);
+                        VigObject vigObject4 = LevelManager.instance.xobfList[18].ini.FUN_2C17C((ushort)num, typeof(VigObject), 0U);
+                        vigObject.PDAT_78 = vigObject4;
+                        Utilities.FUN_2CB04(vigObject, configContainer, vigObject4);
                         Utilities.ParentChildren(vigObject, vigObject);
-                        vigObject2.vMesh.DAT_02 = -1;
+                        vigObject4.vMesh.DAT_02 = -1;
                     }
                 }
             }
         }
-        flags &= 2415919103u;
-        int num2 = Utilities.FUN_29E84(new Vector3Int(physics1.X, physics1.Y, physics1.Z));
+        this.flags &= 2415919103U;
+        int num2 = Utilities.FUN_29E84(new Vector3Int(this.physics1.X, this.physics1.Y, this.physics1.Z));
         if (num2 < 0)
         {
             num2 += 127;
         }
-        int num3 = physics1.X;
-        physics1.W = num2 >> 7;
+        int num3 = this.physics1.X;
+        this.physics1.W = num2 >> 7;
         if (num3 < 0)
         {
             num3 += 127;
         }
-        num2 = physics1.Y;
+        num2 = this.physics1.Y;
         if (num2 < 0)
         {
             num2 += 127;
         }
-        int num4 = physics1.Z;
+        int num4 = this.physics1.Z;
         if (num4 < 0)
         {
             num4 += 127;
         }
-        num2 = vTransform.rotation.V02 * (num3 >> 7) + vTransform.rotation.V12 * (num2 >> 7) + vTransform.rotation.V22 * (num4 >> 7);
+        num2 = (int)this.vTransform.rotation.V02 * (num3 >> 7) + (int)this.vTransform.rotation.V12 * (num2 >> 7) + (int)this.vTransform.rotation.V22 * (num4 >> 7);
         if (num2 < 0)
         {
             num2 += 4095;
         }
-        physics2.W = num2 >> 12;
-        if (!GameManager.instance.noPhysics || id < 0)
+        this.physics2.W = num2 >> 12;
+        if (!GameManager.instance.noPhysics || this.id < 0)
         {
-            if (DAT_B4 == 0)
+            if (this.DAT_B4 == 0)
             {
-                if (wheelsType == _WHEELS.Air)
+                if (this.wheelsType == _WHEELS.Air)
                 {
-                    PhyAir();
+                    this.PhyAir();
                 }
-                else if (wheelsType < _WHEELS.Sea)
+                else if (this.wheelsType < _WHEELS.Sea)
                 {
-                    num3 = 0;
-                    if (wheelsType != 0)
+                    if (this.wheelsType == _WHEELS.Ground)
                     {
-                        goto IL_0320;
+                        this.PhyGround();
                     }
-                    PhyGround();
                 }
-                else if (wheelsType == _WHEELS.Sea)
+                else if (this.wheelsType == _WHEELS.Sea)
                 {
-                    PhySea();
+                    this.PhySea();
                 }
-                else
+                else if (this.wheelsType == _WHEELS.Snow)
                 {
-                    num3 = 0;
-                    if (wheelsType != _WHEELS.Snow)
-                    {
-                        goto IL_0320;
-                    }
-                    PhySnow();
+                    this.PhySnow();
                 }
             }
             else
             {
-                FUN_3E774();
-                FUN_3E8C0();
+                this.FUN_3E774();
+                this.FUN_3E8C0();
             }
         }
-        num3 = 0;
-        goto IL_0320;
-    IL_0320:
-        FUN_41E08();
+        this.FUN_41E08();
     }
 
     private void FUN_41E08()

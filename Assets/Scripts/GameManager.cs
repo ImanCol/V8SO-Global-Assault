@@ -148,11 +148,14 @@ public class GameManager : MonoBehaviour
     public float TargetFrameRate = 60.0f;
     float currentFrameTime;
 
-    private async Task WaitForNextFrame()
+
+    private float currentFps = 0.0f;
+
+    IEnumerator WaitForNextFrame()
     {
         while (true)
         {
-            await Task.Yield(); // Esperar un frame
+            yield return new WaitForEndOfFrame();
             currentFrameTime += 1.0f / TargetFrameRate;
             var t = Time.realtimeSinceStartup;
             var sleepTime = currentFrameTime - t - 0.01f;
@@ -160,9 +163,11 @@ public class GameManager : MonoBehaviour
                 Thread.Sleep((int)(sleepTime * 1000));
             while (t < currentFrameTime)
                 t = Time.realtimeSinceStartup;
-            Debug.Log("frame per second... currentFrameTime:" + currentFrameTime + " - t:" + t + " - sleepTime:" + sleepTime);
+            currentFps = 1.0f / (Time.deltaTime + 0.00001f);
         }
     }
+
+
 
     public struct TerrainJob : IJob
     {
@@ -11405,6 +11410,7 @@ public class GameManager : MonoBehaviour
             Demo.instance.readyLabel.gameObject.SetActive(value: true);
             Demo.instance.notReadyLabel.gameObject.SetActive(value: false);
             Demo.instance.SetupPlaceholders();
+            await Task.Yield(); // Esperar un frame
         }
         else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
         {
@@ -12039,7 +12045,7 @@ public class GameManager : MonoBehaviour
     public bool online = false;
 
     [Obsolete]
-    public async Task LoadLevelAsync()
+    public async void LoadLevel()
     {
         online = false;
         SetDriver();
@@ -14783,7 +14789,7 @@ public class GameManager : MonoBehaviour
         if (!paused)
         {
             //Verifica si hay objetivos
-            if ((Vehicle)param1.target != null)
+            if ((Vehicle)param1.target != null) //Sigue dando error al comenzar
             {
                 vehicle = (Vehicle)param1.target;
                 VigObject vigObject = param1.weapons[param1.weaponSlot];
@@ -15094,6 +15100,7 @@ public class GameManager : MonoBehaviour
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = MaxRate;
         currentFrameTime = Time.realtimeSinceStartup;
+        //WaitForNextFrame();
         StartCoroutine("WaitForNextFrame");
 
         if (instance == null)
@@ -15232,7 +15239,6 @@ public class GameManager : MonoBehaviour
     public float totalSceneProgress = 0f; //Progreso total de la carga de la escena
     public float currentSceneProgress = 0f; //Progreso actual de la carga de la escena
     public AsyncOperation asyncSceneMap;
-    public AsyncOperation asyncLoadScene;
     public int sceneBuildIndex;
     Scene loadedScene;
 
@@ -15299,8 +15305,19 @@ public class GameManager : MonoBehaviour
     public float progress = 0f; //Progreso actual de la barra
     public Texture2D progressBarTexture;
 
+    public bool showFps = true;
+
     private async void OnGUI()
     {
+#if DEBUG
+        if (showFps)
+        {
+            GUIStyle style = new GUIStyle();
+            style.fontSize = 20;
+            style.normal.textColor = Color.yellow;
+            GUI.Label(new Rect(10, 10, 200, 20), "FPS: " + currentFps.ToString("F2"), style);
+        }
+#endif
         if (!LoadScene || !isWait) // Solo dibujar la barra de progreso si no se han cargado completamente o esta esperando el Host
         {
             GUI.depth = 0;
@@ -15353,11 +15370,8 @@ public class GameManager : MonoBehaviour
         await SceneLoader.getMap(sceneIndex);
         Debug.Log("obtenido mapa cargado...");
 
-        //SceneLoader.canvasLoadScene.GetComponent<Canvas>().gameObject.SetActive(false);
         sceneMap = sceneIndex;
-        //asyncLoadScene = SceneManager.LoadSceneAsync("LoadScene", LoadSceneMode.Single);
         asyncSceneMap = SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Single);
-        //asyncLoadScene.allowSceneActivation = false;
         asyncSceneMap.allowSceneActivation = false;
 
         Demo.instance.loadButtonOnline.gameObject.SetActive(false);
@@ -15369,18 +15383,8 @@ public class GameManager : MonoBehaviour
         else
             Demo.instance.loadTextOnline.text = "Waiting Host...";
 
-        //while (!asyncLoadScene.isDone)
-        //{
-        //    if (asyncLoadScene.progress < 0.9f)
-        //        Debug.Log("Cargando LoadScene..." + asyncLoadScene.progress);
-        //    else if (asyncLoadScene.progress >= 0.9f)
-        //        asyncLoadScene.allowSceneActivation = true;
-        //    await Task.Yield(); // Esperar un frame
-        //}
-
         while (!asyncSceneMap.isDone)
         {
-            //SceneManager.SetActiveScene(SceneManager.GetSceneAt(19));
             totalSceneProgress = asyncSceneMap.progress;
 
             // Si el progreso total es menor a 0.9f, establece el progreso actual de acuerdo al progreso total
@@ -15402,31 +15406,12 @@ public class GameManager : MonoBehaviour
                     Debug.Log("Es el Host!");
                     Scene thisScene = SceneManager.GetSceneByBuildIndex(0);
                     Scene asyncScene = SceneManager.GetSceneByBuildIndex(sceneIndex);
-
-                    //SceneManager.UnloadSceneAsync(sceneIndex);
-                    //Debug.Log("Get Scene: " + thisScene + " - " + asyncScene);
-
-                    //SceneManager.LoadScene(sceneIndex, LoadSceneMode.Additive);
-                    //SceneManager.activeSceneChanged(thisScene, asyncScene) += slideSpeed;
-                    //asyncSceneMap.allowSceneActivation = true;
-                    //SceneManager.SetActiveScene(asyncScene);
-                    //SceneManager.UnloadSceneAsync(0);
-                    //await Task.Yield(5);
-
-
-                    //asyncLoadScene.allowSceneActivation = true;
-
                     await Task.Delay(System.TimeSpan.FromSeconds(1));
-
-                    //SceneManager.UnloadSceneAsync("LoadScene");
-                    //await Task.Delay(System.TimeSpan.FromSeconds(5));
                 }
 
                 // Obtener el nombre de la escena por índice de compilación
                 sceneName = GetSceneNameByBuildIndex(sceneIndex);
 
-
-                // StopCoroutine(LoadSceneAsyncWithDelay(sceneIndex));
                 Debug.Log("Escena Precargada: " + sceneName);
                 currentSceneProgress = 1.0f;
             }
@@ -15438,7 +15423,6 @@ public class GameManager : MonoBehaviour
         }
         await SceneLoader.setLoadingStatus(isHost);
         await Task.Yield(); // Esperar un frame
-        //SceneManager.SetActiveScene(SceneManager.GetSceneAt(sceneMap));
         // La carga de la escena se ha completado correctamente, puedes realizar cualquier otra acción necesaria aquí
     }
 
@@ -15673,6 +15657,7 @@ public class GameManager : MonoBehaviour
 
         //Debug.Log(ReInput.mapping.GetActionId("Mode-Touch LEFT"));
         //Debug.Log(ReInput.players.GetPlayer(0).GetButtonDown("Mode-Touch LEFT"));
+        await Task.Yield(); // Esperar un frame
     }
 
     [Header("Spawn IA Combo L1+R1+L2+R2")]
@@ -15739,7 +15724,8 @@ public class GameManager : MonoBehaviour
                     paused = !paused;
                     if (gameMode >= _GAME_MODE.Versus2)
                     {
-                        ClientSend.Pause();
+                        if (online)
+                            ClientSend.Pause();
                     }
                 }
         }
@@ -15770,7 +15756,6 @@ public class GameManager : MonoBehaviour
     public bool isWait = false;
     int sceneMap = new int();
 
-
     //IEnumerator UpdateReflections()
     //{
     //    while (true)
@@ -15780,6 +15765,7 @@ public class GameManager : MonoBehaviour
     //        //shouldRunCoroutine = true;
     //    }
     //}
+
     IEnumerator UpdateReflections()
     {
         while (true)
@@ -15799,13 +15785,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-
     private async void FixedUpdate()
     {
         if (inDebug || inMenu || SceneManager.GetActiveScene().name == "MENU-Driver" || SceneManager.GetActiveScene().name == "DEBUG-Online")
         {
             //Debug.Log("In Debug Return");
+            await Task.Yield(); // Esperar un frame
             return;
         }
 
@@ -15814,11 +15799,13 @@ public class GameManager : MonoBehaviour
             {
                 {
                     DestroyProgressBar();
+                    if (online)
+                        await new ClientSend().waitLoad();
+                    else
+                        paused = !paused;
                     isWait = !isWait;
-                    await new ClientSend().waitLoad();
-                    await Task.Yield(); // Esperar un frame
                     reflectionsCoroutine = StartCoroutine(UpdateReflections());
-                    StartCoroutine(UpdateReflections());
+                    //StartCoroutine(UpdateReflections());
                     //SceneManager.UnloadSceneAsync(19);
                     await MusicManager.instance.PlayNextMusic().ContinueWith(Task =>
                     {
@@ -15832,13 +15819,13 @@ public class GameManager : MonoBehaviour
             //Retiene la funcion de LevelManager
             if (!LevelManager.instance)
             {
-                Debug.Log("Return...");
+                //Debug.Log("Return...");
                 await Task.Yield(); // Esperar un frame
                 return;
             }
             else
             {
-                Debug.Log("NoReturn...");
+                //Debug.Log("NoReturn...");
                 if (!LevelManager.instance.isEnabled)
                 {
                     if (SceneLoader.staticCanvasLoadScene.enabled)
@@ -15848,7 +15835,49 @@ public class GameManager : MonoBehaviour
                     Debug.Log("Continue...");
                     if (UIManager.instance)
                         UIManager.instance.UiInitiate();
-                    LevelManager.instance.dev();
+                    LevelManager.instance.enabled = true;
+                    switch (sceneMap)
+                    {
+                        case 1:
+                            LevelManager.instance.GetComponent<Route66>().enabled = true;
+                            //GameObject.Find("LevelManager").GetComponent<Route66>().enabled = true;
+                            break;
+                        case 2:
+                            GameObject.Find("LevelManager").GetComponent<OLYMPIC>().enabled = true;
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            break;
+                        case 5:
+                            break;
+                        case 6:
+                            break;
+                        case 7:
+                            break;
+                        case 8:
+                            break;
+                        case 9:
+                            break;
+                        case 10:
+                            break;
+                        case 11:
+                            break;
+                        case 12:
+                            break;
+                        case 13:
+                            break;
+                        case 14:
+                            break;
+                        case 15:
+                            break;
+                        case 16:
+                            break;
+                        case 17:
+                            break;
+                        case 18:
+                            break;
+                    }
                     LevelManager.instance.isEnabled = true;
                 }
             }
@@ -15872,7 +15901,9 @@ public class GameManager : MonoBehaviour
                         await Task.Yield(); // Esperar un frame
                         return;
                     }
-                    Debug.Log("Miembros en Partida..." + networkMembers.Count);
+                    if (online)
+                        //ClientSend.Spawn();
+                        Debug.Log("Miembros en Partida..." + networkMembers.Count);
                 }
             }
 
@@ -15889,8 +15920,8 @@ public class GameManager : MonoBehaviour
                         param = num;
                     }
                     FUN_313C8((int)param); //Actualiza World?
-                    FUN_31440((uint)DAT_28); //Actualiza Movimiento
-                    FUN_31728();
+                    FUN_31440((uint)DAT_28); //Actualiza Movimiento //Error al caer del agua
+                    FUN_31728(); //Error al tocar el agua en Cansoncity
                     for (int k = 0; k < worldObjs_tmp.Count; k++)
                     {
                         worldObjs.Remove(worldObjs_tmp[k]);
@@ -17433,7 +17464,9 @@ public class GameManager : MonoBehaviour
                 hitDetection.collider1 = collider;
                 hitDetection.object2 = hitDetection.object1;
                 hitDetection.object1 = @object;
-                num2 = (int)param2.OnCollision(hitDetection);
+                Debug.Log("Colision comenzada...: " + num2 + " - Self: " + hitDetection.self + " - Objeto 1: " + hitDetection.object1 + " - Colision 1: " + hitDetection.object1 + " - Objeto 2: " + hitDetection.object2 + " Colision 2: " + hitDetection.collider2);
+                num2 = (int)param2.OnCollision(hitDetection); //Colision? posible error agua
+                Debug.Log("Colision terminada...: " + num2 + " - " + " . " + hitDetection);
                 if (num2 < 0)
                 {
                     num3 |= 2;
