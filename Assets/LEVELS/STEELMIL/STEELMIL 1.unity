@@ -11718,7 +11718,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1791082647508790610}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -264756242, guid: c705dda2eaffac996b2458b5d5ce1b01, type: 3}
+  m_Script: {fileID: 11500000, guid: 95fc7db4098ac62a6e3e1194da26b243, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   occlusionPrefab: {fileID: 1791082649404618470, guid: d55bb411675d40a48dd3cea9fe881308, type: 3}

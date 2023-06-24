@@ -216,7 +216,7 @@ public class MusicManager : MonoBehaviour
         music.Stop();
         music.playOnAwake = false;
         music.loop = true;
-        music.volume = 0.75f;
+        music.volume = 0.5f;
 
         if (!musicClipsPreloaded)
             preloadCoroutine = PreloadMusicClips();

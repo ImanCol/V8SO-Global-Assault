@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Burst;
 using UnityEngine;
-
+using Rewired;
 
 namespace V2UnityDiscordIntercept
 {
@@ -10,6 +10,7 @@ namespace V2UnityDiscordIntercept
     [BurstCompile]
     public class Plugin : MonoBehaviour//: BaseUnityPlugin
     {
+        public static Plugin instance;
         public const string AppIdentifier = "V2Unity-Discord-Patch";
 
         public static VigServer Server { get; set; }
@@ -26,14 +27,22 @@ namespace V2UnityDiscordIntercept
 
         public static bool saveLogger = false;
 
+
         private float secondsToShowWindow = -1;
         private Rect errorWindowRect = new Rect(200, 200, 800, 400);
         private Vector2 errorWindowScrollPos = Vector2.zero;
 
         private readonly IList<Exception> errors = new List<Exception>();
 
+        public Player player;
+
         private void Awake()
         {
+            if (instance == null)
+            {
+                instance = this;
+                player = ReInput.players.GetPlayer(0);
+            }
             //var harmony = new Harmony("c1b6540e-a6ed-4f10-89b3-8e715ee70a78");
             //harmony.PatchAll();
         }
@@ -148,11 +157,16 @@ namespace V2UnityDiscordIntercept
                     ShowErrorWindow = false;
             }
 
-            if (Input.GetKeyDown(KeyCode.F2))
+            if (player.GetButtonDown("F2"))
             {
                 secondsToShowWindow = -1;
                 ShowErrorWindow = !ShowErrorWindow;
             }
+            //if (Input.GetKeyDown(KeyCode.F2))
+            //{
+            //    secondsToShowWindow = -1;
+            //    ShowErrorWindow = !ShowErrorWindow;
+            //}
         }
 
         public void LateUpdate()

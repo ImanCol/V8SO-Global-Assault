@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.Concurrent;
 using UnityEngine;
 using Unity.Burst;
+using System.Threading.Tasks;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -3732,57 +3733,64 @@ public static class Utilities
 
 public class FixedSizedQueue<T>
 {
-    ConcurrentQueue<T> q = new ConcurrentQueue<T>();
-    private object lockObject = new object();
-
+    // Token: 0x17000017 RID: 23
+    // (get) Token: 0x06000AAC RID: 2732 RVA: 0x0000AC88 File Offset: 0x00008E88
+    // (set) Token: 0x06000AAD RID: 2733 RVA: 0x0000AC90 File Offset: 0x00008E90
     public int Limit { get; set; }
+
+    // Token: 0x06000AAE RID: 2734 RVA: 0x0007E438 File Offset: 0x0007C638
     public void Enqueue(T obj)
     {
-        q.Enqueue(obj);
-        lock (lockObject)
+        this.q.Enqueue(obj);
+        object obj2 = this.lockObject;
+        lock (obj2)
         {
-            T overflow;
-            while (q.Count > Limit && q.TryDequeue(out overflow)) ;
+            T t;
+            while (this.q.Count > this.Limit && this.q.TryDequeue(out t))
+            {
+            }
         }
     }
+
+    // Token: 0x06000AAF RID: 2735 RVA: 0x0007E4A0 File Offset: 0x0007C6A0
     public T Dequeue()
     {
-        T result;
-        q.TryDequeue(out result);
-        return result;
+        T t;
+        this.q.TryDequeue(out t);
+        return t;
     }
+
+    // Token: 0x06000AB0 RID: 2736 RVA: 0x0007E4BC File Offset: 0x0007C6BC
     public T Peek()
     {
-        T result;
-        q.TryPeek(out result);
-        return result;
+        T t;
+        this.q.TryPeek(out t);
+        return t;
     }
+
+    // Token: 0x06000AB1 RID: 2737 RVA: 0x0000AC99 File Offset: 0x00008E99
     public T PeekAt(int index)
     {
-        T result;
-        result = q.ElementAt(index);
-        return result;
+        return this.q.ElementAt(index);
     }
+
+    // Token: 0x040006BE RID: 1726
+    private ConcurrentQueue<T> q = new ConcurrentQueue<T>();
+
+    // Token: 0x040006BF RID: 1727
+    private object lockObject = new object();
 }
 
-[Serializable]
-public class BufferedBinaryReader : IDisposable
+public class BufferedBinaryReader : IAsyncDisposable
 {
+    public long Position { get { return bufferOffset; } }
+    public long Length { get { return bufferSize; } }
+
     private readonly Stream stream;
-
     private byte[] buffer;
-
     private int bufferSize;
-
     private int bufferOffset;
-
     private int numBufferedBytes;
-
-    public long Position => bufferOffset;
-
-    public long Length => bufferSize;
-
-    public int NumBytesAvailable => Math.Max(0, numBufferedBytes - bufferOffset);
 
     public BufferedBinaryReader(Stream stream, int bufferSize)
     {
@@ -3806,26 +3814,28 @@ public class BufferedBinaryReader : IDisposable
         }
     }
 
+    public int NumBytesAvailable { get { return Math.Max(0, numBufferedBytes - bufferOffset); } }
+
     public bool FillBuffer()
     {
-        int num = bufferSize - bufferOffset;
-        int num2 = bufferSize - num;
+        var numBytesUnread = bufferSize - bufferOffset;
+        var numBytesToRead = bufferSize - numBytesUnread;
         bufferOffset = 0;
-        numBufferedBytes = num;
-        if (num > 0)
+        numBufferedBytes = numBytesUnread;
+        if (numBytesUnread > 0)
         {
-            Buffer.BlockCopy(buffer, num2, buffer, 0, num);
+            Buffer.BlockCopy(buffer, numBytesToRead, buffer, 0, numBytesUnread);
         }
-        while (num2 > 0)
+        while (numBytesToRead > 0)
         {
-            int num3 = stream.Read(buffer, num, num2);
-            if (num3 == 0)
+            var numBytesRead = stream.Read(buffer, numBytesUnread, numBytesToRead);
+            if (numBytesRead == 0)
             {
                 return false;
             }
-            numBufferedBytes += num3;
-            num2 -= num3;
-            num += num3;
+            numBufferedBytes += numBytesRead;
+            numBytesToRead -= numBytesRead;
+            numBytesUnread += numBytesRead;
         }
         return true;
     }
@@ -3851,38 +3861,36 @@ public class BufferedBinaryReader : IDisposable
 
     public byte ReadByte(int offset)
     {
-        return buffer[bufferOffset + offset];
-    }
-    public short ReadInt16()
-    {
-        var val = (short)((int)buffer[bufferOffset] | (int)buffer[bufferOffset + 1] << 8);
-        bufferOffset += 2;
+        byte val = (byte)(int)buffer[bufferOffset + offset];
+        //bufferOffset += 2;
         return val;
     }
-    public ushort ReadUInt16()
-    {
-        var val = (ushort)((int)buffer[bufferOffset] | (int)buffer[bufferOffset + 1] << 8);
-        bufferOffset += 2;
-        return val;
-    }
+
     public short ReadInt16(int offset)
     {
-        return (short)(buffer[bufferOffset + offset] | (buffer[bufferOffset + offset + 1] << 8));
+        var val = (short)((int)buffer[bufferOffset + offset] | (int)buffer[bufferOffset + offset + 1] << 8);
+        //bufferOffset += 2;
+        return val;
     }
 
     public ushort ReadUInt16(int offset)
     {
-        return (ushort)(buffer[bufferOffset + offset] | (buffer[bufferOffset + offset + 1] << 8));
+        var val = (ushort)((int)buffer[bufferOffset + offset] | (int)buffer[bufferOffset + offset + 1] << 8);
+        //bufferOffset += 2;
+        return val;
     }
 
     public int ReadInt32(int offset)
     {
-        return buffer[bufferOffset + offset] | (buffer[bufferOffset + offset + 1] << 8) | (buffer[bufferOffset + offset + 2] << 16) | (buffer[bufferOffset + offset + 3] << 24);
+        var val = (int)((int)buffer[bufferOffset + offset] | (int)buffer[bufferOffset + offset + 1] << 8 |
+                        (int)buffer[bufferOffset + offset + 2] << 16 | (int)buffer[bufferOffset + offset + 3] << 24);
+        return val;
     }
 
     public Vector3Int ReadSVector(int offset)
     {
-        return new Vector3Int(ReadInt16(offset), ReadInt16(offset + 2), ReadInt16(offset + 4));
+        var val = new Vector3Int(ReadInt16(offset), ReadInt16(offset + 2), ReadInt16(offset + 4));
+        return val;
     }
 
     public void WriteUInt16(int offset, ushort value)
@@ -3894,9 +3902,7 @@ public class BufferedBinaryReader : IDisposable
     public void Dispose()
     {
         if (stream != null)
-        {
             stream.Close();
-        }
     }
 
     public void Seek(long offset, SeekOrigin origin)
@@ -3914,8 +3920,12 @@ public class BufferedBinaryReader : IDisposable
                 break;
         }
     }
-}
 
+    public ValueTask DisposeAsync()
+    {
+        throw new NotImplementedException();
+    }
+}
 [Serializable]
 public class VigTuple
 {

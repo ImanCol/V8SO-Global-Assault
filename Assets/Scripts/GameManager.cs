@@ -34,7 +34,6 @@ public struct VehicleStats
 }
 
 [Serializable]
-
 public struct VehicleData
 {
     // Token: 0x04000414 RID: 1044
@@ -15401,7 +15400,7 @@ public class GameManager : MonoBehaviour
                 inDebug = false;
                 inMenu = false;
                 asyncSceneMap.allowSceneActivation = true;
-                if (Input.GetKeyDown(KeyCode.Space) && isHost)
+                if (player.GetButtonDown("START") && isHost)
                 {
                     Debug.Log("Es el Host!");
                     Scene thisScene = SceneManager.GetSceneByBuildIndex(0);
@@ -15665,13 +15664,12 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-
         //Obtener la progresión de carga de la escena actual
         //loadingProgress = SceneManager.LoadSceneAsync(map).progress;
 
         if (inDebug || inMenu || SceneManager.GetActiveScene().name == "MENU-Driver" || SceneManager.GetActiveScene().name == "DEBUG-Online")
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (player.GetButtonDown("Escape"))
             {
                 Application.Quit();
             }
@@ -15702,7 +15700,8 @@ public class GameManager : MonoBehaviour
             DAT_1030[6] = 1;
         }
         if (isWait)
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (player.GetButton("SELECT") && player.GetButton("START") && player.GetButton("L2") && player.GetButton("R2") && player.GetButton("L1") && player.GetButton("R1") || player.GetButtonDown("Escape"))
+            //if (player.GetButtonDown("START"))
             {
                 if (gameMode >= _GAME_MODE.Versus2)
                 {
@@ -15716,7 +15715,7 @@ public class GameManager : MonoBehaviour
                 LoadDebug();
             }
         FUN_3827C(playerObjects[0], DAT_F00); //PointPotitionMap?
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (player.GetButtonDown("START") || player.GetButtonDown("Space"))
         {
             if (isWait)
                 if (isHost)
@@ -15729,23 +15728,24 @@ public class GameManager : MonoBehaviour
                     }
                 }
         }
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        //if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (player.GetButtonDown("Home"))
         {
             enableReticle = !enableReticle;
         }
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (player.GetButtonDown("Return"))
         {
             ScreenCapture.CaptureScreenshot("screenshot.png");
         }
-        if (Input.GetKeyDown(KeyCode.Delete))
+        if (player.GetButtonDown("Delete"))
         {
             noAI = !noAI;
         }
-        if (Input.GetKeyDown(KeyCode.Insert))
+        if (player.GetButtonDown("Insert"))
         {
             noPhysics = !noPhysics;
         }
-        if (Input.GetKeyDown(KeyCode.End))
+        if (player.GetButtonDown("End"))
         {
             noHUD = !noHUD;
             UIManager.instance.hudRect.gameObject.SetActive(noHUD);
@@ -15795,15 +15795,15 @@ public class GameManager : MonoBehaviour
         }
 
         if (!isWait)
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (player.GetButtonDown("CROSS")) //Presiona X para empezar
             {
                 {
-                    DestroyProgressBar();
                     if (online)
                         await new ClientSend().waitLoad();
                     else
                         paused = !paused;
                     isWait = !isWait;
+                    DestroyProgressBar();
                     reflectionsCoroutine = StartCoroutine(UpdateReflections());
                     //StartCoroutine(UpdateReflections());
                     //SceneManager.UnloadSceneAsync(19);
@@ -15833,8 +15833,8 @@ public class GameManager : MonoBehaviour
                     //SceneLoader.staticCanvasLoadScene = null;
                     //SceneManager.UnloadScene("LoadScene");
                     Debug.Log("Continue...");
-                    if (UIManager.instance)
-                        UIManager.instance.UiInitiate();
+                    //if (UIManager.instance)
+                    //    UIManager.instance.UiInitiate();
                     LevelManager.instance.enabled = true;
                     switch (sceneMap)
                     {
@@ -15909,32 +15909,36 @@ public class GameManager : MonoBehaviour
 
             if (!paused)
             {
-                uint num = 1u;
-                for (int j = 0; j < num; j++)
+                uint num = 1U;
+                int num2 = 0;
+                while ((long)num2 < (long)((ulong)num))
                 {
-                    DAT_28++;
-                    timer = (ushort)DAT_28;
-                    uint param = 0u;
-                    if (j == num - 1)
+                    this.DAT_28++;
+                    this.timer = (ushort)this.DAT_28;
+                    uint num3 = 0U;
+                    if ((long)num2 == (long)((ulong)(num - 1U)))
                     {
-                        param = num;
+                        num3 = num;
                     }
-                    FUN_313C8((int)param); //Actualiza World?
-                    FUN_31440((uint)DAT_28); //Actualiza Movimiento //Error al caer del agua
-                    FUN_31728(); //Error al tocar el agua en Cansoncity
-                    for (int k = 0; k < worldObjs_tmp.Count; k++)
+                    this.FUN_313C8((int)num3);
+                    this.FUN_31440((uint)this.DAT_28);
+                    this.FUN_31728();
+                    for (int j = 0; j < this.worldObjs_tmp.Count; j++)
                     {
-                        worldObjs.Remove(worldObjs_tmp[k]);
+                        this.worldObjs.Remove(this.worldObjs_tmp[j]);
                     }
-                    worldObjs_tmp.Clear();
-                    if (playerObjects[0] != null && (InputManager.controllers[0].DAT_A & 0x80) != 0)
+                    this.worldObjs_tmp.Clear();
+                    if (this.playerObjects[0] != null && (InputManager.controllers[0].DAT_A & 128) != 0)
                     {
-                        playerObjects[0].view = 3 - playerObjects[0].view;
+                        this.playerObjects[0].view = (_CAR_VIEW)3 - (int)this.playerObjects[0].view;
                     }
+                    num2++;
+                    await Task.Yield();
                 }
             }
             else
             {
+                Debug.Log("Camera..." + cameraObjects[0].vTransform.rotation);
                 cameraObjects[0].vTransform.rotation = Utilities.RotMatrixYXZ_gte(cameraObjects[0].vr);
             }
             FUN_31360((ushort)(DAT_28 & 0xFFFF));

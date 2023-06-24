@@ -20,11 +20,10 @@ public class UIManager : MonoBehaviour
     public List<Sprite> enemySprites;
     public List<Sprite> weaponSprites;
     public List<Sprite> digitSprites;
+    public TextMeshProUGUI digitTextTMP_UI;
     public List<Sprite> slotSprites;
     public List<Sprite> asciiSprites;
     public GameObject unitPrefab;
-    public bool loadScene = true;
-    public bool startScene = false;
 
     [Header("PlayerTags")]
     public bool isGameTagThis = false;
@@ -43,7 +42,6 @@ public class UIManager : MonoBehaviour
     public Image enemyRect;
     public RectTransform radarRect;
     public RectTransform feedbackRect;
-    public RectTransform trackFeedbackRect;
     public Image playerHealthSlider;
     public Slider enemyHealthSlider;
     public List<Image> digits;
@@ -343,7 +341,7 @@ public class UIManager : MonoBehaviour
 
     public UIMessage uiMessagesScript;
 
-    public void UiInitiate()
+    public void Start()
     {
         AddUIMessagesScript(this.gameObject);
         //makeLoadscene();
@@ -378,11 +376,9 @@ public class UIManager : MonoBehaviour
         if (GameManager.instance.isWait)
         {
             if (GameManager.instance.paused)
-                if (!startScene)
-                {
-                    startScene = true;
-                    //loadPanel.gameObject.SetActive(false);
-                }
+            {
+
+            }
         }
     }
 
@@ -639,10 +635,19 @@ public class UIManager : MonoBehaviour
             weaponRect.enabled = true;
             weaponRect.sprite = weaponSprites[vigObject.tags - 1];
             weaponRect.SetNativeSize();
-            digits[0].enabled = true;
-            digits[1].enabled = true;
-            digits[0].sprite = digitSprites[(int)vigObject.maxHalfHealth / 10];
-            digits[1].sprite = digitSprites[(int)vigObject.maxHalfHealth % 10];
+
+            //digits[0].enabled = true;
+            //digits[1].enabled = true;
+
+            digitTextTMP_UI.gameObject.SetActive(true);
+
+            if (vigObject.maxHalfHealth == 11)
+                digitTextTMP_UI.text = "1 1";
+            else
+                digitTextTMP_UI.text = vigObject.maxHalfHealth.ToString();
+
+            //digits[0].sprite = digitSprites[(int)vigObject.maxHalfHealth / 10];
+            //digits[1].sprite = digitSprites[(int)vigObject.maxHalfHealth % 10];
             slots[0].sprite = slotSprites[0];
             slots[1].sprite = slotSprites[0];
             slots[2].sprite = slotSprites[0];
@@ -651,8 +656,9 @@ public class UIManager : MonoBehaviour
         else
         {
             weaponRect.enabled = false;
-            digits[0].enabled = false;
-            digits[1].enabled = false;
+            //digits[0].enabled = false;
+            //digits[1].enabled = false;
+            digitTextTMP_UI.gameObject.SetActive(false);
         }
 
         //get PowerUp

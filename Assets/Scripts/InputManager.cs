@@ -2,7 +2,9 @@
 using Rewired;
 using Beebyte;
 using Beebyte.Obfuscator;
+using System;
 
+[Serializable]
 public enum _CONTROLLER_TYPE
 {
     None,
@@ -12,6 +14,8 @@ public enum _CONTROLLER_TYPE
     JoystickAnalog,
     JoypadAnalog,
 }
+
+[Serializable]
 public enum _CONTROLLER_ACTIONS
 {
     None,
@@ -29,6 +33,8 @@ public enum _CONTROLLER_ACTIONS
     Fire,
     MachineGun
 }
+
+[Serializable]
 public enum _CONTROLLER_STEERING
 {
     None,
@@ -37,6 +43,8 @@ public enum _CONTROLLER_STEERING
     CameraOrbit,
     CameraDolly
 }
+
+[Serializable]
 public class Controller
 {
     public _CONTROLLER_TYPE type;
@@ -59,6 +67,8 @@ public class Controller
         return (uint)((DAT_B << 24) | (DAT_A << 16) | (steering << 8) | actions);
     }
 }
+
+[Serializable]
 public struct PSXInput
 {
     public byte DAT_00; //0x00
@@ -72,16 +82,28 @@ public struct PSXInput
 }
 
 [SkipRename]
+[Serializable]
 public class InputManager : MonoBehaviour
 {
+
+    [Header("Input Instance")]
     public static InputManager instance;
+
+    [SerializeField]
     public static Controller[] controllers;
+    [SerializeField]
     public static PSXInput[,] inputs;
     public static byte[,] axisData;
     public static int[] turnRadius;
+
+    [SerializeField]
     public _CONTROLLER_ACTIONS[] controllerActions;
+
+    [SerializeField]
     public _CONTROLLER_STEERING[] controllerSteerings;
-    private Player player;
+
+    [SerializeField]
+    public static Player player;
     private void Awake()
     {
         if (instance == null)
