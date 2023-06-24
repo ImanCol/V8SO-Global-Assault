@@ -62,9 +62,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/LEVELS/V8/WILDWEST/WILDWEST.unity
     guid: 320d366f8954a75459098c00a1f8f28d
-  - enabled: 1
+  - enabled: 0
     path: Assets/LEVELS/V8/HOOVRDAM/HOOVRDAM.unity
     guid: 72b6e022728095143aae6f614311fc12
+  - enabled: 1
+    path: Assets/LEVELS/V8/HOOVRDAM/HOOVRDAM2.unity
+    guid: 19634aa8eabdb9c4ca8192ff0eedca11
   - enabled: 1
     path: Assets/LEVELS/V8/VALLYFRM/VALLYFRM.unity
     guid: f9131d03e1ae3f240b84ddd5594d471a

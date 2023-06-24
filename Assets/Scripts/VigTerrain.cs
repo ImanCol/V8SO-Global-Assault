@@ -906,6 +906,8 @@ public class VigTerrain : MonoBehaviour
     }
 
     // Token: 0x06000BFA RID: 3066 RVA: 0x000A23B0 File Offset: 0x000A05B0
+
+    //dibujado de terreno y distancia?
     private static void FUN_290A8(uint param1, int param2, int param3, int param4)
     {
         int translateFactor = GameManager.instance.translateFactor2;

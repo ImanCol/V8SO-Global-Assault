@@ -2732,8 +2732,6 @@ MonoBehaviour:
   playerObjects: []
   cameraObjects: []
   vehicles: 
-  worldObjs: []
-  interObjs: []
   translateFactor: 4096
   translateFactor2: 16
   pixelSnapMin: 0.002
@@ -2754,6 +2752,9 @@ MonoBehaviour:
   DAT_DA0: 0
   DAT_DA8: 0
   DAT_DB0: 0
+  drawDistance1: 80
+  drawDistance2: 40
+  drawDistance3: 20
   DAT_DB4: 0
   DAT_DB6: 0
   DAT_DB8: 0
@@ -3157,6 +3158,8 @@ MonoBehaviour:
   isHost: 0
   isParty: 0
   sceneLoadedDone: 0
+  worldObjs: []
+  interObjs: []
   DAT_1068: []
   DAT_1078: []
   DAT_1088: []
