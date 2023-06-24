@@ -121,7 +121,6 @@ public enum _SCREEN_MODE
     Vertical,
     Unknown
 }
-
 public enum _DITHERING
 {
     None,
@@ -129,6 +128,8 @@ public enum _DITHERING
     PSX
 }
 
+
+[Serializable]
 public class BSP
 {
     public int DAT_00; //0x00
@@ -1967,7 +1968,10 @@ public class GameManager : MonoBehaviour
     public byte[] vehicles;
 
     // Token: 0x04000482 RID: 1154
-    public BSP bspTree;
+
+    [Header("BPS")]
+    [SerializeField]
+    public BSP bspTree = null;
 
     // Token: 0x04000485 RID: 1157
     public int translateFactor = 10000;
@@ -3184,7 +3188,7 @@ public class GameManager : MonoBehaviour
     {
         uint num = (uint)(this.DAT_DB0 - this.DAT_F28.position.y);
         Vector3Int vector3Int = new Vector3Int((int)this.DAT_F28.rotation.V10, (int)this.DAT_F28.rotation.V11, (int)this.DAT_F28.rotation.V12);
-        Water.instance.FUN_15F28(this.DAT_F28, this.DAT_DB0);
+        Water.instance.FUN_15F28(this.DAT_F28, this.DAT_DB0); //Posiciona el agua sobre el jugador
         uint num2 = (uint)vector3Int.z;
         if ((num ^ num2) < 1U)
         {
@@ -3197,7 +3201,7 @@ public class GameManager : MonoBehaviour
                 return;
             }
         }
-        Water.instance.FUN_16664(vector3Int, (int)num);
+        Water.instance.FUN_16664(vector3Int, (int)num); //Dibuja y asigna posicion
     }
     public void FUN_1C134()
     {
@@ -4133,6 +4137,10 @@ public class GameManager : MonoBehaviour
         }
         return null;
     }
+
+
+    //Dibuja objetos en Pantalla
+    //BSP= 2:82408976
     public void FUN_3150C()
     {
         if (this.bspTree != null)
@@ -4192,9 +4200,16 @@ public class GameManager : MonoBehaviour
             {
                 num2 = num;
             }
-            this.FUN_30DE8(this.bspTree, GameManager.instance.DAT_F28.position.x + num4 * 1024, GameManager.instance.DAT_F28.position.x + num3 * 1024, GameManager.instance.DAT_F28.position.z + num5 * 1024, GameManager.instance.DAT_F28.position.z + num2 * 1024);
+            //this.FUN_30DE8(this.bspTree, GameManager.instance.DAT_F28.position.x + num4 * 1024, GameManager.instance.DAT_F28.position.x + num3 * 1024, GameManager.instance.DAT_F28.position.z + num5 * 1024, GameManager.instance.DAT_F28.position.z + num2 * 1024);
+            //this.FUN_30DE8(this.bspTree, GameManager.instance.DAT_F28.position.x + num4 * drawObjInt1, GameManager.instance.DAT_F28.position.x + num3 * drawObjInt2, GameManager.instance.DAT_F28.position.z + num5 * drawObjInt3, GameManager.instance.DAT_F28.position.z + num2 * drawObjInt4);
+            this.FUN_30DE8(this.bspTree, GameManager.instance.DAT_F28.position.x + num4 * drawObjInt1, GameManager.instance.DAT_F28.position.x + num3 * drawObjInt2, GameManager.instance.DAT_F28.position.z + num5 * drawObjInt3, GameManager.instance.DAT_F28.position.z + num2 * drawObjInt4);
         }
     }
+
+    public int drawObjInt1;
+    public int drawObjInt2;
+    public int drawObjInt3;
+    public int drawObjInt4;
 
     public void FUN_31360(ushort param1)
     {
@@ -6952,7 +6967,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("Camera..." + cameraObjects[0].vTransform.rotation);
+                Debug.Log("Camera..." + cameraObjects[0].vTransform.rotation.Matrix2Quaternion);
                 cameraObjects[0].vTransform.rotation = Utilities.RotMatrixYXZ_gte(cameraObjects[0].vr);
             }
             FUN_31360((ushort)(DAT_28 & 0xFFFF));
@@ -7398,10 +7413,10 @@ public class GameManager : MonoBehaviour
             GameManager.DAT_1f800096 = (short)((ushort)this.DAT_F20);
             GameManager.DAT_1f800098 = (short)(this.DAT_DB6 << 8);
             GameManager.DAT_1f80009a = (short)(this.DAT_DB8 << 8);
-            DAT_1f800094_ = GameManager.DAT_1f800094;
-            DAT_1f800096_ = GameManager.DAT_1f800096;
-            DAT_1f800098_ = GameManager.DAT_1f800098;
-            DAT_1f80009a_ = GameManager.DAT_1f80009a;
+            GameManager.DAT_1f800094 = DAT_1f800094_; //100
+            GameManager.DAT_1f800096 = DAT_1f800096_; //240
+            GameManager.DAT_1f800098 = DAT_1f800098_; //10240
+            GameManager.DAT_1f80009a = DAT_1f80009a_; //5120
             this.nativeArray = new NativeArray<Vector2Int>(list2.Count, Allocator.Persistent, NativeArrayOptions.ClearMemory);
             for (int k = 0; k < this.nativeArray.Length; k++)
             {

@@ -3,7 +3,7 @@ using Unity.Burst;
 using UnityEngine;
 
 
-
+[Serializable]
 public struct Primitive
 {
     public Vector3 verts;
@@ -12,7 +12,6 @@ public struct Primitive
 }
 
 [BurstCompile]
-
 // Token: 0x020001F1 RID: 497
 public class Water : MonoBehaviour
 {
@@ -101,8 +100,13 @@ public class Water : MonoBehaviour
         this.mainT = (Texture2D)UnityEngine.Object.FindObjectOfType<LevelManager>().DAT_DC0.mainTexture;
         this.lod2 = UnityEngine.Object.Instantiate<GameObject>(this.lod.gameObject, this.lod).transform;
         this.lod2.localEulerAngles = new Vector3(0f, 180f, 0f);
-    }
 
+        Testing = new GameObject("Testing");
+        canvasRectTransform = Testing.AddComponent<RectTransform>();
+
+    }
+    GameObject Testing;
+    RectTransform canvasRectTransform;
     // Token: 0x06000C03 RID: 3075 RVA: 0x0000796D File Offset: 0x00005B6D
     private void Update()
     {
@@ -114,6 +118,7 @@ public class Water : MonoBehaviour
         Vector3 vector = new Vector3(pos.x, -pos.y, pos.z);
         Vector3 vector2 = this.masterRotation * Vector3.Scale(vector, this.masterScale) + this.masterPosition;
         base.transform.position = vector2;
+        canvasRectTransform.position = vector2; //Actualiza posicion agua
     }
 
     // Token: 0x06000C05 RID: 3077 RVA: 0x000A5B04 File Offset: 0x000A3D04
@@ -974,9 +979,12 @@ public class Water : MonoBehaviour
         this.mesh.SetTriangles(this.newIndices, 0, num39, 0, true, 0);
     }
 
+
     // Token: 0x0400088C RID: 2188
     public static Water instance;
 
+
+    [SerializeField]
     // Token: 0x0400088D RID: 2189
     public Transform lod;
 
@@ -1002,56 +1010,56 @@ public class Water : MonoBehaviour
     public byte[] DAT_B5D70;
 
     // Token: 0x04000895 RID: 2197
-    private Mesh mesh;
+    public Mesh mesh;
 
     // Token: 0x04000896 RID: 2198
-    private Mesh LOD;
+    public Mesh LOD;
 
     // Token: 0x04000897 RID: 2199
     private Vector3[] newVertices;
 
     // Token: 0x04000898 RID: 2200
-    private Vector2[] newUVs;
+    public Vector2[] newUVs;
 
     // Token: 0x04000899 RID: 2201
-    private Color32[] newColors;
+    public Color32[] newColors;
 
     // Token: 0x0400089A RID: 2202
-    private int[] newIndices;
+    public int[] newIndices;
 
     // Token: 0x0400089B RID: 2203
-    private Vector3[] newLODVertices;
+    public Vector3[] newLODVertices;
 
     // Token: 0x0400089C RID: 2204
-    private Vector2[] newLODUVs;
+    public Vector2[] newLODUVs;
 
     // Token: 0x0400089D RID: 2205
-    private Color32[] newLODColors;
+    public Color32[] newLODColors;
 
     // Token: 0x0400089E RID: 2206
-    private int[] newLODIndices;
+    public int[] newLODIndices;
 
     // Token: 0x0400089F RID: 2207
-    private VigTerrain terrain;
+    public VigTerrain terrain;
 
     // Token: 0x040008A0 RID: 2208
-    private Primitive[] primitives;
+    public Primitive[] primitives;
 
     // Token: 0x040008A1 RID: 2209
-    private Texture2D mainT;
+    public Texture2D mainT;
 
     // Token: 0x040008A2 RID: 2210
-    private float lod_y;
+    public float lod_y;
 
     // Token: 0x040008A3 RID: 2211
-    private Vector3 masterPosition;
+    public Vector3 masterPosition;
 
     // Token: 0x040008A4 RID: 2212
-    private Quaternion masterRotation;
+    public Quaternion masterRotation;
 
     // Token: 0x040008A5 RID: 2213
-    private Vector3 masterScale;
+    public Vector3 masterScale;
 
     // Token: 0x040008A6 RID: 2214
-    private Transform lod2;
+    public Transform lod2;
 }

@@ -2726,12 +2726,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxRate: 9999
   TargetFrameRate: 60
+  DAT_1f800094_: 100
+  DAT_1f800096_: 240
+  DAT_1f800098_: 10240
+  DAT_1f80009a_: 5120
   terrain: {fileID: 0}
   levelManager: {fileID: 0}
   commonWheelConfiguration: {fileID: 0}
   playerObjects: []
   cameraObjects: []
   vehicles: 
+  bspTree:
+    DAT_00: 0
+    DAT_04: 0
+    LDAT_04: []
   translateFactor: 4096
   translateFactor2: 16
   pixelSnapMin: 0.002
@@ -2934,8 +2942,8 @@ MonoBehaviour:
     padding: 0
     position: {x: 0, y: 0, z: 0}
   DAT_EC8: {x: 0, y: 0, z: 0}
-  DAT_ED8: 24
-  DAT_EDC: 100
+  DAT_ED8: 270
+  DAT_EDC: 550
   DAT_EE0:
     rotation:
       V00: 0
@@ -3158,6 +3166,10 @@ MonoBehaviour:
   isHost: 0
   isParty: 0
   sceneLoadedDone: 0
+  drawObjInt1: 1024
+  drawObjInt2: 1024
+  drawObjInt3: 1024
+  drawObjInt4: 1024
   worldObjs: []
   interObjs: []
   DAT_1068: []
