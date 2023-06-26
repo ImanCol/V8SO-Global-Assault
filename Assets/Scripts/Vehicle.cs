@@ -1026,13 +1026,17 @@ public class Vehicle : VigObject
                 if (GameManager.instance.networkMembers.TryGetValue(this.userId, out Vehicle value))
                 {
                     if (UIManager.instance.isGameTagPlayers)
+                    {
                         if (gameTag.text == "")
                         {
                             gameTag.text = namePlayer;
                             UIManager.instance.GameTagPlayer(gameTag, this, true);
                         }
                         else
-                            gameTag.text = "";
+                            UIManager.instance.GameTagPlayer(gameTag, this, true);
+                    }
+                    else
+                        gameTag.text = "";
                 }
                 else
                 {

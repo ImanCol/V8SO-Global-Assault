@@ -21,6 +21,10 @@ MonoBehaviour:
     m_Address: Assets/import/PNGs/VEHICLES/Vehicle 17.png
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: ea66d3ba3c5ac7d498707e8c9e54524f
+    m_Address: Assets/Stylized Water For URP/Materials/Windwaker.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 1c227065345a491458dee94b1e60c603, type: 2}
   m_SchemaSet:

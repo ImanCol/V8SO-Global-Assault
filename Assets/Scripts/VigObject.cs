@@ -492,9 +492,6 @@ public class VigObject : MonoBehaviour
 {
     private float forceModifier = 1; // Valor predeterminado en caso de que no se establezca otro valor
 
-
-
-
     public uint flags;
 
     public byte type;
@@ -3099,35 +3096,49 @@ public class VigObject : MonoBehaviour
         GameManager.instance.FUN_3094C(param2);
     }
 
+    [SerializeField]
+    public List<ConfigContainer> configContainersObject;
+
     public bool FUN_2C7D0()
     {
         if (vData != null)
         {
-            List<ConfigContainer> configContainers = vData.ini.configContainers;
+            configContainersObject = vData.ini.configContainers;
+            GameManager.instance.configContainersObject = configContainersObject;
             int index;
-            for (ushort num = configContainers[(ushort)DAT_1A].next; num != ushort.MaxValue; num = configContainers[index].previous)
+            for (ushort num = configContainersObject[(ushort)DAT_1A].next; num != ushort.MaxValue; num = configContainersObject[index].previous)
             {
                 index = num;
-                if (configContainers[index].flag >> 12 == 12)
+                if (configContainersObject[index].flag >> 12 == 12)
                 {
-                    if ((configContainers[index].flag & 0x800) != 0)
+                    Debug.Log("ConfigContainer - index:" + index + " - flag: " + configContainersObject[index].flag);
+
+                    if ((configContainersObject[index].flag & 0x800) != 0)
                     {
-                        flags |= 4096u;
+                        //flags |= 4096u;
+                        vLOD = vMesh;
+
                     }
-                    if ((configContainers[index].flag & 0x7FF) == 2047)
+                    if ((configContainersObject[index].flag & 0x7FF) == 2047)
                     {
-                        vLOD = null;
+                        //vLOD = null;
+                        vLOD = vMesh;
                     }
-                    else if (((configContainers[index].flag ^ configContainers[(ushort)DAT_1A].flag) & 0x7FF) != 0)
+                    else if (((configContainersObject[index].flag ^ configContainersObject[(ushort)DAT_1A].flag) & 0x7FF) != 0)
                     {
-                        VigMesh vigMesh = vLOD = vData.FUN_1FD18(base.gameObject, (uint)(configContainers[index].flag & 0x7FF), init: true);
+                        //Activa LOD LOW
+                        //vLOD = vMesh;
+                        VigMesh vigMesh = vLOD = vData.FUN_1FD18(base.gameObject, (uint)(configContainersObject[index].flag & 0x7FF), init: true);
+                        //vLOD = vMesh;
                     }
                     else
                     {
+                        //vLOD = vMesh;
                         vLOD = vMesh;
+
                     }
-                    int num2 = configContainers[index].objID * 65536;
-                    if (configContainers[index].objID == 0)
+                    int num2 = configContainersObject[index].objID * 65536;
+                    if (configContainersObject[index].objID == 0)
                     {
                         num2 = DAT_58 * (short)LevelManager.instance.DAT_C18[0];
                     }

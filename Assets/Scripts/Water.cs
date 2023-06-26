@@ -100,13 +100,8 @@ public class Water : MonoBehaviour
         this.mainT = (Texture2D)UnityEngine.Object.FindObjectOfType<LevelManager>().DAT_DC0.mainTexture;
         this.lod2 = UnityEngine.Object.Instantiate<GameObject>(this.lod.gameObject, this.lod).transform;
         this.lod2.localEulerAngles = new Vector3(0f, 180f, 0f);
-
-        Testing = new GameObject("Testing");
-        canvasRectTransform = Testing.AddComponent<RectTransform>();
-
     }
-    GameObject Testing;
-    RectTransform canvasRectTransform;
+    public RectTransform waterCustom;
     // Token: 0x06000C03 RID: 3075 RVA: 0x0000796D File Offset: 0x00005B6D
     private void Update()
     {
@@ -118,7 +113,7 @@ public class Water : MonoBehaviour
         Vector3 vector = new Vector3(pos.x, -pos.y, pos.z);
         Vector3 vector2 = this.masterRotation * Vector3.Scale(vector, this.masterScale) + this.masterPosition;
         base.transform.position = vector2;
-        canvasRectTransform.position = vector2; //Actualiza posicion agua
+        //waterCustom.position = vector2; //Actualiza posicion agua
     }
 
     // Token: 0x06000C05 RID: 3077 RVA: 0x000A5B04 File Offset: 0x000A3D04
@@ -312,7 +307,7 @@ public class Water : MonoBehaviour
             vector3Int2.y = GameManager.instance.DAT_DB0;
             if (GameManager.instance.DAT_DB0 < 0)
             {
-                vector3Int2.y = GameManager.instance.DAT_DB0 + 255;
+                vector3Int2.y = GameManager.instance.DAT_DB0 + 0;
             }
             vector3Int2.y >>= 8;
             vector3Int2.z = num10 << 8;
@@ -1043,6 +1038,7 @@ public class Water : MonoBehaviour
     public VigTerrain terrain;
 
     // Token: 0x040008A0 RID: 2208
+    [SerializeField]
     public Primitive[] primitives;
 
     // Token: 0x040008A1 RID: 2209

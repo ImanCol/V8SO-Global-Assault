@@ -2726,10 +2726,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxRate: 9999
   TargetFrameRate: 60
-  DAT_1f800094_: 100
-  DAT_1f800096_: 240
-  DAT_1f800098_: 10240
-  DAT_1f80009a_: 5120
+  DAT_1f800094_: 32767
+  DAT_1f800096_: 32767
+  DAT_1f800098_: 32767
+  DAT_1f80009a_: 2019
   terrain: {fileID: 0}
   levelManager: {fileID: 0}
   commonWheelConfiguration: {fileID: 0}
@@ -18290,8 +18290,8 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1791082647508790619}
   m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
+  m_Alpha: 0
+  m_Interactable: 0
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
 --- !u!1 &1690799521

@@ -4,10 +4,11 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // Token: 0x020001EF RID: 495
+[Serializable]
 public class VigTerrain : MonoBehaviour
 {
     // Token: 0x06000BE7 RID: 3047 RVA: 0x0009ECD0 File Offset: 0x0009CED0
-    private void Awake()
+    public void Awake()
     {
         if (VigTerrain.instance == null)
         {
@@ -44,7 +45,7 @@ public class VigTerrain : MonoBehaviour
     }
 
     // Token: 0x06000BE8 RID: 3048 RVA: 0x0009EE98 File Offset: 0x0009D098
-    private void Start()
+    public void Start()
     {
         if (GameManager.instance.inMenu)
         {
@@ -119,7 +120,7 @@ public class VigTerrain : MonoBehaviour
     }
 
     // Token: 0x06000BEC RID: 3052 RVA: 0x0009F16C File Offset: 0x0009D36C
-    private bool InsideCircle(Tile center, Tile tile, float radius)
+    public bool InsideCircle(Tile center, Tile tile, float radius)
     {
         float num = center.x - tile.x;
         float num2 = center.y - tile.y;
@@ -127,7 +128,7 @@ public class VigTerrain : MonoBehaviour
     }
 
     // Token: 0x06000BED RID: 3053 RVA: 0x0009F1A4 File Offset: 0x0009D3A4
-    private List<Tile> BreadthFirstSearch(Tile start, float radius)
+    public List<Tile> BreadthFirstSearch(Tile start, float radius)
     {
         Queue<Tile> queue = new Queue<Tile>();
         queue.Enqueue(start);
@@ -485,7 +486,7 @@ public class VigTerrain : MonoBehaviour
     }
 
     // Token: 0x06000BF9 RID: 3065 RVA: 0x0009FE84 File Offset: 0x0009E084
-    private static void FUN_288E0(uint param1, uint param2, int param3)
+    public static void FUN_288E0(uint param1, uint param2, int param3)
     {
         int num = (int)((param1 >> 6) * 32U + (param2 >> 6));
         int num2 = (int)(((param2 & 63U) + (param1 & 63U) * 64U) * 2U);
@@ -513,7 +514,7 @@ public class VigTerrain : MonoBehaviour
         Coprocessor3.vector0.vx0 = (short)num4;
         Coprocessor3.vector0.vy0 = (short)((int)(VigTerrain._vertices[VigTerrain.puVar14] & 2047) * 524288 + num2 >> 16);
         Coprocessor3.vector0.vz0 = (short)num;
-        VigTerrain.terrainVertices[0] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
+        VigTerrain.instance.terrainVertices[0] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
         Coprocessor3.ExecuteRTPS(12, false);
         num3 = (uint)GameManager.DAT_1f800098;
         uint num5 = (num4 + 1024U) & 65535U;
@@ -522,7 +523,7 @@ public class VigTerrain : MonoBehaviour
         Coprocessor3.vector0.vx0 = (short)num5;
         Coprocessor3.vector0.vy0 = (short)((int)(VigTerrain._vertices[VigTerrain.puVar15] & 2047) * 524288 + num2 >> 16);
         Coprocessor3.vector0.vz0 = (short)num;
-        VigTerrain.terrainVertices[1] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
+        VigTerrain.instance.terrainVertices[1] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
         Coprocessor3.ExecuteRTPS(12, false);
         uint num6 = ((sz < num3) ? 1U : 0U);
         uint sz2 = (uint)Coprocessor3.screenZFIFO.sz3;
@@ -531,7 +532,7 @@ public class VigTerrain : MonoBehaviour
         Coprocessor3.vector0.vy0 = (short)((int)(VigTerrain._vertices[VigTerrain.puVar16] & 2047) * 524288 + num2 >> 16);
         Coprocessor3.vector0.vz0 = (short)(num + 1024);
         Vector2Int vector2Int = new Vector2Int((int)Coprocessor3.screenXYFIFO.sx1, (int)Coprocessor3.screenXYFIFO.sy1);
-        VigTerrain.terrainVertices[2] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
+        VigTerrain.instance.terrainVertices[2] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
         Coprocessor3.ExecuteRTPS(12, false);
         uint num7 = ((sz2 < num3) ? 1U : 0U) << 1;
         uint num8 = num6 | num7;
@@ -541,7 +542,7 @@ public class VigTerrain : MonoBehaviour
         Coprocessor3.vector0.vx0 = (short)num5;
         Coprocessor3.vector0.vy0 = (short)((int)(VigTerrain._vertices[VigTerrain.puVar17] & 2047) * 524288 + num2 >> 16);
         Coprocessor3.vector0.vz0 = (short)(num + 1024);
-        VigTerrain.terrainVertices[3] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
+        VigTerrain.instance.terrainVertices[3] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
         num2 = Coprocessor3.mathsAccumulator.mac0;
         Coprocessor3.ExecuteRTPS(12, false);
         num5 = ((sz3 < num3) ? 1U : 0U) << 2;
@@ -560,32 +561,32 @@ public class VigTerrain : MonoBehaviour
             GameManager.terrainScreen[4].vert.z = (int)Coprocessor3.screenZFIFO.sz1;
             GameManager.terrainScreen[20].vert.z = (int)Coprocessor3.screenZFIFO.sz2;
             GameManager.terrainScreen[24].vert.z = (int)Coprocessor3.screenZFIFO.sz3;
-            VigTerrain.terrainWorld[0].z = (float)VigTerrain.terrainVertices[0].z;
-            VigTerrain.terrainWorld[0].x = (float)VigTerrain.terrainVertices[0].x;
-            VigTerrain.terrainWorld[0].y = (float)VigTerrain.terrainVertices[0].y;
-            VigTerrain.terrainWorld[4].z = (float)VigTerrain.terrainVertices[1].z;
-            VigTerrain.terrainWorld[20].z = (float)VigTerrain.terrainVertices[2].z;
-            VigTerrain.terrainWorld[24].z = (float)VigTerrain.terrainVertices[3].z;
+            VigTerrain.instance.terrainWorld[0].z = (float)VigTerrain.instance.terrainVertices[0].z;
+            VigTerrain.instance.terrainWorld[0].x = (float)VigTerrain.instance.terrainVertices[0].x;
+            VigTerrain.instance.terrainWorld[0].y = (float)VigTerrain.instance.terrainVertices[0].y;
+            VigTerrain.instance.terrainWorld[4].z = (float)VigTerrain.instance.terrainVertices[1].z;
+            VigTerrain.instance.terrainWorld[20].z = (float)VigTerrain.instance.terrainVertices[2].z;
+            VigTerrain.instance.terrainWorld[24].z = (float)VigTerrain.instance.terrainVertices[3].z;
             Coprocessor3.accumulator.ir1 = (short)((uint)VigTerrain._vertices[VigTerrain.puVar14] >> 11 << 7);
             Coprocessor3.ExecuteCC(12, true);
             GameManager.terrainScreen[4].vert.x = (int)Coprocessor3.screenXYFIFO.sx0;
             GameManager.terrainScreen[4].vert.y = (int)Coprocessor3.screenXYFIFO.sy0;
-            VigTerrain.terrainWorld[4].x = (float)VigTerrain.terrainVertices[1].x;
-            VigTerrain.terrainWorld[4].y = (float)VigTerrain.terrainVertices[1].y;
+            VigTerrain.instance.terrainWorld[4].x = (float)VigTerrain.instance.terrainVertices[1].x;
+            VigTerrain.instance.terrainWorld[4].y = (float)VigTerrain.instance.terrainVertices[1].y;
             Coprocessor3.accumulator.ir1 = (short)((uint)VigTerrain._vertices[VigTerrain.puVar15] >> 11 << 7);
             GameManager.terrainScreen[0].color = new Color32(Coprocessor3.colorFIFO.r2, Coprocessor3.colorFIFO.g2, Coprocessor3.colorFIFO.b2, Coprocessor3.colorFIFO.cd2);
             Coprocessor3.ExecuteCC(12, true);
             GameManager.terrainScreen[20].vert.x = (int)Coprocessor3.screenXYFIFO.sx1;
             GameManager.terrainScreen[20].vert.y = (int)Coprocessor3.screenXYFIFO.sy1;
-            VigTerrain.terrainWorld[20].x = (float)VigTerrain.terrainVertices[2].x;
-            VigTerrain.terrainWorld[20].y = (float)VigTerrain.terrainVertices[2].y;
+            VigTerrain.instance.terrainWorld[20].x = (float)VigTerrain.instance.terrainVertices[2].x;
+            VigTerrain.instance.terrainWorld[20].y = (float)VigTerrain.instance.terrainVertices[2].y;
             Coprocessor3.accumulator.ir1 = (short)((uint)VigTerrain._vertices[VigTerrain.puVar16] >> 11 << 7);
             GameManager.terrainScreen[4].color = new Color32(Coprocessor3.colorFIFO.r2, Coprocessor3.colorFIFO.g2, Coprocessor3.colorFIFO.b2, Coprocessor3.colorFIFO.cd2);
             Coprocessor3.ExecuteCC(12, true);
             GameManager.terrainScreen[24].vert.x = (int)Coprocessor3.screenXYFIFO.sx2;
             GameManager.terrainScreen[24].vert.y = (int)Coprocessor3.screenXYFIFO.sy2;
-            VigTerrain.terrainWorld[24].x = (float)VigTerrain.terrainVertices[3].x;
-            VigTerrain.terrainWorld[24].y = (float)VigTerrain.terrainVertices[3].y;
+            VigTerrain.instance.terrainWorld[24].x = (float)VigTerrain.instance.terrainVertices[3].x;
+            VigTerrain.instance.terrainWorld[24].y = (float)VigTerrain.instance.terrainVertices[3].y;
             Coprocessor3.accumulator.ir1 = (short)((uint)VigTerrain._vertices[VigTerrain.puVar17] >> 11 << 7);
             GameManager.terrainScreen[20].color = new Color32(Coprocessor3.colorFIFO.r2, Coprocessor3.colorFIFO.g2, Coprocessor3.colorFIFO.b2, Coprocessor3.colorFIFO.cd2);
             Coprocessor3.ExecuteCC(12, true);
@@ -603,19 +604,19 @@ public class VigTerrain : MonoBehaviour
             Coprocessor3.vector1.vy1 = (short)(num11 >> 16);
             Coprocessor3.vector2.vx2 = (short)num12;
             Coprocessor3.vector2.vy2 = (short)(num12 >> 16);
-            VigTerrain.terrainVertices[0] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
-            VigTerrain.terrainVertices[1] = new Vector3Int((int)Coprocessor3.vector1.vx1, (int)Coprocessor3.vector1.vy1, (int)Coprocessor3.vector1.vz1);
-            VigTerrain.terrainVertices[2] = new Vector3Int((int)Coprocessor3.vector2.vx2, (int)Coprocessor3.vector2.vy2, (int)Coprocessor3.vector2.vz2);
+            VigTerrain.instance.terrainVertices[0] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
+            VigTerrain.instance.terrainVertices[1] = new Vector3Int((int)Coprocessor3.vector1.vx1, (int)Coprocessor3.vector1.vy1, (int)Coprocessor3.vector1.vz1);
+            VigTerrain.instance.terrainVertices[2] = new Vector3Int((int)Coprocessor3.vector2.vx2, (int)Coprocessor3.vector2.vy2, (int)Coprocessor3.vector2.vz2);
             GameManager.terrainScreen[24].color = new Color32(Coprocessor3.colorFIFO.r2, Coprocessor3.colorFIFO.g2, Coprocessor3.colorFIFO.b2, Coprocessor3.colorFIFO.cd2);
             Coprocessor3.ExecuteRTPT(12, false);
             GameManager.terrainScreen[2].vert.x = (int)Coprocessor3.screenXYFIFO.sx0;
             GameManager.terrainScreen[2].vert.y = (int)Coprocessor3.screenXYFIFO.sy0;
             GameManager.terrainScreen[22].vert.x = (int)Coprocessor3.screenXYFIFO.sx2;
             GameManager.terrainScreen[22].vert.y = (int)Coprocessor3.screenXYFIFO.sy2;
-            VigTerrain.terrainWorld[2].x = (float)VigTerrain.terrainVertices[0].x;
-            VigTerrain.terrainWorld[2].y = (float)VigTerrain.terrainVertices[0].y;
-            VigTerrain.terrainWorld[22].x = (float)VigTerrain.terrainVertices[2].x;
-            VigTerrain.terrainWorld[22].y = (float)VigTerrain.terrainVertices[2].y;
+            VigTerrain.instance.terrainWorld[2].x = (float)VigTerrain.instance.terrainVertices[0].x;
+            VigTerrain.instance.terrainWorld[2].y = (float)VigTerrain.instance.terrainVertices[0].y;
+            VigTerrain.instance.terrainWorld[22].x = (float)VigTerrain.instance.terrainVertices[2].x;
+            VigTerrain.instance.terrainWorld[22].y = (float)VigTerrain.instance.terrainVertices[2].y;
             Coprocessor3.vector0.vx0 = (short)num4;
             Coprocessor3.vector0.vy0 = (short)((long)((int)(VigTerrain._vertices[VigTerrain.puVar14 + 2] & 2047) * 524288) + (long)((ulong)num3) >> 16);
             num12 = (uint)(VigTerrain._vertices[VigTerrain.puVar15 + 2] & 2047) * 524288U + (((num4 + 1024U) & 65535U) | num3);
@@ -625,19 +626,19 @@ public class VigTerrain : MonoBehaviour
             Coprocessor3.vector2.vz2 = (short)(num + 512);
             GameManager.terrainScreen[2].vert.z = (int)Coprocessor3.screenZFIFO.sz1;
             GameManager.terrainScreen[22].vert.z = (int)Coprocessor3.screenZFIFO.sz3;
-            VigTerrain.terrainWorld[2].z = (float)VigTerrain.terrainVertices[0].z;
-            VigTerrain.terrainWorld[22].z = (float)VigTerrain.terrainVertices[2].z;
-            VigTerrain.terrainVertices[0] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
-            VigTerrain.terrainVertices[2] = new Vector3Int((int)Coprocessor3.vector2.vx2, (int)Coprocessor3.vector2.vy2, (int)Coprocessor3.vector2.vz2);
+            VigTerrain.instance.terrainWorld[2].z = (float)VigTerrain.instance.terrainVertices[0].z;
+            VigTerrain.instance.terrainWorld[22].z = (float)VigTerrain.instance.terrainVertices[2].z;
+            VigTerrain.instance.terrainVertices[0] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
+            VigTerrain.instance.terrainVertices[2] = new Vector3Int((int)Coprocessor3.vector2.vx2, (int)Coprocessor3.vector2.vy2, (int)Coprocessor3.vector2.vz2);
             Coprocessor3.ExecuteRTPT(12, false);
             GameManager.terrainScreen[10].vert.x = (int)Coprocessor3.screenXYFIFO.sx0;
             GameManager.terrainScreen[10].vert.y = (int)Coprocessor3.screenXYFIFO.sy0;
             GameManager.terrainScreen[12].vert.x = (int)Coprocessor3.screenXYFIFO.sx1;
             GameManager.terrainScreen[12].vert.y = (int)Coprocessor3.screenXYFIFO.sy1;
-            VigTerrain.terrainWorld[10].x = (float)VigTerrain.terrainVertices[0].x;
-            VigTerrain.terrainWorld[10].y = (float)VigTerrain.terrainVertices[0].y;
-            VigTerrain.terrainWorld[12].x = (float)VigTerrain.terrainVertices[1].x;
-            VigTerrain.terrainWorld[12].y = (float)VigTerrain.terrainVertices[1].y;
+            VigTerrain.instance.terrainWorld[10].x = (float)VigTerrain.instance.terrainVertices[0].x;
+            VigTerrain.instance.terrainWorld[10].y = (float)VigTerrain.instance.terrainVertices[0].y;
+            VigTerrain.instance.terrainWorld[12].x = (float)VigTerrain.instance.terrainVertices[1].x;
+            VigTerrain.instance.terrainWorld[12].y = (float)VigTerrain.instance.terrainVertices[1].y;
             num10 = (uint)VigTerrain._vertices[VigTerrain.puVar14 + 128] >> 11 << 7;
             num11 = (uint)VigTerrain._vertices[VigTerrain.puVar14 + 130] >> 11 << 7;
             num12 = (uint)VigTerrain._vertices[VigTerrain.puVar16 + 128] >> 11 << 7;
@@ -649,8 +650,8 @@ public class VigTerrain : MonoBehaviour
             Coprocessor3.vector2.vy2 = (short)(num12 >> 16);
             GameManager.terrainScreen[10].vert.z = (int)Coprocessor3.screenZFIFO.sz1;
             GameManager.terrainScreen[12].vert.z = (int)Coprocessor3.screenZFIFO.sz2;
-            VigTerrain.terrainWorld[10].z = (float)VigTerrain.terrainVertices[0].z;
-            VigTerrain.terrainWorld[12].z = (float)VigTerrain.terrainVertices[1].z;
+            VigTerrain.instance.terrainWorld[10].z = (float)VigTerrain.instance.terrainVertices[0].z;
+            VigTerrain.instance.terrainWorld[12].z = (float)VigTerrain.instance.terrainVertices[1].z;
             Coprocessor3.ExecuteNCCT(12, true);
             GameManager.terrainScreen[2].color = new Color32(Coprocessor3.colorFIFO.r0, Coprocessor3.colorFIFO.g0, Coprocessor3.colorFIFO.b0, Coprocessor3.colorFIFO.cd0);
             Coprocessor3.accumulator.ir1 = (short)((uint)VigTerrain._vertices[VigTerrain.puVar14 + 2] >> 11 << 7);
@@ -662,9 +663,9 @@ public class VigTerrain : MonoBehaviour
             GameManager.terrainScreen[14].vert.x = (int)Coprocessor3.screenXYFIFO.sx2;
             GameManager.terrainScreen[14].vert.y = (int)Coprocessor3.screenXYFIFO.sy2;
             GameManager.terrainScreen[14].vert.z = (int)Coprocessor3.screenZFIFO.sz3;
-            VigTerrain.terrainWorld[14].x = (float)VigTerrain.terrainVertices[2].x;
-            VigTerrain.terrainWorld[14].y = (float)VigTerrain.terrainVertices[2].y;
-            VigTerrain.terrainWorld[14].z = (float)VigTerrain.terrainVertices[2].z;
+            VigTerrain.instance.terrainWorld[14].x = (float)VigTerrain.instance.terrainVertices[2].x;
+            VigTerrain.instance.terrainWorld[14].y = (float)VigTerrain.instance.terrainVertices[2].y;
+            VigTerrain.instance.terrainWorld[14].z = (float)VigTerrain.instance.terrainVertices[2].z;
             Coprocessor3.ExecuteCC(12, true);
             num3 = (num4 + 512U) & 65535U;
             num += 512;
@@ -713,9 +714,9 @@ public class VigTerrain : MonoBehaviour
         int translateFactor = GameManager.instance.translateFactor2;
         if (num9 == 0U)
         {
-            VigTerrain.newVertices[VigTerrain.index] = (Vector3)VigTerrain.terrainVertices[0] / (float)translateFactor;
-            VigTerrain.newVertices[VigTerrain.index + 1] = (Vector3)VigTerrain.terrainVertices[1] / (float)translateFactor;
-            VigTerrain.newVertices[VigTerrain.index + 2] = (Vector3)VigTerrain.terrainVertices[2] / (float)translateFactor;
+            VigTerrain.newVertices[VigTerrain.index] = (Vector3)VigTerrain.instance.terrainVertices[0] / (float)translateFactor;
+            VigTerrain.newVertices[VigTerrain.index + 1] = (Vector3)VigTerrain.instance.terrainVertices[1] / (float)translateFactor;
+            VigTerrain.newVertices[VigTerrain.index + 2] = (Vector3)VigTerrain.instance.terrainVertices[2] / (float)translateFactor;
             VigTerrain.newColors[VigTerrain.index] = new Color32(Coprocessor3.colorFIFO.r0, Coprocessor3.colorFIFO.g0, Coprocessor3.colorFIFO.b0, Coprocessor3.colorFIFO.cd0);
             VigTerrain.newColors[VigTerrain.index + 1] = new Color32(Coprocessor3.colorFIFO.r1, Coprocessor3.colorFIFO.g1, Coprocessor3.colorFIFO.b1, Coprocessor3.colorFIFO.cd1);
             VigTerrain.newColors[VigTerrain.index + 2] = new Color32(Coprocessor3.colorFIFO.r2, Coprocessor3.colorFIFO.g2, Coprocessor3.colorFIFO.b2, Coprocessor3.colorFIFO.cd2);
@@ -732,9 +733,9 @@ public class VigTerrain : MonoBehaviour
             Coprocessor3.accumulator.ir0 = (short)GameManager.terrainScreen[24].ir0;
             Coprocessor3.accumulator.ir1 = (short)((uint)VigTerrain._vertices[VigTerrain.puVar17] >> 11 << 7);
             Coprocessor3.ExecuteCDP(12, true);
-            VigTerrain.newVertices[VigTerrain.index] = (Vector3)VigTerrain.terrainVertices[1] / (float)translateFactor;
-            VigTerrain.newVertices[VigTerrain.index + 1] = (Vector3)VigTerrain.terrainVertices[2] / (float)translateFactor;
-            VigTerrain.newVertices[VigTerrain.index + 2] = (Vector3)VigTerrain.terrainVertices[3] / (float)translateFactor;
+            VigTerrain.newVertices[VigTerrain.index] = (Vector3)VigTerrain.instance.terrainVertices[1] / (float)translateFactor;
+            VigTerrain.newVertices[VigTerrain.index + 1] = (Vector3)VigTerrain.instance.terrainVertices[2] / (float)translateFactor;
+            VigTerrain.newVertices[VigTerrain.index + 2] = (Vector3)VigTerrain.instance.terrainVertices[3] / (float)translateFactor;
             VigTerrain.newColors[VigTerrain.index] = new Color32(Coprocessor3.colorFIFO.r0, Coprocessor3.colorFIFO.g0, Coprocessor3.colorFIFO.b0, Coprocessor3.colorFIFO.cd0);
             VigTerrain.newColors[VigTerrain.index + 1] = new Color32(Coprocessor3.colorFIFO.r1, Coprocessor3.colorFIFO.g1, Coprocessor3.colorFIFO.b1, Coprocessor3.colorFIFO.cd1);
             VigTerrain.newColors[VigTerrain.index + 2] = new Color32(Coprocessor3.colorFIFO.r2, Coprocessor3.colorFIFO.g2, Coprocessor3.colorFIFO.b2, Coprocessor3.colorFIFO.cd2);
@@ -750,24 +751,24 @@ public class VigTerrain : MonoBehaviour
         }
         GameManager.terrainScreen[24].vert.x = (int)Coprocessor3.screenXYFIFO.sx2;
         GameManager.terrainScreen[24].vert.y = (int)Coprocessor3.screenXYFIFO.sy2;
-        VigTerrain.terrainWorld[24].x = (float)VigTerrain.terrainVertices[3].x;
-        VigTerrain.terrainWorld[24].y = (float)VigTerrain.terrainVertices[3].y;
+        VigTerrain.instance.terrainWorld[24].x = (float)VigTerrain.instance.terrainVertices[3].x;
+        VigTerrain.instance.terrainWorld[24].y = (float)VigTerrain.instance.terrainVertices[3].y;
         Coprocessor3.accumulator.ir0 = (short)GameManager.terrainScreen[24].ir0;
         Coprocessor3.accumulator.ir1 = (short)((uint)VigTerrain._vertices[VigTerrain.puVar17] >> 11 << 7);
         GameManager.terrainScreen[0].vert.z = (int)Coprocessor3.screenZFIFO.sz0;
         GameManager.terrainScreen[4].vert.z = (int)Coprocessor3.screenZFIFO.sz1;
         GameManager.terrainScreen[20].vert.z = (int)Coprocessor3.screenZFIFO.sz2;
         GameManager.terrainScreen[24].vert.z = (int)Coprocessor3.screenZFIFO.sz3;
-        VigTerrain.terrainWorld[0].z = (float)VigTerrain.terrainVertices[0].z;
-        VigTerrain.terrainWorld[0].x = (float)VigTerrain.terrainVertices[0].x;
-        VigTerrain.terrainWorld[0].y = (float)VigTerrain.terrainVertices[0].y;
-        VigTerrain.terrainWorld[4].z = (float)VigTerrain.terrainVertices[1].z;
-        VigTerrain.terrainWorld[4].x = (float)VigTerrain.terrainVertices[1].x;
-        VigTerrain.terrainWorld[4].y = (float)VigTerrain.terrainVertices[1].y;
-        VigTerrain.terrainWorld[20].z = (float)VigTerrain.terrainVertices[2].z;
-        VigTerrain.terrainWorld[20].x = (float)VigTerrain.terrainVertices[2].x;
-        VigTerrain.terrainWorld[20].y = (float)VigTerrain.terrainVertices[2].y;
-        VigTerrain.terrainWorld[24].z = (float)VigTerrain.terrainVertices[3].z;
+        VigTerrain.instance.terrainWorld[0].z = (float)VigTerrain.instance.terrainVertices[0].z;
+        VigTerrain.instance.terrainWorld[0].x = (float)VigTerrain.instance.terrainVertices[0].x;
+        VigTerrain.instance.terrainWorld[0].y = (float)VigTerrain.instance.terrainVertices[0].y;
+        VigTerrain.instance.terrainWorld[4].z = (float)VigTerrain.instance.terrainVertices[1].z;
+        VigTerrain.instance.terrainWorld[4].x = (float)VigTerrain.instance.terrainVertices[1].x;
+        VigTerrain.instance.terrainWorld[4].y = (float)VigTerrain.instance.terrainVertices[1].y;
+        VigTerrain.instance.terrainWorld[20].z = (float)VigTerrain.instance.terrainVertices[2].z;
+        VigTerrain.instance.terrainWorld[20].x = (float)VigTerrain.instance.terrainVertices[2].x;
+        VigTerrain.instance.terrainWorld[20].y = (float)VigTerrain.instance.terrainVertices[2].y;
+        VigTerrain.instance.terrainWorld[24].z = (float)VigTerrain.instance.terrainVertices[3].z;
         GameManager.terrainScreen[0].color = new Color32(Coprocessor3.colorFIFO.r0, Coprocessor3.colorFIFO.g0, Coprocessor3.colorFIFO.b0, Coprocessor3.colorFIFO.cd0);
         GameManager.terrainScreen[4].color = new Color32(Coprocessor3.colorFIFO.r1, Coprocessor3.colorFIFO.g1, Coprocessor3.colorFIFO.b1, Coprocessor3.colorFIFO.cd1);
         GameManager.terrainScreen[20].color = new Color32(Coprocessor3.colorFIFO.r2, Coprocessor3.colorFIFO.g2, Coprocessor3.colorFIFO.b2, Coprocessor3.colorFIFO.cd2);
@@ -779,15 +780,15 @@ public class VigTerrain : MonoBehaviour
             Coprocessor3.vector0.vx0 = (short)((num4 + 512U) & 65535U);
             Coprocessor3.vector0.vy0 = (short)((int)(VigTerrain._vertices[VigTerrain.puVar14 + 128] & 2047) * 524288 + num2 >> 16);
             Coprocessor3.vector0.vz0 = (short)num;
-            VigTerrain.terrainVertices[0] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
+            VigTerrain.instance.terrainVertices[0] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
             Coprocessor3.ExecuteRTPS(12, false);
             GameManager.terrainScreen[2].vert.x = (int)Coprocessor3.screenXYFIFO.sx2;
             GameManager.terrainScreen[2].vert.y = (int)Coprocessor3.screenXYFIFO.sy2;
-            VigTerrain.terrainWorld[2].x = (float)VigTerrain.terrainVertices[0].x;
-            VigTerrain.terrainWorld[2].y = (float)VigTerrain.terrainVertices[0].y;
+            VigTerrain.instance.terrainWorld[2].x = (float)VigTerrain.instance.terrainVertices[0].x;
+            VigTerrain.instance.terrainWorld[2].y = (float)VigTerrain.instance.terrainVertices[0].y;
             Coprocessor3.accumulator.ir1 = (short)((uint)VigTerrain._vertices[VigTerrain.puVar14 + 128] >> 11 << 7);
             GameManager.terrainScreen[2].vert.z = (int)Coprocessor3.screenZFIFO.sz3;
-            VigTerrain.terrainWorld[2].z = (float)VigTerrain.terrainVertices[0].z;
+            VigTerrain.instance.terrainWorld[2].z = (float)VigTerrain.instance.terrainVertices[0].z;
             Coprocessor3.ExecuteCDP(12, true);
         }
         if ((num9 & 5U) != 0U)
@@ -795,7 +796,7 @@ public class VigTerrain : MonoBehaviour
             Coprocessor3.vector0.vx0 = (short)num4;
             Coprocessor3.vector0.vy0 = (short)((int)(VigTerrain._vertices[VigTerrain.puVar14 + 2] & 2047) * 524288 + num2 >> 16);
             Coprocessor3.vector0.vz0 = (short)(num + 512);
-            VigTerrain.terrainVertices[0] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
+            VigTerrain.instance.terrainVertices[0] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
             Color32 color = new Color32(Coprocessor3.colorFIFO.r2, Coprocessor3.colorFIFO.g2, Coprocessor3.colorFIFO.b2, Coprocessor3.colorFIFO.cd2);
             Coprocessor3.ExecuteRTPS(12, false);
             if (num8 != 0U)
@@ -804,11 +805,11 @@ public class VigTerrain : MonoBehaviour
             }
             GameManager.terrainScreen[10].vert.x = (int)Coprocessor3.screenXYFIFO.sx2;
             GameManager.terrainScreen[10].vert.y = (int)Coprocessor3.screenXYFIFO.sy2;
-            VigTerrain.terrainWorld[10].x = (float)VigTerrain.terrainVertices[0].x;
-            VigTerrain.terrainWorld[10].y = (float)VigTerrain.terrainVertices[0].y;
+            VigTerrain.instance.terrainWorld[10].x = (float)VigTerrain.instance.terrainVertices[0].x;
+            VigTerrain.instance.terrainWorld[10].y = (float)VigTerrain.instance.terrainVertices[0].y;
             Coprocessor3.accumulator.ir1 = (short)((uint)VigTerrain._vertices[VigTerrain.puVar14 + 2] >> 11 << 7);
             GameManager.terrainScreen[10].vert.z = (int)Coprocessor3.screenZFIFO.sz3;
-            VigTerrain.terrainWorld[10].z = (float)VigTerrain.terrainVertices[0].z;
+            VigTerrain.instance.terrainWorld[10].z = (float)VigTerrain.instance.terrainVertices[0].z;
             Coprocessor3.ExecuteCDP(12, true);
         }
         if ((num9 & 10U) != 0U)
@@ -816,7 +817,7 @@ public class VigTerrain : MonoBehaviour
             Coprocessor3.vector0.vx0 = (short)((num4 + 1024U) & 65535U);
             Coprocessor3.vector0.vy0 = (short)((int)(VigTerrain._vertices[VigTerrain.puVar15 + 2] & 2047) * 524288 + num2 >> 16);
             Coprocessor3.vector0.vz0 = (short)(num + 512);
-            VigTerrain.terrainVertices[0] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
+            VigTerrain.instance.terrainVertices[0] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
             Color32 color2 = new Color32(Coprocessor3.colorFIFO.r2, Coprocessor3.colorFIFO.g2, Coprocessor3.colorFIFO.b2, Coprocessor3.colorFIFO.cd2);
             Coprocessor3.ExecuteRTPS(12, false);
             Color32 color = color2;
@@ -831,11 +832,11 @@ public class VigTerrain : MonoBehaviour
             GameManager.terrainScreen[10].color = color;
             GameManager.terrainScreen[14].vert.x = (int)Coprocessor3.screenXYFIFO.sx2;
             GameManager.terrainScreen[14].vert.y = (int)Coprocessor3.screenXYFIFO.sy2;
-            VigTerrain.terrainWorld[14].x = (float)VigTerrain.terrainVertices[0].x;
-            VigTerrain.terrainWorld[14].y = (float)VigTerrain.terrainVertices[0].y;
+            VigTerrain.instance.terrainWorld[14].x = (float)VigTerrain.instance.terrainVertices[0].x;
+            VigTerrain.instance.terrainWorld[14].y = (float)VigTerrain.instance.terrainVertices[0].y;
             Coprocessor3.accumulator.ir1 = (short)((uint)VigTerrain._vertices[VigTerrain.puVar15 + 2] >> 11 << 7);
             GameManager.terrainScreen[14].vert.z = (int)Coprocessor3.screenZFIFO.sz3;
-            VigTerrain.terrainWorld[14].z = (float)VigTerrain.terrainVertices[0].z;
+            VigTerrain.instance.terrainWorld[14].z = (float)VigTerrain.instance.terrainVertices[0].z;
             Coprocessor3.ExecuteCDP(12, true);
         }
         if ((num9 & 12U) == 0U)
@@ -864,16 +865,16 @@ public class VigTerrain : MonoBehaviour
             Coprocessor3.vector0.vx0 = (short)((num4 + 512U) & 65535U);
             Coprocessor3.vector0.vy0 = (short)((int)(VigTerrain._vertices[VigTerrain.puVar16 + 128] & 2047) * 524288 + num2 >> 16);
             Coprocessor3.vector0.vz0 = (short)(num + 1024);
-            VigTerrain.terrainVertices[0] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
+            VigTerrain.instance.terrainVertices[0] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
             Color32 color3 = new Color32(Coprocessor3.colorFIFO.r2, Coprocessor3.colorFIFO.g2, Coprocessor3.colorFIFO.b2, Coprocessor3.colorFIFO.cd2);
             Coprocessor3.ExecuteRTPS(12, false);
             GameManager.terrainScreen[22].vert.x = (int)Coprocessor3.screenXYFIFO.sx2;
             GameManager.terrainScreen[22].vert.y = (int)Coprocessor3.screenXYFIFO.sy2;
-            VigTerrain.terrainWorld[22].x = (float)VigTerrain.terrainVertices[0].x;
-            VigTerrain.terrainWorld[22].y = (float)VigTerrain.terrainVertices[0].y;
+            VigTerrain.instance.terrainWorld[22].x = (float)VigTerrain.instance.terrainVertices[0].x;
+            VigTerrain.instance.terrainWorld[22].y = (float)VigTerrain.instance.terrainVertices[0].y;
             Coprocessor3.accumulator.ir1 = (short)((uint)VigTerrain._vertices[VigTerrain.puVar16 + 128] >> 11 << 7);
             GameManager.terrainScreen[22].vert.z = (int)Coprocessor3.screenZFIFO.sz3;
-            VigTerrain.terrainWorld[22].z = (float)VigTerrain.terrainVertices[0].z;
+            VigTerrain.instance.terrainWorld[22].z = (float)VigTerrain.instance.terrainVertices[0].z;
             Coprocessor3.ExecuteCDP(12, true);
             Color32 color = GameManager.terrainScreen[10].color;
             Color32 color2 = color3;
@@ -908,7 +909,7 @@ public class VigTerrain : MonoBehaviour
     // Token: 0x06000BFA RID: 3066 RVA: 0x000A23B0 File Offset: 0x000A05B0
 
     //dibujado de terreno y distancia?
-    private static void FUN_290A8(uint param1, int param2, int param3, int param4)
+    public static void FUN_290A8(uint param1, int param2, int param3, int param4)
     {
         int translateFactor = GameManager.instance.translateFactor2;
         uint num = (uint)((ushort)GameManager.DAT_1f80009a);
@@ -933,9 +934,9 @@ public class VigTerrain : MonoBehaviour
             num3 = Coprocessor3.mathsAccumulator.mac0;
             Coprocessor3.screenXYFIFO.sx0 = (short)GameManager.terrainScreen[param4 + 12].vert.x;
             Coprocessor3.screenXYFIFO.sy0 = (short)GameManager.terrainScreen[param4 + 12].vert.y;
-            VigTerrain.newVertices[VigTerrain.index] = VigTerrain.terrainWorld[param4] / (float)translateFactor;
-            VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.terrainWorld[param4 + 2] / (float)translateFactor;
-            VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.terrainWorld[param4 + 10] / (float)translateFactor;
+            VigTerrain.newVertices[VigTerrain.index] = VigTerrain.instance.terrainWorld[param4] / (float)translateFactor;
+            VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.instance.terrainWorld[param4 + 2] / (float)translateFactor;
+            VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.instance.terrainWorld[param4 + 10] / (float)translateFactor;
             Color32 color3 = GameManager.terrainScreen[param4].color;
             VigTerrain.newColors[VigTerrain.index] = color3;
             VigTerrain.newColors[VigTerrain.index + 1] = color;
@@ -956,9 +957,9 @@ public class VigTerrain : MonoBehaviour
             VigTerrain.newUVs[VigTerrain.index] = new Vector2(0f, 0f);
             VigTerrain.newUVs[VigTerrain.index + 1] = new Vector2(0f, 0f);
             VigTerrain.newUVs[VigTerrain.index + 2] = new Vector2(0f, 0f);
-            VigTerrain.newVertices[VigTerrain.index] = VigTerrain.terrainWorld[param4 + 12] / (float)translateFactor;
-            VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.terrainWorld[param4 + 2] / (float)translateFactor;
-            VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.terrainWorld[param4 + 10] / (float)translateFactor;
+            VigTerrain.newVertices[VigTerrain.index] = VigTerrain.instance.terrainWorld[param4 + 12] / (float)translateFactor;
+            VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.instance.terrainWorld[param4 + 2] / (float)translateFactor;
+            VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.instance.terrainWorld[param4 + 10] / (float)translateFactor;
             VigTerrain.newTriangles[0][VigTerrain.index3] = VigTerrain.index;
             VigTerrain.newTriangles[0][VigTerrain.index3 + 1] = VigTerrain.index + 1;
             VigTerrain.newTriangles[0][VigTerrain.index3 + 2] = VigTerrain.index + 2;
@@ -1020,9 +1021,9 @@ public class VigTerrain : MonoBehaviour
             Coprocessor3.vector1.vy1 = (short)(num8 >> 16);
             Coprocessor3.vector2.vx2 = (short)num9;
             Coprocessor3.vector2.vy2 = (short)(num9 >> 16);
-            VigTerrain.terrainVertices[0] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
-            VigTerrain.terrainVertices[1] = new Vector3Int((int)Coprocessor3.vector1.vx1, (int)Coprocessor3.vector1.vy1, (int)Coprocessor3.vector1.vz1);
-            VigTerrain.terrainVertices[2] = new Vector3Int((int)Coprocessor3.vector2.vx2, (int)Coprocessor3.vector2.vy2, (int)Coprocessor3.vector2.vz2);
+            VigTerrain.instance.terrainVertices[0] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
+            VigTerrain.instance.terrainVertices[1] = new Vector3Int((int)Coprocessor3.vector1.vx1, (int)Coprocessor3.vector1.vy1, (int)Coprocessor3.vector1.vz1);
+            VigTerrain.instance.terrainVertices[2] = new Vector3Int((int)Coprocessor3.vector2.vx2, (int)Coprocessor3.vector2.vy2, (int)Coprocessor3.vector2.vz2);
             Coprocessor3.ExecuteRTPT(12, false);
             num5 = (short)VigTerrain._vertices[VigTerrain.puVar14 + 1];
             num6 = (short)VigTerrain._vertices[VigTerrain.puVar15 + 1];
@@ -1030,8 +1031,8 @@ public class VigTerrain : MonoBehaviour
             GameManager.terrainScreen[param4 + 1].vert.y = (int)Coprocessor3.screenXYFIFO.sy0;
             GameManager.terrainScreen[param4 + 11].vert.x = (int)Coprocessor3.screenXYFIFO.sx2;
             GameManager.terrainScreen[param4 + 11].vert.y = (int)Coprocessor3.screenXYFIFO.sy2;
-            VigTerrain.terrainWorld[param4 + 1] = VigTerrain.terrainVertices[0];
-            VigTerrain.terrainWorld[param4 + 11] = VigTerrain.terrainVertices[2];
+            VigTerrain.instance.terrainWorld[param4 + 1] = VigTerrain.instance.terrainVertices[0];
+            VigTerrain.instance.terrainWorld[param4 + 11] = VigTerrain.instance.terrainVertices[2];
             Coprocessor3.vector0.vx0 = (short)param1;
             Coprocessor3.vector0.vy0 = (short)((long)((int)((long)num5 & 2047L) * 524288) + (long)((ulong)num) >> 16);
             num9 = (int)((long)num6 & 2047L) * 524288 + (int)(((param1 + 512U) & 65535U) | num);
@@ -1039,17 +1040,17 @@ public class VigTerrain : MonoBehaviour
             Coprocessor3.vector2.vy2 = (short)(num9 >> 16);
             Coprocessor3.vector0.vz0 = (short)(param2 + 256);
             Coprocessor3.vector2.vz2 = (short)(param2 + 256);
-            VigTerrain.terrainVertices[0] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
-            VigTerrain.terrainVertices[2] = new Vector3Int((int)Coprocessor3.vector2.vx2, (int)Coprocessor3.vector2.vy2, (int)Coprocessor3.vector2.vz2);
+            VigTerrain.instance.terrainVertices[0] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
+            VigTerrain.instance.terrainVertices[2] = new Vector3Int((int)Coprocessor3.vector2.vx2, (int)Coprocessor3.vector2.vy2, (int)Coprocessor3.vector2.vz2);
             GameManager.terrainScreen[param4 + 1].vert.z = (int)Coprocessor3.screenZFIFO.sz1;
             GameManager.terrainScreen[param4 + 11].vert.z = (int)Coprocessor3.screenZFIFO.sz3;
             Coprocessor3.ExecuteRTPT(12, false);
             GameManager.terrainScreen[param4 + 5].vert = new Vector3Int((int)Coprocessor3.screenXYFIFO.sx0, (int)Coprocessor3.screenXYFIFO.sy0, (int)Coprocessor3.screenZFIFO.sz1);
             GameManager.terrainScreen[param4 + 6].vert = new Vector3Int((int)Coprocessor3.screenXYFIFO.sx1, (int)Coprocessor3.screenXYFIFO.sy1, (int)Coprocessor3.screenZFIFO.sz2);
             GameManager.terrainScreen[param4 + 7].vert = new Vector3Int((int)Coprocessor3.screenXYFIFO.sx2, (int)Coprocessor3.screenXYFIFO.sy2, (int)Coprocessor3.screenZFIFO.sz3);
-            VigTerrain.terrainWorld[param4 + 5] = VigTerrain.terrainVertices[0];
-            VigTerrain.terrainWorld[param4 + 6] = VigTerrain.terrainVertices[1];
-            VigTerrain.terrainWorld[param4 + 7] = VigTerrain.terrainVertices[2];
+            VigTerrain.instance.terrainWorld[param4 + 5] = VigTerrain.instance.terrainVertices[0];
+            VigTerrain.instance.terrainWorld[param4 + 6] = VigTerrain.instance.terrainVertices[1];
+            VigTerrain.instance.terrainWorld[param4 + 7] = VigTerrain.instance.terrainVertices[2];
             VigTerrain.in_t0 = (uint)VigTerrain._vertices[VigTerrain.puVar14];
             VigTerrain.in_t1 = (uint)VigTerrain._vertices[VigTerrain.puVar14 + 64];
             VigTerrain.in_t2 = (uint)VigTerrain._vertices[VigTerrain.puVar14 + 1];
@@ -1084,7 +1085,7 @@ public class VigTerrain : MonoBehaviour
         Coprocessor3.vector0.vx0 = (short)num7;
         Coprocessor3.vector0.vy0 = (short)(num7 >> 16);
         Coprocessor3.vector0.vz0 = (short)(param2 + 256);
-        VigTerrain.terrainVertices[0] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
+        VigTerrain.instance.terrainVertices[0] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
         Coprocessor3.ExecuteRTPS(12, false);
         Coprocessor3.vector1.vz1 = (short)(param2 + 512);
         Coprocessor3.vector2.vz2 = (short)(param2 + 256);
@@ -1101,10 +1102,10 @@ public class VigTerrain : MonoBehaviour
         Coprocessor3.vector2.vx2 = (short)num9;
         Coprocessor3.vector2.vy2 = (short)(num9 >> 16);
         GameManager.terrainScreen[param4 + 5].vert = new Vector3Int((int)Coprocessor3.screenXYFIFO.sx2, (int)Coprocessor3.screenXYFIFO.sy2, (int)Coprocessor3.screenZFIFO.sz3);
-        VigTerrain.terrainWorld[param4 + 5] = VigTerrain.terrainVertices[0];
-        VigTerrain.terrainVertices[0] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
-        VigTerrain.terrainVertices[1] = new Vector3Int((int)Coprocessor3.vector1.vx1, (int)Coprocessor3.vector1.vy1, (int)Coprocessor3.vector1.vz1);
-        VigTerrain.terrainVertices[2] = new Vector3Int((int)Coprocessor3.vector2.vx2, (int)Coprocessor3.vector2.vy2, (int)Coprocessor3.vector2.vz2);
+        VigTerrain.instance.terrainWorld[param4 + 5] = VigTerrain.instance.terrainVertices[0];
+        VigTerrain.instance.terrainVertices[0] = new Vector3Int((int)Coprocessor3.vector0.vx0, (int)Coprocessor3.vector0.vy0, (int)Coprocessor3.vector0.vz0);
+        VigTerrain.instance.terrainVertices[1] = new Vector3Int((int)Coprocessor3.vector1.vx1, (int)Coprocessor3.vector1.vy1, (int)Coprocessor3.vector1.vz1);
+        VigTerrain.instance.terrainVertices[2] = new Vector3Int((int)Coprocessor3.vector2.vx2, (int)Coprocessor3.vector2.vy2, (int)Coprocessor3.vector2.vz2);
         Coprocessor3.ExecuteRTPT(12, false);
         GameManager.terrainScreen[param4 + 5].color = VigTerrain.DAT_BA4F0[VigTerrain._vertices[VigTerrain.puVar14 + 1] >> 11];
         GameManager.terrainScreen[param4 + 1].color = VigTerrain.DAT_BA4F0[VigTerrain._vertices[VigTerrain.puVar14 + 64] >> 11];
@@ -1118,14 +1119,14 @@ public class VigTerrain : MonoBehaviour
         GameManager.terrainScreen[param4 + 11].vert.y = (int)Coprocessor3.screenXYFIFO.sy1;
         GameManager.terrainScreen[param4 + 7].vert.x = (int)Coprocessor3.screenXYFIFO.sx2;
         GameManager.terrainScreen[param4 + 7].vert.y = (int)Coprocessor3.screenXYFIFO.sy2;
-        VigTerrain.terrainWorld[param4 + 1] = VigTerrain.terrainVertices[0];
-        VigTerrain.terrainWorld[param4 + 11] = VigTerrain.terrainVertices[1];
-        VigTerrain.terrainWorld[param4 + 7] = VigTerrain.terrainVertices[2];
+        VigTerrain.instance.terrainWorld[param4 + 1] = VigTerrain.instance.terrainVertices[0];
+        VigTerrain.instance.terrainWorld[param4 + 11] = VigTerrain.instance.terrainVertices[1];
+        VigTerrain.instance.terrainWorld[param4 + 7] = VigTerrain.instance.terrainVertices[2];
         VigTerrain.FUN_297E8(param1, param2, param4);
     }
 
     // Token: 0x06000BFB RID: 3067 RVA: 0x000A34C4 File Offset: 0x000A16C4
-    private static void FUN_29520(int param1, int param2, int param3, int param4)
+    public static void FUN_29520(int param1, int param2, int param3, int param4)
     {
         int translateFactor = GameManager.instance.translateFactor2;
         int num = (int)((ushort)GameManager.DAT_1f80009a - 4096);
@@ -1172,9 +1173,9 @@ public class VigTerrain : MonoBehaviour
                     num = Coprocessor3.mathsAccumulator.mac0;
                     Color32 color2 = GameManager.DAT_1f800000[num5];
                     color3 = GameManager.DAT_1f800000[(int)(VigTerrain.in_t0 >> 11)];
-                    VigTerrain.newVertices[VigTerrain.index] = VigTerrain.terrainWorld[param4] / (float)translateFactor;
-                    VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.terrainWorld[param4 + 1] / (float)translateFactor;
-                    VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.terrainWorld[param4 + 5] / (float)translateFactor;
+                    VigTerrain.newVertices[VigTerrain.index] = VigTerrain.instance.terrainWorld[param4] / (float)translateFactor;
+                    VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.instance.terrainWorld[param4 + 1] / (float)translateFactor;
+                    VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.instance.terrainWorld[param4 + 5] / (float)translateFactor;
                     param3 = (int)Mathf.Clamp(Vector3.Distance(new Vector3(0f, 0f, 0f), new Vector3(VigTerrain.newVertices[VigTerrain.index + 2].x, 0f, VigTerrain.newVertices[VigTerrain.index + 2].z)) / 16f, 1f, 16f);
                     param3 = 1;
                     VigTerrain.newColors[VigTerrain.index] = color3;
@@ -1192,9 +1193,9 @@ public class VigTerrain : MonoBehaviour
                     Coprocessor3.screenXYFIFO.sy0 = (short)GameManager.terrainScreen[param4 + 6].vert.y;
                     Coprocessor3.ExecuteNCLIP();
                     color3 = GameManager.DAT_1f800000[(int)(VigTerrain.in_t3 >> 11)];
-                    VigTerrain.newVertices[VigTerrain.index] = VigTerrain.terrainWorld[param4 + 6] / (float)translateFactor;
-                    VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.terrainWorld[param4 + 1] / (float)translateFactor;
-                    VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.terrainWorld[param4 + 5] / (float)translateFactor;
+                    VigTerrain.newVertices[VigTerrain.index] = VigTerrain.instance.terrainWorld[param4 + 6] / (float)translateFactor;
+                    VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.instance.terrainWorld[param4 + 1] / (float)translateFactor;
+                    VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.instance.terrainWorld[param4 + 5] / (float)translateFactor;
                     VigTerrain.newColors[VigTerrain.index] = color3;
                     VigTerrain.newColors[VigTerrain.index + 1] = color;
                     VigTerrain.newColors[VigTerrain.index + 2] = color2;
@@ -1220,9 +1221,9 @@ public class VigTerrain : MonoBehaviour
                 color3 = GameManager.DAT_1f800000[(int)(VigTerrain.in_t0 >> 11)];
                 Color32 color4 = GameManager.DAT_1f800000[(int)(VigTerrain.in_t3 >> 11)];
                 color = GameManager.DAT_1f800000[num4];
-                VigTerrain.newVertices[VigTerrain.index] = VigTerrain.terrainWorld[param4] / (float)translateFactor;
-                VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.terrainWorld[param4 + 1] / (float)translateFactor;
-                VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.terrainWorld[param4 + 6] / (float)translateFactor;
+                VigTerrain.newVertices[VigTerrain.index] = VigTerrain.instance.terrainWorld[param4] / (float)translateFactor;
+                VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.instance.terrainWorld[param4 + 1] / (float)translateFactor;
+                VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.instance.terrainWorld[param4 + 6] / (float)translateFactor;
                 param3 = (int)Mathf.Clamp(Vector3.Distance(new Vector3(0f, 0f, 0f), new Vector3(VigTerrain.newVertices[VigTerrain.index + 2].x, 0f, VigTerrain.newVertices[VigTerrain.index + 2].z)) / 16f, 1f, 16f);
                 param3 = 1;
                 VigTerrain.newColors[VigTerrain.index] = color3;
@@ -1240,9 +1241,9 @@ public class VigTerrain : MonoBehaviour
                 Coprocessor3.screenXYFIFO.sy1 = (short)GameManager.terrainScreen[param4 + 5].vert.y;
                 Color32 color5 = GameManager.DAT_1f800000[num5];
                 Coprocessor3.ExecuteNCLIP();
-                VigTerrain.newVertices[VigTerrain.index] = VigTerrain.terrainWorld[param4] / (float)translateFactor;
-                VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.terrainWorld[param4 + 5] / (float)translateFactor;
-                VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.terrainWorld[param4 + 6] / (float)translateFactor;
+                VigTerrain.newVertices[VigTerrain.index] = VigTerrain.instance.terrainWorld[param4] / (float)translateFactor;
+                VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.instance.terrainWorld[param4 + 5] / (float)translateFactor;
+                VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.instance.terrainWorld[param4 + 6] / (float)translateFactor;
                 VigTerrain.newColors[VigTerrain.index] = color3;
                 VigTerrain.newColors[VigTerrain.index + 1] = color5;
                 VigTerrain.newColors[VigTerrain.index + 2] = color4;
@@ -1259,7 +1260,7 @@ public class VigTerrain : MonoBehaviour
     }
 
     // Token: 0x06000BFC RID: 3068 RVA: 0x000A4140 File Offset: 0x000A2340
-    private static void FUN_297E8(uint param1, int param2, int param4)
+    public static void FUN_297E8(uint param1, int param2, int param4)
     {
         int translateFactor = GameManager.instance.translateFactor2;
         int num = (int)((VigTerrain.in_t1 & 31U) + (uint)param4);
@@ -1274,9 +1275,9 @@ public class VigTerrain : MonoBehaviour
         Color32 color = GameManager.terrainScreen[num2].color;
         Coprocessor3.ExecuteNCLIP();
         Color32 color2 = GameManager.terrainScreen[num3].color;
-        VigTerrain.newVertices[VigTerrain.index] = VigTerrain.terrainWorld[num] / (float)translateFactor;
-        VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.terrainWorld[num2] / (float)translateFactor;
-        VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.terrainWorld[num3] / (float)translateFactor;
+        VigTerrain.newVertices[VigTerrain.index] = VigTerrain.instance.terrainWorld[num] / (float)translateFactor;
+        VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.instance.terrainWorld[num2] / (float)translateFactor;
+        VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.instance.terrainWorld[num3] / (float)translateFactor;
         VigTerrain.newColors[VigTerrain.index] = GameManager.terrainScreen[num].color;
         VigTerrain.newColors[VigTerrain.index + 1] = color;
         VigTerrain.newColors[VigTerrain.index + 2] = color2;
@@ -1298,9 +1299,9 @@ public class VigTerrain : MonoBehaviour
         Coprocessor3.screenXYFIFO.sx1 = (short)GameManager.terrainScreen[num5].vert.x;
         Coprocessor3.screenXYFIFO.sy1 = (short)GameManager.terrainScreen[num5].vert.y;
         Color32 color4 = GameManager.terrainScreen[num5].color;
-        VigTerrain.newVertices[VigTerrain.index] = VigTerrain.terrainWorld[num3] / (float)translateFactor;
-        VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.terrainWorld[num2] / (float)translateFactor;
-        VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.terrainWorld[num4] / (float)translateFactor;
+        VigTerrain.newVertices[VigTerrain.index] = VigTerrain.instance.terrainWorld[num3] / (float)translateFactor;
+        VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.instance.terrainWorld[num2] / (float)translateFactor;
+        VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.instance.terrainWorld[num4] / (float)translateFactor;
         VigTerrain.newColors[VigTerrain.index] = color3;
         VigTerrain.newColors[VigTerrain.index + 1] = color;
         VigTerrain.newColors[VigTerrain.index + 2] = color2;
@@ -1313,9 +1314,9 @@ public class VigTerrain : MonoBehaviour
         VigTerrain.index += 3;
         VigTerrain.index3 += 3;
         Coprocessor3.ExecuteNCLIP();
-        VigTerrain.newVertices[VigTerrain.index] = VigTerrain.terrainWorld[num3] / (float)translateFactor;
-        VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.terrainWorld[num5] / (float)translateFactor;
-        VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.terrainWorld[num4] / (float)translateFactor;
+        VigTerrain.newVertices[VigTerrain.index] = VigTerrain.instance.terrainWorld[num3] / (float)translateFactor;
+        VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.instance.terrainWorld[num5] / (float)translateFactor;
+        VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.instance.terrainWorld[num4] / (float)translateFactor;
         VigTerrain.newColors[VigTerrain.index] = color3;
         VigTerrain.newColors[VigTerrain.index + 1] = color4;
         VigTerrain.newColors[VigTerrain.index + 2] = color2;
@@ -1343,9 +1344,9 @@ public class VigTerrain : MonoBehaviour
         num = (int)(num6 / 16U + (uint)param4);
         if (num6 == 0U)
         {
-            VigTerrain.newVertices[VigTerrain.index] = VigTerrain.terrainWorld[num2] / (float)translateFactor;
-            VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.terrainWorld[num3] / (float)translateFactor;
-            VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.terrainWorld[num5] / (float)translateFactor;
+            VigTerrain.newVertices[VigTerrain.index] = VigTerrain.instance.terrainWorld[num2] / (float)translateFactor;
+            VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.instance.terrainWorld[num3] / (float)translateFactor;
+            VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.instance.terrainWorld[num5] / (float)translateFactor;
             VigTerrain.newColors[VigTerrain.index] = GameManager.terrainScreen[num2].color;
             VigTerrain.newColors[VigTerrain.index + 1] = color3;
             VigTerrain.newColors[VigTerrain.index + 2] = color;
@@ -1359,9 +1360,9 @@ public class VigTerrain : MonoBehaviour
             VigTerrain.index3 += 3;
             return;
         }
-        VigTerrain.newVertices[VigTerrain.index] = VigTerrain.terrainWorld[num2] / (float)translateFactor;
-        VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.terrainWorld[num3] / (float)translateFactor;
-        VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.terrainWorld[num5] / (float)translateFactor;
+        VigTerrain.newVertices[VigTerrain.index] = VigTerrain.instance.terrainWorld[num2] / (float)translateFactor;
+        VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.instance.terrainWorld[num3] / (float)translateFactor;
+        VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.instance.terrainWorld[num5] / (float)translateFactor;
         VigTerrain.newColors[VigTerrain.index] = GameManager.terrainScreen[num2].color;
         VigTerrain.newColors[VigTerrain.index + 1] = color3;
         VigTerrain.newColors[VigTerrain.index + 2] = color;
@@ -1381,9 +1382,9 @@ public class VigTerrain : MonoBehaviour
         param4 = (int)(num7 / 16U + (uint)param4);
         if (num7 == 0U)
         {
-            VigTerrain.newVertices[VigTerrain.index] = VigTerrain.terrainWorld[num] / (float)translateFactor;
-            VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.terrainWorld[num3] / (float)translateFactor;
-            VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.terrainWorld[num5] / (float)translateFactor;
+            VigTerrain.newVertices[VigTerrain.index] = VigTerrain.instance.terrainWorld[num] / (float)translateFactor;
+            VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.instance.terrainWorld[num3] / (float)translateFactor;
+            VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.instance.terrainWorld[num5] / (float)translateFactor;
             VigTerrain.newColors[VigTerrain.index] = color5;
             VigTerrain.newColors[VigTerrain.index + 1] = color3;
             VigTerrain.newColors[VigTerrain.index + 2] = color;
@@ -1400,9 +1401,9 @@ public class VigTerrain : MonoBehaviour
         Coprocessor3.screenXYFIFO.sx1 = (short)GameManager.terrainScreen[param4].vert.x;
         Coprocessor3.screenXYFIFO.sy1 = (short)GameManager.terrainScreen[param4].vert.y;
         color4 = GameManager.terrainScreen[param4].color;
-        VigTerrain.newVertices[VigTerrain.index] = VigTerrain.terrainWorld[num] / (float)translateFactor;
-        VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.terrainWorld[num3] / (float)translateFactor;
-        VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.terrainWorld[num5] / (float)translateFactor;
+        VigTerrain.newVertices[VigTerrain.index] = VigTerrain.instance.terrainWorld[num] / (float)translateFactor;
+        VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.instance.terrainWorld[num3] / (float)translateFactor;
+        VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.instance.terrainWorld[num5] / (float)translateFactor;
         VigTerrain.newColors[VigTerrain.index] = color5;
         VigTerrain.newColors[VigTerrain.index + 1] = color3;
         VigTerrain.newColors[VigTerrain.index + 2] = color;
@@ -1415,9 +1416,9 @@ public class VigTerrain : MonoBehaviour
         VigTerrain.index += 3;
         VigTerrain.index3 += 3;
         Coprocessor3.ExecuteNCLIP();
-        VigTerrain.newVertices[VigTerrain.index] = VigTerrain.terrainWorld[num] / (float)translateFactor;
-        VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.terrainWorld[param4] / (float)translateFactor;
-        VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.terrainWorld[num5] / (float)translateFactor;
+        VigTerrain.newVertices[VigTerrain.index] = VigTerrain.instance.terrainWorld[num] / (float)translateFactor;
+        VigTerrain.newVertices[VigTerrain.index + 1] = VigTerrain.instance.terrainWorld[param4] / (float)translateFactor;
+        VigTerrain.newVertices[VigTerrain.index + 2] = VigTerrain.instance.terrainWorld[num5] / (float)translateFactor;
         VigTerrain.newColors[VigTerrain.index] = color5;
         VigTerrain.newColors[VigTerrain.index + 1] = color4;
         VigTerrain.newColors[VigTerrain.index + 2] = color;
@@ -1580,6 +1581,7 @@ public class VigTerrain : MonoBehaviour
         }
     }
 
+    [SerializeField]
     // Token: 0x04000849 RID: 2121
     public static VigTerrain instance;
 
@@ -1649,126 +1651,132 @@ public class VigTerrain : MonoBehaviour
     // Token: 0x0400085F RID: 2143
     public VigTransform[] DAT_BDFF0 = new VigTransform[2];
 
+
+    [Header("public")]
+
     // Token: 0x04000860 RID: 2144
-    private static Vector3[] terrainWorld = new Vector3[40];
+    [SerializeField]
+
+    public Vector3[] terrainWorld = new Vector3[40];
+
 
     // Token: 0x04000861 RID: 2145
-    private static Vector3Int[] terrainVertices = new Vector3Int[4];
+    public Vector3Int[] terrainVertices = new Vector3Int[4];
 
     // Token: 0x04000862 RID: 2146
-    private Dictionary<int, List<int>> verticesDict;
+    public Dictionary<int, List<int>> verticesDict;
 
     // Token: 0x04000863 RID: 2147
-    private Dictionary<int, Tile> tilesDict;
+    public Dictionary<int, Tile> tilesDict;
 
     // Token: 0x04000864 RID: 2148
-    private Mesh terrainMesh;
+    public Mesh terrainMesh;
 
     // Token: 0x04000865 RID: 2149
-    private static Vector3[] newVertices;
+    public static Vector3[] newVertices;
 
     // Token: 0x04000866 RID: 2150
-    private static Vector2[] newUVs;
+    public static Vector2[] newUVs;
 
     // Token: 0x04000867 RID: 2151
-    private static Color32[] newColors;
+    public static Color32[] newColors;
 
     // Token: 0x04000868 RID: 2152
-    private static int[][] newTriangles;
+    public static int[][] newTriangles;
 
     // Token: 0x04000869 RID: 2153
-    private static Texture mainT;
+    public static Texture mainT;
 
     // Token: 0x0400086A RID: 2154
-    private static int mainWidth;
+    public static int mainWidth;
 
     // Token: 0x0400086B RID: 2155
-    private static int mainHeight;
+    public static int mainHeight;
 
     // Token: 0x0400086C RID: 2156
-    private static int index;
+    public static int index;
 
     // Token: 0x0400086D RID: 2157
-    private static int[] index2;
+    public static int[] index2;
 
     // Token: 0x0400086E RID: 2158
-    private static int index3;
+    public static int index3;
 
     // Token: 0x0400086F RID: 2159
-    private static uint in_t0;
+    public static uint in_t0;
 
     // Token: 0x04000870 RID: 2160
-    private static uint in_t1;
+    public static uint in_t1;
 
     // Token: 0x04000871 RID: 2161
-    private static uint in_t2;
+    public static uint in_t2;
 
     // Token: 0x04000872 RID: 2162
-    private static uint in_t3;
+    public static uint in_t3;
 
     // Token: 0x04000873 RID: 2163
-    private static int in_t4;
+    public static int in_t4;
 
     // Token: 0x04000874 RID: 2164
-    private static int puVar14;
+    public static int puVar14;
 
     // Token: 0x04000875 RID: 2165
-    private static int puVar15;
+    public static int puVar15;
 
     // Token: 0x04000876 RID: 2166
-    private static int puVar16;
+    public static int puVar16;
 
     // Token: 0x04000877 RID: 2167
-    private static int puVar17;
+    public static int puVar17;
 
     // Token: 0x04000878 RID: 2168
-    private static int puVar18;
+    public static int puVar18;
 
     // Token: 0x04000879 RID: 2169
-    private static List<TileData> _tileData;
+    public static List<TileData> _tileData;
 
     // Token: 0x0400087A RID: 2170
-    private static ushort[] _vertices;
+    public static ushort[] _vertices;
 
     // Token: 0x0400087B RID: 2171
-    private static byte[] _tiles;
+    public static byte[] _tiles;
 
     // Token: 0x0400087C RID: 2172
-    private static ushort[] _chunks;
+    public static ushort[] _chunks;
 
     // Token: 0x0400087D RID: 2173
-    private RectTransform canvasSky;
+    public RectTransform canvasSky;
 
     // Token: 0x0400087E RID: 2174
-    private RectTransform sbParent;
+    public RectTransform sbParent;
 
     // Token: 0x0400087F RID: 2175
-    private RectTransform skybox;
+    public RectTransform skybox;
 
     // Token: 0x04000880 RID: 2176
-    private RectTransform skyboxRight;
+    public RectTransform skyboxRight;
 
     // Token: 0x04000881 RID: 2177
-    private RectTransform skyboxLeft;
+    public RectTransform skyboxLeft;
 
     // Token: 0x04000882 RID: 2178
-    private RectTransform sbTop;
+    public RectTransform sbTop;
 
     // Token: 0x04000883 RID: 2179
-    private RectTransform sbTopRight;
+    public RectTransform sbTopRight;
 
     // Token: 0x04000884 RID: 2180
-    private RectTransform sbTopLeft;
+    public RectTransform sbTopLeft;
 
     // Token: 0x04000885 RID: 2181
-    private RectTransform sbBottom;
+    public RectTransform sbBottom;
 
     // Token: 0x04000886 RID: 2182
-    private RectTransform sbBottomRight;
+    public RectTransform sbBottomRight;
 
     // Token: 0x04000887 RID: 2183
-    private RectTransform sbBottomLeft;
+    public RectTransform sbBottomLeft;
 
     // Token: 0x04000888 RID: 2184
-    private Material skyboxMat;
+    public Material skyboxMat;
 }

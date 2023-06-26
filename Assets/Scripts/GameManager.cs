@@ -2040,13 +2040,13 @@ public class GameManager : MonoBehaviour
     public byte[,] DAT_D28;
 
     // Token: 0x0400049C RID: 1180
-    public int DAT_DA0;
+    public int DAT_DA0; //Amplia Horizontalmente el agua
 
     // Token: 0x0400049D RID: 1181
     public ushort DAT_DA8;
 
     // Token: 0x0400049E RID: 1182
-    public int DAT_DB0;
+    public int DAT_DB0; //Altura del Agua
 
     // Token: 0x0400049F RID: 1183
 
@@ -2065,7 +2065,7 @@ public class GameManager : MonoBehaviour
     public VigTransform DAT_F00;
 
     // Token: 0x040004A3 RID: 1187
-    public int DAT_F20;
+    public int DAT_F20 = 240;
 
     // Token: 0x040004A4 RID: 1188
     public VigTransform DAT_F28;
@@ -2074,7 +2074,7 @@ public class GameManager : MonoBehaviour
     public Matrix3x3 DAT_F48;
 
     // Token: 0x040004A6 RID: 1190
-    public Matrix3x3 DAT_F68;
+    public Matrix3x3 DAT_F68; //Posicion luz?
 
     // Token: 0x040004A7 RID: 1191
     public VigTransform DAT_F88;
@@ -4335,6 +4335,7 @@ public class GameManager : MonoBehaviour
 
     public VigObject FUN_31950(int param1)
     {
+        //Por transicion de tuneles y agua
         VigObject vigObject = this.FUN_3027C(this.worldObjs, param1, null);
         if (vigObject == null)
         {
@@ -6407,7 +6408,7 @@ public class GameManager : MonoBehaviour
         Demo.instance.backButton.gameObject.SetActive(false);
 
         if (isHost)
-            Demo.instance.loadTextOnline.text = "Press BackSpace to Continue...";
+            Demo.instance.loadTextOnline.text = "Press SpaceBar | (X) to Continue...";
         else
             Demo.instance.loadTextOnline.text = "Waiting Host...";
 
@@ -6747,7 +6748,7 @@ public class GameManager : MonoBehaviour
         if (player.GetButtonDown("START") || player.GetButtonDown("Space"))
         {
             if (isWait)
-                if (isHost)
+                if (isHost || !online)
                 {
                     paused = !paused;
                     if (gameMode >= _GAME_MODE.Versus2)
@@ -6967,7 +6968,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("Camera..." + cameraObjects[0].vTransform.rotation.Matrix2Quaternion);
+                //Debug.Log("Camera..." + cameraObjects[0].vTransform.rotation.Matrix2Quaternion); en pausa
                 cameraObjects[0].vTransform.rotation = Utilities.RotMatrixYXZ_gte(cameraObjects[0].vr);
             }
             FUN_31360((ushort)(DAT_28 & 0xFFFF));
@@ -7132,9 +7133,9 @@ public class GameManager : MonoBehaviour
         //Posiblemente establece la cantidad de objetos dibujados en la escena?
         if (this.gameMode < _GAME_MODE.Coop || this.gameMode >= _GAME_MODE.Versus2)
         {
-            this.DAT_DB4 = drawDistance1;
-            this.DAT_DB6 = drawDistance2;
-            this.DAT_DB8 = drawDistance3;
+            this.DAT_DB4 = drawDistance1; //125
+            this.DAT_DB6 = drawDistance2; //32767
+            this.DAT_DB8 = drawDistance3; //32767
             //this.DAT_DB4 = 80;
             //this.DAT_DB6 = 40;
             //this.DAT_DB8 = 20;
@@ -7413,10 +7414,10 @@ public class GameManager : MonoBehaviour
             GameManager.DAT_1f800096 = (short)((ushort)this.DAT_F20);
             GameManager.DAT_1f800098 = (short)(this.DAT_DB6 << 8);
             GameManager.DAT_1f80009a = (short)(this.DAT_DB8 << 8);
-            GameManager.DAT_1f800094 = DAT_1f800094_; //100
-            GameManager.DAT_1f800096 = DAT_1f800096_; //240
-            GameManager.DAT_1f800098 = DAT_1f800098_; //10240
-            GameManager.DAT_1f80009a = DAT_1f80009a_; //5120
+            GameManager.DAT_1f800094 = DAT_1f800094_; //100 new 32767
+            GameManager.DAT_1f800096 = DAT_1f800096_; //240 new 32767
+            GameManager.DAT_1f800098 = DAT_1f800098_; //10240 new 32767
+            GameManager.DAT_1f80009a = DAT_1f80009a_; //5120 new 14124 solo si mantiene camara centrada //seguro si camara hace padding: 7100-3832 2683 2019
             this.nativeArray = new NativeArray<Vector2Int>(list2.Count, Allocator.Persistent, NativeArrayOptions.ClearMemory);
             for (int k = 0; k < this.nativeArray.Length; k++)
             {
@@ -7593,10 +7594,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void FUN_2D278(VigObject param1, int param2)
+    public async void FUN_2D278(VigObject param1, int param2)
     {
         VigTransform param3 = FUN_2CDF4(param1);
-        FUN_2E0E8(param3, param2);
+        //FUN_2E0E8(param3, param2);
+        await Task.Yield();
     }
 
     public void FUN_2DFF0(VigTransform param1)
@@ -8025,14 +8027,17 @@ public class GameManager : MonoBehaviour
 
     private void FUN_2DEE8(int param1, int param2)
     {
-        Utilities.SetScreenOffset(param1, param2);
-        DAT_FC8 = new Vector2Int(param1, param2);
+        //Utilities.SetScreenOffset(param1, param2);
+        int x = DAT_FC8.x;
+        int y = DAT_FC8.y;
+        Utilities.SetScreenOffset(x, y);
+        //DAT_FC8 = new Vector2Int(param1, param2);
     }
 
     private void FUN_2DF30(int param1, int param2, int param3, int param4)
     {
         //DAT_EDC = param1;
-        DAT_F20 = param2;
+        //DAT_F20 = param2;
         FUN_2DEE8(param3, param4);
     }
 
@@ -8068,8 +8073,14 @@ public class GameManager : MonoBehaviour
         return vector3Int;
     }
 
+    [Header("ConfigContainers")]
+    [SerializeField]
+    public List<ConfigContainer> configContainersObject;
+    public ConfigContainer configContainers_FUN_2CEAC;
+
     public VigTransform FUN_2CEAC(VigObject param1, ConfigContainer param2)
     {
+        configContainers_FUN_2CEAC = param2;
         VigTransform m = FUN_2CDF4(param1);
         VigTransform m2 = Utilities.FUN_2C77C(param2);
         return Utilities.CompMatrixLV(m, m2);
@@ -8511,8 +8522,7 @@ public class GameManager : MonoBehaviour
                 hitDetection.object2 = hitDetection.object1;
                 hitDetection.object1 = @object;
                 Debug.Log("Colision comenzada...: " + num2 + " - Self: " + hitDetection.self + " - Objeto 1: " + hitDetection.object1 + " - Colision 1: " + hitDetection.object1 + " - Objeto 2: " + hitDetection.object2 + " Colision 2: " + hitDetection.collider2);
-                num2 = (int)param2.OnCollision(hitDetection); //Colision? posible error agua
-                Debug.Log("Colision terminada...: " + num2 + " - " + " . " + hitDetection);
+                num2 = (int)param2.OnCollision(hitDetection); //Colision? posible error agua : Correjido
                 if (num2 < 0)
                 {
                     num3 |= 2;
