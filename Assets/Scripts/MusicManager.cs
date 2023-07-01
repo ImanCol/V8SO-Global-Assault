@@ -408,7 +408,7 @@ public class MusicManager : MonoBehaviour
                         if (music)
                             if (GameManager.instance.isWait)
                                 if (musicClips.Count != 0)
-                                    if (music.clip == null)
+                                    if (music.clip != null)
                                         if (music.time >= music.clip.length)
                                         {
                                             Debug.Log("Finalizo...reproducir siguiente");

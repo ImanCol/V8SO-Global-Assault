@@ -103,9 +103,9 @@ namespace LoadMap
         {
             if (GameManager.instance)
             {
-                if (isHost)
+                if (isHost || !GameManager.instance.online)
                 {
-                    staticLoadingStatus.text = "Press BackSpace to Start";
+                    staticLoadingStatus.text = "Press Space | (X) to Continue...";
                 }
                 else { staticLoadingStatus.text = "Waiting Host..."; }
             }

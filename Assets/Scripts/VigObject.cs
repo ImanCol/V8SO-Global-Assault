@@ -490,7 +490,7 @@ public struct VigTransform
 [Serializable]
 public class VigObject : MonoBehaviour
 {
-    private float forceModifier = 1; // Valor predeterminado en caso de que no se establezca otro valor
+    //private float forceModifier = 1f; // Valor predeterminado en caso de que no se establezca otro valor
 
     public uint flags;
 
@@ -3104,7 +3104,7 @@ public class VigObject : MonoBehaviour
         if (vData != null)
         {
             configContainersObject = vData.ini.configContainers;
-            GameManager.instance.configContainersObject = configContainersObject;
+            //GameManager.instance.configContainersObject = configContainersObject;
             int index;
             for (ushort num = configContainersObject[(ushort)DAT_1A].next; num != ushort.MaxValue; num = configContainersObject[index].previous)
             {
@@ -3115,14 +3115,13 @@ public class VigObject : MonoBehaviour
 
                     if ((configContainersObject[index].flag & 0x800) != 0)
                     {
-                        //flags |= 4096u;
-                        vLOD = vMesh;
-
+                        flags |= 4096u;
+                        //vLOD = vMesh;
                     }
                     if ((configContainersObject[index].flag & 0x7FF) == 2047)
                     {
-                        //vLOD = null;
-                        vLOD = vMesh;
+                        vLOD = null;
+                        //vLOD = vMesh;
                     }
                     else if (((configContainersObject[index].flag ^ configContainersObject[(ushort)DAT_1A].flag) & 0x7FF) != 0)
                     {
@@ -3135,7 +3134,6 @@ public class VigObject : MonoBehaviour
                     {
                         //vLOD = vMesh;
                         vLOD = vMesh;
-
                     }
                     int num2 = configContainersObject[index].objID * 65536;
                     if (configContainersObject[index].objID == 0)

@@ -11,6 +11,7 @@ using Beebyte.Obfuscator;
 using Lidgren.Network;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
+using System;
 
 [BurstCompile]
 public class Demo : MonoBehaviour
@@ -33,10 +34,10 @@ public class Demo : MonoBehaviour
         GameObject.Find("MODE OFFLINE").gameObject.SetActive(false);
         GameObject.Find("IngameDebugConsole").gameObject.SetActive(false);
 #endif
-        this.playerReady = new Dictionary<long, bool>();
-        this.playerText = new Dictionary<long, Text>();
-        this.playerNames = new Dictionary<long, string>();
-        this.playerVehicles = new Dictionary<long, byte>();
+        this.playerReady = new SerializableBool<long, bool>();
+        this.playerText = new SerializableText<long, Text>();
+        this.playerNames = new SerializableString<long, string>();
+        this.playerVehicles = new SerializableByte<long, byte>();
         GameManager.instance.map = 1;
         GameManager.instance.playerSpawns = 1;
         discordController.sceneLoaded = true;
@@ -338,13 +339,166 @@ public class Demo : MonoBehaviour
         Plugin.Client.ConnectToLobby(Plugin.ipAddress, Plugin.Port);
     }
 
+    //SerializableDiccionary
+    [Serializable]
+    public class SerializableText<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
+    {
+        [SerializeField]
+        private List<TKey> longList = new List<TKey>();
+
+        [SerializeField]
+        private List<TValue> TextElement = new List<TValue>();
+
+        public void OnBeforeSerialize()
+        {
+            longList.Clear();
+            TextElement.Clear();
+
+            foreach (var pair in this)
+            {
+                longList.Add(pair.Key);
+                TextElement.Add(pair.Value);
+            }
+        }
+
+        public void OnAfterDeserialize()
+        {
+            this.Clear();
+
+            if (longList.Count != TextElement.Count)
+            {
+                Debug.LogError("Error al deserializar el diccionario. La cantidad de claves y valores no coincide.");
+                return;
+            }
+
+            for (int i = 0; i < longList.Count; i++)
+            {
+                this[longList[i]] = TextElement[i];
+            }
+        }
+    }
+    [Serializable]
+    public class SerializableString<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
+    {
+        [SerializeField]
+        private List<TKey> longList = new List<TKey>();
+
+        [SerializeField]
+        private List<TValue> stringElement = new List<TValue>();
+
+        public void OnBeforeSerialize()
+        {
+            longList.Clear();
+            stringElement.Clear();
+
+            foreach (var pair in this)
+            {
+                longList.Add(pair.Key);
+                stringElement.Add(pair.Value);
+            }
+        }
+
+        public void OnAfterDeserialize()
+        {
+            this.Clear();
+
+            if (longList.Count != stringElement.Count)
+            {
+                Debug.LogError("Error al deserializar el diccionario. La cantidad de claves y valores no coincide.");
+                return;
+            }
+
+            for (int i = 0; i < longList.Count; i++)
+            {
+                this[longList[i]] = stringElement[i];
+            }
+        }
+    }
+
+    [Serializable]
+    public class SerializableBool<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
+    {
+        [SerializeField]
+        private List<TKey> longList = new List<TKey>();
+
+        [SerializeField]
+        private List<TValue> boolElement = new List<TValue>();
+
+        public void OnBeforeSerialize()
+        {
+            longList.Clear();
+            boolElement.Clear();
+
+            foreach (var pair in this)
+            {
+                longList.Add(pair.Key);
+                boolElement.Add(pair.Value);
+            }
+        }
+
+        public void OnAfterDeserialize()
+        {
+            this.Clear();
+
+            if (longList.Count != boolElement.Count)
+            {
+                Debug.LogError("Error al deserializar el diccionario. La cantidad de claves y valores no coincide.");
+                return;
+            }
+
+            for (int i = 0; i < longList.Count; i++)
+            {
+                this[longList[i]] = boolElement[i];
+            }
+        }
+    }
+    [Serializable]
+    public class SerializableByte<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
+    {
+        [SerializeField]
+        private List<TKey> longList = new List<TKey>();
+
+        [SerializeField]
+        private List<TValue> byteElement = new List<TValue>();
+
+        public void OnBeforeSerialize()
+        {
+            longList.Clear();
+            byteElement.Clear();
+
+            foreach (var pair in this)
+            {
+                longList.Add(pair.Key);
+                byteElement.Add(pair.Value);
+            }
+        }
+
+        public void OnAfterDeserialize()
+        {
+            this.Clear();
+
+            if (longList.Count != byteElement.Count)
+            {
+                Debug.LogError("Error al deserializar el diccionario. La cantidad de claves y valores no coincide.");
+                return;
+            }
+
+            for (int i = 0; i < longList.Count; i++)
+            {
+                this[longList[i]] = byteElement[i];
+            }
+        }
+    }
+
+
     [Header("Lobby Manager")]
+    [SerializeField]
     public DiscordController discordController;
     public static Demo instance;
-    public Dictionary<long, bool> playerReady;
-    public Dictionary<long, Text> playerText;
-    public Dictionary<long, string> playerNames;
-    public Dictionary<long, byte> playerVehicles;
+    public SerializableBool<long, bool> playerReady;
+    public SerializableText<long, Text> playerText;
+    public SerializableString<long, string> playerNames;
+    public SerializableByte<long, byte> playerVehicles;
     public RectTransform playerList;
     public RectTransform lobbyList;
     public Text settingsText;

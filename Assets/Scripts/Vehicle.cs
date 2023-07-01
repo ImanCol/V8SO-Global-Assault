@@ -103,7 +103,6 @@ public enum _VEHICLE_TYPE
 }
 
 [BurstCompile]
-[System.Serializable]
 public class Vehicle : VigObject
 {
     public struct AI
@@ -399,13 +398,13 @@ public class Vehicle : VigObject
 
     protected override void Start()
     {
-        Debug.Log("User: " + Plugin.Username);
+        Debug.Log("Iniciando Vehicle...");
         base.Start();
     }
 
     public string namePlayer = " ";
     private bool setGameTag = true;
-    private bool setGameTagLocal = true;
+    //private bool setGameTagLocal = true;
 
     protected override void Update()
     {
@@ -423,6 +422,7 @@ public class Vehicle : VigObject
                     Debug.Log("GameTag Set...");
                     gameTag = UIManager.instance.InstantiateGameTag();
                     gameTag.text = Demo.instance.playerNames[valueVehicle.userId];
+                    gameTag.gameObject.layer = 8;
                     namePlayer = gameTag.text;
                     Debug.Log("Pass...");
                     Debug.Log("Vehiculo object: " + valueVehicle);
@@ -434,6 +434,11 @@ public class Vehicle : VigObject
                     Debug.Log("GameTag: " + valueVehicle.gameTag.text);
                     Debug.Log("GameTag local: " + gameTag.text);
                 }
+            }
+            if (GameManager.instance.playerObjects[0] == this)
+            {
+                gameTag = UIManager.instance.gameTagPlayer;
+                Debug.Log("Este vehiculo es de..." + GameManager.instance.playerObjects[0].gameTag.text);
             }
         }
 
@@ -878,6 +883,10 @@ public class Vehicle : VigObject
                 unit = UIManager.instance.InstantiateUnit();
                 Debug.Log("instantiateUnit: " + unit);
                 gameTag = UIManager.instance.InstantiateGameTag();
+                gameTag.text = UIManager.instance.gameTagPlayer.text;
+                namePlayer = gameTag.text;
+                Debug.Log("nombre Player: " + gameTag.text);
+                gameTag.gameObject.layer = 8;
             }
             if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && id == -2)
             {
@@ -5376,6 +5385,7 @@ public class Vehicle : VigObject
             UnityEngine.Object.Destroy(gameTag);
             unit = null;
             gameTag = null;
+            Debug.Log("Destruido...");
         }
         else if (maxHalfHealth == 0)
         {
@@ -5404,6 +5414,94 @@ public class Vehicle : VigObject
         FUN_3C404(GameManager.vehicleConfigs[(int)vehicle].maxHalfHealth);
     }
 
+    public void InitializeEnemySpawn()
+    {
+        XOBF_DB vData = base.vData;
+        ushort next = vData.ini.configContainers[DAT_1A].next;
+        for (uint num = next; num != 65535; num = next)
+        {
+            ConfigContainer configContainer = vData.ini.configContainers[(int)num];
+            Debug.Log("New Enemy Config: " + num);
+            Debug.Log("configContainer.objID: " + configContainer.objID);
+
+            //if ((uint)(configContainer.objID - 256) < 4u && GameManager.instance.EnemyKill >= 30)
+            if ((uint)(configContainer.objID - 256) < 4u) //256,259,258
+            {
+
+                Debug.Log("New Enemy Config: " + num);
+                VigObject vigObject = vData.ini.FUN_2C17C((ushort)num, typeof(VigObject), 8u);
+                Utilities.FUN_2CA94(this, configContainer, vigObject);
+                //vigObject.FUN_2C7D0();
+                //if (vigObject.vMesh != null)
+                //{
+                //    vigObject.vMesh.DAT_02 = -4;
+                //}
+            }
+            next = configContainer.previous;
+        }
+        int num2 = 0;
+        byte b = 0;
+        if (GameManager.instance.EnemyKill >= 30)
+        {
+            Debug.Log("New Enemy Comming...");
+            //b = 50;
+            do
+            {
+                //VigObject vigObject = wheels[num2];
+                //if (vigObject != null)
+                //{
+                //    ConfigContainer configContainer2 = vigObject.FUN_2C6F8(256);
+                //    if (configContainer2 != null)
+                //    {
+                //        GameManager.instance.FUN_2C4B4(vigObject.child2);
+                //        if (vigObject.vLOD != null && vigObject.vLOD != vigObject.vMesh)
+                //        {
+                //            GameManager.instance.FUN_1FEB8(vigObject.vLOD);
+                //        }
+                //        GameManager.instance.FUN_1FEB8(vigObject.vMesh);
+                //        ushort param = (ushort)vigObject.vData.ini.FUN_2C73C(configContainer2);
+                //        vigObject.FUN_2C344(vigObject.vData, param, 8u);
+                //        vigObject.FUN_2C7D0();
+                //    }
+                //}
+                num2++;
+            }
+            while (num2 < 6);
+            if (GameManager.instance.EnemyKill >= 70)
+            {
+                Debug.Log("HOOOOOOOOOT");
+                //DAT_F6 |= 1024;
+                //b = 100;
+            }
+        }
+        //VehicleData - DAT_B3: 48 lightness: 2936 DAT_AF:47
+
+        //TBOLT
+        //VehicleData - DAT_B3: 148 lightness: 4206 DAT_AF:50 maxHalfHealth:903
+        //Mejorado
+        //VehicleData - DAT_B3: 174 lightness: 3659 DAT_AF:43 maxHalfHealth:1053
+        //Hotrods
+        //VehicleData - DAT_B3: 200 lightness: 3112 DAT_AF:36 maxHalfHealth:1203
+
+        //Caravine
+        //VehicleData - DAT_B3: 34 lightness: 1541 DAT_AF:40
+        //VehicleData - DAT_B3: 34 lightness: 1541 DAT_AF:40
+        //Mejorado
+        //VehicleData - DAT_B3: 37 lightness: 1419 DAT_AF:37
+        //VehicleData - DAT_B3: 37 lightness: 1419 DAT_AF:37
+        //VehicleData - DAT_B3: 37 lightness: 1419 DAT_AF:37
+        //Hotrods
+        //VehicleData - DAT_B3: 40 lightness: 1297 DAT_AF:33
+        //VehicleData - DAT_B3: 40 lightness: 1297 DAT_AF:33
+        //VehicleData - DAT_B3: 37 lightness: 1419 DAT_AF:37
+        Utilities.ParentChildren(this, this); //Asigna Accesorios Mejorados?
+        VehicleData vehicleData = GameManager.vehicleConfigs[(int)vehicle];
+        DAT_B3 = (byte)(vehicleData.DAT_13 + (vehicleData.DAT_14 - vehicleData.DAT_13) * b / 100);
+        lightness = vehicleData.lightness + (vehicleData.DAT_20 - vehicleData.lightness) * b / 100;
+        DAT_AF = (byte)(vehicleData.DAT_15 + (vehicleData.DAT_16 - vehicleData.DAT_15) * b / 100);
+        FUN_3C404((ushort)(vehicleData.maxHalfHealth + (vehicleData.DAT_1A - vehicleData.maxHalfHealth) * b / 100));
+        Debug.Log("VehicleData - DAT_F6: " + DAT_F6 + " b: " + b + " DAT_B3: " + DAT_B3 + " lightness: " + lightness + " DAT_AF:" + DAT_AF);
+    }
     public void InitializeEnemyStats()
     {
         XOBF_DB vData = base.vData;
@@ -5413,6 +5511,7 @@ public class Vehicle : VigObject
             ConfigContainer configContainer = vData.ini.configContainers[(int)num];
             if ((uint)(configContainer.objID - 256) < 4u && GameManager.instance.EnemyKill >= 30)
             {
+
                 VigObject vigObject = vData.ini.FUN_2C17C((ushort)num, typeof(VigObject), 8u);
                 Utilities.FUN_2CA94(this, configContainer, vigObject);
                 vigObject.FUN_2C7D0();
@@ -5452,21 +5551,21 @@ public class Vehicle : VigObject
             while (num2 < 6);
             if (GameManager.instance.EnemyKill >= 70)
             {
-                Debug.Log("HOOOOOOOOOT");
                 DAT_F6 |= 1024;
                 b = 100;
             }
         }
-        Utilities.ParentChildren(this, this);
+        Utilities.ParentChildren(this, this); //Asigna Accesorios Mejorados?
         VehicleData vehicleData = GameManager.vehicleConfigs[(int)vehicle];
         DAT_B3 = (byte)(vehicleData.DAT_13 + (vehicleData.DAT_14 - vehicleData.DAT_13) * b / 100);
         lightness = vehicleData.lightness + (vehicleData.DAT_20 - vehicleData.lightness) * b / 100;
         DAT_AF = (byte)(vehicleData.DAT_15 + (vehicleData.DAT_16 - vehicleData.DAT_15) * b / 100);
         FUN_3C404((ushort)(vehicleData.maxHalfHealth + (vehicleData.DAT_1A - vehicleData.maxHalfHealth) * b / 100));
+        Debug.Log("VehicleData - DAT_F6: " + DAT_F6 + " b: " + b + " DAT_B3: " + DAT_B3 + " lightness: " + lightness + " DAT_AF:" + DAT_AF);
     }
-
     public void FUN_3C404(ushort param1)
     {
+        Debug.Log("VehicleData - maxHalfHealth:" + param1);
         maxHalfHealth = param1;
         int num = 0;
         do
@@ -5782,13 +5881,21 @@ public class Vehicle : VigObject
 
     public string FUN_38398()
     {
+        foreach (var valueString in Demo.instance.playerNames)
+            Debug.Log("Players: " + valueString);
+
+        Debug.Log("gametag id..." + id);
+        //Debug.Log("gametag userId..." + Demo.instance.playerNames[this.userId]);
         if (-1 < id)
         {
-            return Utilities.DAT_310[(int)vehicle];
+            Debug.Log("gametag get: " + gameTag.text);
+            return gameTag.text;
+            //return Utilities.DAT_310[(int)vehicle];
         }
         else
         {
-            return Demo.instance.lobbyInput.text;
+            Debug.Log("gametag get: " + gameTag.text);
+            return gameTag.text;
         }
         return "PLAYER";
     }
@@ -6571,7 +6678,7 @@ public class Vehicle : VigObject
         UnityEngine.Object.Destroy(unit);
         UnityEngine.Object.Destroy(gameTag);
         unit = null;
-        gameTag = null;
+        Debug.Log("Destruido...");
         maxHalfHealth = 0;
         acceleration = 0;
         DAT_C8 = 0;
@@ -6662,6 +6769,7 @@ public class Vehicle : VigObject
         {
             id = 0;
         }
+        gameTag = null;
     }
 
     public void FUN_38484()

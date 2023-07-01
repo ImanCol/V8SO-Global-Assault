@@ -159,7 +159,8 @@ public class ClientHandle : MonoBehaviour
     public static void Spawn(Packet _packet, long userId)
     {
         Debug.Log("Spawn Packet: " + _packet + " - " + Demo.instance.playerNames[userId] + " User ID: " + userId);
-        GameManager.instance.playerObjects[0].gameTag = UIManager.instance.InstantiateGameTag();
+        //GameManager.instance.playerObjects[0].gameTag = UIManager.instance.InstantiateGameTag();
+        //GameManager.instance.playerObjects[0].gameTag.text = Demo.instance.playerNames[userId];
         byte b = _packet.ReadByte();
         short num = 1;
 
@@ -193,12 +194,14 @@ public class ClientHandle : MonoBehaviour
 
         if (GameManager.instance.gameMode == _GAME_MODE.Versus2)
         {
+            Debug.Log("Spawn Versus..." + num);
             GameManager.instance.vehicles[num + 1] = b;
             GameManager.instance.DAT_1030[num - 1]--;
             GameManager.instance.networkMembers[userId] = GameManager.instance.FUN_3208C(num, num);
         }
         else
         {
+            Debug.Log("Spawn Other..." + num);
             GameManager.instance.networkMembers[userId] = GameManager.instance.FUN_3208C(-2, num);
             GameManager.instance.playerObjects[1] = GameManager.instance.networkMembers[userId];
         }
@@ -269,7 +272,7 @@ public class ClientHandle : MonoBehaviour
         {
             if (num == DiscordController.GetUserId())
             {
-                Debug.Log("Despues: " + userId);
+                //Debug.Log("Despues: " + userId);
                 vehicle.target = GameManager.instance.playerObjects[0];
             }
             else if (num > 0 && num <= 6)
@@ -652,7 +655,7 @@ public class ClientHandle : MonoBehaviour
         {
             if (num == DiscordController.GetUserId())
             {
-                Debug.Log("Despues: " + userId);
+                //Debug.Log("Despues: " + userId);
                 vehicle.target = GameManager.instance.playerObjects[0];
             }
             else

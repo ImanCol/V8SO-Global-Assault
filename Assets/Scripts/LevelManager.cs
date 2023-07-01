@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Burst;
 
-[Serializable]
 [BurstCompile]
 public class LevelManager : MonoBehaviour
 {
@@ -281,8 +280,10 @@ public class LevelManager : MonoBehaviour
 
         //Envia Spawn Inicial
         if (GameManager.instance.online)
+        {
             Debug.Log("Send Spawn Vehicle...");
-        ClientSend.Spawn();
+            ClientSend.Spawn();
+        }
         if (!DiscordController.instance)
         {
             Debug.Log("No se encontro DiscordController");

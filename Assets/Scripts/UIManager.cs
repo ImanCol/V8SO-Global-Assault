@@ -64,7 +64,7 @@ public class UIManager : MonoBehaviour
     public List<OcclusionCamera> cameras;
     public Image underwater;
     public float units;
-    public float radius;
+    public float radius = 60;
     public float printSpeed;
     public float under;
     public float waterOffset;
@@ -343,6 +343,7 @@ public class UIManager : MonoBehaviour
 
     public void Start()
     {
+        Debug.Log("Iniciando UIManager...");
         AddUIMessagesScript(this.gameObject);
         //makeLoadscene();
 
@@ -352,7 +353,7 @@ public class UIManager : MonoBehaviour
         playerTag = obj.GetComponent<RectTransform>();
 
         gameTagPlayer = UIManager.instance.InstantiateGameTag();
-
+        gameTagPlayer.gameObject.layer = 8;
         //spriteLifePlayer = UIManager.instance.InstantiateSpriteLife();
 
         //gameTagPlayer.text = "ImanCol";
@@ -402,6 +403,7 @@ public class UIManager : MonoBehaviour
 
     public void GoodJob()
     {
+        Debug.Log("GoodJob!");
         hudRect.gameObject.SetActive(value: false);
         StartCoroutine("_GoodJob");
     }
@@ -555,15 +557,22 @@ public class UIManager : MonoBehaviour
         Vehicle vehicle = GameManager.instance.playerObjects[0];
 
         //GameTag You
+
         if (isGameTagThis)
         {
-            if (gameTagPlayer.text == "")
-                gameTagPlayer.text = Plugin.Username;
-            GameTagPlayer(gameTagPlayer, vehicle, true);
+            if (gameTagPlayer)
+            {
+                if (gameTagPlayer.text == "")
+                    gameTagPlayer.text = Plugin.Username;
+                gameTagPlayer.GetComponent<TextMeshPro>().enabled = true;
+                GameTagPlayer(gameTagPlayer, vehicle, true);
+            }
         }
         else
         {
-            gameTagPlayer.text = "";
+            if (gameTagPlayer)
+                gameTagPlayer.GetComponent<TextMeshPro>().enabled = false;
+            //gameTagPlayer.text = "";
         }
 
         float num = Vector3.Angle(vehicle.transform.forward, Vector3.forward);
@@ -582,8 +591,12 @@ public class UIManager : MonoBehaviour
 
         unit.color = ((!(vehicle.target == obj)) ? RED : ((obj.jammer == 0 && (obj.flags & 0x8000000) == 0) ? GREEN : YELLOW));
         Vector3 vector2 = Vector3.ClampMagnitude(vector, radius);
-        unit.rectTransform.anchoredPosition = new Vector2(vector2.x, vector2.z);
+        unit.rectTransform.anchoredPosition = new Vector2(vector2.x += positionUnitX, vector2.z += positionUnitY);
     }
+
+
+    public int positionUnitX;
+    public int positionUnitY;
 
     //Get PowerUp
     public void UpdateHUD(Vehicle player, int tick)

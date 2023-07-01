@@ -11,7 +11,7 @@ namespace V2UnityDiscordIntercept
     public class Plugin : MonoBehaviour//: BaseUnityPlugin
     {
         public static Plugin instance;
-        public const string AppIdentifier = "V2Unity-Discord-Patch";
+        public const string AppIdentifier = "V8GO-23";
 
         public static VigServer Server { get; set; }
         public static VigClient Client { get; set; }

@@ -1973,11 +1973,11 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     public BSP bspTree = null;
 
-    // Token: 0x04000485 RID: 1157
-    public int translateFactor = 10000;
+    // Token: 0x04000485 RID: 1157 
+    public int translateFactor = 10000; //4096
 
     // Token: 0x04000486 RID: 1158
-    public int translateFactor2 = 1000;
+    public int translateFactor2 = 1000; //16
 
     // Token: 0x04000487 RID: 1159
     public float pixelSnapMin = 0.002f;
@@ -2065,7 +2065,7 @@ public class GameManager : MonoBehaviour
     public VigTransform DAT_F00;
 
     // Token: 0x040004A3 RID: 1187
-    public int DAT_F20 = 240;
+    public int DAT_F20 = 240; //871?
 
     // Token: 0x040004A4 RID: 1188
     public VigTransform DAT_F28;
@@ -2098,10 +2098,10 @@ public class GameManager : MonoBehaviour
     public Vector3Int DAT_EC8;
 
     // Token: 0x040004AE RID: 1198
-    public int DAT_ED8;
+    public int DAT_ED8; //250
 
     // Token: 0x040004AF RID: 1199
-    public int DAT_EDC;
+    public int DAT_EDC; //550
 
     // Token: 0x040004B0 RID: 1200
     public VigTransform DAT_EE0;
@@ -2415,6 +2415,7 @@ public class GameManager : MonoBehaviour
         }
         else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
         {
+            Demo.instance.componentPanel.Find("Vehicle/Dakota").gameObject.SetActive(false);
             switch (driverDropdown.value)
             {
                 case 0:
@@ -2425,6 +2426,8 @@ public class GameManager : MonoBehaviour
                     break;
                 case 2:
                     vehicles[0] = 2;
+                    if (!online)
+                        Demo.instance.componentPanel.Find("Vehicle/Dakota").gameObject.SetActive(true);
                     break;
                 case 3:
                     vehicles[0] = 3;
@@ -2956,8 +2959,8 @@ public class GameManager : MonoBehaviour
         }
         else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
         {
-            experimentalDakota = false;
-            //experimentalDakota = enableExperimentalDakota.isOn;
+            //experimentalDakota = false;
+            experimentalDakota = enableExperimentalDakota.isOn;
         }
     }
 
@@ -2986,55 +2989,88 @@ public class GameManager : MonoBehaviour
 
     public void RandomizeEnemies(int players)
     {
-        List<int> list = new List<int>(playable);
-        survival = new List<int>();
-        int num = playable.Count - players;
+        List<int> list = new List<int>(this.playable);
+        this.survival = new List<int>();
+        int num = this.playable.Count - players;
         for (int i = 0; i < num; i++)
         {
-            int index;
+            int num2;
             do
             {
-                index = UnityEngine.Random.Range(0, list.Count);
+                num2 = UnityEngine.Random.Range(0, list.Count);
             }
-            while (list[index] == vehicles[0] || list[index] == vehicles[1]);
-            survival.Add(list[index]);
-            list.RemoveAt(index);
+            while (list[num2] == (int)this.vehicles[0] || list[num2] == (int)this.vehicles[1]);
+            this.survival.Add(list[num2]);
+            list.RemoveAt(num2);
         }
-
-        int playerammount = 4;
-
-        if (players == 1)
+        for (int j = 0; j < 6; j++)
         {
-            playerammount = 4;
-            Debug.Log("Singleplayer Iniciado");
-        }
-        else if (players == 2)
-        {
-            playerammount = 6;
-            Debug.Log("Multiplayer Iniciado");
-        }
-
-        Debug.Log("Jugadores-Capacidad: " + playable.Capacity);
-        Debug.Log("Jugadores-Cantidad: " + playable.Count);
-
-
-        for (int j = 0; j < playerammount; j++)
-        {
-            if (gameMode == _GAME_MODE.Arcade)
+            if (this.gameMode == _GAME_MODE.Arcade)
             {
-                SetEnemySpawn(j);
+                this.SetEnemySpawn(j);
             }
-            int index2;
+            int num3;
             do
             {
-                index2 = UnityEngine.Random.Range(0, playable.Count);
-                //Debug.Log("Playable Count: " + playable.Count);
+                num3 = UnityEngine.Random.Range(0, this.playable.Count);
             }
-            while (playable[index2] == vehicles[0] || playable[index2] == vehicles[1]);
-            vehicles[j + 2] = (byte)playable[index2];
-            playable.RemoveAt(index2);
+            while (this.playable[num3] == (int)this.vehicles[0] || this.playable[num3] == (int)this.vehicles[1]);
+            this.vehicles[j + 2] = (byte)this.playable[num3];
+            this.playable.RemoveAt(num3);
         }
     }
+
+    //public void RandomizeEnemies(int players)
+    //{
+    //    List<int> list = new List<int>(playable);
+    //    survival = new List<int>();
+    //    int num = playable.Count - players;
+    //    for (int i = 0; i < num; i++)
+    //    {
+    //        int index;
+    //        do
+    //        {
+    //            index = UnityEngine.Random.Range(0, list.Count);
+    //        }
+    //        while (list[index] == vehicles[0] || list[index] == vehicles[1]);
+    //        survival.Add(list[index]);
+    //        list.RemoveAt(index);
+    //    }
+
+    //    int playerammount = 4;
+
+    //    if (players == 1)
+    //    {
+    //        playerammount = 4;
+    //        Debug.Log("Singleplayer Iniciado");
+    //    }
+    //    else if (players == 2)
+    //    {
+    //        playerammount = 6;
+    //        Debug.Log("Multiplayer Iniciado");
+    //    }
+
+    //    Debug.Log("Jugadores-Capacidad: " + playable.Capacity);
+    //    Debug.Log("Jugadores-Cantidad: " + playable.Count);
+
+
+    //    for (int j = 0; j < playerammount; j++)
+    //    {
+    //        if (gameMode == _GAME_MODE.Arcade)
+    //        {
+    //            SetEnemySpawn(j);
+    //        }
+    //        int index2;
+    //        do
+    //        {
+    //            index2 = UnityEngine.Random.Range(0, playable.Count);
+    //            //Debug.Log("Playable Count: " + playable.Count);
+    //        }
+    //        while (playable[index2] == vehicles[0] || playable[index2] == vehicles[1]);
+    //        vehicles[j + 2] = (byte)playable[index2];
+    //        playable.RemoveAt(index2);
+    //    }
+    //}
 
     public void setOnline(bool setOnline)
     {
@@ -3065,8 +3101,48 @@ public class GameManager : MonoBehaviour
         SetDrawRoads();
         SetDPAD();
         SetAutoTarget();
-        SetExperimentalDakota();
-        RandomizeEnemies(1);
+        //SetExperimentalDakota();
+        //RandomizeEnemies(1);
+
+        //vehicles[0] = driverPlayer;
+
+        List<int> prev = new List<int>(playable);
+        survival = new List<int>();
+        int count = playable.Count - 1;
+
+        for (int i = 0; i < count; i++)
+        {
+            do
+            {
+                int random = UnityEngine.Random.Range(0, prev.Count);
+
+                if (prev[random] != vehicles[0])
+                {
+                    survival.Add(prev[random]);
+                    prev.RemoveAt(random);
+                    break;
+                }
+            } while (true);
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (gameMode == _GAME_MODE.Arcade)
+                SetEnemySpawn(i);
+
+            do
+            {
+                int random = UnityEngine.Random.Range(0, playable.Count);
+
+                if (playable[random] != vehicles[0])
+                {
+                    vehicles[i + 2] = (byte)playable[random];
+                    playable.RemoveAt(random);
+                    break;
+                }
+            } while (true);
+        }
+
         totalSpawns = DAT_1030[0] + DAT_1030[1] + DAT_1030[2] + DAT_1030[3];
         UnityEngine.Object.DontDestroyOnLoad(base.gameObject);
         await LoadSceneAsyncWithDelay(map);
@@ -3080,6 +3156,7 @@ public class GameManager : MonoBehaviour
 
     public void waitLoadMultiplayerLevel(bool isWaitHost)
     {
+        paused = !paused;
         isWait = !isWait;
         DestroyProgressBar();
         MusicManager.instance.PlayNextMusic().ContinueWith(Task =>
@@ -3102,6 +3179,7 @@ public class GameManager : MonoBehaviour
         //online = true;
         //Debug.Log("Set Player: " + statsPanel.cursor);
 
+        experimentalDakota = false;
         SetDriver();
         SetPLUS();
         if (DriverPlus)
@@ -3139,7 +3217,46 @@ public class GameManager : MonoBehaviour
             {
                 DiscordController.instance.discord.RunCallbacks();
             }
-            RandomizeEnemies(2);
+            //RandomizeEnemies(2);
+
+            List<int> prev = new List<int>(playable);
+            survival = new List<int>();
+            int count = playable.Count - 2;
+
+            for (int i = 0; i < count; i++)
+            {
+                do
+                {
+                    int random = UnityEngine.Random.Range(0, prev.Count);
+
+                    if (prev[random] != vehicles[0])
+                    {
+                        survival.Add(prev[random]);
+                        prev.RemoveAt(random);
+                        break;
+                    }
+                } while (true);
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (gameMode == _GAME_MODE.Arcade)
+                    SetEnemySpawn(i);
+
+                do
+                {
+                    int random = UnityEngine.Random.Range(0, playable.Count);
+
+                    if (playable[random] != vehicles[0])
+                    {
+                        vehicles[i + 2] = (byte)playable[random];
+                        playable.RemoveAt(random);
+                        break;
+                    }
+                } while (true);
+            }
+
+
             if (online)
                 await ClientSend.Load().ContinueWith(Task =>
                     {
@@ -3164,8 +3281,6 @@ public class GameManager : MonoBehaviour
         await LoadSceneAsyncWithDelay(map);
         await Task.Yield(); // Esperar un frame
     }
-
-
 
     public void LoadDebug()
     {
@@ -3710,11 +3825,15 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < param1.Count; i++)
         {
             VigObject vObject = param1[i].vObject;
+            Debug.Log("Vehiculos en escenario? vObject: " + vObject + " - id: " + vObject.id + " - type: " + (uint)vObject.type);
+            Debug.Log("Parametros: " + param2 + " - " + param3);
             if ((int)vObject.id == param3 && (uint)vObject.type == param2)
             {
+                Debug.Log("Hay algo...");
                 return vObject;
             }
         }
+        Debug.Log("No hay algo...");
         return null;
     }
     public uint FUN_30334(List<VigTuple> param1, int param2, VigObject param3)
@@ -3877,13 +3996,24 @@ public class GameManager : MonoBehaviour
         Tuple<List<VigTuple>, VigTuple> tuple = this.FUN_31868(param1);
         this.FUN_3094C(tuple);
     }
-    public void FUN_30B24(List<VigTuple> param1)
+
+    [Header("SetDraw")]
+    public bool setDraw = false;
+
+    //IMPORTANTE! Dibuja los objetos en el escenario. Actualiza Reflejos? OPTIMIZAR REFLEJOS!
+    public async void FUN_30B24(List<VigTuple> param1)
     {
-        for (int i = 0; i < param1.Count; i++)
-        {
-            this.FUN_2D9E0(param1[i].vObject);
-        }
+        vigObjectCount = param1;
+        if (setDraw)
+            for (int i = 0; i < param1.Count; i++)
+            {
+                this.FUN_2D9E0(param1[i].vObject);
+                //await Task.Delay(TimeSpan.FromSeconds(reflectionUpdateTime));
+            }
+        await Task.Yield();
+        //await Task.Delay(TimeSpan.FromSeconds(reflectionUpdateTime));
     }
+
     public void FUN_30CB0(VigObject param1, int param2)
     {
         if ((param1.flags & 1U) != 0U)
@@ -3943,6 +4073,7 @@ public class GameManager : MonoBehaviour
                 this.FUN_30DE8(param1.DAT_08, param2, param3, param4, param5);
             }
         }
+        //        Debug.Log("Draw:" + param1.DAT_0C + " - " + param2 + " - " + param3 + " - " + param4 + " - " + param5);
         this.FUN_30DE8(param1.DAT_0C, param2, param3, param4, param5);
     }
     public Tuple<List<VigTuple>, VigTuple> FUN_310F4(BSP param1, VigObject param2)
@@ -6335,6 +6466,17 @@ public class GameManager : MonoBehaviour
     public Texture2D progressBarTexture;
 
     public bool showFps = true;
+    public int deph = 0;
+
+    public bool guiButton = false;
+
+    public Rect connectionWindowRect = new Rect(100, 100, 300, 180);
+
+
+    //Zona de pruebas
+#if DEBUG
+
+#endif
 
     private async void OnGUI()
     {
@@ -6346,10 +6488,15 @@ public class GameManager : MonoBehaviour
             style.normal.textColor = Color.yellow;
             GUI.Label(new Rect(10, 10, 200, 20), "FPS: " + currentFps.ToString("F2"), style);
         }
+
+        if (!inDebug && guiButton)
+        {
+            connectionWindowRect = GUILayout.Window(1, connectionWindowRect, ConnectionWindow, "Debug Options");
+        }
 #endif
         if (!LoadScene || !isWait) // Solo dibujar la barra de progreso si no se han cargado completamente o esta esperando el Host
         {
-            GUI.depth = 0;
+            GUI.depth = deph;
             // Calcular la posición de la barra de progreso en la pantalla
             float progressBarX = (Screen.width - progressBarWidth) / progressBarHorizontal; // Centrado horizontal
             float progressBarY = (Screen.height - progressBarHeight) / progressBarVertical; // Centrado vertical
@@ -6391,6 +6538,135 @@ public class GameManager : MonoBehaviour
 
     }
 
+    private async void ConnectionWindow(int windowId)
+    {
+        using (new GUILayout.VerticalScope())
+        {
+            using (new GUILayout.VerticalScope())
+            {
+                using (new GUILayout.HorizontalScope())
+                {
+                    if (GUILayout.Button("Enabled Refresh Mesh"))
+                    {
+                        enabledRefreshMesh = !enabledRefreshMesh;
+                    }
+                    GUILayout.FlexibleSpace();
+                    GUILayout.Toggle(enabledRefreshMesh, "");
+                }
+            }
+            using (new GUILayout.VerticalScope())
+            {
+                using (new GUILayout.HorizontalScope())
+                {
+                    if (GUILayout.Button("Experimental Quality"))
+                    {
+                        experimentalQuality = !experimentalQuality;
+                    }
+                    GUILayout.FlexibleSpace();
+                    GUILayout.Toggle(experimentalQuality, "");
+                }
+            }
+            using (new GUILayout.VerticalScope())
+            {
+                using (new GUILayout.HorizontalScope())
+                {
+                    if (GUILayout.Button("Enabled Reflection"))
+                    {
+                        enabledReflection = !enabledReflection;
+                    }
+                    GUILayout.FlexibleSpace();
+                    GUILayout.Toggle(enabledReflection, "");
+                }
+            }
+            using (new GUILayout.VerticalScope())
+            {
+                using (new GUILayout.HorizontalScope())
+                {
+                    if (GUILayout.Button("Enabled Mesh"))
+                    {
+                        enabledMesh = !enabledMesh;
+                    }
+                    GUILayout.FlexibleSpace();
+                    GUILayout.Toggle(enabledMesh, "");
+                }
+            }
+            using (new GUILayout.VerticalScope())
+            {
+                using (new GUILayout.HorizontalScope())
+                {
+                    if (GUILayout.Button("Enabled child"))
+                    {
+                        enabledChild = !enabledChild;
+                    }
+                    GUILayout.FlexibleSpace();
+                    GUILayout.Toggle(enabledChild, "");
+                }
+            }
+            using (new GUILayout.VerticalScope())
+            {
+                using (new GUILayout.HorizontalScope())
+                {
+                    if (GUILayout.Button("Enabled Console"))
+                    {
+                        enabledConsole = !enabledConsole;
+                        GameObject.Find("IngameDebugConsole").gameObject.GetComponent<Canvas>().enabled = enabledConsole;
+                    }
+                    GUILayout.FlexibleSpace();
+                    GUILayout.Toggle(enabledConsole, "");
+                }
+                using (new GUILayout.HorizontalScope())
+                {
+                    if (GUILayout.Button("Show FPS"))
+                    {
+                        showFps = !showFps;
+                    }
+                    GUILayout.FlexibleSpace();
+                    GUILayout.Toggle(showFps, "");
+                }
+            }
+
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("Spawn Enemy"))
+            {
+                await spawnEnemy();
+            }
+        }
+        GUI.DragWindow();
+    }
+
+    private bool EnemySpawn = false;
+    private async Task spawnEnemy()
+    {
+        EnemySpawn = true;
+        int num = 3;
+        Debug.Log("Verificando Vehiculos en Arena... " + worldObjs);
+        //VigObject vigObject = this.FUN_302D4(this.worldObjs, 2U, num + 1);
+        for (int i = 0; i < 4; i++)
+        {
+            VigObject vigObject = null;
+            if (vigObject == null)
+            {
+                if (this.gameMode < _GAME_MODE.Coop2)
+                {
+                    vigObject = this.FUN_3208C(i + 1);
+                }
+                else
+                {
+                    vigObject = this.FUN_3208C(i + 1, i % 4 + 1);
+                }
+                if (vigObject != null)
+                {
+                    vigObject.FUN_3066C();
+                }
+            }
+        }
+        EnemySpawn = false;
+        //FUN_349A0();
+        //GameManager.instance.FUN_34B34();
+        //GameManager.instance.FUN_3208C(1, 1);
+        await Task.Yield(); // Esperar un frame
+    }
+
     [Obsolete]
     private async Task LoadSceneAsyncWithDelay(int sceneIndex)
     {
@@ -6407,7 +6683,7 @@ public class GameManager : MonoBehaviour
         Demo.instance.loadTextOnline.gameObject.SetActive(true);
         Demo.instance.backButton.gameObject.SetActive(false);
 
-        if (isHost)
+        if (isHost || !online)
             Demo.instance.loadTextOnline.text = "Press SpaceBar | (X) to Continue...";
         else
             Demo.instance.loadTextOnline.text = "Waiting Host...";
@@ -6430,7 +6706,7 @@ public class GameManager : MonoBehaviour
                 inDebug = false;
                 inMenu = false;
                 asyncSceneMap.allowSceneActivation = true;
-                if (player.GetButtonDown("START") && isHost)
+                if (player.GetButtonDown("START") || player.GetButtonDown("Space") && isHost)
                 {
                     Debug.Log("Es el Host!");
                     Scene thisScene = SceneManager.GetSceneByBuildIndex(0);
@@ -6452,14 +6728,17 @@ public class GameManager : MonoBehaviour
         }
         await SceneLoader.setLoadingStatus(isHost);
         await Task.Yield(); // Esperar un frame
-        // La carga de la escena se ha completado correctamente, puedes realizar cualquier otra acción necesaria aquí
+                            // La carga de la escena se ha completado correctamente, puedes realizar cualquier otra acción necesaria aquí
     }
 
     private void Start()
     {
+        //QualitySettings.SetQualityLevel(0);
+        //Debug.Log(QualitySettings.GetRenderPipelineAssetAt(0));
+        //Debug.Log(QualitySettings.GetQualityLevel());
+
         if (inDebug && inMenu && SceneManager.GetActiveScene().name == "MENU-Driver")
         {
-            reflectionsCoroutine = StartCoroutine(UpdateReflections());
             //StartCoroutine(UpdateReflections());
 
             if (inDebug)
@@ -6484,6 +6763,10 @@ public class GameManager : MonoBehaviour
                 //}
 
             }
+        }
+        else
+        {
+            reflectionsCoroutine = StartCoroutine(UpdateReflections());
         }
     }
 
@@ -6720,6 +7003,13 @@ public class GameManager : MonoBehaviour
             //    //...
             //}
         }
+
+        if (player.GetButtonDown("F1"))
+        {
+            Debug.Log("Press...");
+            guiButton = !guiButton;
+        }
+
         if (player.GetButton("L2") && player.GetButton("R2") && player.GetButton("L1") && player.GetButton("R1") && !pressed)
         {
             DAT_1030[0] = 1;
@@ -6796,15 +7086,15 @@ public class GameManager : MonoBehaviour
     //    }
     //}
 
-    IEnumerator UpdateReflections()
-    {
-        while (true)
-        {
-            //updateReflections = true;
-            yield return new WaitForSeconds(reflectionUpdateTime);
-            //shouldRunCoroutine = true;
-        }
-    }
+    //IEnumerator UpdateReflections()
+    //{
+    //    while (true)
+    //    {
+    //        //updateReflections = true;
+    //        yield return new WaitForSeconds(reflectionUpdateTime);
+    //        //shouldRunCoroutine = true;
+    //    }
+    //}
 
     private void StopReflections()
     {
@@ -6825,16 +7115,19 @@ public class GameManager : MonoBehaviour
         }
 
         if (!isWait)
-            if (player.GetButtonDown("CROSS")) //Presiona X para empezar
+            if (player.GetButtonDown("CROSS") || player.GetButtonDown("Space")) //Presiona X para empezar
             {
                 {
                     if (online)
+                    {
                         await new ClientSend().waitLoad();
+                        paused = !paused;
+                    }
                     else
                         paused = !paused;
                     isWait = !isWait;
                     DestroyProgressBar();
-                    reflectionsCoroutine = StartCoroutine(UpdateReflections());
+                    //reflectionsCoroutine = StartCoroutine(UpdateReflections());
                     //StartCoroutine(UpdateReflections());
                     //SceneManager.UnloadSceneAsync(19);
                     await MusicManager.instance.PlayNextMusic().ContinueWith(Task =>
@@ -6869,11 +7162,11 @@ public class GameManager : MonoBehaviour
                     switch (sceneMap)
                     {
                         case 1:
-                            LevelManager.instance.GetComponent<Route66>().enabled = true;
+                            //LevelManager.instance.GetComponent<Route66>().enabled = true;
                             //GameObject.Find("LevelManager").GetComponent<Route66>().enabled = true;
                             break;
                         case 2:
-                            GameObject.Find("LevelManager").GetComponent<OLYMPIC>().enabled = true;
+                            //GameObject.Find("LevelManager").GetComponent<OLYMPIC>().enabled = true;
                             break;
                         case 3:
                             break;
@@ -6926,14 +7219,14 @@ public class GameManager : MonoBehaviour
                 {
                     if (networkMembers.ContainsValue(null))
                     {
-                        Debug.Log("No hay Miembros en Partida..." + networkMembers.Count);
+                        //Debug.Log("No hay Miembros en Partida..." + networkMembers.Count);
                         //Debug.Log("No hay Miembros en Partida..." + networkMembers.name);
                         await Task.Yield(); // Esperar un frame
                         return;
                     }
-                    if (online)
-                        //ClientSend.Spawn();
-                        Debug.Log("Miembros en Partida..." + networkMembers.Count);
+                    //if (online)
+                    //ClientSend.Spawn();
+                    //Debug.Log("Miembros en Partida..." + networkMembers.Count);
                 }
             }
 
@@ -7417,7 +7710,7 @@ public class GameManager : MonoBehaviour
             GameManager.DAT_1f800094 = DAT_1f800094_; //100 new 32767
             GameManager.DAT_1f800096 = DAT_1f800096_; //240 new 32767
             GameManager.DAT_1f800098 = DAT_1f800098_; //10240 new 32767
-            GameManager.DAT_1f80009a = DAT_1f80009a_; //5120 new 14124 solo si mantiene camara centrada //seguro si camara hace padding: 7100-3832 2683 2019
+            GameManager.DAT_1f80009a = DAT_1f80009a_; //5120 new 14124 solo si mantiene camara centrada //seguro si camara hace padding: 2019
             this.nativeArray = new NativeArray<Vector2Int>(list2.Count, Allocator.Persistent, NativeArrayOptions.ClearMemory);
             for (int k = 0; k < this.nativeArray.Length; k++)
             {
@@ -7597,7 +7890,7 @@ public class GameManager : MonoBehaviour
     public async void FUN_2D278(VigObject param1, int param2)
     {
         VigTransform param3 = FUN_2CDF4(param1);
-        //FUN_2E0E8(param3, param2);
+        FUN_2E0E8(param3, param2);
         await Task.Yield();
     }
 
@@ -7893,13 +8186,46 @@ public class GameManager : MonoBehaviour
     //Reflejo y otros
 
 
+    public int Vehiclereflection = 0;
+
+    List<VigTuple> vigObjectCount;
+    IEnumerator UpdateReflections()
+    {
+        //while (true)
+        //{
+        //    //if (vigObjectCount != null)
+        //    //{
+        //    //    for (int i = 0; i < vigObjectCount.Count; i++)
+        //    //    {
+        //    //        //Debug.Log("vigObjectCount: " + vigObjectCount.Count);
+        //    //        //Debug.Log("vObject: " + vigObjectCount[i].vObject);
+        //    //        //this.FUN_2D9E0(vigObjectCount[i].vObject);
+        //    //    }
+        //    //}
+        //    yield return new WaitForFixedUpdate();
+        //}
+        yield return new WaitForFixedUpdate();
+
+    }
+
+    [Header("Quiality Setting")]
+    public bool enabledRefreshMesh = true;
+    public bool experimentalQuality = false;
+    public bool enabledReflection = true;
+    public bool enabledMesh = true;
+    public bool enabledChild = true;
+    public bool enabledConsole = true;
+
     public void FUN_2D9E0(VigObject param1)
     {
-
         //Código para actualizar los reflejos aquí
-        Utilities.ResetMesh(param1);
+
+        //Reinicia Mesh - Mejorar para borrar Mesh de Driver
+        if (!experimentalQuality || enabledRefreshMesh)
+            Utilities.ResetMesh(param1);
 
         //Optimiza La carga en el escenario
+        //Retorna en primera persona. Borra Mesh de Driver
         if ((param1.flags & 2) != 0 || !FUN_2E22C(param1.vTransform.position, param1.DAT_58))
         {
             return;
@@ -7912,6 +8238,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        //Unknow
         if ((param1.flags & 0x10) != 0)
         {
             if ((param1.flags & 0x400) == 0)
@@ -7933,31 +8260,33 @@ public class GameManager : MonoBehaviour
 
         uint num = 64u;
 
-        if ((param1.flags & 0x2000) != 0)
+        //Calculo de Reflejos
+        if (enabledReflection)
         {
-            int num2 = param1.vTransform.position.x;
-            if (num2 < 0)
+            if ((param1.flags & 0x2000) != 0)
             {
-                num2 += 65535;
+                int num2 = param1.vTransform.position.x;
+                if (num2 < 0)
+                {
+                    num2 += 65535;
+                }
+                if ((uint)num2 > 117440512u)
+                {
+                    num2 = 0;
+                }
+                int num3 = param1.vTransform.position.z;
+                if (num3 < 0)
+                {
+                    num3 += 65535;
+                }
+                if ((uint)num3 > 117440512u)
+                {
+                    num3 = 0;
+                }
+                num = (uint)(terrain.vertices[terrain.chunks[((uint)(num2 >> 16) >> 6) * 32 + ((uint)(num3 >> 16) >> 6)] * 4096 + (((long)(num3 >> 16) & 63L) * 2 + ((long)(num2 >> 16) & 63L) * 128) / 2] & 0xF800) >> 8;
             }
-            if ((uint)num2 > 117440512u)
-            {
-                num2 = 0;
-            }
-            int num3 = param1.vTransform.position.z;
-            if (num3 < 0)
-            {
-                num3 += 65535;
-            }
-            if ((uint)num3 > 117440512u)
-            {
-                num3 = 0;
-            }
-            num = (uint)(terrain.vertices[terrain.chunks[((uint)(num2 >> 16) >> 6) * 32 + ((uint)(num3 >> 16) >> 6)] * 4096 + (((long)(num3 >> 16) & 63L) * 2 + ((long)(num2 >> 16) & 63L) * 128) / 2] & 0xF800) >> 8;
+            Utilities.SetBackColor((int)num, (int)num, (int)num);
         }
-
-        Utilities.SetBackColor((int)num, (int)num, (int)num);
-
         if (param1.DAT_6C == 0 || vigTransform.position.z <= param1.DAT_6C)
         {
             if ((param1.flags & 0x20000) == 0)
@@ -7973,14 +8302,15 @@ public class GameManager : MonoBehaviour
                     //Spawn Vehicle?
                     if (param1.vMesh != null)
                     {
-                        param1.vMesh.FUN_21F70(vigTransform); //Carroceria Dakota
+                        if (enabledMesh)
+                            param1.vMesh.FUN_21F70(vigTransform); //Carroceria Dakota
 
                         //Debug.Log("SPAWN??: " + vigTransform);
                     }
                     if (param1.child2 != null)
                     {
-
-                        FUN_2D778(param1.child2, vigTransform); //Llantas Dakota y Carroceria de otros
+                        if (enabledChild)
+                            FUN_2D778(param1.child2, vigTransform); //Llantas Dakota y Carroceria de otros
                     }
                 }
                 else
@@ -7997,6 +8327,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
+                //Deshabilita Normal LOD??
                 Vector3Int param2 = new Vector3Int(param1.vTransform.position.x, terrain.FUN_1B750((uint)param1.vTransform.position.x, (uint)param1.vTransform.position.z), param1.vTransform.position.z);
                 Vector3Int n = terrain.FUN_1BB50(param1.vTransform.position.x, param1.vTransform.position.z);
                 n = Utilities.VectorNormal(n);
@@ -8011,27 +8342,35 @@ public class GameManager : MonoBehaviour
 
             }
         }
+        //Render vLOD
         else if (param1.vLOD != null)
         {
-            vigTransform.rotation = param1.FUN_2D884(vigTransform);
-        }
-        if ((param1.flags & 8) != 0)
-        {
-            if ((param1.flags & 0x200) == 0)
+            if (!experimentalQuality)
             {
-                param1.FUN_4C4F4();
+                vigTransform.rotation = param1.FUN_2D884(vigTransform);
             }
-            param1.vShadow.FUN_4C73C();
         }
+
+        //Draw Shadow GROUND
+        if (enabledReflection)
+            if ((param1.flags & 8) != 0)
+            {
+                if ((param1.flags & 0x200) == 0)
+                {
+                    param1.FUN_4C4F4();
+                }
+                param1.vShadow.FUN_4C73C();
+            }
     }
 
+    public int x;
+    public int y;
     private void FUN_2DEE8(int param1, int param2)
     {
         //Utilities.SetScreenOffset(param1, param2);
-        int x = DAT_FC8.x;
-        int y = DAT_FC8.y;
+
         Utilities.SetScreenOffset(x, y);
-        //DAT_FC8 = new Vector2Int(param1, param2);
+        DAT_FC8 = new Vector2Int(param1, param2);
     }
 
     private void FUN_2DF30(int param1, int param2, int param3, int param4)
@@ -8521,7 +8860,10 @@ public class GameManager : MonoBehaviour
                 hitDetection.collider1 = collider;
                 hitDetection.object2 = hitDetection.object1;
                 hitDetection.object1 = @object;
-                Debug.Log("Colision comenzada...: " + num2 + " - Self: " + hitDetection.self + " - Objeto 1: " + hitDetection.object1 + " - Colision 1: " + hitDetection.object1 + " - Objeto 2: " + hitDetection.object2 + " Colision 2: " + hitDetection.collider2);
+#if DEBUG
+                //Corregir posibles fallos en objetos al detectar sus colisiones
+                //Debug.Log("Colision comenzada...: " + num2 + " - Self: " + hitDetection.self + " - Objeto 1: " + hitDetection.object1 + " - Colision 1: " + hitDetection.object1 + " - Objeto 2: " + hitDetection.object2 + " Colision 2: " + hitDetection.collider2);
+#endif
                 num2 = (int)param2.OnCollision(hitDetection); //Colision? posible error agua : Correjido
                 if (num2 < 0)
                 {
@@ -8766,6 +9108,7 @@ public class GameManager : MonoBehaviour
         return (_PLACEHOLDER_TYPE)param1;
     }
 
+    //Asigna accesorios Salvaje Point?
     private Vehicle FUN_36C2C(Placeholder param1, int param2, int param3)
     {
         if (param2 < 0 || param1 == null)
@@ -8803,7 +9146,11 @@ public class GameManager : MonoBehaviour
         int i = 0;
         if (param3 >= 0)
         {
-            vehicle.InitializeEnemyStats();
+            //Assigna Accesorios y mejoras
+            if (EnemySpawn)
+                vehicle.InitializeEnemySpawn();
+            else
+                vehicle.InitializeEnemyStats();
         }
         for (; i < 2; i++)
         {
