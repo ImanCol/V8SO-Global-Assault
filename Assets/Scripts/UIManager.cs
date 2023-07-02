@@ -271,7 +271,8 @@ public class UIManager : MonoBehaviour
 
     void AddUIMessagesScript(GameObject targetObject)
     {
-        //Agregar el componente UIMessages al GameObject
+        //Agregar el componente UIMessages al GameObject Canvas2
+        
         uiMessagesScript = targetObject.AddComponent<UIMessage>();
 
         //Verificar si el componente se agregó correctamente

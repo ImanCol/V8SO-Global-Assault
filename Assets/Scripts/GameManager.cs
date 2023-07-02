@@ -2415,7 +2415,7 @@ public class GameManager : MonoBehaviour
         }
         else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
         {
-            Demo.instance.componentPanel.Find("Vehicle/Dakota").gameObject.SetActive(false);
+//            Demo.instance.componentPanel.Find("Vehicle/Dakota").gameObject.SetActive(false);
             switch (driverDropdown.value)
             {
                 case 0:
@@ -2426,8 +2426,8 @@ public class GameManager : MonoBehaviour
                     break;
                 case 2:
                     vehicles[0] = 2;
-                    if (!online)
-                        Demo.instance.componentPanel.Find("Vehicle/Dakota").gameObject.SetActive(true);
+                    //if (!online)
+                        //Demo.instance.componentPanel.Find("Vehicle/Dakota").gameObject.SetActive(true);
                     break;
                 case 3:
                     vehicles[0] = 3;
@@ -6471,7 +6471,6 @@ public class GameManager : MonoBehaviour
     public bool guiButton = false;
 
     public Rect connectionWindowRect = new Rect(100, 100, 300, 180);
-
 
     //Zona de pruebas
 #if DEBUG

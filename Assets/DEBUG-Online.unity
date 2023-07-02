@@ -2728,8 +2728,8 @@ MonoBehaviour:
   TargetFrameRate: 60
   DAT_1f800094_: 32767
   DAT_1f800096_: 32767
-  DAT_1f800098_: 32767
-  DAT_1f80009a_: 2019
+  DAT_1f800098_: 10240
+  DAT_1f80009a_: 14124
   terrain: {fileID: 0}
   levelManager: {fileID: 0}
   commonWheelConfiguration: {fileID: 0}
@@ -2789,7 +2789,7 @@ MonoBehaviour:
       _V22: 0
     padding: 0
     position: {x: 0, y: 0, z: 0}
-  DAT_F20: 0
+  DAT_F20: 240
   DAT_F28:
     rotation:
       V00: 0
@@ -3166,6 +3166,7 @@ MonoBehaviour:
   isHost: 0
   isParty: 0
   sceneLoadedDone: 0
+  setDraw: 1
   drawObjInt1: 1024
   drawObjInt2: 1024
   drawObjInt3: 1024
@@ -3231,6 +3232,14 @@ MonoBehaviour:
   progress: 0
   progressBarTexture: {fileID: 2800000, guid: dc394e0cfba51d84cbcbee386846244e, type: 3}
   showFps: 1
+  deph: 0
+  guiButton: 0
+  connectionWindowRect:
+    serializedVersion: 2
+    x: 100
+    y: 100
+    width: 300
+    height: 180
   currentDamageIndex: 2
   currentValueDifficulty: 1
   damageText: Normal
@@ -3239,6 +3248,24 @@ MonoBehaviour:
   isWait: 0
   updateReflections: 1
   reflectionUpdateTime: 0
+  Vehiclereflection: 0
+  enabledRefreshMesh: 1
+  experimentalQuality: 0
+  enabledReflection: 1
+  enabledMesh: 1
+  enabledChild: 1
+  enabledConsole: 1
+  x: 0
+  y: 0
+  configContainersObject: []
+  configContainers_FUN_2CEAC:
+    flag: 0
+    colliderID: 0
+    v3_1: {x: 0, y: 0, z: 0}
+    v3_2: {x: 0, y: 0, z: 0}
+    objID: 0
+    previous: 0
+    next: 0
 --- !u!1 &512069822
 GameObject:
   m_ObjectHideFlags: 0
@@ -4748,6 +4775,24 @@ MonoBehaviour:
       _behaviorId: 0
       _userAssignable: 1
       _categoryId: 0
+    - _id: 27
+      _name: Space
+      _type: 1
+      _descriptiveName: Space
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: 
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 0
+    - _id: 28
+      _name: F1
+      _type: 1
+      _descriptiveName: F1
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: 
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 0
     actionCategories:
     - _name: Default
       _descriptiveName: Default
@@ -4757,7 +4802,7 @@ MonoBehaviour:
     actionCategoryMap:
       list:
       - categoryId: 0
-        actionIds: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f000000100000001100000012000000130000001400000018000000170000001600000015000000190000001a000000
+        actionIds: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f000000100000001100000012000000130000001c0000001400000018000000170000001600000015000000190000001a0000001b000000
     inputBehaviors:
     - _id: 0
       _name: Default
@@ -11081,6 +11126,17 @@ MonoBehaviour:
         _modifierKey2: 0
         _modifierKey3: 0
       - _actionCategoryId: 0
+        _actionId: 28
+        _elementType: 1
+        _elementIdentifierId: -1
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 282
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
         _actionId: 20
         _elementType: 1
         _elementIdentifierId: -1
@@ -11092,7 +11148,7 @@ MonoBehaviour:
         _modifierKey2: 0
         _modifierKey3: 0
       - _actionCategoryId: 0
-        _actionId: 0
+        _actionId: 27
         _elementType: 1
         _elementIdentifierId: -1
         _axisRange: 0
@@ -11174,7 +11230,7 @@ MonoBehaviour:
     controllerMapLayoutManagerRuleSets: []
     controllerMapEnablerRuleSets: []
     playerIdCounter: 2
-    actionIdCounter: 27
+    actionIdCounter: 29
     actionCategoryIdCounter: 1
     inputBehaviorIdCounter: 2
     mapCategoryIdCounter: 2
@@ -13273,6 +13329,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nametag: 
   discordController: {fileID: 1791082647559122347}
+  playerReady:
+    longList: 
+    boolElement: 
+  playerText:
+    longList: 
+    TextElement: []
+  playerNames:
+    longList: 
+    stringElement: []
+  playerVehicles:
+    longList: 
+    byteElement: 
   playerList: {fileID: 523253782}
   lobbyList: {fileID: 1791082651250110134}
   settingsText: {fileID: 1791082649404616609}
@@ -31333,7 +31401,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: BUILT @ 19:45:00 ON JUN 20 2023
+  m_Text: 2.4
 --- !u!114 &1791082649404616564
 MonoBehaviour:
   m_ObjectHideFlags: 0

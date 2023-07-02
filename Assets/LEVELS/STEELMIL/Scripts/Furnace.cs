@@ -1,133 +1,134 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Furnace : Destructible
 {
-    protected override void Start()
-    {
-        base.Start();
-    }
+	public static byte[] DAT_144 = new byte[32]
+	{
+		1,
+		0,
+		0,
+		0,
+		0,
+		216,
+		255,
+		255,
+		0,
+		216,
+		255,
+		255,
+		0,
+		0,
+		0,
+		0,
+		0,
+		40,
+		0,
+		0,
+		0,
+		0,
+		40,
+		0,
+		0,
+		0,
+		4,
+		0,
+		0,
+		0,
+		0,
+		0
+	};
 
-    protected override void Update()
-    {
-        base.Update();
-    }
+	protected override void Start()
+	{
+		base.Start();
+	}
 
-    public override uint OnCollision(HitDetection hit)
-    {
-        bool bVar5;
+	protected override void Update()
+	{
+		base.Update();
+	}
 
-        bVar5 = FUN_32CF0(hit);
+	public override uint OnCollision(HitDetection hit)
+	{
+		if (FUN_32CF0(hit))
+		{
+			FUN_30C68();
+		}
+		return 0u;
+	}
 
-        if (bVar5)
-            FUN_30C68();
+	public override uint UpdateW(int arg1, int arg2)
+	{
+		if (arg1 == 2)
+		{
+			if (SteelMil.instance.DAT_4600 < 3)
+			{
+				List<VigTuple> worldObjs = GameManager.instance.worldObjs;
+				for (int i = 0; i < worldObjs.Count; i++)
+				{
+					VigObject vObject = worldObjs[i].vObject;
+					if (vObject.type == 2 && vObject.maxHalfHealth != 0)
+					{
+						int num = Utilities.FUN_29F6C(screen, vObject.vTransform.position);
+						if (num < 245760)
+						{
+							Furnace2 furnace = FUN_1B30();
+							GameManager.instance.FUN_30CB0(furnace, 60);
+							int param = GameManager.instance.FUN_1DD9C();
+							GameManager.instance.FUN_1E628(param, GameManager.instance.DAT_C2C, 67, furnace.vTransform.position);
+							break;
+						}
+					}
+				}
+				GameManager.instance.FUN_30CB0(this, 240);
+			}
+		}
+		else if (arg1 < 3)
+		{
+			if (arg1 == 1)
+			{
+				int num = (int)GameManager.FUN_2AC5C();
+				GameManager.instance.FUN_30CB0(this, num * 240 >> 15);
+			}
+		}
+		else
+		{
+			if (arg1 != 8)
+			{
+				return 0u;
+			}
+			if (FUN_32B90((uint)arg2))
+			{
+				FUN_30C68();
+			}
+		}
+		return 0u;
+	}
 
-        return 0;
-    }
-
-    //0x144 (STEELMIL.DLL)
-    public static byte[] DAT_144 = new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0xD8, 0xFF, 0xFF, 0x00, 0xD8, 0xFF, 0xFF,
-                                                 0x00, 0x00, 0x00, 0x00, 0x00, 0x28, 0x00, 0x00, 0x00, 0x00, 0x28, 0x00,
-                                                 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00 };
-
-    //FUN_1C20 (STEELMIL.DLL)
-    public override uint UpdateW(int arg1, int arg2)
-    {
-        VigTuple ppiVar2;
-        List<VigTuple> ppiVar3;
-        int iVar4;
-        bool bVar5;
-        int iVar5;
-        VigObject oVar5;
-        Furnace2 fVar5;
-
-        if (arg1 == 2)
-        {
-            if (SteelMil.instance.DAT_4600 < 3)
-            {
-                ppiVar3 = GameManager.instance.worldObjs;
-
-                for (int i = 0; i < ppiVar3.Count; i++)
-                {
-                    ppiVar2 = ppiVar3[i];
-                    oVar5 = ppiVar2.vObject;
-
-                    if (oVar5.type == 2 && oVar5.maxHalfHealth != 0)
-                    {
-                        iVar5 = Utilities.FUN_29F6C(screen, oVar5.vTransform.position);
-
-                        if (iVar5 < 0x3c000)
-                        {
-                            fVar5 = FUN_1B30();
-                            GameManager.instance.FUN_30CB0(fVar5, 60);
-                            iVar4 = GameManager.instance.FUN_1DD9C();
-                            GameManager.instance.FUN_1E628(iVar4, GameManager.instance.DAT_C2C, 67, fVar5.vTransform.position);
-                            break;
-                        }
-                    }
-                }
-
-                GameManager.instance.FUN_30CB0(this, 240);
-            }
-        }
-        else
-        {
-            if (arg1 < 3)
-            {
-                if (arg1 == 1)
-                {
-                    iVar5 = (int)GameManager.FUN_2AC5C();
-                    GameManager.instance.FUN_30CB0(this, iVar5 * 240 >> 15);
-                }
-            }
-            else
-            {
-                if (arg1 != 8)
-                    return 0;
-
-                bVar5 = FUN_32B90((uint)arg2);
-
-                if (bVar5)
-                    FUN_30C68();
-            }
-        }
-
-        return 0;
-    }
-
-    //FUN_1B30 (STEELMIL.DLL)
-    private Furnace2 FUN_1B30()
-    {
-        XOBF_DB pcVar1;
-        Furnace2 ppcVar2;
-        ConfigContainer ccVar3;
-        int iVar4;
-        VigTransform auStack32;
-
-        GameObject obj = new GameObject();
-        ppcVar2 = obj.AddComponent<Furnace2>();
-        ccVar3 = FUN_2C5F4(0x8000);
-        auStack32 = Utilities.FUN_2C77C(ccVar3);
-        ppcVar2.vTransform = Utilities.CompMatrixLV(vTransform, auStack32);
-        ppcVar2.type = 8;
-        ppcVar2.maxHalfHealth = 5;
-        ppcVar2.flags |= 0x184;
-        ppcVar2.vCollider = new VigCollider(DAT_144);
-        pcVar1 = LevelManager.instance.xobfList[19];
-        ppcVar2.physics2.M3 = 21;
-        ppcVar2.physics1.M1 = 3;
-        ppcVar2.DAT_98 = pcVar1;
-        iVar4 = GameManager.instance.terrain.FUN_1B750((uint)ppcVar2.vTransform.position.x, (uint)ppcVar2.vTransform.position.z);
-        ppcVar2.physics1.Y = 0;
-        ppcVar2.screen.y = iVar4 - ppcVar2.vTransform.position.y;
-        ppcVar2.physics1.Z = -0x200;
-        ppcVar2.physics1.W = 0xc00;
-        ppcVar2.FUN_305FC();
-        ppcVar2.DAT_58 = 0x40000;
-        ppcVar2.vTransform.rotation.V00 = 0x1000;
-        ppcVar2.vTransform.rotation.V11 = 0x1000;
-        ppcVar2.vTransform.rotation.V22 = 0x1000;
-        return ppcVar2;
-    }
+	private Furnace2 FUN_1B30()
+	{
+		Furnace2 furnace = new GameObject().AddComponent<Furnace2>();
+		VigTransform m = Utilities.FUN_2C77C(FUN_2C5F4(32768));
+		furnace.vTransform = Utilities.CompMatrixLV(vTransform, m);
+		furnace.type = 8;
+		furnace.maxHalfHealth = 5;
+		furnace.flags |= 388u;
+		furnace.vCollider = new VigCollider(DAT_144);
+		XOBF_DB dAT_ = LevelManager.instance.xobfList[19];
+		furnace.physics2.M3 = 21;
+		furnace.physics1.M1 = 3;
+		furnace.DAT_98 = dAT_;
+		int num = GameManager.instance.terrain.FUN_1B750((uint)furnace.vTransform.position.x, (uint)furnace.vTransform.position.z);
+		furnace.physics1.Y = 0;
+		furnace.screen.y = num - furnace.vTransform.position.y;
+		furnace.physics1.Z = -512;
+		furnace.physics1.W = 3072;
+		furnace.FUN_305FC();
+		furnace.DAT_58 = 262144;
+		furnace.vTransform.rotation.V00 = 4096;
+		furnace.vTransform.rotation.V11 = 4096;
+		furnace.vTransform.rotation.V22 = 4096;
+		return furnace;
+	}
 }

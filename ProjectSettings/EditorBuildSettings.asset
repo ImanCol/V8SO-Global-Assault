@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/DEBUG-Online.unity
     guid: 10435b57e01bea847a31ea181ca40223
   - enabled: 0
+    path: Assets/SHELL/DEBUG-Online.unity
+    guid: aa2888296b7fcd8478984d38f695c75a
+  - enabled: 0
     path: Assets/SHELL/DEBUG2.unity
     guid: 0636669ff8618744fbe2814859cde42b
   - enabled: 0
