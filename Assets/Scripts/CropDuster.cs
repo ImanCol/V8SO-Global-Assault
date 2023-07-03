@@ -123,7 +123,7 @@ public class CropDuster : Destructible
 				{
 					int y = orangeGroves[pathID].x - screen.x;
 					x = orangeGroves[pathID].z - screen.z;
-					num = Utilities.Ratan2(y, x);
+					num = (int)Utilities.Ratan2(y, x);
 					num = (num - vr.y) * 1048576 >> 16;
 					num2 = -512;
 					if (-513 < num)

@@ -405,12 +405,12 @@ public class Water : MonoBehaviour
                                 dat_B5D[num23] |= 128;
                             }
                             int num24 = num20 & 4095;
-                            int num25 = (int)((ulong)((long)(GameManager.DAT_65C90[num24 * 4 / 2] * GameManager.DAT_65C90[(num19 & 4095) * 4 / 2]) * (long)num14) >> 32);
+                            int num25 = (int)((ulong)((long)(Utilities.DAT_65C90[num24 * 4 / 2] * Utilities.DAT_65C90[(num19 & 4095) * 4 / 2]) * (long)num14) >> 32);
                             num++;
                             num22++;
                             num15++;
                             num20 += 873;
-                            num18 = (int)(GameManager.DAT_65C90[num24 * 4 / 2] * GameManager.DAT_65C90[(num19 & 4095) * 4 / 2]);
+                            num18 = (int)(Utilities.DAT_65C90[num24 * 4 / 2] * Utilities.DAT_65C90[(num19 & 4095) * 4 / 2]);
                             num17 = num25 + num18 >> 14;
                             num17 -= num18 >> 31;
                             this.DAT_B5570[num21] = (short)num17;
@@ -448,7 +448,7 @@ public class Water : MonoBehaviour
                         {
                             if ((this.DAT_B5D70[num15] & 4) == 0)
                             {
-                                int num7 = (int)(GameManager.DAT_65C90[(num20 & 4095) * 4 / 2] * GameManager.DAT_65C90[(num19 & 4095) * 4 / 2]);
+                                int num7 = (int)(Utilities.DAT_65C90[(num20 & 4095) * 4 / 2] * Utilities.DAT_65C90[(num19 & 4095) * 4 / 2]);
                                 if (num7 < 0)
                                 {
                                     num7 += 131071;

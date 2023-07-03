@@ -71,12 +71,12 @@ public class Meteorite3 : VigObject
 							if ((int)num10 < 4096)
 							{
 								num12 = (int)((num13 & 0xFFF) * 4);
-								num11 = GameManager.DAT_65C90[num12 / 2] * (num11 >> 2);
+								num11 = Utilities.DAT_65C90[num12 / 2] * (num11 >> 2);
 								if (num11 < 0)
 								{
 									num11 += 1048575;
 								}
-								num12 = GameManager.DAT_65C90[num12 / 2 + 1];
+								num12 = Utilities.DAT_65C90[num12 / 2 + 1];
 								if (num12 < 0)
 								{
 									num12 += 511;

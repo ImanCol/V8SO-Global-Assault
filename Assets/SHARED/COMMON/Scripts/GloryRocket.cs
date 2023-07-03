@@ -277,12 +277,12 @@ public class GloryRocket : VigObject
 		int num;
 		if (param1 < 0)
 		{
-			num = GameManager.DAT_65C90[(-param1 & 0xFFF) * 2];
+			num = Utilities.DAT_65C90[(-param1 & 0xFFF) * 2];
 			num2 = -(short)num;
 		}
 		else
 		{
-			num = GameManager.DAT_65C90[(param1 & 0xFFF) * 2];
+			num = Utilities.DAT_65C90[(param1 & 0xFFF) * 2];
 			num2 = -(short)num;
 		}
 		num >>= 16;

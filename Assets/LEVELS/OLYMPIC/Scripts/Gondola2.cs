@@ -150,14 +150,14 @@ public class Gondola2 : Destructible
 				num += 2048;
 			}
 			vr.y = (int)num;
-			int num2 = GameManager.DAT_65C90[(num & 0xFFF) * 2 + 1] * num4;
+			int num2 = Utilities.DAT_65C90[(num & 0xFFF) * 2 + 1] * num4;
 			if (num2 < 0)
 			{
 				num2 += 8191;
 			}
 			screen.x = v.x + (num2 >> 13);
 			screen.y = v.y;
-			num4 = GameManager.DAT_65C90[(vr.y & 0xFFF) * 2] * num4;
+			num4 = Utilities.DAT_65C90[(vr.y & 0xFFF) * 2] * num4;
 			if (num4 < 0)
 			{
 				num4 += 8191;

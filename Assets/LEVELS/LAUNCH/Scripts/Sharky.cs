@@ -267,7 +267,7 @@ public class Sharky : VigObject
 			physics2.X = jUNC_DB.DAT_00.z;
 			goto IL_0419;
 			IL_0419:
-			num = Utilities.Ratan2(num, num2);
+			num = (int)Utilities.Ratan2(num, num2);
 			num2 = (num - (ushort)vr.y) * 1048576 >> 20;
 			num = -45;
 			if (-46 < num2)
@@ -280,8 +280,8 @@ public class Sharky : VigObject
 			}
 			vr.y += num;
 			num = (vr.y & 0xFFF) * 2;
-			num7 = GameManager.DAT_65C90[num];
-			num8 = GameManager.DAT_65C90[num + 1];
+			num7 = Utilities.DAT_65C90[num];
+			num8 = Utilities.DAT_65C90[num + 1];
 			num = num7 * 7629;
 			if (num < 0)
 			{

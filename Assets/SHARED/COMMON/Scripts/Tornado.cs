@@ -97,19 +97,19 @@ public class Tornado : VigObject
                         Throwaway obj2 = vData.ini.FUN_2C17C((ushort)y, typeof(Throwaway), 0u) as Throwaway;
                         w = (int)GameManager.FUN_2AC5C();
                         int num4 = (int)((GameManager.FUN_2AC5C() & 0xFFF) * 2);
-                        num = GameManager.DAT_65C90[num4] * 4577;
+                        num = Utilities.DAT_65C90[num4] * 4577;
                         if (num < 0)
                         {
                             num += 4095;
                         }
                         obj2.physics1.Z = num >> 12;
-                        num = GameManager.DAT_65C90[(((w << 8 >> 15) + 256) & 0xFFF) * 2] * 4577;
+                        num = Utilities.DAT_65C90[(((w << 8 >> 15) + 256) & 0xFFF) * 2] * 4577;
                         if (num < 0)
                         {
                             num += 4095;
                         }
                         obj2.physics1.W = num >> 12;
-                        num = GameManager.DAT_65C90[num4 + 1] * 4577;
+                        num = Utilities.DAT_65C90[num4 + 1] * 4577;
                         if (num < 0)
                         {
                             num += 4095;

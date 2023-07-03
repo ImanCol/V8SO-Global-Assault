@@ -39,7 +39,7 @@ public class Transformer2 : VigObject
 		case 0:
 			if (arg2 != 0)
 			{
-				vTransform.position.y = screen.y + GameManager.DAT_65C90[(((GameManager.instance.DAT_28 + DAT_19) * 128) & 0x3F80) / 2] * 10;
+				vTransform.position.y = screen.y + Utilities.DAT_65C90[(((GameManager.instance.DAT_28 + DAT_19) * 128) & 0x3F80) / 2] * 10;
 				if ((flags & 0x2000000) == 0)
 				{
 					flags &= 4278190079u;

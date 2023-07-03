@@ -132,7 +132,7 @@ public class Donut : VigObject
 					}
 					physics1.Z += num >> 12;
 				}
-				int y = Utilities.Ratan2(physics1.X, physics1.Z);
+				int y = (int)Utilities.Ratan2(physics1.X, physics1.Z);
 				vr.y = y;
 				num = (int)Utilities.SquareRoot(physics1.X * physics1.X + physics1.Z * physics1.Z);
 				if (physics2.Y == 0)

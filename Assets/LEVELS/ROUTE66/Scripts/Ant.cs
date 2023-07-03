@@ -459,7 +459,7 @@ public class Ant : VigObject
 		int result = -1;
 		if ((flags & 0x1000000) == 0)
 		{
-			int num2 = Utilities.Ratan2(param1, param2);
+			int num2 = (int)Utilities.Ratan2(param1, param2);
 			int num3 = (num2 - (ushort)vr.y) * 1048576 >> 20;
 			num2 = num3;
 			if (num3 < 0)
@@ -486,9 +486,9 @@ public class Ant : VigObject
 				num -= num3 * 3051 / 22;
 			}
 			Vector3Int v = default(Vector3Int);
-			v.x = GameManager.DAT_65C90[(vr.y & 0xFFF) * 2];
+			v.x = Utilities.DAT_65C90[(vr.y & 0xFFF) * 2];
 			num2 = v.x * num;
-			v.z = GameManager.DAT_65C90[(vr.y & 0xFFF) * 2 + 1];
+			v.z = Utilities.DAT_65C90[(vr.y & 0xFFF) * 2 + 1];
 			if (num2 < 0)
 			{
 				num2 += 4095;
@@ -534,7 +534,7 @@ public class Ant : VigObject
 		uint num2 = (uint)((long)vector3Int.z * (long)vector3Int.z);
 		int num3 = (int)((ulong)((long)vector3Int.z * (long)vector3Int.z) >> 32);
 		uint num4 = (uint)((int)((long)vector3Int.x * (long)vector3Int.x) + (int)num2);
-		int num5 = Utilities.Ratan2(x: Utilities.FUN_2ABC4(num4, (int)((ulong)((long)vector3Int.x * (long)vector3Int.x) >> 32) + num3 + ((num4 < num2) ? 1 : 0)), y: vector3Int.y);
+		int num5 = (int)Utilities.Ratan2(x: Utilities.FUN_2ABC4(num4, (int)((ulong)((long)vector3Int.x * (long)vector3Int.x) >> 32) + num3 + ((num4 < num2) ? 1 : 0)), y: vector3Int.y);
 		int num6 = num5 << 20 >> 20;
 		num5 = -128;
 		if (-129 < num6)

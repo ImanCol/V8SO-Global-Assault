@@ -19,9 +19,9 @@ public class Demon : VigObject
 		if (arg1 == 0)
 		{
 			Vector3Int vout = default(Vector3Int);
-			vout.x = GameManager.DAT_65C90[((ushort)vr.y & 0xFFF) * 2] * 7;
+			vout.x = Utilities.DAT_65C90[((ushort)vr.y & 0xFFF) * 2] * 7;
 			vout.y = 0;
-			vout.z = GameManager.DAT_65C90[((ushort)vr.x & 0xFFF) * 2 + 1] * 7;
+			vout.z = Utilities.DAT_65C90[((ushort)vr.x & 0xFFF) * 2 + 1] * 7;
 			if ((GameManager.FUN_2AC5C() & 0x1F) == 0)
 			{
 				short y = (short)GameManager.FUN_2AC5C();

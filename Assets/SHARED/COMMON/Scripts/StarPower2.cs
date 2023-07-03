@@ -339,22 +339,22 @@ public class StarPower2 : VigObject
 					uint num4 = GameManager.FUN_2AC5C();
 					num = (int)((((num4 & 0xFF) - 128) & 0xFFF) * 2);
 					z2 = (int)((((num4 & 0xFF) - 128) & 0xFFF) * 2);
-					num2 = GameManager.DAT_65C90[num] * GameManager.DAT_65C90[z2 + 1];
+					num2 = Utilities.DAT_65C90[num] * Utilities.DAT_65C90[z2 + 1];
 					if (num2 < 0)
 					{
 						num2 += 4095;
 					}
-					num = -GameManager.DAT_65C90[num + 1] * GameManager.DAT_65C90[z2 + 1];
+					num = -Utilities.DAT_65C90[num + 1] * Utilities.DAT_65C90[z2 + 1];
 					if (num < 0)
 					{
 						num += 4095;
 					}
-					Vector3Int vector3Int3 = Utilities.ApplyMatrixSV(v3: new Vector3Int
+					Vector3Int vector3Int3 = Utilities.ApplyMatrixSV(v0: new Vector3Int
 					{
 						x = num2 >> 12,
 						y = num >> 12,
-						z = -GameManager.DAT_65C90[z2]
-					}, m33: vigObject.vTransform.rotation);
+						z = -Utilities.DAT_65C90[z2]
+					}, m: vigObject.vTransform.rotation);
 					obj2.vTransform.rotation = Utilities.FUN_2A724(vector3Int3);
 					obj2.vTransform.position = vigObject.vTransform.position;
 					obj2.flags = 164u;

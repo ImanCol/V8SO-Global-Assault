@@ -439,7 +439,7 @@ public class OLYMPIC : VigObject
 			ConfigContainer configContainer2 = vObject3.FUN_2C5F4(32769);
 			int num5 = ((-(short)param3 / 2) & 0xFFF) * 4;
 			int num6 = configContainer2.v3_1.x - configContainer.v3_1.x;
-			int num7 = GameManager.DAT_65C90[num5 / 2 + 1] * num6;
+			int num7 = Utilities.DAT_65C90[num5 / 2 + 1] * num6;
 			if (num7 < 0)
 			{
 				num7 += 8191;
@@ -447,7 +447,7 @@ public class OLYMPIC : VigObject
 			Vector3Int v = default(Vector3Int);
 			v.x = (configContainer.v3_1.x + configContainer2.v3_1.x) / 2 + (num7 >> 13);
 			v.y = (configContainer.v3_1.y + configContainer2.v3_1.y) / 2;
-			num6 = GameManager.DAT_65C90[num5 / 2] * num6;
+			num6 = Utilities.DAT_65C90[num5 / 2] * num6;
 			if (num6 < 0)
 			{
 				num6 += 8191;

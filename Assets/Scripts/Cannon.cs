@@ -194,7 +194,7 @@ public class Cannon : VigObject
                     num6 = (uint)((long)vector3Int2.y * 24576L);
                     num7 = (int)((ulong)((long)vector3Int2.y * 24576L) >> 32);
                     int num8 = (int)Utilities.Divdi3((int)num6, num7, num3, num3 >> 31);
-                    num8 = Utilities.Ratan2(num8 - num3 * 56 / 49152, 24576) * -1048576 >> 20;
+                    num8 = (int)(Utilities.Ratan2(num8 - num3 * 56 / 49152, 24576) * -1048576 >> 20);
                     num3 = 256;
                     if (num8 < 256)
                     {

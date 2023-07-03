@@ -48,9 +48,9 @@ public class Tantrum : VigObject
 				return 0u;
 			}
 			Vector3Int vector3Int = Utilities.FUN_24304(transform, target.screen);
-			int num4 = Utilities.Ratan2(vector3Int.x, vector3Int.z);
+			int num4 = (int)Utilities.Ratan2(vector3Int.x, vector3Int.z);
 			int num7 = num4 << 20 >> 20;
-			num4 = Utilities.Ratan2(vector3Int.y, vector3Int.z);
+			num4 = (int)Utilities.Ratan2(vector3Int.y, vector3Int.z);
 			num4 = num4 * -1048576 >> 20;
 			if (num7 < 0)
 			{

@@ -55,12 +55,12 @@ public class MoltenSteel : VigObject
 					if (tags == 0)
 					{
 						num = (vr.y & 0xFFF) * 2;
-						num3 = GameManager.DAT_65C90[num] * 457;
+						num3 = Utilities.DAT_65C90[num] * 457;
 						if (num3 < 0)
 						{
 							num3 += 4095;
 						}
-						num = GameManager.DAT_65C90[num + 1] * 457;
+						num = Utilities.DAT_65C90[num + 1] * 457;
 						num3 = vTransform.position.x + (num3 >> 12);
 						if (num < 0)
 						{

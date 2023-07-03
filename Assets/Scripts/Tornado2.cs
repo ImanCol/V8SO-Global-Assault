@@ -38,14 +38,14 @@ public class Tornado2 : VigObject
 				DAT_84_2.FUN_51C54(screen, vigObject.screen, uint.MaxValue, 0u);
 			}
 			int num2 = (Utilities.FUN_51E08(this, ref DAT_84_2, 65536) & 0xFFF) * 2;
-			num = GameManager.DAT_65C90[num2] * 1525;
+			num = Utilities.DAT_65C90[num2] * 1525;
 			if (num < 0)
 			{
 				num += 4095;
 			}
 			int x = screen.x + (num >> 12);
 			screen.x = x;
-			num = GameManager.DAT_65C90[num2 + 1] * 1525;
+			num = Utilities.DAT_65C90[num2 + 1] * 1525;
 			if (num < 0)
 			{
 				num += 4095;
@@ -78,19 +78,19 @@ public class Tornado2 : VigObject
 				Throwaway obj2 = vData.ini.FUN_2C17C((ushort)y, typeof(Throwaway), 0u) as Throwaway;
 				num2 = (int)GameManager.FUN_2AC5C();
 				x = (int)((GameManager.FUN_2AC5C() & 0xFFF) * 2);
-				num = GameManager.DAT_65C90[x] * 4577;
+				num = Utilities.DAT_65C90[x] * 4577;
 				if (num < 0)
 				{
 					num += 4095;
 				}
 				obj2.physics1.Z = num >> 12;
-				num = GameManager.DAT_65C90[(((num2 << 8 >> 15) + 256) & 0xFFF) * 2] * -4577;
+				num = Utilities.DAT_65C90[(((num2 << 8 >> 15) + 256) & 0xFFF) * 2] * -4577;
 				if (num < 0)
 				{
 					num += 4095;
 				}
 				obj2.physics1.W = num >> 12;
-				num = GameManager.DAT_65C90[x + 1] * 4577;
+				num = Utilities.DAT_65C90[x + 1] * 4577;
 				if (num < 0)
 				{
 					num += 4095;

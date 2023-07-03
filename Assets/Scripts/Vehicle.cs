@@ -3737,8 +3737,8 @@ public class Vehicle : VigObject
             {
                 short num4 = turning;
                 num = (int)((long)num4 & 4095L) * 2;
-                num5 = GameManager.DAT_65C90[num];
-                num = GameManager.DAT_65C90[num + 1];
+                num5 = Utilities.DAT_65C90[num];
+                num = Utilities.DAT_65C90[num + 1];
                 if (wheels[k].child2 != null)
                 {
                     wheels[k].child2.vr.y = num4;
@@ -4159,13 +4159,13 @@ public class Vehicle : VigObject
                         {
                             num3 = (uint)(((-turning - (-turning >> 31)) * 2) & 0x3FFC);
                             _003C_003Ec__DisplayClass105_.local_40 = default(Vector3Int);
-                            _003C_003Ec__DisplayClass105_.local_40.x = GameManager.DAT_65C90[num3 / 2u] * num;
+                            _003C_003Ec__DisplayClass105_.local_40.x = Utilities.DAT_65C90[num3 / 2u] * num;
                             if (_003C_003Ec__DisplayClass105_.local_40.x < 0)
                             {
                                 _003C_003Ec__DisplayClass105_.local_40.x += 63;
                             }
                             _003C_003Ec__DisplayClass105_.local_40.x = _003C_003Ec__DisplayClass105_.local_40.x >> 6;
-                            _003C_003Ec__DisplayClass105_.local_40.z = GameManager.DAT_65C90[num3 / 2u + 1] * num;
+                            _003C_003Ec__DisplayClass105_.local_40.z = Utilities.DAT_65C90[num3 / 2u + 1] * num;
                             if (_003C_003Ec__DisplayClass105_.local_40.z < 0)
                             {
                                 _003C_003Ec__DisplayClass105_.local_40.z += 63;
@@ -4235,13 +4235,13 @@ public class Vehicle : VigObject
                     else
                     {
                         num3 = (uint)(((-turning - (-turning >> 31)) * 2) & 0x3FFC);
-                        _003C_003Ec__DisplayClass105_.local_40.x = GameManager.DAT_65C90[num3 / 2u] * num;
+                        _003C_003Ec__DisplayClass105_.local_40.x = Utilities.DAT_65C90[num3 / 2u] * num;
                         if (_003C_003Ec__DisplayClass105_.local_40.x < 0)
                         {
                             _003C_003Ec__DisplayClass105_.local_40.x += 63;
                         }
                         _003C_003Ec__DisplayClass105_.local_40.x = _003C_003Ec__DisplayClass105_.local_40.x >> 6;
-                        _003C_003Ec__DisplayClass105_.local_40.z = GameManager.DAT_65C90[num3 / 2u + 1] * num;
+                        _003C_003Ec__DisplayClass105_.local_40.z = Utilities.DAT_65C90[num3 / 2u + 1] * num;
                         if (_003C_003Ec__DisplayClass105_.local_40.z < 0)
                         {
                             _003C_003Ec__DisplayClass105_.local_40.z += 63;
@@ -4836,8 +4836,8 @@ public class Vehicle : VigObject
                 }
                 num2 = (int)((num6 & 0xFFF) * 4);
                 wheels[k].vr.y = (short)num6;
-                num4 = GameManager.DAT_65C90[num2 / 2];
-                num5 = GameManager.DAT_65C90[num2 / 2 + 1];
+                num4 = Utilities.DAT_65C90[num2 / 2];
+                num5 = Utilities.DAT_65C90[num2 / 2 + 1];
             }
             Vector3Int v4 = new Vector3Int(wheels[k].screen.x, wheels[k].screen.y + wheels[k].physics2.X, wheels[k].screen.z);
             Vector3Int vector3Int2 = Utilities.FUN_24148(transform, v4);

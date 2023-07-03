@@ -59,7 +59,7 @@ public class Disco2 : VigObject
 					discoBall.tags = (sbyte)num3;
 					int num6 = (int)((num4 & 0xFFF) * 2);
 					discoBall.id = id;
-					int num7 = GameManager.DAT_65C90[num2 + 1] * GameManager.DAT_65C90[num6];
+					int num7 = Utilities.DAT_65C90[num2 + 1] * Utilities.DAT_65C90[num6];
 					if (num7 < 0)
 					{
 						num7 += 4095;
@@ -70,13 +70,13 @@ public class Disco2 : VigObject
 						num7 += 4095;
 					}
 					discoBall.screen.x = num7 >> 12;
-					num7 = GameManager.DAT_65C90[num2] * dAT_;
+					num7 = Utilities.DAT_65C90[num2] * dAT_;
 					if (num7 < 0)
 					{
 						num7 += 4095;
 					}
 					discoBall.screen.y = num7 >> 12;
-					num2 = GameManager.DAT_65C90[num2 + 1] * GameManager.DAT_65C90[num6 + 1];
+					num2 = Utilities.DAT_65C90[num2 + 1] * Utilities.DAT_65C90[num6 + 1];
 					if (num2 < 0)
 					{
 						num2 += 4095;
@@ -110,7 +110,7 @@ public class Disco2 : VigObject
 					discoBall2.tags = (sbyte)num3;
 					int num6 = (int)((num8 & 0xFFF) * 2);
 					discoBall2.id = id;
-					int num7 = GameManager.DAT_65C90[num2 + 1] * GameManager.DAT_65C90[num6];
+					int num7 = Utilities.DAT_65C90[num2 + 1] * Utilities.DAT_65C90[num6];
 					if (num7 < 0)
 					{
 						num7 += 4095;
@@ -121,13 +121,13 @@ public class Disco2 : VigObject
 						num7 += 4095;
 					}
 					discoBall2.screen.x = num7 >> 12;
-					num7 = GameManager.DAT_65C90[num2] * dAT_;
+					num7 = Utilities.DAT_65C90[num2] * dAT_;
 					if (num7 < 0)
 					{
 						num7 += 4095;
 					}
 					discoBall2.screen.y = num7 >> 12;
-					num2 = GameManager.DAT_65C90[num2 + 1] * GameManager.DAT_65C90[num6 + 1];
+					num2 = Utilities.DAT_65C90[num2 + 1] * Utilities.DAT_65C90[num6 + 1];
 					if (num2 < 0)
 					{
 						num2 += 4095;

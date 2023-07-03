@@ -1061,8 +1061,8 @@ public class LevelManager : MonoBehaviour
         uint result = 0u;
         if (num < 0)
         {
-            uint num2 = (ushort)GameManager.DAT_65C90[(param1.physics1.M7 & 0xFFF) * 2 + 1];
-            ushort num3 = (ushort)GameManager.DAT_65C90[(param1.physics1.M6 & 0xFFF) * 2 + 1];
+            uint num2 = (ushort)Utilities.DAT_65C90[(param1.physics1.M7 & 0xFFF) * 2 + 1];
+            ushort num3 = (ushort)Utilities.DAT_65C90[(param1.physics1.M6 & 0xFFF) * 2 + 1];
             Vector3Int vector3Int = new Vector3Int(param2.x - param1.screen.x, param2.y - param1.screen.y, param2.z - param1.screen.z);
             result = (uint)Utilities.FUN_29E84(vector3Int);
             Utilities.FUN_29FC8(vector3Int, out Vector3Int vout);
@@ -1349,8 +1349,8 @@ public class LevelManager : MonoBehaviour
                 int num5 = 0;
                 ushort num6 = ini.configContainers[jUNC_DB.DAT_14].next;
                 int num2 = (jUNC_DB.DAT_16 & 0xFFF) * 2;
-                int num4 = GameManager.DAT_65C90[num2 + 1];
-                int num3 = GameManager.DAT_65C90[num2];
+                int num4 = Utilities.DAT_65C90[num2 + 1];
+                int num3 = Utilities.DAT_65C90[num2];
                 num2 = num;
                 while (num6 != ushort.MaxValue)
                 {

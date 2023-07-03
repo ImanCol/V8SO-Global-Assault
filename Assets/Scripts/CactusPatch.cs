@@ -76,7 +76,7 @@ public class CactusPatch : Mine
                 {
                     if (tags != 0)
                     {
-                        int num = GameManager.DAT_65C90[(physics2.M2 & 0xFFF) * 2] * 5120;
+                        int num = Utilities.DAT_65C90[(physics2.M2 & 0xFFF) * 2] * 5120;
                         if (num < 0)
                         {
                             num += 4095;

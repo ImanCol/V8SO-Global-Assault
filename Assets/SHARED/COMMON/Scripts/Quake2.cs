@@ -58,12 +58,12 @@ public class Quake2 : VigObject
 						if ((int)num7 < 4096)
 						{
 							num9 = (int)((num10 & 0xFFF) * 2);
-							num8 = GameManager.DAT_65C90[num9] * num8 * num8;
+							num8 = Utilities.DAT_65C90[num9] * num8 * num8;
 							if (num8 < 0)
 							{
 								num8 += 1048575;
 							}
-							num9 = GameManager.DAT_65C90[num9 + 1];
+							num9 = Utilities.DAT_65C90[num9 + 1];
 							if (num9 < 0)
 							{
 								num9 += 511;

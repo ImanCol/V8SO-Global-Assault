@@ -193,8 +193,8 @@ public class SteelMil : VigObject
 			if (jUNC_DB.DAT_18 != null && (jUNC_DB.DAT_10 & 0x40) != 0)
 			{
 				int num2 = (jUNC_DB.DAT_16 & 0xFFF) * 2;
-				int num3 = -GameManager.DAT_65C90[num2];
-				num2 = GameManager.DAT_65C90[num2 + 1];
+				int num3 = -Utilities.DAT_65C90[num2];
+				num2 = Utilities.DAT_65C90[num2 + 1];
 				int num4 = jUNC_DB.DAT_11 - 1;
 				if (-1 < num4)
 				{

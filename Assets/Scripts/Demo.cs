@@ -29,7 +29,8 @@ public class Demo : MonoBehaviour
         //backButton.onClick.SetPersistentListenerState();
 
 #if DEBUG
-        backButton.onClick.SetPersistentListenerState(13, UnityEventCallState.RuntimeOnly);
+        if (SceneManager.GetActiveScene().name == "DEBUG-Online")
+            backButton.onClick.SetPersistentListenerState(13, UnityEventCallState.RuntimeOnly);
 #else
         GameObject.Find("MODE OFFLINE").gameObject.SetActive(false);
         GameObject.Find("IngameDebugConsole").gameObject.SetActive(false);
@@ -45,7 +46,8 @@ public class Demo : MonoBehaviour
     private void Update()
     {
         //Texto Unirse a Lobby
-        if (SceneManager.GetActiveScene().buildIndex == 0)
+        if (SceneManager.GetActiveScene().name == "DEBUG-Online")
+        //if (SceneManager.GetActiveScene().buildIndex == 0)
         {
             if (titleLobby.text == "Connection timeout")
                 StartCoroutine(ChangeTextAfterDelay());

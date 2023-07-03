@@ -25,13 +25,13 @@ public class Blimp2 : VigObject
 				Smoke4 obj = DAT_98.ini.FUN_2C17C((ushort)physics2.M3, typeof(Smoke4), 8u) as Smoke4;
 				int num2 = (int)((GameManager.FUN_2AC5C() & 0xFFF) * 2);
 				obj.flags |= 1204u;
-				int num3 = physics1.Y * GameManager.DAT_65C90[num2];
+				int num3 = physics1.Y * Utilities.DAT_65C90[num2];
 				if (num3 < 0)
 				{
 					num3 += 4095;
 				}
 				obj.physics1.Z = num3 >> 12;
-				num2 = physics1.Y * GameManager.DAT_65C90[num2 + 1];
+				num2 = physics1.Y * Utilities.DAT_65C90[num2 + 1];
 				if (num2 < 0)
 				{
 					num2 += 4095;

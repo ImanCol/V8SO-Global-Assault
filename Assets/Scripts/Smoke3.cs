@@ -33,13 +33,13 @@ public class Smoke3 : VigObject
                 Smoke2 smoke = DAT_98.ini.FUN_2C17C((ushort)physics2.M3, typeof(Smoke2), 8u) as Smoke2;
                 int num3 = (int)((num2 & 0xFFF) * 2);
                 smoke.flags |= 1040u;
-                int num4 = physics1.Y * GameManager.DAT_65C90[num3];
+                int num4 = physics1.Y * Utilities.DAT_65C90[num3];
                 if (num4 < 0)
                 {
                     num4 += 4095;
                 }
                 smoke.physics1.Z = num4 >> 12;
-                num4 = physics1.Y * GameManager.DAT_65C90[num3 + 1];
+                num4 = physics1.Y * Utilities.DAT_65C90[num3 + 1];
                 if (num4 < 0)
                 {
                     num4 += 4095;

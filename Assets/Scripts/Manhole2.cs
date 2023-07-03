@@ -42,13 +42,13 @@ public class Manhole2 : VigObject
 				{
 					int num2 = (int)((GameManager.FUN_2AC5C() & 0xFFF) * 2);
 					smoke.flags |= 1040u;
-					int num3 = physics1.Y * GameManager.DAT_65C90[num2];
+					int num3 = physics1.Y * Utilities.DAT_65C90[num2];
 					if (num3 < 0)
 					{
 						num3 += 4095;
 					}
 					smoke.physics1.Z = num3 >> 12;
-					num2 = physics1.Y * GameManager.DAT_65C90[num2 + 1];
+					num2 = physics1.Y * Utilities.DAT_65C90[num2 + 1];
 					if (num2 < 0)
 					{
 						num2 += 4095;

@@ -1757,7 +1757,7 @@ public class VigObject : MonoBehaviour
                 case 1:
                     if ((reader.ReadUInt16(num + 2) & -32769) == (int)param1)
                     {
-                        reader.WriteUInt16(num + 2, (ushort)(reader.ReadUInt16(num + 2) & 0x7FFF));
+                        reader.Write(num + 2, (ushort)(reader.ReadUInt16(num + 2) & 0x7FFF));
                     }
                     num += 28;
                     num2 = reader.ReadInt16(num);
@@ -1783,7 +1783,7 @@ public class VigObject : MonoBehaviour
                 case 1:
                     if ((reader.ReadUInt16(num + 2) & -32769) == (int)param1)
                     {
-                        reader.WriteUInt16(num + 2, (ushort)(reader.ReadUInt16(num + 2) | 0x8000));
+                        reader.Write(num + 2, (ushort)(reader.ReadUInt16(num + 2) | 0x8000));
                     }
                     num += 28;
                     num2 = reader.ReadInt16(num);
@@ -2634,7 +2634,7 @@ public class VigObject : MonoBehaviour
         position.x -= screen.x;
         position.z -= screen.z;
         position.y -= screen.y;
-        vr.y = Utilities.Ratan2(position.x, position.z);
+        vr.y = (int)Utilities.Ratan2(position.x, position.z);
         int num = Utilities.LeadingZeros(position.x);
         int num2 = Utilities.LeadingZeros(position.z);
         if (num < num2)
@@ -2649,7 +2649,7 @@ public class VigObject : MonoBehaviour
             position.z >>= (int)(num3 & 0x1F);
         }
         int x = (int)Utilities.SquareRoot(position.x * position.x + position.z * position.z);
-        vr.x = Utilities.Ratan2(-position.y, x);
+        vr.x = (int)Utilities.Ratan2(-position.y, x);
     }
 
     public void FUN_4C4F4()

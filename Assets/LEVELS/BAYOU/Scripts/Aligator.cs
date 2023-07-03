@@ -101,7 +101,7 @@ public class Aligator : VigObject
 		{
 			int num3 = DAT_80.vTransform.position.x - vTransform.position.x;
 			int num4 = DAT_80.vTransform.position.z - vTransform.position.z;
-			int num5 = Utilities.Ratan2(num3, num4);
+			int num5 = (int)Utilities.Ratan2(num3, num4);
 			int num6 = (num5 - (ushort)vr.y) * 1048576 >> 20;
 			num5 = -22;
 			if (-23 < num6)
@@ -115,8 +115,8 @@ public class Aligator : VigObject
 			int num7 = (ushort)vr.y + num5;
 			vr.y = (short)num7;
 			Vector3Int v = default(Vector3Int);
-			v.x = GameManager.DAT_65C90[(num7 & 0xFFF) * 2];
-			v.z = GameManager.DAT_65C90[(vr.y & 0xFFF) * 2 + 1];
+			v.x = Utilities.DAT_65C90[(num7 & 0xFFF) * 2];
+			v.z = Utilities.DAT_65C90[(vr.y & 0xFFF) * 2 + 1];
 			if (DAT_1A == 25)
 			{
 				num5 = v.x * 3051;

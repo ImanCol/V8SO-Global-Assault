@@ -11,8 +11,8 @@ public class IMP_SUNA
 			uint num = (uint)((binaryReader.BaseStream.Length >= 13) ? ((int)((uint)binaryReader.ReadUInt16(12) >> 8) | (binaryReader.ReadByte(12) << 8)) : 4096);
 			int num2 = ((int)((uint)binaryReader.ReadUInt16(0) >> 8) | ((binaryReader.ReadUInt16(0) & 0xF) << 8)) * 2;
 			int num3 = ((int)((uint)binaryReader.ReadUInt16(2) >> 8) | ((binaryReader.ReadUInt16(2) & 0xF) << 8)) * 2;
-			int num4 = GameManager.DAT_65C90[num2 + 1];
-			int num5 = GameManager.DAT_65C90[num3] * num4;
+			int num4 = Utilities.DAT_65C90[num2 + 1];
+			int num5 = Utilities.DAT_65C90[num3] * num4;
 			if (num5 < 0)
 			{
 				num5 += 4095;
@@ -22,12 +22,12 @@ public class IMP_SUNA
 			{
 				num5 += 4095;
 			}
-			num2 = -GameManager.DAT_65C90[num2] * (int)num;
+			num2 = -Utilities.DAT_65C90[num2] * (int)num;
 			if (num2 < 0)
 			{
 				num2 += 4095;
 			}
-			num4 = GameManager.DAT_65C90[num3 + 1] * num4;
+			num4 = Utilities.DAT_65C90[num3 + 1] * num4;
 			if (num4 < 0)
 			{
 				num4 += 4095;

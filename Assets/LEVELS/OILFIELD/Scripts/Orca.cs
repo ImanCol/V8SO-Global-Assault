@@ -88,7 +88,7 @@ public class Orca : VigObject
 						tags = (sbyte)(1 - tags);
 					}
 				}
-				num3 = Utilities.Ratan2(num3, num);
+				num3 = (int)Utilities.Ratan2(num3, num);
 				num = (num3 - (ushort)vr.y) * 1048576 >> 20;
 				num3 = -22;
 				if (-23 < num)

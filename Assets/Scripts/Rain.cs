@@ -125,9 +125,9 @@ public class Rain : VigObject
                 vTransform.position.y = num5;
                 vTransform.position.z = num;
                 Vector3Int r = default(Vector3Int);
-                r.x = Utilities.Ratan2(b.z, b.y);
+                r.x = (int)Utilities.Ratan2(b.z, b.y);
                 r.y = 0;
-                r.z = Utilities.Ratan2(b.x, b.y);
+                r.z = (int)Utilities.Ratan2(b.x, b.y);
                 r.z = -r.z;
                 Matrix3x3 rotation = Utilities.RotMatrixYXZ_gte(r);
                 VigObject vigObject2 = child2;

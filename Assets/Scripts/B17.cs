@@ -431,7 +431,7 @@ public class B17 : VigObject
 					VigObject dAT_A = DAT_A8;
 					num = dAT_A.screen.x - screen.x;
 					num2 = dAT_A.screen.z - screen.z;
-					int num3 = Utilities.Ratan2(num, num2);
+					int num3 = (int)Utilities.Ratan2(num, num2);
 					num3 = (num3 - vr.y) * 1048576 >> 16;
 					int num4 = -512;
 					if (-513 < num3)

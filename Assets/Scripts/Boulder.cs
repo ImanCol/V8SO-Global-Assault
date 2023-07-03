@@ -59,13 +59,13 @@ public class Boulder : VigObject
 			boulder.screen = screen;
 			boulder.physics1.Y = -3051;
 			num3 = ((num2 + (num << 8 >> 15) - 128) & 0xFFF) * 2;
-			num = GameManager.DAT_65C90[num3] * 3051;
+			num = Utilities.DAT_65C90[num3] * 3051;
 			if (num < 0)
 			{
 				num += 4095;
 			}
 			boulder.physics1.X = num >> 12;
-			num = GameManager.DAT_65C90[num3 + 1] * 3051;
+			num = Utilities.DAT_65C90[num3 + 1] * 3051;
 			if (num < 0)
 			{
 				num += 4095;

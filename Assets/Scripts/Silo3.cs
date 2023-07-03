@@ -114,7 +114,7 @@ public class Silo3 : VigObject
 					v = Utilities.FUN_24304(vTransform, dAT_.screen);
 				}
 			}
-			int num4 = Utilities.Ratan2(-v.y, v.z);
+			int num4 = (int)Utilities.Ratan2(-v.y, v.z);
 			num3 = -64;
 			if (-65 < num4)
 			{
@@ -124,7 +124,7 @@ public class Silo3 : VigObject
 					num3 = num4;
 				}
 			}
-			int num5 = Utilities.Ratan2(v.x, v.z);
+			int num5 = (int)Utilities.Ratan2(v.x, v.z);
 			num4 = -64;
 			if (-65 < num5)
 			{

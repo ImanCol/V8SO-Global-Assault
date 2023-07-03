@@ -110,13 +110,13 @@ public class Smoke5 : VigObject
                     uint num3 = (uint)((ushort)vigObject.physics1.M3 + (ushort)vigObject.physics1.M1);
                     vigObject.physics1.M3 = (short)num3;
                     vigObject.vr.z += vigObject.physics1.M2;
-                    int num4 = vigObject.physics2.Z * GameManager.DAT_65C90[(num3 & 0xFFF) * 2];
+                    int num4 = vigObject.physics2.Z * Utilities.DAT_65C90[(num3 & 0xFFF) * 2];
                     if (num4 < 0)
                     {
                         num4 += 4095;
                     }
                     vigObject.screen.x = num4 >> 12;
-                    num4 = vigObject.physics2.Z * GameManager.DAT_65C90[(vigObject.physics1.M3 & 0xFFF) * 2];
+                    num4 = vigObject.physics2.Z * Utilities.DAT_65C90[(vigObject.physics1.M3 & 0xFFF) * 2];
                     if (num4 < 0)
                     {
                         num4 += 4095;

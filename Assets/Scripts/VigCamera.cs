@@ -263,14 +263,14 @@ public class VigCamera : VigObject
                                         short num = Utilities.FUN_2A27C(target.vTransform.rotation);
                                         int num2 = ((num + DAT_92) & 0xFFF) * 2;
                                         vector3Int = default(Vector3Int);
-                                        vector3Int.x = GameManager.DAT_65C90[num2];
-                                        num = GameManager.DAT_65C90[((ushort)DAT_90 & 0xFFF) * 2];
+                                        vector3Int.x = Utilities.DAT_65C90[num2];
+                                        num = Utilities.DAT_65C90[((ushort)DAT_90 & 0xFFF) * 2];
                                         vector3Int.y = -num;
-                                        vector3Int.z = GameManager.DAT_65C90[num2 + 1];
+                                        vector3Int.z = Utilities.DAT_65C90[num2 + 1];
                                     }
                                     else
                                     {
-                                        vector3Int = Utilities.ApplyMatrixSV(v3: new Vector3Int(GameManager.DAT_65C90[((ushort)DAT_92 & 0xFFF) * 2], -GameManager.DAT_65C90[((ushort)DAT_90 & 0xFFF) * 2], GameManager.DAT_65C90[((ushort)DAT_92 & 0xFFF) * 2 + 1]), m33: target.vTransform.rotation);
+                                        vector3Int = Utilities.ApplyMatrixSV(v0: new Vector3Int(Utilities.DAT_65C90[((ushort)DAT_92 & 0xFFF) * 2], -Utilities.DAT_65C90[((ushort)DAT_90 & 0xFFF) * 2], Utilities.DAT_65C90[((ushort)DAT_92 & 0xFFF) * 2 + 1]), m: target.vTransform.rotation);
                                     }
                                 }
                                 else
@@ -285,9 +285,9 @@ public class VigCamera : VigObject
                                     flags = (uint)((ushort)DAT_92 + 8);
                                     DAT_92 = (short)flags;
                                     vector3Int = default(Vector3Int);
-                                    vector3Int.x = GameManager.DAT_65C90[(flags & 0xFFF) * 2];
-                                    short num = GameManager.DAT_65C90[((ushort)DAT_90 & 0xFFF) * 2];
-                                    int num2 = GameManager.DAT_65C90[((ushort)DAT_92 & 0xFFF) * 2 + 1];
+                                    vector3Int.x = Utilities.DAT_65C90[(flags & 0xFFF) * 2];
+                                    short num = Utilities.DAT_65C90[((ushort)DAT_90 & 0xFFF) * 2];
+                                    int num2 = Utilities.DAT_65C90[((ushort)DAT_92 & 0xFFF) * 2 + 1];
                                     vector3Int.y = -num;
                                     vector3Int.z = num2;
                                 }
@@ -496,17 +496,17 @@ public class VigCamera : VigObject
         short num = Utilities.FUN_2A27C(target.vTransform.rotation);
         uint dAT_9C = (uint)DAT_9C;
         int num2 = ((num + DAT_92) & 0xFFF) * 2;
-        uint num3 = (uint)((ushort)GameManager.DAT_65C90[num2] << 16 >> 16);
+        uint num3 = (uint)((ushort)Utilities.DAT_65C90[num2] << 16 >> 16);
         long num4 = (long)dAT_9C * (long)num3;
-        screen.x = target.vTransform.position.x - ((int)((uint)num4 >> 12) | (((int)((ulong)num4 >> 32) + (int)dAT_9C * ((ushort)GameManager.DAT_65C90[num2] << 16 >> 31) + (int)num3 * ((int)dAT_9C >> 31)) * 1048576));
-        uint num5 = (uint)((long)(int)dAT_9C * (long)(-GameManager.DAT_65C90[(DAT_90 & 0xFFF) * 2]));
-        int num6 = (int)((ulong)((long)(int)dAT_9C * (long)(-GameManager.DAT_65C90[(DAT_90 & 0xFFF) * 2])) >> 32);
+        screen.x = target.vTransform.position.x - ((int)((uint)num4 >> 12) | (((int)((ulong)num4 >> 32) + (int)dAT_9C * ((ushort)Utilities.DAT_65C90[num2] << 16 >> 31) + (int)num3 * ((int)dAT_9C >> 31)) * 1048576));
+        uint num5 = (uint)((long)(int)dAT_9C * (long)(-Utilities.DAT_65C90[(DAT_90 & 0xFFF) * 2]));
+        int num6 = (int)((ulong)((long)(int)dAT_9C * (long)(-Utilities.DAT_65C90[(DAT_90 & 0xFFF) * 2])) >> 32);
         dAT_9C = (uint)DAT_9C;
         screen.y = target.vTransform.position.y - ((int)(num5 >> 12) | (num6 << 20));
-        num3 = (uint)((ushort)GameManager.DAT_65C90[num2 + 1] << 16 >> 16);
+        num3 = (uint)((ushort)Utilities.DAT_65C90[num2 + 1] << 16 >> 16);
         num4 = (long)dAT_9C * (long)num3;
         VigObject vigObject = target;
-        screen.z = target.vTransform.position.z - ((int)((uint)num4 >> 12) | (((int)((ulong)num4 >> 32) + (int)dAT_9C * ((ushort)GameManager.DAT_65C90[num2 + 1] << 16 >> 31) + (int)num3 * ((int)dAT_9C >> 31)) * 1048576));
+        screen.z = target.vTransform.position.z - ((int)((uint)num4 >> 12) | (((int)((ulong)num4 >> 32) + (int)dAT_9C * ((ushort)Utilities.DAT_65C90[num2 + 1] << 16 >> 31) + (int)num3 * ((int)dAT_9C >> 31)) * 1048576));
         FUN_4BAFC(vigObject.vTransform.position);
         vr.x += DAT_94;
         ApplyTransformation();

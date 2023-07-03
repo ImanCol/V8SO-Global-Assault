@@ -37,9 +37,9 @@ public class Turret : VigObject
 			VigObject child = child2;
 			VigObject pDAT_ = PDAT_78;
 			Vector3Int vector3Int = Utilities.FUN_24304(GameManager.instance.FUN_2CDF4(child), pDAT_.screen);
-			num = Utilities.Ratan2(vector3Int.x, vector3Int.z);
+			num = (int)Utilities.Ratan2(vector3Int.x, vector3Int.z);
 			int num2 = num << 20 >> 20;
-			num = Utilities.Ratan2(vector3Int.y, vector3Int.z);
+			num = (int)Utilities.Ratan2(vector3Int.y, vector3Int.z);
 			num = num * -1048576 >> 20;
 			if (num2 < 0)
 			{

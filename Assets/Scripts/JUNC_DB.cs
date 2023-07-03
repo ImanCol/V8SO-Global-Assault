@@ -111,7 +111,7 @@ public class JUNC_DB : MonoBehaviour
                                 short num7 = binaryReader2.ReadInt16();
                                 binaryReader2.BaseStream.Seek(2L, SeekOrigin.Current);
                                 short num8 = binaryReader2.ReadInt16();
-                                y = GameManager.DAT_65C90[y + 1] * num7 + GameManager.DAT_65C90[y] * num8;
+                                y = Utilities.DAT_65C90[y + 1] * num7 + Utilities.DAT_65C90[y] * num8;
                                 if (y < 0)
                                 {
                                     y += 4095;
@@ -119,7 +119,7 @@ public class JUNC_DB : MonoBehaviour
                                 short num9 = (short)(y >> 12);
                                 binaryWriter.Write(num9);
                                 y = ((ushort)DAT_16 & 0xFFF) * 2;
-                                y = -GameManager.DAT_65C90[y] * num7 + GameManager.DAT_65C90[y + 1] * num8;
+                                y = -Utilities.DAT_65C90[y] * num7 + Utilities.DAT_65C90[y + 1] * num8;
                                 if (y < 0)
                                 {
                                     y += 4095;

@@ -85,7 +85,7 @@ public class Mine : VigObject
                     int num;
                     if (tags != 0)
                     {
-                        num = GameManager.DAT_65C90[((ushort)physics2.M2 & 0xFFF) * 2] * 5120;
+                        num = Utilities.DAT_65C90[((ushort)physics2.M2 & 0xFFF) * 2] * 5120;
                         if (num < 0)
                         {
                             num += 4095;

@@ -135,7 +135,7 @@ public class SmogPipe : VigObject
 			{
 				return 0u;
 			}
-			int num = Utilities.Ratan2(vector3Int.x, vector3Int.z);
+			int num = (int)Utilities.Ratan2(vector3Int.x, vector3Int.z);
 			num = num << 20 >> 20;
 			if (num < 0)
 			{

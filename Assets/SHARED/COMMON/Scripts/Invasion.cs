@@ -109,10 +109,10 @@ public class Invasion : VigObject
 				}
 				saucer.screen.z = vin.z;
 				int num4 = (((num2 << 12) / 3) & 0xFFF) * 2;
-				short z = GameManager.DAT_65C90[num4 + 1];
+				short z = Utilities.DAT_65C90[num4 + 1];
 				saucer.physics1.W = 0;
 				saucer.physics1.Z = z;
-				z = GameManager.DAT_65C90[num4];
+				z = Utilities.DAT_65C90[num4];
 				num2++;
 				saucer.physics2.M3 = num3;
 				num3 = (short)(num3 + 120);
@@ -239,10 +239,10 @@ public class Invasion : VigObject
 				}
 				saucer.screen.z = vin.z;
 				int num5 = (((num3 << 12) / 3) & 0xFFF) * 2;
-				short z = GameManager.DAT_65C90[num5 + 1];
+				short z = Utilities.DAT_65C90[num5 + 1];
 				saucer.physics1.W = 0;
 				saucer.physics1.Z = z;
-				z = GameManager.DAT_65C90[num5];
+				z = Utilities.DAT_65C90[num5];
 				num3++;
 				saucer.physics2.M3 = num4;
 				num4 = (short)(num4 + 60);

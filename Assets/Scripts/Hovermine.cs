@@ -136,7 +136,7 @@ public class Hovermine : Mine
                     physics1.W = 0;
                     int num2 = vTransform.position.y - physics1.W;
                     screen.y = num2;
-                    num4 = GameManager.DAT_65C90[(physics2.M2 & 0xFFF) * 2] * 5120;
+                    num4 = Utilities.DAT_65C90[(physics2.M2 & 0xFFF) * 2] * 5120;
                     if (num4 < 0)
                     {
                         num4 += 4095;
@@ -145,7 +145,7 @@ public class Hovermine : Mine
                 }
                 else
                 {
-                    num4 = GameManager.DAT_65C90[(physics2.M2 & 0xFFF) * 2] * 5120;
+                    num4 = Utilities.DAT_65C90[(physics2.M2 & 0xFFF) * 2] * 5120;
                     if (num4 < 0)
                     {
                         num4 += 4095;
