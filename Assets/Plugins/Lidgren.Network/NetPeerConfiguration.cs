@@ -104,15 +104,15 @@ namespace Lidgren.Network
 			m_receiveBufferSize = 131071;
 			m_sendBufferSize = 131071;
 			m_acceptIncomingConnections = false;
-			m_maximumConnections = 32;
-			m_defaultOutgoingMessageCapacity = 16;
+			m_maximumConnections = 150;
+			m_defaultOutgoingMessageCapacity = 32;
 			m_pingInterval = 4.0f;
 			m_connectionTimeout = 25.0f;
 			m_useMessageRecycling = true;
 			m_recycledCacheMaxCount = 64;
 			m_resendHandshakeInterval = 3.0f;
 			m_maximumHandshakeAttempts = 5;
-			m_autoFlushSendQueue = true;
+			m_autoFlushSendQueue = false; //Envio automatico de mensaje (default: true)
 			m_suppressUnreliableUnorderedAcks = false;
 
 			m_maximumTransmissionUnit = kDefaultMTU;

@@ -1,6 +1,7 @@
 ﻿using Lidgren.Network;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using Unity.Burst;
 using UnityEngine;
 
@@ -42,22 +43,32 @@ namespace V2UnityDiscordIntercept
         public void ConnectToLobby(string ipAddress, int port)
         {
             Logger.Log($"Connecting to server at {ipAddress}:{port}");
-            var config = new NetPeerConfiguration(Plugin.AppIdentifier);
+            NetPeerConfiguration config = new NetPeerConfiguration(Plugin.AppIdentifier);
+            config.EnableUPnP = true;
+            config.MaximumConnections = 150;
             config.EnableMessageType(NetIncomingMessageType.DiscoveryResponse);
             config.EnableMessageType(NetIncomingMessageType.StatusChanged);
+#if DEBUG
+            //Obtener la dirección IP pública y asignarla a la configuración
+            //string publicIPAddress = Plugin.GetPublicIPAddress();
+            //config.LocalAddress = IPAddress.Parse(publicIPAddress);
+#endif
+Debug.Log("Paso...");
             client = new NetClient(config);
             client.Start();
-            var netConnection = client.Connect(ipAddress, port);
+            NetConnection netConnection = client.Connect(ipAddress, port);
             Logger.Log($"Created connection with id: {client.UniqueIdentifier}");
         }
 
-        public void JoinLobby(long lobbyId, string secret)
+        [Obsolete]
+        public async void JoinLobby(long lobbyId, string secret)
         {
             Logger.Log($"Joined Lobby");
             InitializePacketHandlers();
-            ClientSend.Joined();
+            await ClientSend.Joined();
         }
 
+        [Obsolete]
         private void InitializePacketHandlers()
         {
             packetHandlers = new Dictionary<int, PacketHandler>
@@ -339,6 +350,9 @@ namespace V2UnityDiscordIntercept
             // data
             msg.Write(data);
             client.SendMessage(msg, client.ServerConnection, GetDeliveryMethod(channelId), channelId);
+
+            // Llamar a FlushSendQueue() después de enviar el mensaje
+            client.FlushSendQueue();
         }
 
         public void SendNetworkMessageToUser(long userId, byte channelId, byte[] data)
@@ -353,6 +367,10 @@ namespace V2UnityDiscordIntercept
             // data
             msg.Write(data);
             client.SendMessage(msg, client.ServerConnection, GetDeliveryMethod(channelId), channelId);
+
+            // Llamar a FlushSendQueue() después de enviar el mensaje
+            client.FlushSendQueue();
         }
+
     }
 }

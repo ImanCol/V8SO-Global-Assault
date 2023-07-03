@@ -2729,7 +2729,7 @@ MonoBehaviour:
   DAT_1f800094_: 32767
   DAT_1f800096_: 32767
   DAT_1f800098_: 10240
-  DAT_1f80009a_: 14124
+  DAT_1f80009a_: 5120
   terrain: {fileID: 0}
   levelManager: {fileID: 0}
   commonWheelConfiguration: {fileID: 0}
@@ -3580,13 +3580,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 0.95
-  m_Text: 'Colaborator: Luis Felipe, Dedok179, MagicWeapon, Infinity'
+  m_Text: 'Colaborator: Shirkie01, Luis Felipe, Dedok179, MagicWeapon, Infinity,'
 --- !u!222 &559235984
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -18358,8 +18358,8 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1791082647508790619}
   m_Enabled: 1
-  m_Alpha: 0
-  m_Interactable: 0
+  m_Alpha: 1
+  m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
 --- !u!1 &1690799521
@@ -31401,7 +31401,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 2.4
+  m_Text: 2.3b
 --- !u!114 &1791082649404616564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31469,7 +31469,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Donators: Vigilante, Venom209'
+  m_Text: 'Donators: Vigilante, Venom209, PerfectDark'
 --- !u!114 &1791082649404616566
 MonoBehaviour:
   m_ObjectHideFlags: 0

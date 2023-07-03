@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Burst;
 using UnityEngine;
 using Rewired;
+using System.Net;
 
 namespace V2UnityDiscordIntercept
 {
@@ -19,7 +20,7 @@ namespace V2UnityDiscordIntercept
         public static bool ShowConnectionWindow { get; set; }
         private Rect connectionWindowRect = new Rect(100, 100, 300, 180);
         public static string ipAddress = "localhost";
-        public static int Port { get; set; } = 14697;
+        public static int Port { get; set; } = 45454;
         public static string Username = "Player";
 
         public static bool LogErrors { get; set; } = true;
@@ -90,7 +91,9 @@ namespace V2UnityDiscordIntercept
                     {
                         GameManager.instance.online = true;
                         Client = new VigClient();
+                        #if DEBUG
                         Client.ConnectToLobby(ipAddress, Port);
+                        #endif
                     }
                 }
             }
@@ -116,6 +119,12 @@ namespace V2UnityDiscordIntercept
             GUI.DragWindow();
         }
 
+
+        public void Start()
+        {
+            string ipGlobal = GetPublicIPAddress();
+            Debug.Log("IP Global: " + ipGlobal);
+        }
         public void Update()
         {
             try
@@ -181,5 +190,26 @@ namespace V2UnityDiscordIntercept
                 Server.LateUpdate();
             }
         }
+
+
+        public static string GetPublicIPAddress()
+        {
+            string ipAddress = string.Empty;
+            try
+            {
+                using (WebClient webClient = new WebClient())
+                {
+                    ipAddress = webClient.DownloadString("https://api.ipify.org");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Manejar cualquier error que pueda ocurrir al obtener la dirección IP pública
+                Console.WriteLine("Error al obtener la dirección IP pública: " + ex.Message);
+            }
+
+            return ipAddress;
+        }
+
     }
 }
