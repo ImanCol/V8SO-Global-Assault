@@ -1668,7 +1668,7 @@ public class VigMesh : MonoBehaviour
 			brVar13.Seek(24L, SeekOrigin.Current);
 			goto IL_76fd;
 		}
-		CreateMeshData();
+		CreateMeshData(); //Dibuja todos los objetos en el escenario
 	}
 
 	public void FUN_39A8(DELEGATE_79A0 param1)

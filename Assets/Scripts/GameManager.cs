@@ -111,7 +111,11 @@ public enum _GAME_MODE
     Unk2,
     Versus2,
     Coop2,
-    Survival2
+    Survival2,
+    GlobbalOffense, //Algun Mapa mas grande?
+    Invasion, //Freneticas batallas con IA
+    FreeWill //Freneticas batallas con IA
+
 }
 
 public enum _SCREEN_MODE
@@ -3071,18 +3075,28 @@ public class GameManager : MonoBehaviour
 
     [Header("SetDraw")]
     public bool setDraw = false;
+    ulong countVehicle = 0;
 
     //IMPORTANTE! Dibuja los objetos en el escenario. Actualiza Reflejos? OPTIMIZAR REFLEJOS!
     public async void FUN_30B24(List<VigTuple> param1)
     {
+        foreach (var item in param1)
+        {
+            if (item.vObject.GetType() == typeof(Vehicle))
+            {
+                countVehicle++;
+            }
+        }
         vigObjectCount = param1;
         if (setDraw)
             for (int i = 0; i < param1.Count; i++)
             {
+
                 this.FUN_2D9E0(param1[i].vObject);
                 //await Task.Delay(TimeSpan.FromSeconds(reflectionUpdateTime));
             }
         await Task.Yield();
+        countVehicle = 0;
         //await Task.Delay(TimeSpan.FromSeconds(reflectionUpdateTime));
     }
 
@@ -5039,7 +5053,7 @@ public class GameManager : MonoBehaviour
         {
             return;
         }
-        Vehicle vehicle = new Vehicle();
+        Vehicle vehicle = null;
         if (!paused)
         {
             //Verifica si hay objetivos
@@ -5558,6 +5572,12 @@ public class GameManager : MonoBehaviour
             style.fontSize = 20;
             style.normal.textColor = Color.yellow;
             GUI.Label(new Rect(10, 10, 200, 20), "FPS: " + currentFps.ToString("F2"), style);
+            style.normal.textColor = Color.green;
+            GUI.Label(new Rect(10, 40, 200, 20), "Coun Vehicle: " + countVehicle.ToString("F2"), style);
+            style.normal.textColor = Color.magenta;
+            GUI.Label(new Rect(10, 80, 200, 20), "Refresh Object True: " + refreshObject.ToString("F2"), style);
+            style.normal.textColor = Color.blue;
+            GUI.Label(new Rect(10, 120, 200, 20), "Refresh Object False: " + notRefreshObject.ToString("F2"), style);
         }
 
         if (!inDebug && guiButton)
@@ -5704,6 +5724,7 @@ public class GameManager : MonoBehaviour
                     if (GUILayout.Button("Enabled Console"))
                     {
                         enabledConsole = !enabledConsole;
+                        Debug.unityLogger.logEnabled = enabledConsole;
                         GameObject.Find("IngameDebugConsole").gameObject.GetComponent<Canvas>().enabled = enabledConsole;
                     }
                     GUILayout.FlexibleSpace();
@@ -7307,6 +7328,8 @@ public class GameManager : MonoBehaviour
     [Header("Quiality Setting")]
     public bool enabledOptimization = true;
     public float checkFPS = 0.5f;
+    public int refreshObject;
+    public int notRefreshObject;
     public bool enabledRefreshMesh = true;
     public bool experimentalQuality = false;
     public bool enabledReflection = true;
@@ -7315,8 +7338,126 @@ public class GameManager : MonoBehaviour
     public bool enabledvLoD = true;
     public bool enabledConsole = true;
 
+
+
+
+    [Serializable]
+    public class ObjectStateDictionary : ISerializationCallbackReceiver
+    {
+        [SerializeField]
+        private List<VigObject> keys = new List<VigObject>();
+
+        [SerializeField]
+        private List<ObjectState> values = new List<ObjectState>();
+
+        private Dictionary<VigObject, ObjectState> dictionary = new Dictionary<VigObject, ObjectState>();
+
+        public void OnBeforeSerialize()
+        {
+            keys.Clear();
+            values.Clear();
+
+            foreach (var pair in dictionary)
+            {
+                keys.Add(pair.Key);
+                values.Add(pair.Value);
+            }
+        }
+
+        public void OnAfterDeserialize()
+        {
+            dictionary.Clear();
+
+            if (keys.Count != values.Count)
+            {
+                Debug.LogError("Error al deserializar el diccionario. La cantidad de claves y valores no coincide.");
+                return;
+            }
+
+            for (int i = 0; i < keys.Count; i++)
+            {
+                dictionary[keys[i]] = values[i];
+            }
+        }
+
+        public void Add(VigObject key, ObjectState value)
+        {
+            dictionary.Add(key, value);
+        }
+
+        public bool ContainsKey(VigObject key)
+        {
+            return dictionary.ContainsKey(key);
+        }
+
+        public bool Remove(VigObject key)
+        {
+            return dictionary.Remove(key);
+        }
+
+        public bool TryGetValue(VigObject key, out ObjectState value)
+        {
+            return dictionary.TryGetValue(key, out value);
+        }
+
+        public ObjectState this[VigObject key]
+        {
+            get => dictionary[key];
+            set => dictionary[key] = value;
+        }
+    }
+
+
+
+#if DEBUG
+    //Optimizacion
+    [Serializable]
+    public class SerializeObject<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
+    {
+        [SerializeField]
+        private List<TKey> vigObjectList = new List<TKey>();
+
+        [SerializeField]
+        private List<TValue> objectStateElement = new List<TValue>();
+
+        public void OnBeforeSerialize()
+        {
+            vigObjectList.Clear();
+            objectStateElement.Clear();
+
+            foreach (var pair in this)
+            {
+                vigObjectList.Add(pair.Key);
+                objectStateElement.Add(pair.Value);
+            }
+        }
+
+        public void OnAfterDeserialize()
+        {
+            this.Clear();
+
+            if (vigObjectList.Count != objectStateElement.Count)
+            {
+                Debug.LogError("Error al deserializar el diccionario. La cantidad de claves y valores no coincide.");
+                return;
+            }
+
+            for (int i = 0; i < vigObjectList.Count; i++)
+            {
+                this[vigObjectList[i]] = objectStateElement[i];
+            }
+        }
+    }
+
+    [SerializeField]
+    private SerializeObject<VigObject, ObjectState> objectStates = new SerializeObject<VigObject, ObjectState>();
+    // Clase auxiliar para almacenar el estado de los objetos
+#else
+    private Dictionary<VigObject, ObjectState> objectStates = new Dictionary<VigObject, ObjectState>();
+#endif
     public void FUN_2D9E0(VigObject param1)
     {
+
         // Control de rendimiento: Verifica los FPS o consumo de recursos
         if (enabledOptimization)
         {
@@ -7326,152 +7467,171 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // Código para actualizar los reflejos aquí
+        bool hasChanges = CheckForObjectChanges(param1);
 
-        // Reinicia Mesh - Mejorar para borrar Mesh de Driver
-        if (enabledRefreshMesh)
+        //Debug.Log("hasChanges: " + hasChanges);
+        StoreObjectState(param1, hasChanges);
+        //Debug.Log("hasChanges: " + hasChanges);
+
+        if (hasChanges)
         {
-            Utilities.ResetMesh(param1);
-        }
-
-        // Optimiza La carga en el escenario
-        // Retorna en primera persona. Borra Mesh de Driver
-        if ((param1.flags & 2) != 0 || !FUN_2E22C(param1.vTransform.position, param1.DAT_58))
-        {
-            return;
-        }
-
-        VigTransform vigTransform = Utilities.CompMatrixLV(DAT_F00, param1.vTransform);
-
-        if (vigTransform.position.z >= 4194304)
-        {
-            return;
-        }
-
-        // Unknow
-        if ((param1.flags & 0x10) != 0)
-        {
-            if ((param1.flags & 0x400) == 0)
+            // Código para actualizar los reflejos aquí
+            if (enabledReflection)
             {
-                if (param1.vTransform.padding == 0)
-                {
-                    vigTransform.rotation = DAT_EE0.rotation;
-                }
-                else
-                {
-                    vigTransform.rotation = Utilities.FUN_2A4A4(vigTransform.rotation);
-                }
+                UpdateReflections(param1);
             }
-            else
+
+            // Reinicia Mesh - Mejorar para borrar Mesh de Driver
+            if (enabledRefreshMesh)
             {
-                vigTransform.rotation = param1.vTransform.rotation;
+                Utilities.ResetMesh(param1);
             }
-        }
 
-        uint num = 64u;
+            VigTransform vigTransform = Utilities.CompMatrixLV(DAT_F00, param1.vTransform);
 
-        // Calculo de Reflejos
-        if (enabledReflection)
-        {
-            if ((param1.flags & 0x2000) != 0)
+            if (vigTransform.position.z >= 4194304)
             {
-                int num2 = param1.vTransform.position.x;
-                if (num2 < 0)
-                {
-                    num2 += 65535;
-                }
-                if ((uint)num2 > 117440512u)
-                {
-                    num2 = 0;
-                }
-                int num3 = param1.vTransform.position.z;
-                if (num3 < 0)
-                {
-                    num3 += 65535;
-                }
-                if ((uint)num3 > 117440512u)
-                {
-                    num3 = 0;
-                }
-                num = (uint)(terrain.vertices[terrain.chunks[((uint)(num2 >> 16) >> 6) * 32 + ((uint)(num3 >> 16) >> 6)] * 4096 + (((long)(num3 >> 16) & 63L) * 2 + ((long)(num2 >> 16) & 63L) * 128) / 2] & 0xF800) >> 8;
+                return;
             }
-            Utilities.SetBackColor((int)num, (int)num, (int)num);
-        }
 
-        if (param1.DAT_6C == 0 || vigTransform.position.z <= param1.DAT_6C)
-        {
-            if ((param1.flags & 0x20000) == 0)
+            // Optimiza La carga en el escenario
+            // Retorna en primera persona. Borra Mesh de Driver
+            if ((param1.flags & 2) != 0 || !FUN_2E22C(param1.vTransform.position, param1.DAT_58))
             {
+                return;
+            }
 
-                if ((param1.flags & 0x10000) == 0 || DAT_DA0 <= param1.vTransform.position.z || param1.vTransform.position.y + param1.DAT_58 <= DAT_DB0)
+            // Unknow
+            if ((param1.flags & 0x10) != 0)
+            {
+                if ((param1.flags & 0x400) == 0)
                 {
-                    //Debug.Log("Distancia 1: flags: " + param1.flags + " - DAT_DA0: " + DAT_DA0 + " <= vTransform.position.z: " + param1.vTransform.position.z + " vTransform.position.y: " + param1.vTransform.position.y + " + DAT_58: " + param1.DAT_58 + " <= DAT_DB0: " + DAT_DB0);
-                    // Spawn Vehicle?
-                    if (param1.vMesh != null)
+                    if (param1.vTransform.padding == 0)
                     {
-                        //Debug.Log("Draw Mesh...:" + param1.vMesh + " - " + param1.child2);
-                        if (enabledMesh)
-                            //param1.vMesh.en // Carroceria Dakota
-                            param1.vMesh.FUN_21F70(vigTransform); // Carroceria Dakota
+                        vigTransform.rotation = DAT_EE0.rotation;
                     }
-                    if (param1.child2 != null)
+                    else
                     {
-                        if (enabledChild2)
-                            FUN_2D778(param1.child2, vigTransform); // Llantas Dakota y Carroceria de otros
+                        vigTransform.rotation = Utilities.FUN_2A4A4(vigTransform.rotation);
                     }
                 }
                 else
                 {
-                    Debug.Log("Distancia 2: flags: " + param1.flags + " - DAT_DA0: " + DAT_DA0 + " <= vTransform.position.z: " + param1.vTransform.position.z + " vTransform.position.y: " + param1.vTransform.position.y + " + DAT_58: " + param1.DAT_58 + " <= DAT_DB0: " + DAT_DB0);
+                    vigTransform.rotation = param1.vTransform.rotation;
+                }
+            }
+
+            uint num = 64u;
+
+            // Calculo de Reflejos
+            if (enabledReflection)
+            {
+                if ((param1.flags & 0x2000) != 0)
+                {
+                    int num2 = param1.vTransform.position.x;
+                    if (num2 < 0)
+                    {
+                        num2 += 65535;
+                    }
+                    if ((uint)num2 > 117440512u)
+                    {
+                        num2 = 0;
+                    }
+                    int num3 = param1.vTransform.position.z;
+                    if (num3 < 0)
+                    {
+                        num3 += 65535;
+                    }
+                    if ((uint)num3 > 117440512u)
+                    {
+                        num3 = 0;
+                    }
+                    num = (uint)(terrain.vertices[terrain.chunks[((uint)(num2 >> 16) >> 6) * 32 + ((uint)(num3 >> 16) >> 6)] * 4096 + (((long)(num3 >> 16) & 63L) * 2 + ((long)(num2 >> 16) & 63L) * 128) / 2] & 0xF800) >> 8;
+                }
+                Utilities.SetBackColor((int)num, (int)num, (int)num);
+            }
+
+            if (param1.DAT_6C == 0 || vigTransform.position.z <= param1.DAT_6C)
+            {
+                if ((param1.flags & 0x20000) == 0)
+                {
+                    if ((param1.flags & 0x10000) == 0 || DAT_DA0 <= param1.vTransform.position.z || param1.vTransform.position.y + param1.DAT_58 <= DAT_DB0)
+                    {
+                        // Debug.Log("Distancia 1: flags: " + param1.flags + " - DAT_DA0: " + DAT_DA0 + " <= vTransform.position.z: " + param1.vTransform.position.z + " vTransform.position.y: " + param1.vTransform.position.y + " + DAT_58: " + param1.DAT_58 + " <= DAT_DB0: " + DAT_DB0);
+                        // Spawn Vehicle?
+                        if (param1.vMesh != null)
+                        {
+                            //Debug.Log("Draw Mesh...:" + param1.vMesh + " - " + param1.child2);
+                            if (enabledMesh)
+                                //param1.vMesh.en // Carroceria Dakota
+
+                                param1.vMesh.FUN_21F70(vigTransform); // Carroceria Dakota
+                        }
+                        if (param1.child2 != null)
+                        {
+                            if (enabledChild2)
+                                FUN_2D778(param1.child2, vigTransform); // Llantas Dakota y Carroceria de otros
+                        }
+                    }
+                    else
+                    {
+                        //Debug.Log("Distancia 2: flags: " + param1.flags + " - DAT_DA0: " + DAT_DA0 + " <= vTransform.position.z: " + param1.vTransform.position.z + " vTransform.position.y: " + param1.vTransform.position.y + " + DAT_58: " + param1.DAT_58 + " <= DAT_DB0: " + DAT_DB0);
+                        if (param1.vMesh != null)
+                        {
+                            param1.vMesh.FUN_2D2A8(vigTransform);
+                        }
+                        if (param1.child2 != null)
+                        {
+                            param1.child2.FUN_2D368(vigTransform);
+                        }
+                    }
+                }
+                else
+                {
+                    // Deshabilita Normal LOD??
+                    Vector3Int param2 = new Vector3Int(param1.vTransform.position.x, terrain.FUN_1B750((uint)param1.vTransform.position.x, (uint)param1.vTransform.position.z), param1.vTransform.position.z);
+                    Vector3Int n = terrain.FUN_1BB50(param1.vTransform.position.x, param1.vTransform.position.z);
+                    n = Utilities.VectorNormal(n);
                     if (param1.vMesh != null)
                     {
-                        param1.vMesh.FUN_2D2A8(vigTransform);
+                        param1.vMesh.FUN_2D4D4(vigTransform, n, param2);
                     }
                     if (param1.child2 != null)
                     {
-                        param1.child2.FUN_2D368(vigTransform);
+                        param1.child2.FUN_2D5EC(vigTransform, n, param2);
                     }
                 }
             }
-            else
-            {
-                // Deshabilita Normal LOD??
-                Vector3Int param2 = new Vector3Int(param1.vTransform.position.x, terrain.FUN_1B750((uint)param1.vTransform.position.x, (uint)param1.vTransform.position.z), param1.vTransform.position.z);
-                Vector3Int n = terrain.FUN_1BB50(param1.vTransform.position.x, param1.vTransform.position.z);
-                n = Utilities.VectorNormal(n);
-                if (param1.vMesh != null)
-                {
-                    param1.vMesh.FUN_2D4D4(vigTransform, n, param2);
-                }
-                if (param1.child2 != null)
-                {
-                    param1.child2.FUN_2D5EC(vigTransform, n, param2);
-                }
-            }
-        }
 
-        // Render vLOD
-        else if (param1.vLOD != null)
-        {
-            if (enabledvLoD)
+            // Render vLOD
+            else if (param1.vLOD != null)
             {
-                vigTransform.rotation = param1.FUN_2D884(vigTransform);
-            }
-        }
-
-        // Draw Shadow GROUND
-        if (enabledReflection)
-        {
-            if ((param1.flags & 8) != 0)
-            {
-                if ((param1.flags & 0x200) == 0)
+                if (enabledvLoD)
                 {
-                    param1.FUN_4C4F4();
+                    vigTransform.rotation = param1.FUN_2D884(vigTransform);
                 }
-                param1.vShadow.FUN_4C73C();
             }
+
+            // Draw Shadow GROUND
+            if (enabledReflection)
+            {
+                if ((param1.flags & 8) != 0)
+                {
+                    if ((param1.flags & 0x200) == 0)
+                    {
+                        param1.FUN_4C4F4();
+                    }
+                    param1.vShadow.FUN_4C73C();
+                }
+            }
+            refreshObject++;
+        }
+        else
+        {
+            notRefreshObject++;
         }
     }
+
 
     private bool ShouldReduceUpdateFrequency()
     {
@@ -7481,16 +7641,301 @@ public class GameManager : MonoBehaviour
         // Si el rendimiento es bajo, devuelve true; de lo contrario, devuelve false.
 
         // Ejemplo simplificado:
-        return Time.deltaTime > checkFPS; // Si el tiempo por frame supera los 0.02 segundos, se considera bajo rendimiento.
+        return Time.deltaTime > checkFPS;// Si el tiempo por frame supera los 0.02 segundos, se considera bajo rendimiento.
     }
 
+    private bool CheckForObjectChanges(VigObject obj)
+    {
+
+        if (objectStates.TryGetValue(obj, out ObjectState state))
+        {
+            //Debug.Log("No ha cambiado...");
+            return state.HasChanged(obj);
+        }
+        //Debug.Log("Ha cambiado...");
+        return true; // No previous state found, consider it changed
+    }
+
+    private void StoreObjectState(VigObject obj, bool hasChanges)
+    {
+        if (objectStates.ContainsKey(obj))
+        {
+            objectStates[obj].UpdateState(obj, hasChanges);
+        }
+        else
+        {
+            objectStates.Add(obj, new ObjectState(obj, hasChanges));
+        }
+    }
+
+    private void UpdateReflections(VigObject obj)
+    {
+        // Código para actualizar los reflejos aquí
+    }
+
+    [Serializable]
+    public class ObjectState
+    {
+        public bool ishasChanges;
+        public bool isEnabledMesh;
+        public bool isVisibleMesh;
+        public int typeid;
+        public Type typeObject;
+        public Vector3 position;
+        public Matrix3x3 rotation;
+        public VigMesh vmesh;
+        public VigMesh vmeshVertices;
+        public VigMesh vLOD;
+        public Mesh mesh;
+        public Vector3[] vertices;
+        public ushort vLODVertices;
+        public VigShadow vShadow;
+        public VigObject vChild;
+        public VigObject vChild2;
+        public ushort maxHalfHealth;
+        public List<ushort> maxHalfHealthBody = new List<ushort>();
+        public short DAT_1A;
+        //public bool shouldUpdate; // Indica si el objeto debe actualizarse
+        //public bool hasMeshChanged; // Indica si el objeto ha cambiado de malla
+        //public bool isInFrontOfCamera; // Indica si el objeto está en frente de la cámara
+
+        [Header("Vehicle")]
+        public int weaponSlot;
+        public _WHEELS wheelsType;
+        public VigObject target;
+
+        public ObjectState(VigObject obj, bool hasChanges)
+        {
+
+            UpdateState(obj, hasChanges);
+        }
+
+        public bool HasChanged(VigObject obj)
+        {
+            //Recoger estados
+            MeshFilter meshFilter = new MeshFilter();
+            bool hasMeshChanged = false;
+            bool hasPositionChanged = false;
+            bool hasRotationChanged = false;
+            bool hasMaxHalfHealth = false;
+            List<bool> hasMaxHalfHealthBody = new List<bool>();
+            bool hasDAT_1A = false;
+            bool hasEnabledMesh = false;
+            bool hasVisibleMesh = false;
+            if (obj.gameObject.GetComponent<MeshFilter>())
+            {
+                meshFilter = obj.gameObject.GetComponent<MeshFilter>();
+                hasMeshChanged = (!meshFilter.mesh.vertices.Equals(vertices));
+            }
+            hasPositionChanged = (!obj.vTransform.position.Equals(position));
+            hasRotationChanged = (!obj.vTransform.rotation.Equals(rotation));
+            hasMaxHalfHealth = (!obj.maxHalfHealth.Equals(maxHalfHealth));
+            hasDAT_1A = (!obj.DAT_1A.Equals(DAT_1A));
+            if (obj.gameObject.GetComponent<MeshRenderer>())
+            {
+                hasEnabledMesh = (!obj.GetComponent<MeshRenderer>().enabled.Equals(isEnabledMesh));
+                hasVisibleMesh = (!obj.GetComponent<MeshRenderer>().isVisible.Equals(isVisibleMesh));
+            }
+            switch (obj.type)
+            {
+                case 0://es un Objeto Child o Variado?
+                       //return obj.gameObject.GetComponent<MeshFilter>().mesh.vertices != vertices || obj.vTransform.position != position || !obj.vTransform.rotation.Equals(rotation);
+                       //Debug.Log("obj: " + obj.GetType() + " " + hasMeshChanged + " " + hasPositionChanged + " " + hasRotationChanged + " " + hasMaxHalfHealth + " " + hasDAT_1A);
+                       //if (obj.gameObject.GetComponent<MeshRenderer>())
+                       //{
+                       //    return hasEnabledMesh || hasVisibleMesh;
+                       //    //Debug.Log("obj: " + obj.GetType() + " - MeshRenderer: enabled:" + hasEnabledMesh + " - isVisible:" + hasVisibleMesh);
+                       //}
+                       //else
+                       //{
+                       //    //Debug.Log("obj: " + obj.GetType() + " - Sin Mesh");
+                       //}
+
+                    //Objetos de recoleccion
+                    if ((obj.GetType()) == typeof(Pickup))
+                    {
+                        return hasRotationChanged;
+                    }
+                    //Efectos visuales
+                    if ((obj.GetType()) == typeof(Flash))
+                    {
+                        return true;
+                    }
+                    //Efectos que acompañan a los daños del escenario
+                    if ((obj.GetType()) == typeof(Fire1) || (obj.GetType()) == typeof(Fire2) || (obj.GetType()) == typeof(Fire3))
+                    {
+                        return true;
+                    }
+                    //Objetos estaticos en el esceario
+                    if ((obj.GetType()) == typeof(Observatory) || (obj.GetType()) == typeof(ServiceStation) || (obj.GetType()) == typeof(DonutShop))
+                    {
+                        return hasEnabledMesh || hasVisibleMesh || hasMaxHalfHealth || hasPositionChanged || hasRotationChanged;
+                    }
+                    return hasMeshChanged || hasPositionChanged || hasRotationChanged || hasMaxHalfHealth || hasDAT_1A;
+                //return obj.vTransform.position != position || !obj.vTransform.rotation.Equals(rotation);
+                //case 1://es un NAN
+                case 2://es un Vehiculo
+                    Vehicle vehicle = obj.gameObject.GetComponent<Vehicle>();
+                    int indexOf = 0;
+                    hasMaxHalfHealthBody.Clear();
+                    foreach (var item in vehicle.body)
+                    {
+                        bool hasHealth = false;
+                        //Debug.Log("item type:" + item.GetType());
+                        if (item)
+                        {
+                            //Debug.Log("item health:" + item.maxHalfHealth + " index:" + indexOf);
+                            //maxHalfHealthBody.Add(item.maxHalfHealth);
+                            //maxHalfHealthBody[indexOf] = item.maxHalfHealth;
+                            //hasMaxHalfHealthBody.Add(!item.maxHalfHealth.Equals(maxHalfHealthBody[indexOf]));
+                            hasHealth = (!item.maxHalfHealth.Equals(maxHalfHealthBody[indexOf]));
+                        }
+                        hasMaxHalfHealthBody.Add(hasHealth);
+                        indexOf++;
+                    }
+
+                    //Debug.Log("Type Object: " + obj.type);
+                    //return obj.gameObject.GetComponent<MeshFilter>().mesh.vertices == vertices;
+                    //hasMaxHalfHealthBody[0] = (!vehicle.body[0].GetComponent<VigObject>().maxHalfHealth.Equals(maxHalfHealthBody[0]));
+                    bool hasweaponSlot = (vehicle.weaponSlot != weaponSlot);
+                    bool haswheelsType = (vehicle.wheelsType != wheelsType);
+                    bool hastarget = (vehicle.target != target);
+
+                    string logText = "obj: " + obj.GetType() + "\n";
+                    logText += "Mesh: " + hasMeshChanged + "\n";
+                    logText += "Position: " + hasPositionChanged + "\n";
+                    logText += "Rotation: " + hasRotationChanged + "\n";
+                    logText += "Health: " + hasMaxHalfHealth + "\n";
+                    logText += "HealthBody[0]: " + hasMaxHalfHealthBody[0] + "\n";
+                    logText += "sDAT_1A: " + hasDAT_1A + "\n";
+                    logText += "WeaponSlot: " + hasweaponSlot + "\n";
+                    logText += "WheelsType: " + haswheelsType + "\n";
+                    logText += "Starget: " + hastarget + "\n";
+                    logText += "EnabledMesh: " + hasEnabledMesh + "\n";
+                    logText += "VisibleMesh: " + hasVisibleMesh + "\n";
+                    //Debug.Log(logText);
+                    //Debug.Log("maxHalfHealth:" + vehicle.body[0].gameObject.GetComponent<VigObject>().maxHalfHealth);
+
+                    //Debug.Log("obj: " + obj.GetType() + " hasMeshChanged:" + hasMeshChanged + " hasPositionChanged:" + hasPositionChanged + " hasRotationChanged:" + hasRotationChanged + " hasMaxHalfHealth:" + hasMaxHalfHealth + " hasDAT_1A:" + hasDAT_1A + " hasEnabledMesh:" + hasEnabledMesh + " hasVisibleMesh:" + hasVisibleMesh);
+
+                    //Debug.Log("obj: " + obj.GetType() + " " + hasweaponSlot + " " + haswheelsType + " " + hastarget);
+                    bool stateBool = (hasEnabledMesh || hasVisibleMesh || hasweaponSlot || hasMaxHalfHealth || haswheelsType || hastarget || hasDAT_1A);
+                    bool stateBool2 = (hasMaxHalfHealthBody[0] || hasMaxHalfHealthBody[1] || hasMaxHalfHealthBody[2] || hasMaxHalfHealthBody[3]);
+                    return stateBool || stateBool2;
+
+                case 3://es un Pickup, Oilk
+                    return obj.vTransform.position != position || !obj.vTransform.rotation.Equals(rotation);
+                //case 4://es un NAN
+                case 5://es un PlaceHolder, Meteor small?
+                    return true;
+                //case 6://es un NAN
+                case 7://es un Particle, Shadow Ground?
+                    return true;
+                case 8://es un Missile, Mine, Smoke?
+                    return true;
+                //case 9://es un NAN
+                case 10://es un Policia o Trailer?
+                        //Debug.Log("Type Object: " + obj.type);
+                    return hasVisibleMesh;
+                default:
+                    //Debug.Log("Type Object: " + obj.type);
+                    return hasPositionChanged || hasRotationChanged;
+            }
+        }
+
+        public void UpdateState(VigObject obj, bool hasChanges)
+        {
+            if (hasChanges)
+            {
+
+                typeid = obj.type;
+                typeObject = obj.GetType();
+                position = obj.vTransform.position;
+                rotation = obj.vTransform.rotation;
+                vmesh = obj.vMesh;
+                vChild = obj.child;
+                vChild2 = obj.child2;
+                vLOD = obj.vLOD;
+                maxHalfHealth = obj.maxHalfHealth;
+                DAT_1A = obj.DAT_1A;
+                if (obj.gameObject.GetComponent<MeshRenderer>())
+                {
+                    isEnabledMesh = obj.GetComponent<MeshRenderer>().enabled;
+                    isVisibleMesh = obj.GetComponent<MeshRenderer>().isVisible;
+                }
+                if (obj.gameObject.GetComponent<MeshFilter>())
+                {
+                    mesh = obj.gameObject.GetComponent<MeshFilter>().mesh;
+                    vertices = obj.gameObject.GetComponent<MeshFilter>().mesh.vertices;
+                    //obj.gameObject.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+                }
+                if (obj.vLOD != null)
+                    vLODVertices = obj.vLOD.vertices;
+                vShadow = obj.vShadow;
+                switch (obj.type)
+                {
+                    case 2://es un Vehiculo+
+                        Vehicle vehicle = obj.gameObject.GetComponent<Vehicle>();
+                        //maxHalfHealthBody[0] = vehicle.body[0].gameObject.GetComponent<VigObject>().maxHalfHealth;
+                        weaponSlot = vehicle.weaponSlot;
+                        wheelsType = vehicle.wheelsType;
+                        target = vehicle.target;
+
+                        int indexOf = 0;
+                        maxHalfHealthBody.Clear();
+                        foreach (var item in vehicle.body)
+                        {
+                            ushort maxHealth = 0;
+                            //Debug.Log("item type:" + item.GetType());
+                            if (item)
+                            {
+                                //Debug.Log("item health:" + item.maxHalfHealth + " index:" + indexOf);
+                                //maxHalfHealthBody.Add(item.maxHalfHealth);
+                                maxHealth = item.maxHalfHealth;
+                                //maxHalfHealthBody[indexOf] = item.maxHalfHealth;
+                            }
+                            maxHalfHealthBody.Add(maxHealth);
+                            indexOf++;
+                        }
+
+                        //Debug.Log("Type Object: " + obj.type);
+
+                        string logText = "obj: " + obj.GetType() + "\n";
+                        logText += "typeid: " + typeid + "\n";
+                        logText += "typeObject: " + typeObject + "\n";
+                        logText += "position: " + position + "\n";
+                        logText += "rotation: " + rotation + "\n";
+                        logText += "vmesh: " + vmesh + "\n";
+                        logText += "vChild: " + vChild + "\n";
+                        logText += "vChild2: " + vChild2 + "\n";
+                        logText += "vLOD: " + vLOD + "\n";
+                        logText += "maxHalfHealth: " + maxHalfHealth + "\n";
+                        logText += "maxHalfHealthBody[0]: " + maxHalfHealthBody[0] + "\n";
+                        logText += "maxHalfHealthBody[0]: " + maxHalfHealthBody[1] + "\n";
+                        logText += "DAT_1A: " + DAT_1A + "\n";
+                        Debug.Log(logText);
+
+                        break;
+                    case 10://Policia
+                        Debug.Log("obj: " + obj.GetType() + " | Type Object: " + obj.type);
+                        break;
+                }
+
+                //Debug.Log("obj: " + obj.GetType() + " | Type Object: " + obj.type + " maxHalfHealth:" + maxHalfHealth);
+
+            }
+            else
+            {
+            }
+            ishasChanges = hasChanges;
+        }
+    }
 
     public int x;
     public int y;
     private void FUN_2DEE8(int param1, int param2)
     {
         //Utilities.SetScreenOffset(param1, param2);
-
         Utilities.SetScreenOffset(x, y);
         DAT_FC8 = new Vector2Int(param1, param2);
     }
