@@ -939,6 +939,8 @@ public class GameManager : MonoBehaviour
     public static AudioSource[] voices = new AudioSource[24];
 
     // Token: 0x0400046D RID: 1133
+
+    [SerializeField]
     public static Matrix3x3 DAT_718 = new Matrix3x3
     {
         V00 = 4096,
@@ -2394,6 +2396,9 @@ public class GameManager : MonoBehaviour
         }
         Water.instance.FUN_16664(vector3Int, (int)num); //Dibuja y asigna posicion
     }
+
+
+
     public void FUN_1C134()
     {
         this.terrain.ClearTerrainData();
@@ -3075,18 +3080,10 @@ public class GameManager : MonoBehaviour
 
     [Header("SetDraw")]
     public bool setDraw = false;
-    ulong countVehicle = 0;
 
     //IMPORTANTE! Dibuja los objetos en el escenario. Actualiza Reflejos? OPTIMIZAR REFLEJOS!
     public async void FUN_30B24(List<VigTuple> param1)
     {
-        foreach (var item in param1)
-        {
-            if (item.vObject.GetType() == typeof(Vehicle))
-            {
-                countVehicle++;
-            }
-        }
         vigObjectCount = param1;
         if (setDraw)
             for (int i = 0; i < param1.Count; i++)
@@ -3096,7 +3093,6 @@ public class GameManager : MonoBehaviour
                 //await Task.Delay(TimeSpan.FromSeconds(reflectionUpdateTime));
             }
         await Task.Yield();
-        countVehicle = 0;
         //await Task.Delay(TimeSpan.FromSeconds(reflectionUpdateTime));
     }
 
@@ -6538,6 +6534,23 @@ public class GameManager : MonoBehaviour
 
     private bool shouldRunCoroutine = true;
 
+
+    [Header("Draw Distance")]
+    public bool drawTerrainDistanceBool0 = true;
+    public bool drawTerrainDistanceBool1 = true;
+    public bool drawTerrainDistanceBool2 = true;
+    public bool drawTerrainDistanceBool3 = true;
+    public bool drawTerrainDistanceBool4 = true;
+    public int drawTerrainDistanceInt0 = 0;
+    public int drawTerrainDistanceInt1 = 0;
+    public int drawTerrainDistanceInt2 = 0;
+    public int drawTerrainDistanceInt3 = 0;
+    public int drawTerrainDistanceInt4 = 0;
+    public int drawTerrainDistanceInt5 = 0;
+    public int drawTerrainDistanceIntX = 0;
+    public Vector3Int drawTerrainDistanceVector0 = new Vector3Int();
+    public Vector3Int drawTerrainDistanceVector1 = new Vector3Int();
+
     private void FUN_1C158()
     {
         //Posiblemente establece la cantidad de objetos dibujados en la escena?
@@ -6561,26 +6574,28 @@ public class GameManager : MonoBehaviour
         }
         Utilities.SetRotMatrix(this.DAT_F28.rotation);
         Vector3Int vector3Int = default(Vector3Int);
-        vector3Int.x = this.DAT_F28.position.x;
+        vector3Int.x = this.DAT_F28.position.x; //Terreno Posicion x
         if (this.DAT_F28.position.x < 0)
         {
             vector3Int.x = this.DAT_F28.position.x + 255;
         }
         vector3Int.x >>= 8;
-        vector3Int.y = this.DAT_F28.position.y;
+        vector3Int.y = this.DAT_F28.position.y; //Terreno Posicion y
         if (this.DAT_F28.position.y < 0)
         {
             vector3Int.y = this.DAT_F28.position.y + 255;
         }
         vector3Int.y >>= 8;
-        vector3Int.z = this.DAT_F28.position.z;
+        vector3Int.z = this.DAT_F28.position.z; //Terreno Posicion z
         if (this.DAT_F28.position.z < 0)
         {
             vector3Int.z = this.DAT_F28.position.z + 255;
         }
         vector3Int.z >>= 8;
-        this.terrain.UpdatePosition((Vector3)this.DAT_F28.position / (float)this.translateFactor);
-        GameManager.DAT_1f800084 = new Vector3Int(-vector3Int.x, -vector3Int.y, -vector3Int.z);
+        this.terrain.UpdatePosition((Vector3)this.DAT_F28.position / (float)this.translateFactor); //ajusta la posicion de traslado
+        GameManager.DAT_1f800084 = new Vector3Int(-vector3Int.x, -vector3Int.y, -vector3Int.z); //ajusta la posicion de traslado
+        drawTerrainDistanceVector0 = GameManager.DAT_1f800084;
+        //Ajusta posicion de dibujado (No amplia)
         Coprocessor.translationVector._trx = vector3Int.x;
         Coprocessor.translationVector._try = vector3Int.y;
         Coprocessor.translationVector._trz = vector3Int.z;
@@ -6790,14 +6805,19 @@ public class GameManager : MonoBehaviour
                 }
                 while (num3 < i);
             }
+
+            //Rotacion de Terreno-DrawScreen
             Utilities.SetRotMatrix(this.DAT_F00.rotation);
             Utilities.SetRotMatrix3(this.DAT_F00.rotation);
+
             Coprocessor.translationVector._trx = 0;
             Coprocessor.translationVector._try = 0;
             Coprocessor.translationVector._trz = 0;
             Coprocessor3.translationVector._trx = 0;
             Coprocessor3.translationVector._try = 0;
-            Coprocessor3.translationVector._trz = 0;
+            Coprocessor3.translationVector._trz = 0; // Distancia de vLOD
+
+            //Color intermedio
             Utilities.SetColorMatrix(this.levelManager.DAT_738);
             Utilities.SetColorMatrix3(this.levelManager.DAT_738);
             Utilities.SetLightMatrix(GameManager.DAT_718);
@@ -6806,13 +6826,17 @@ public class GameManager : MonoBehaviour
             Utilities.SetBackColor3((int)this.levelManager.DAT_E04.r, (int)this.levelManager.DAT_E04.g, (int)this.levelManager.DAT_E04.b);
             Utilities.SetFarColor((int)this.levelManager.DAT_DA4.r, (int)this.levelManager.DAT_DA4.g, (int)this.levelManager.DAT_DA4.b);
             Utilities.SetFarColor3((int)this.levelManager.DAT_DA4.r, (int)this.levelManager.DAT_DA4.g, (int)this.levelManager.DAT_DA4.b);
+
             GameManager.DAT_1f800080 = 256;
+
             Utilities.SetFogNearFar((int)this.DAT_DB6 << 8, (int)this.DAT_DB4 << 8, this.DAT_ED8);
             Utilities.SetFogNearFar3((int)this.DAT_DB6 << 8, (int)this.DAT_DB4 << 8, this.DAT_ED8);
+
             Coprocessor.colorCode.r = this.levelManager.DAT_DDC.r;
             Coprocessor.colorCode.g = this.levelManager.DAT_DDC.g;
             Coprocessor.colorCode.b = this.levelManager.DAT_DDC.b;
             Coprocessor.colorCode.code = this.levelManager.DAT_DDC.a;
+
             for (i = 0; i < 32; i++)
             {
                 Coprocessor.accumulator.ir1 = (short)(i << 7);
@@ -6820,6 +6844,7 @@ public class GameManager : MonoBehaviour
                 VigTerrain.DAT_BA4F0[i] = new Color32(Coprocessor.colorFIFO.r2, Coprocessor.colorFIFO.g2, Coprocessor.colorFIFO.b2, Coprocessor.colorFIFO.cd2);
                 GameManager.DAT_1f800000[i] = new Color32(this.terrain.DAT_B9370[i].r, this.terrain.DAT_B9370[i].g, this.terrain.DAT_B9370[i].b, 52);
             }
+
             GameManager.DAT_1f800094 = (short)((ushort)this.DAT_EDC);
             GameManager.DAT_1f800096 = (short)((ushort)this.DAT_F20);
             GameManager.DAT_1f800098 = (short)(this.DAT_DB6 << 8);
@@ -6828,17 +6853,22 @@ public class GameManager : MonoBehaviour
             GameManager.DAT_1f800096 = DAT_1f800096_; //240 new 32767
             GameManager.DAT_1f800098 = DAT_1f800098_; //10240 new 32767   safe: 16328
             GameManager.DAT_1f80009a = DAT_1f80009a_; //5120 new 14124 solo si mantiene camara centrada //seguro si camara hace padding: 2019
+
             this.nativeArray = new NativeArray<Vector2Int>(list2.Count, Allocator.Persistent, NativeArrayOptions.ClearMemory);
+
             for (int k = 0; k < this.nativeArray.Length; k++)
             {
                 this.nativeArray[k] = list2[k];
             }
+
             this.terrainJob = new GameManager.TerrainJob
             {
                 param1 = this.nativeArray,
                 param2 = num
             };
+
             this.terrainHandle = this.terrainJob.Schedule(default(JobHandle));
+
         }
     }
 
@@ -7331,6 +7361,7 @@ public class GameManager : MonoBehaviour
     public int refreshObject;
     public int notRefreshObject;
     public bool enabledRefreshMesh = true;
+    bool resetRefreshMesh = true;
     public bool experimentalQuality = false;
     public bool enabledReflection = true;
     public bool enabledMesh = true;
@@ -7455,7 +7486,11 @@ public class GameManager : MonoBehaviour
 #else
     private Dictionary<VigObject, ObjectState> objectStates = new Dictionary<VigObject, ObjectState>();
 #endif
-    public void FUN_2D9E0(VigObject param1)
+    int countVehicle = 0;
+
+    public int drawObjectDistace = 4194304; //default: 4194304
+
+    public async void FUN_2D9E0(VigObject param1)
     {
 
         // Control de rendimiento: Verifica los FPS o consumo de recursos
@@ -7463,11 +7498,13 @@ public class GameManager : MonoBehaviour
         {
             if (ShouldReduceUpdateFrequency())
             {
+                await Task.Yield();
                 return;
             }
         }
 
-        bool hasChanges = CheckForObjectChanges(param1);
+        bool hasChanges = await CheckForObjectChanges(param1);
+        //bool hasChanges = true;
 
         //Debug.Log("hasChanges: " + hasChanges);
         StoreObjectState(param1, hasChanges);
@@ -7482,22 +7519,31 @@ public class GameManager : MonoBehaviour
             }
 
             // Reinicia Mesh - Mejorar para borrar Mesh de Driver
-            if (enabledRefreshMesh)
+            if (enabledRefreshMesh && resetRefreshMesh)
             {
                 Utilities.ResetMesh(param1);
             }
-
+            resetRefreshMesh = true;
             VigTransform vigTransform = Utilities.CompMatrixLV(DAT_F00, param1.vTransform);
 
-            if (vigTransform.position.z >= 4194304)
+
+            //Objeto lejano
+            if (vigTransform.position.z >= drawObjectDistace)
             {
+                if (param1.GetType() == typeof(Observatory))
+                { Debug.Log("Observarotio...position"); }
+                await Task.Yield();
                 return;
             }
 
             // Optimiza La carga en el escenario
             // Retorna en primera persona. Borra Mesh de Driver
+            //Objeto fuera de la vista o lateralmente 
             if ((param1.flags & 2) != 0 || !FUN_2E22C(param1.vTransform.position, param1.DAT_58))
             {
+                if (param1.GetType() == typeof(Observatory))
+                { Debug.Log("Observarotio...flags"); }
+                await Task.Yield();
                 return;
             }
 
@@ -7553,14 +7599,24 @@ public class GameManager : MonoBehaviour
 
             if (param1.DAT_6C == 0 || vigTransform.position.z <= param1.DAT_6C)
             {
+                //if (param1.GetType() == typeof(Vehicle))
+                //if (param1.gameObject.GetComponent<Vehicle>() != GameManager.instance.playerObjects[0]) ;
+                //Debug.Log("Vehiculo...1");
                 if ((param1.flags & 0x20000) == 0)
                 {
+                    //if (param1.GetType() == typeof(Vehicle))
+                    //Debug.Log("Vehiculo...2");
                     if ((param1.flags & 0x10000) == 0 || DAT_DA0 <= param1.vTransform.position.z || param1.vTransform.position.y + param1.DAT_58 <= DAT_DB0)
                     {
+                        //if (param1.GetType() == typeof(Vehicle))
+                        //Debug.Log("Vehiculo...3");
                         // Debug.Log("Distancia 1: flags: " + param1.flags + " - DAT_DA0: " + DAT_DA0 + " <= vTransform.position.z: " + param1.vTransform.position.z + " vTransform.position.y: " + param1.vTransform.position.y + " + DAT_58: " + param1.DAT_58 + " <= DAT_DB0: " + DAT_DB0);
                         // Spawn Vehicle?
                         if (param1.vMesh != null)
                         {
+                            if (param1.GetType() == typeof(Observatory) && param1.gameObject.GetComponent<Observatory>() != GameManager.instance.playerObjects[0])
+                                Debug.Log("Observatory...vMesh");
+                            //Debug.Log("Vehiculo...vMesh");
                             //Debug.Log("Draw Mesh...:" + param1.vMesh + " - " + param1.child2);
                             if (enabledMesh)
                                 //param1.vMesh.en // Carroceria Dakota
@@ -7569,6 +7625,9 @@ public class GameManager : MonoBehaviour
                         }
                         if (param1.child2 != null)
                         {
+                            if (param1.GetType() == typeof(Observatory) && param1.gameObject.GetComponent<Observatory>() != GameManager.instance.playerObjects[0])
+                                Debug.Log("Observatory...child2");
+                            //Debug.Log("Vehiculo...child2");
                             if (enabledChild2)
                                 FUN_2D778(param1.child2, vigTransform); // Llantas Dakota y Carroceria de otros
                         }
@@ -7588,7 +7647,7 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    // Deshabilita Normal LOD??
+                    //Deshabilita Normal LOD??
                     Vector3Int param2 = new Vector3Int(param1.vTransform.position.x, terrain.FUN_1B750((uint)param1.vTransform.position.x, (uint)param1.vTransform.position.z), param1.vTransform.position.z);
                     Vector3Int n = terrain.FUN_1BB50(param1.vTransform.position.x, param1.vTransform.position.z);
                     n = Utilities.VectorNormal(n);
@@ -7602,17 +7661,35 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
-
-            // Render vLOD
+            //Render vLOD
             else if (param1.vLOD != null)
             {
+                if (param1.GetType() == typeof(Observatory) && param1.gameObject.GetComponent<Observatory>() != GameManager.instance.playerObjects[0])
+                    Debug.Log("Observatory...vLOD");
                 if (enabledvLoD)
                 {
                     vigTransform.rotation = param1.FUN_2D884(vigTransform);
                 }
+                else //Precausion: Nunca usa LODs
+                {
+                    if (param1.vMesh != null)
+                    {
+                        //if (param1.GetType() == typeof(Vehicle))
+                        //Debug.Log("Vehiculo...vMesh");
+                        if (enabledMesh)
+                            param1.vMesh.FUN_21F70(vigTransform); //Carroceria Dakota
+                    }
+                    if (param1.child2 != null)
+                    {
+                        //if (param1.GetType() == typeof(Vehicle))
+                        //Debug.Log("Vehiculo...child2");
+                        if (enabledChild2)
+                            FUN_2D778(param1.child2, vigTransform); //Llantas Dakota y Carroceria de otros
+                    }
+                }
             }
 
-            // Draw Shadow GROUND
+            //Draw Shadow GROUND
             if (enabledReflection)
             {
                 if ((param1.flags & 8) != 0)
@@ -7630,8 +7707,8 @@ public class GameManager : MonoBehaviour
         {
             notRefreshObject++;
         }
+        await Task.Yield();
     }
-
 
     private bool ShouldReduceUpdateFrequency()
     {
@@ -7644,15 +7721,15 @@ public class GameManager : MonoBehaviour
         return Time.deltaTime > checkFPS;// Si el tiempo por frame supera los 0.02 segundos, se considera bajo rendimiento.
     }
 
-    private bool CheckForObjectChanges(VigObject obj)
+    private async Task<bool> CheckForObjectChanges(VigObject obj)
     {
-
         if (objectStates.TryGetValue(obj, out ObjectState state))
         {
             //Debug.Log("No ha cambiado...");
-            return state.HasChanged(obj);
+            return await state.HasChanged(obj);
         }
         //Debug.Log("Ha cambiado...");
+        await Task.Yield();
         return true; // No previous state found, consider it changed
     }
 
@@ -7679,21 +7756,26 @@ public class GameManager : MonoBehaviour
         public bool ishasChanges;
         public bool isEnabledMesh;
         public bool isVisibleMesh;
+        public int SubMeshCount;
+        public int VertexCount;
+
         public int typeid;
         public Type typeObject;
         public Vector3 position;
         public Matrix3x3 rotation;
         public VigMesh vmesh;
-        public VigMesh vmeshVertices;
         public VigMesh vLOD;
+        public VigObject Child;
+        public VigObject Child2;
+
+        public VigMesh vmeshVertices;
         public Mesh mesh;
         public Vector3[] vertices;
         public ushort vLODVertices;
         public VigShadow vShadow;
-        public VigObject vChild;
-        public VigObject vChild2;
+
         public ushort maxHalfHealth;
-        public List<ushort> maxHalfHealthBody = new List<ushort>();
+
         public short DAT_1A;
         //public bool shouldUpdate; // Indica si el objeto debe actualizarse
         //public bool hasMeshChanged; // Indica si el objeto ha cambiado de malla
@@ -7703,142 +7785,238 @@ public class GameManager : MonoBehaviour
         public int weaponSlot;
         public _WHEELS wheelsType;
         public VigObject target;
-
+        public List<short> DAT_1ABody = new List<short>();
+        public List<ushort> maxHalfHealthBody = new List<ushort>();
+        public List<VigObject> ListWeapons = new List<VigObject>();
+        public List<ushort> ListWheelsDAT_4A = new List<ushort>();
+        public List<_WHEEL_TYPE> ListWheelsState = new List<_WHEEL_TYPE>();
         public ObjectState(VigObject obj, bool hasChanges)
         {
-
             UpdateState(obj, hasChanges);
         }
 
-        public bool HasChanged(VigObject obj)
+        public async Task<bool> HasChanged(VigObject obj)
         {
+
+            if (obj.GetType() == typeof(Wheel))
+                Debug.Log("Wheel...");
             //Recoger estados
             MeshFilter meshFilter = new MeshFilter();
             bool hasMeshChanged = false;
+            bool hasSubMeshChanged = false;
+            bool hasVertexMeshChanged = false;
             bool hasPositionChanged = false;
             bool hasRotationChanged = false;
             bool hasMaxHalfHealth = false;
-            List<bool> hasMaxHalfHealthBody = new List<bool>();
+
+            List<bool> hasListDAT_1ABody = new List<bool>();
+            List<bool> hasListWheelsDAT_4A = new List<bool>();
+            List<bool> hasListWheelsState = new List<bool>();
+            List<bool> hasListMaxHalfHealthBody = new List<bool>();
+            List<bool> hasListWeapons = new List<bool>();
+
+            bool hasvmesh = false;
+            bool hasChild = false;
+            bool hasChild2 = false;
+            bool hasvLOD = false;
             bool hasDAT_1A = false;
             bool hasEnabledMesh = false;
             bool hasVisibleMesh = false;
+
+            //solo valido un frame por delante o siguiente iteracion
             if (obj.gameObject.GetComponent<MeshFilter>())
             {
+                obj.gameObject.GetComponent<MeshFilter>().mesh.Optimize();
+                obj.gameObject.GetComponent<MeshFilter>().mesh.OptimizeIndexBuffers();
+                obj.gameObject.GetComponent<MeshFilter>().mesh.OptimizeReorderVertexBuffer();
+                obj.gameObject.GetComponent<MeshFilter>().mesh.MarkDynamic();
+                //obj.gameObject.GetComponent<MeshFilter>().mesh.Clear();
                 meshFilter = obj.gameObject.GetComponent<MeshFilter>();
                 hasMeshChanged = (!meshFilter.mesh.vertices.Equals(vertices));
+                hasSubMeshChanged = (!meshFilter.mesh.subMeshCount.Equals(SubMeshCount));
+                hasVertexMeshChanged = (!meshFilter.mesh.vertexCount.Equals(VertexCount));
             }
+
             hasPositionChanged = (!obj.vTransform.position.Equals(position));
             hasRotationChanged = (!obj.vTransform.rotation.Equals(rotation));
             hasMaxHalfHealth = (!obj.maxHalfHealth.Equals(maxHalfHealth));
+
+            if (obj.vMesh != null)
+                hasvmesh = true;
+            else
+                hasvmesh = false;
+            if (obj.child != null)
+                hasChild = true;
+            else
+                hasChild = false;
+            if (obj.child2 != null)
+                hasChild2 = true;
+            else
+                hasChild2 = false;
+            if (obj.vLOD != null)
+                hasvLOD = true;
+            else
+                hasvLOD = false;
+
             hasDAT_1A = (!obj.DAT_1A.Equals(DAT_1A));
+
             if (obj.gameObject.GetComponent<MeshRenderer>())
             {
                 hasEnabledMesh = (!obj.GetComponent<MeshRenderer>().enabled.Equals(isEnabledMesh));
                 hasVisibleMesh = (!obj.GetComponent<MeshRenderer>().isVisible.Equals(isVisibleMesh));
             }
+
             switch (obj.type)
             {
                 case 0://es un Objeto Child o Variado?
-                       //return obj.gameObject.GetComponent<MeshFilter>().mesh.vertices != vertices || obj.vTransform.position != position || !obj.vTransform.rotation.Equals(rotation);
-                       //Debug.Log("obj: " + obj.GetType() + " " + hasMeshChanged + " " + hasPositionChanged + " " + hasRotationChanged + " " + hasMaxHalfHealth + " " + hasDAT_1A);
-                       //if (obj.gameObject.GetComponent<MeshRenderer>())
-                       //{
-                       //    return hasEnabledMesh || hasVisibleMesh;
-                       //    //Debug.Log("obj: " + obj.GetType() + " - MeshRenderer: enabled:" + hasEnabledMesh + " - isVisible:" + hasVisibleMesh);
-                       //}
-                       //else
-                       //{
-                       //    //Debug.Log("obj: " + obj.GetType() + " - Sin Mesh");
-                       //}
-
                     //Objetos de recoleccion
                     if ((obj.GetType()) == typeof(Pickup))
                     {
+                        await Task.Yield();
                         return hasRotationChanged;
                     }
                     //Efectos visuales
                     if ((obj.GetType()) == typeof(Flash))
                     {
+                        await Task.Yield();
                         return true;
                     }
                     //Efectos que acompañan a los daños del escenario
                     if ((obj.GetType()) == typeof(Fire1) || (obj.GetType()) == typeof(Fire2) || (obj.GetType()) == typeof(Fire3))
                     {
+                        await Task.Yield();
                         return true;
                     }
                     //Objetos estaticos en el esceario
                     if ((obj.GetType()) == typeof(Observatory) || (obj.GetType()) == typeof(ServiceStation) || (obj.GetType()) == typeof(DonutShop))
                     {
+                        await Task.Yield();
                         return hasEnabledMesh || hasVisibleMesh || hasMaxHalfHealth || hasPositionChanged || hasRotationChanged;
                     }
-                    return hasMeshChanged || hasPositionChanged || hasRotationChanged || hasMaxHalfHealth || hasDAT_1A;
-                //return obj.vTransform.position != position || !obj.vTransform.rotation.Equals(rotation);
+                    await Task.Yield();
+                    return hasPositionChanged || hasRotationChanged || hasMaxHalfHealth || hasDAT_1A;
                 //case 1://es un NAN
                 case 2://es un Vehiculo
                     Vehicle vehicle = obj.gameObject.GetComponent<Vehicle>();
                     int indexOf = 0;
-                    hasMaxHalfHealthBody.Clear();
-                    foreach (var item in vehicle.body)
+                    hasListDAT_1ABody.Clear();
+                    hasListMaxHalfHealthBody.Clear();
+                    foreach (var body in vehicle.body)
                     {
+                        bool hasDAT_1ABody = false;
                         bool hasHealth = false;
                         //Debug.Log("item type:" + item.GetType());
-                        if (item)
+                        if (body)
                         {
-                            //Debug.Log("item health:" + item.maxHalfHealth + " index:" + indexOf);
-                            //maxHalfHealthBody.Add(item.maxHalfHealth);
-                            //maxHalfHealthBody[indexOf] = item.maxHalfHealth;
-                            //hasMaxHalfHealthBody.Add(!item.maxHalfHealth.Equals(maxHalfHealthBody[indexOf]));
-                            hasHealth = (!item.maxHalfHealth.Equals(maxHalfHealthBody[indexOf]));
+                            hasDAT_1A = (!body.DAT_1A.Equals(DAT_1ABody[indexOf]));
+                            hasHealth = (!body.maxHalfHealth.Equals(maxHalfHealthBody[indexOf]));
                         }
-                        hasMaxHalfHealthBody.Add(hasHealth);
+                        hasListDAT_1ABody.Add(hasDAT_1ABody);
+                        hasListMaxHalfHealthBody.Add(hasHealth);
                         indexOf++;
                     }
-
-                    //Debug.Log("Type Object: " + obj.type);
-                    //return obj.gameObject.GetComponent<MeshFilter>().mesh.vertices == vertices;
-                    //hasMaxHalfHealthBody[0] = (!vehicle.body[0].GetComponent<VigObject>().maxHalfHealth.Equals(maxHalfHealthBody[0]));
+                    indexOf = 0;
+                    hasListWeapons.Clear();
+                    foreach (var weapon in vehicle.weapons)
+                    {
+                        bool hasWeapons = false;
+                        if (weapon)
+                        {
+                            hasWeapons = (vehicle.weapons[indexOf] != ListWeapons[indexOf]);
+                        }
+                        hasListWeapons.Add(hasWeapons);
+                        indexOf++;
+                    }
+                    indexOf = 0;
+                    hasListWheelsDAT_4A.Clear();
+                    hasListWheelsState.Clear();
+                    foreach (var Wheels in vehicle.wheels)
+                    {
+                        bool hasWheelsDAT_4A = false;
+                        bool hasWheelsState = false;
+                        if (Wheels)
+                        {
+                            hasWheelsDAT_4A = (vehicle.wheels[indexOf].DAT_4A != ListWheelsDAT_4A[indexOf]);
+                            hasWheelsState = (vehicle.wheels[indexOf].state != ListWheelsState[indexOf]);
+                        }
+                        hasListWheelsDAT_4A.Add(hasWheelsDAT_4A);
+                        hasListWheelsState.Add(hasWheelsState);
+                        indexOf++;
+                    }
                     bool hasweaponSlot = (vehicle.weaponSlot != weaponSlot);
                     bool haswheelsType = (vehicle.wheelsType != wheelsType);
                     bool hastarget = (vehicle.target != target);
+                    //if (meshFilter.mesh.subMeshCount != 0 || meshFilter.mesh.vertexCount != 0)
+                    //GameManager.instance.resetRefreshMesh = false;
 
+#if DEBUG
                     string logText = "obj: " + obj.GetType() + "\n";
-                    logText += "Mesh: " + hasMeshChanged + "\n";
+                    //logText += "Mesh: " + hasMeshChanged + "\n";
                     logText += "Position: " + hasPositionChanged + "\n";
                     logText += "Rotation: " + hasRotationChanged + "\n";
                     logText += "Health: " + hasMaxHalfHealth + "\n";
-                    logText += "HealthBody[0]: " + hasMaxHalfHealthBody[0] + "\n";
-                    logText += "sDAT_1A: " + hasDAT_1A + "\n";
+                    logText += "HealthBody[0]: " + hasListMaxHalfHealthBody[0] + "\n";
+                    logText += "HealthBody[1]: " + hasListMaxHalfHealthBody[1] + "\n";
+                    logText += "DAT_1ABody[0]: " + hasListDAT_1ABody[0] + "\n";
+                    logText += "DAT_1ABody[1]: " + hasListDAT_1ABody[1] + "\n";
+                    logText += "Weapons[0]: " + hasListWeapons[0] + "\n";
+                    logText += "Weapons[1]: " + hasListWeapons[1] + "\n";
+                    logText += "Weapons[2]: " + hasListWeapons[2] + "\n";
+                    logText += "WheelsDAT_4A[0]: " + hasListWheelsDAT_4A[0] + "\n";
+                    logText += "WheelsState[0]: " + hasListWheelsState[0] + "\n";
+                    logText += "DAT_1A: " + hasDAT_1A + "\n";
+                    logText += "vMesh: " + hasvmesh + "\n";
+                    logText += "Child: " + hasChild + "\n";
+                    logText += "Child2: " + hasChild2 + "\n";
+                    logText += "vLOD: " + hasvLOD + "\n";
                     logText += "WeaponSlot: " + hasweaponSlot + "\n";
                     logText += "WheelsType: " + haswheelsType + "\n";
                     logText += "Starget: " + hastarget + "\n";
                     logText += "EnabledMesh: " + hasEnabledMesh + "\n";
                     logText += "VisibleMesh: " + hasVisibleMesh + "\n";
-                    //Debug.Log(logText);
-                    //Debug.Log("maxHalfHealth:" + vehicle.body[0].gameObject.GetComponent<VigObject>().maxHalfHealth);
+                    logText += "SubMesh: " + hasSubMeshChanged + "\n";
+                    logText += "VertexMesh: " + hasVertexMeshChanged + "\n";
+                    logText += "subMeshCount: " + meshFilter.mesh.subMeshCount + "\n";
+                    logText += "vertexCount: " + meshFilter.mesh.vertexCount + "\n";
+                    if (vehicle != GameManager.instance.playerObjects[0])
+                    {
+                        //Debug.Log(logText);
+                    }
+#endif
 
-                    //Debug.Log("obj: " + obj.GetType() + " hasMeshChanged:" + hasMeshChanged + " hasPositionChanged:" + hasPositionChanged + " hasRotationChanged:" + hasRotationChanged + " hasMaxHalfHealth:" + hasMaxHalfHealth + " hasDAT_1A:" + hasDAT_1A + " hasEnabledMesh:" + hasEnabledMesh + " hasVisibleMesh:" + hasVisibleMesh);
-
-                    //Debug.Log("obj: " + obj.GetType() + " " + hasweaponSlot + " " + haswheelsType + " " + hastarget);
-                    bool stateBool = (hasEnabledMesh || hasVisibleMesh || hasweaponSlot || hasMaxHalfHealth || haswheelsType || hastarget || hasDAT_1A);
-                    bool stateBool2 = (hasMaxHalfHealthBody[0] || hasMaxHalfHealthBody[1] || hasMaxHalfHealthBody[2] || hasMaxHalfHealthBody[3]);
-                    return stateBool || stateBool2;
-
+                    bool stateBool = (hasChild2 || hasvLOD || hasEnabledMesh || hasVisibleMesh || hasweaponSlot || hasMaxHalfHealth || haswheelsType || hastarget || hasDAT_1A);
+                    bool stateBool2 = (hasListMaxHalfHealthBody[0] || hasListMaxHalfHealthBody[1] || hasListMaxHalfHealthBody[2] || hasListMaxHalfHealthBody[3] || hasListDAT_1ABody[0] || hasListDAT_1ABody[1]);
+                    bool stateBool3 = (hasListWeapons[0] || hasListWeapons[1] || hasListWeapons[2]);
+                    bool stateBool4 = false;
+                    if (isVisibleMesh) //solo comprueba si el mesh esta visible
+                        stateBool4 = (hasListWheelsDAT_4A[0] || hasListWheelsDAT_4A[1] || hasListWheelsDAT_4A[2] || hasListWheelsDAT_4A[3] || hasListWheelsDAT_4A[4] || hasListWheelsDAT_4A[5]);
+                    bool stateBool5 = (hasListWheelsState[0] || hasListWheelsState[1] || hasListWheelsState[2] || hasListWheelsState[3] || hasListWheelsState[4] || hasListWheelsState[5]);
+                    bool stateBool6 = (hasSubMeshChanged || hasVertexMeshChanged);
+                    bool stateBool7 = (vehicle.DAT_F6 == 1); //animacion escudo
+                    await Task.Yield();
+                    return stateBool || stateBool2 || stateBool3 || stateBool4 || stateBool5 || stateBool6 || stateBool7;
                 case 3://es un Pickup, Oilk
+                    await Task.Yield();
                     return obj.vTransform.position != position || !obj.vTransform.rotation.Equals(rotation);
                 //case 4://es un NAN
                 case 5://es un PlaceHolder, Meteor small?
+                    await Task.Yield();
                     return true;
                 //case 6://es un NAN
                 case 7://es un Particle, Shadow Ground?
+                    await Task.Yield();
                     return true;
                 case 8://es un Missile, Mine, Smoke?
+                    await Task.Yield();
                     return true;
                 //case 9://es un NAN
                 case 10://es un Policia o Trailer?
-                        //Debug.Log("Type Object: " + obj.type);
-                    return hasVisibleMesh;
+                    //Debug.Log("Type Object: " + obj.GetType() + "meshed info: " + meshFilter.mesh.subMeshCount + " " + meshFilter.mesh.vertexCount);
+                    await Task.Yield();
+                    return hasVisibleMesh || hasSubMeshChanged || hasVertexMeshChanged;
                 default:
                     //Debug.Log("Type Object: " + obj.type);
+                    await Task.Yield();
                     return hasPositionChanged || hasRotationChanged;
             }
         }
@@ -7847,26 +8025,29 @@ public class GameManager : MonoBehaviour
         {
             if (hasChanges)
             {
-
                 typeid = obj.type;
                 typeObject = obj.GetType();
                 position = obj.vTransform.position;
                 rotation = obj.vTransform.rotation;
                 vmesh = obj.vMesh;
-                vChild = obj.child;
-                vChild2 = obj.child2;
+                Child = obj.child;
+                Child2 = obj.child2;
                 vLOD = obj.vLOD;
                 maxHalfHealth = obj.maxHalfHealth;
                 DAT_1A = obj.DAT_1A;
-                if (obj.gameObject.GetComponent<MeshRenderer>())
+                if (obj && obj.gameObject.GetComponent<MeshRenderer>())
                 {
                     isEnabledMesh = obj.GetComponent<MeshRenderer>().enabled;
                     isVisibleMesh = obj.GetComponent<MeshRenderer>().isVisible;
                 }
-                if (obj.gameObject.GetComponent<MeshFilter>())
+
+                if (obj && obj.gameObject.GetComponent<MeshFilter>())
                 {
                     mesh = obj.gameObject.GetComponent<MeshFilter>().mesh;
-                    vertices = obj.gameObject.GetComponent<MeshFilter>().mesh.vertices;
+                    vertices = mesh.vertices;
+                    SubMeshCount = mesh.subMeshCount;
+                    VertexCount = mesh.vertexCount;
+                    //vertices = obj.gameObject.GetComponent<MeshFilter>().mesh.vertices;
                     //obj.gameObject.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
                 }
                 if (obj.vLOD != null)
@@ -7882,22 +8063,54 @@ public class GameManager : MonoBehaviour
                         target = vehicle.target;
 
                         int indexOf = 0;
+                        DAT_1ABody.Clear();
                         maxHalfHealthBody.Clear();
                         foreach (var item in vehicle.body)
                         {
+                            short DAT_1A = 0;
                             ushort maxHealth = 0;
                             //Debug.Log("item type:" + item.GetType());
                             if (item)
                             {
-                                //Debug.Log("item health:" + item.maxHalfHealth + " index:" + indexOf);
-                                //maxHalfHealthBody.Add(item.maxHalfHealth);
+                                DAT_1A = item.DAT_1A;
                                 maxHealth = item.maxHalfHealth;
-                                //maxHalfHealthBody[indexOf] = item.maxHalfHealth;
                             }
+                            DAT_1ABody.Add(DAT_1A);
                             maxHalfHealthBody.Add(maxHealth);
                             indexOf++;
                         }
+                        indexOf = 0;
+                        ListWeapons.Clear();
+                        foreach (var weapon in vehicle.weapons)
+                        {
+                            VigObject Weapons = null;
+                            if (weapon)
+                            {
+                                Weapons = (vehicle.weapons[indexOf]);
 
+                            }
+                            ListWeapons.Add(Weapons);
+                            indexOf++;
+
+                        }
+                        indexOf = 0;
+                        ListWheelsDAT_4A.Clear();
+                        ListWheelsState.Clear();
+
+                        foreach (var Wheels in vehicle.wheels)
+                        {
+                            ushort WheelsDAT_4A = 0;
+                            _WHEEL_TYPE WheelsState = _WHEEL_TYPE.Unflatten;
+                            if (Wheels)
+                            {
+                                WheelsDAT_4A = vehicle.wheels[indexOf].DAT_4A;
+                                WheelsState = vehicle.wheels[indexOf].state;
+                            }
+                            ListWheelsDAT_4A.Add(WheelsDAT_4A);
+                            ListWheelsState.Add(WheelsState);
+                            indexOf++;
+                        }
+#if DEBUG
                         //Debug.Log("Type Object: " + obj.type);
 
                         string logText = "obj: " + obj.GetType() + "\n";
@@ -7906,21 +8119,67 @@ public class GameManager : MonoBehaviour
                         logText += "position: " + position + "\n";
                         logText += "rotation: " + rotation + "\n";
                         logText += "vmesh: " + vmesh + "\n";
-                        logText += "vChild: " + vChild + "\n";
-                        logText += "vChild2: " + vChild2 + "\n";
+                        logText += "vChild: " + Child + "\n";
+                        logText += "vChild2: " + Child2 + "\n";
                         logText += "vLOD: " + vLOD + "\n";
                         logText += "maxHalfHealth: " + maxHalfHealth + "\n";
                         logText += "maxHalfHealthBody[0]: " + maxHalfHealthBody[0] + "\n";
-                        logText += "maxHalfHealthBody[0]: " + maxHalfHealthBody[1] + "\n";
+                        logText += "maxHalfHealthBody[1]: " + maxHalfHealthBody[1] + "\n";
+                        logText += "DAT_1ABody[0]: " + DAT_1ABody[0] + "\n";
+                        logText += "DAT_1ABody[1]: " + DAT_1ABody[1] + "\n";
+                        indexOf = 0;
+
+                        foreach (var Weapons in ListWeapons)
+                        {
+                            if (Weapons)
+                                logText += "Weapons[0]: " + Weapons.GetType() + "\n";
+                            indexOf++;
+                        }
+                        indexOf = 0;
+                        foreach (var wheels in vehicle.wheels)
+                        {
+                            if (wheels)
+                                logText += "WheelsDAT_4A[" + indexOf + "]: " + wheels.DAT_4A + "\n";
+                            indexOf++;
+                        }
+                        indexOf = 0;
+                        foreach (var wheels in vehicle.wheels)
+                        {
+                            if (wheels)
+                                logText += "WheelsState[" + indexOf + "]: " + wheels.state + "\n";
+                            indexOf++;
+                        }
                         logText += "DAT_1A: " + DAT_1A + "\n";
-                        Debug.Log(logText);
+                        logText += "SubMeshCount: " + SubMeshCount + "\n";
+                        logText += "VertexMeshCount: " + VertexCount + "\n";
+                        //Debug.Log(logText);
+#endif
+                        //Comprueba los vehiculos en escena
+                        int countVehicleItem = 0;
+                        foreach (var item in GameManager.instance.objectStates)
+                        {
+                            if (item.Key.GetType() == typeof(Vehicle))
+                            {
+                                countVehicleItem++;
+                            }
+                        }
+                        GameManager.instance.countVehicle = countVehicleItem;
+
+                        if (maxHalfHealthBody[0] == 0 || maxHalfHealthBody[1] == 0)
+                        {
+                            GameManager.instance.objectStates.Remove(obj);
+                            //GameManager.instance.objectStates[obj].UpdateState(obj, hasChanges);
+                        }
 
                         break;
                     case 10://Policia
-                        Debug.Log("obj: " + obj.GetType() + " | Type Object: " + obj.type);
+                        //Debug.Log("obj: " + obj.GetType() + " | Type Object: " + obj.type);
                         break;
                 }
-
+                if (obj.GetType() != typeof(Vehicle))
+                {
+                    Debug.Log("obj: " + obj.GetType() + " | Type Object: " + obj.type);
+                }
                 //Debug.Log("obj: " + obj.GetType() + " | Type Object: " + obj.type + " maxHalfHealth:" + maxHalfHealth);
 
             }

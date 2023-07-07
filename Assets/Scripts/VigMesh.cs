@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -5,6 +6,7 @@ using Unity.Burst;
 using UnityEngine;
 
 [BurstCompile]
+[Serializable]
 public class VigMesh : MonoBehaviour
 {
 	public byte DAT_00;

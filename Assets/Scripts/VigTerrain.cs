@@ -1129,7 +1129,7 @@ public class VigTerrain : MonoBehaviour
     public static void FUN_29520(int param1, int param2, int param3, int param4)
     {
         int translateFactor = GameManager.instance.translateFactor2;
-        int num = (int)((ushort)GameManager.DAT_1f80009a - 4096);
+        int num = (int)((ushort)GameManager.DAT_1f80009a - 4096); //TerrainDrawDistance?
         int num2 = VigTerrain.in_t4;
         param3 = Mathf.Clamp(param3, 1, 16);
         if ((VigTerrain._tileData[num2].flags & 1) == 0)
@@ -1697,6 +1697,7 @@ public class VigTerrain : MonoBehaviour
     public static int index;
 
     // Token: 0x0400086D RID: 2157
+    [SerializeField]
     public static int[] index2;
 
     // Token: 0x0400086E RID: 2158

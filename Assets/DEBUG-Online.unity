@@ -3246,6 +3246,15 @@ MonoBehaviour:
   mapText: Arizona
   difficultyInt: 0
   isWait: 0
+  drawTerrainDistanceBool0: 1
+  drawTerrainDistanceBool1: 1
+  drawTerrainDistanceBool2: 1
+  drawTerrainDistanceInt0: 0
+  drawTerrainDistanceInt1: 0
+  drawTerrainDistanceInt2: 0
+  drawTerrainDistanceInt3: 0
+  drawTerrainDistanceInt4: 0
+  drawTerrainDistanceInt5: 0
   updateReflections: 1
   reflectionUpdateTime: 0
   Vehiclereflection: 0
@@ -3263,6 +3272,7 @@ MonoBehaviour:
   objectStates:
     vigObjectList: []
     objectStateElement: []
+  drawDistace: 4194304
   x: 0
   y: 0
   configContainersObject: []

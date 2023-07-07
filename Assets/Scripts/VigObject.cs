@@ -534,6 +534,7 @@ public class VigObject : MonoBehaviour
 
     public BufferedBinaryReader vAnim;
 
+    [SerializeField]
     public VigMesh vLOD;
 
     public int DAT_6C;

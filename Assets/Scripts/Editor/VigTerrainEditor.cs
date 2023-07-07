@@ -156,7 +156,7 @@ public class TerrainEditor : Editor
 
                     int tileIndex = zone * 4096 + x * 64 + y;
 
-                    float uv1_x = (float)terrain.tileData[terrain.tiles[tileIndex]].uv1_x / (mat.mainTexture.width - 1);
+                    float uv1_x = 1.0f;//(float)terrain.tileData[terrain.tiles[tileIndex]].uv1_x / (mat.mainTexture.width - 1);
                     float uv1_y = 1.0f - (float)terrain.tileData[terrain.tiles[tileIndex]].uv1_y / (mat.mainTexture.height - 1);
 
                     float uv2_x = (float)terrain.tileData[terrain.tiles[tileIndex]].uv2_x / (mat.mainTexture.width - 1);
