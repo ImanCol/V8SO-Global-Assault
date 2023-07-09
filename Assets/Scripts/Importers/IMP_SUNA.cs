@@ -1,43 +1,61 @@
 using System.IO;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class IMP_SUNA
 {
-	public static void LoadAsset(string assetPath)
-	{
-		using (BinaryReader binaryReader = new BinaryReader(File.Open(assetPath, FileMode.Open)))
-		{
-			LevelManager levelManager = Object.FindObjectOfType<LevelManager>();
-			uint num = (uint)((binaryReader.BaseStream.Length >= 13) ? ((int)((uint)binaryReader.ReadUInt16(12) >> 8) | (binaryReader.ReadByte(12) << 8)) : 4096);
-			int num2 = ((int)((uint)binaryReader.ReadUInt16(0) >> 8) | ((binaryReader.ReadUInt16(0) & 0xF) << 8)) * 2;
-			int num3 = ((int)((uint)binaryReader.ReadUInt16(2) >> 8) | ((binaryReader.ReadUInt16(2) & 0xF) << 8)) * 2;
-			int num4 = Utilities.DAT_65C90[num2 + 1];
-			int num5 = Utilities.DAT_65C90[num3] * num4;
-			if (num5 < 0)
-			{
-				num5 += 4095;
-			}
-			num5 = (num5 >> 12) * (int)num;
-			if (num5 < 0)
-			{
-				num5 += 4095;
-			}
-			num2 = -Utilities.DAT_65C90[num2] * (int)num;
-			if (num2 < 0)
-			{
-				num2 += 4095;
-			}
-			num4 = Utilities.DAT_65C90[num3 + 1] * num4;
-			if (num4 < 0)
-			{
-				num4 += 4095;
-			}
-			num3 = (num4 >> 12) * (int)num;
-			if (num3 < 0)
-			{
-				num3 += 4095;
-			}
-			levelManager.DAT_10F8 = new Vector3Int(num5 >> 12, num2 >> 12, num3 >> 12);
-		}
-	}
+    //FUN_2A6C (LOAD.DLL)
+    public static void LoadAsset(string assetPath)
+    {
+        using (BinaryReader reader = new BinaryReader(File.Open(assetPath, FileMode.Open)))
+        {
+            int iVar1;
+            int iVar2;
+            uint uVar3;
+            int iVar4;
+            int iVar5;
+            LevelManager levelManager = GameObject.FindObjectOfType<LevelManager>();
+
+            if (reader.BaseStream.Length < 13)
+                uVar3 = 0x1000;
+            else
+                uVar3 = (uint)reader.ReadUInt16(12) >> 8 | (uint)reader.ReadByte(12) << 8;
+
+            iVar1 = (int)((uint)reader.ReadUInt16(0) >> 8 | (uint)(reader.ReadUInt16(0) & 0xf) << 8) * 2;
+            iVar2 = (int)((uint)reader.ReadUInt16(2) >> 8 | (uint)(reader.ReadUInt16(2) & 0xf) << 8) * 2;
+            iVar4 = Utilities.DAT_65C90[iVar1 + 1];
+            iVar5 = Utilities.DAT_65C90[iVar2] * iVar4;
+
+            if (iVar5 < 0)
+                iVar5 += 4095;
+
+            iVar5 = (iVar5 >> 12) * (int)uVar3;
+
+            if (iVar5 < 0)
+                iVar5 += 4095;
+
+            iVar1 = -Utilities.DAT_65C90[iVar1] * (int)uVar3;
+
+            if (iVar1 < 0)
+                iVar1 += 4095;
+
+            iVar4 = Utilities.DAT_65C90[iVar2 + 1] * iVar4;
+
+            if (iVar4 < 0)
+                iVar4 += 4095;
+
+            iVar2 = (iVar4 >> 12) * (int)uVar3;
+
+            if (iVar2 < 0)
+                iVar2 += 4095;
+
+            levelManager.DAT_10F8 = new Vector3Int
+                (iVar5 >> 12, iVar1 >> 12, iVar2 >> 12);
+#if UNITY_EDITOR
+            EditorUtility.SetDirty(levelManager.gameObject);
+#endif
+        }
+    }
 }

@@ -1,11 +1,13 @@
 using System.IO;
 using System.Text;
 using UnityEngine;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
+[Serializable]
 public class JUNC_DB : MonoBehaviour
 {
     public Vector3Int DAT_00;

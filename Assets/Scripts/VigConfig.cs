@@ -25,6 +25,7 @@ public class VigConfig : MonoBehaviour
     {
         //Debug.Log("Detectando colision... ushort:" + param1 + " - Type:" + param2 + " - uint:" + param3);
         //Debug.Log("configContainer... ushort:" + param1 + " - Type:" + param2 + " - uint:" + param3);
+        Debug.Log("ConfigContainers Index:" + param1);
         ConfigContainer configContainer = configContainers[param1]; //error en Cansoncity con el Agua
         VigObject vigObject;
         if ((short)configContainer.flag < 0 || (255 < (short)configContainer.objID && (param3 & 0x20) != 0))

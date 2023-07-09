@@ -1,1697 +1,1305 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Text;
+using System.IO;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 
 public static class IMP_TIM
 {
-	private struct RECT
-	{
-		public short x;
+    private static int LZCS = 0; //cop2r30
+    private static int LZCR = 0; //cop2r31
 
-		public short y;
+    private static uint FLAG = 0;
+    private static long POS_CLUT_RECT = 0;
+    private static long POS_CLUT_COLORS = 0;
+    private static long POS_IMG_RECT = 0;
+    private static long POS_IMG_INDICES = 0;
+    private static long POS_IMG_INDICES2 = 0;
 
-		public short w;
+    private static readonly int NUM_BLOCKS = 6;
+    
+    private static readonly byte[] BYTES =
+    {
+        0x07, 0x01, 0x06, 0x01, 0x01, 0x02, 0x05, 0x01, 0x02, 0x02, 0x09,
+        0x01, 0x00, 0x04, 0x08, 0x01, 0x10, 0x01, 0x05, 0x02, 0x00, 0x07,
+        0x02, 0x03, 0x01, 0x04, 0x0F, 0x01, 0x0E, 0x01, 0x04, 0x02, 0x00,
+        0x0B, 0x08, 0x02, 0x04, 0x03, 0x00, 0x0A, 0x02, 0x04, 0x07, 0x02,
+        0x15, 0x01, 0x14, 0x01, 0x00, 0x09, 0x13, 0x01, 0x12, 0x01, 0x01,
+        0x05, 0x03, 0x03, 0x00, 0x08, 0x06, 0x02, 0x11, 0x01, 0x0A, 0x02,
+        0x09, 0x02, 0x05, 0x03, 0x03, 0x04, 0x02, 0x05, 0x01, 0x07, 0x01,
+        0x06, 0x00, 0x0F, 0x00, 0x0E, 0x00, 0x0D, 0x00, 0x0C, 0x1A, 0x01,
+        0x19, 0x01, 0x18, 0x01, 0x17, 0x01, 0x16, 0x01, 0x00, 0x1F, 0x00,
+        0x1E, 0x00, 0x1D, 0x00, 0x1C, 0x00, 0x1B, 0x00, 0x1A, 0x00, 0x19,
+        0x00, 0x18, 0x00, 0x17, 0x00, 0x16, 0x00, 0x15, 0x00, 0x14, 0x00,
+        0x13, 0x00, 0x12, 0x00, 0x11, 0x00, 0x10, 0x00, 0x28, 0x00, 0x27,
+        0x00, 0x26, 0x00, 0x25, 0x00, 0x24, 0x00, 0x23, 0x00, 0x22, 0x00,
+        0x21, 0x00, 0x20, 0x01, 0x0E, 0x01, 0x0D, 0x01, 0x0C, 0x01, 0x0B,
+        0x01, 0x0A, 0x01, 0x09, 0x01, 0x08, 0x01, 0x12, 0x01, 0x11, 0x01,
+        0x10, 0x01, 0x0F, 0x06, 0x03, 0x10, 0x02, 0x0F, 0x02, 0x0E, 0x02,
+        0x0D, 0x02, 0x0C, 0x02, 0x0B, 0x02, 0x1F, 0x01, 0x1E, 0x01, 0x1D,
+        0x01, 0x1C, 0x01, 0x1B, 0x01, 0x0D, 0x01, 0x00, 0x06, 0x0C, 0x01,
+        0x0B, 0x01, 0x03, 0x02, 0x01, 0x03, 0x00, 0x05, 0x0A, 0x01, 0x00,
+        0x03, 0x04, 0x01, 0x03, 0x01
+    };
+    private static readonly byte[] QUANT_TABLE =
+    {
+        0x02, 0x10, 0x10, 0x13, 0x10, 0x13, 0x16, 0x16, 0x16, 0x16, 0x16,
+        0x16, 0x1A, 0x18, 0x1A, 0x1B, 0x1B, 0x1B, 0x1A, 0x1A, 0x1A, 0x1A,
+        0x1B, 0x1B, 0x1B, 0x1D, 0x1D, 0x1D, 0x22, 0x22, 0x22, 0x1D, 0x1D,
+        0x1D, 0x1B, 0x1B, 0x1D, 0x1D, 0x20, 0x20, 0x22, 0x22, 0x25, 0x26,
+        0x25, 0x23, 0x23, 0x22, 0x23, 0x26, 0x26, 0x28, 0x28, 0x28, 0x30,
+        0x30, 0x2E, 0x2E, 0x38, 0x38, 0x3A, 0x45, 0x45, 0x53, 0x02, 0x10,
+        0x10, 0x13, 0x10, 0x13, 0x16, 0x16, 0x16, 0x16, 0x16, 0x16, 0x1A,
+        0x18, 0x1A, 0x1B, 0x1B, 0x1B, 0x1A, 0x1A, 0x1A, 0x1A, 0x1B, 0x1B,
+        0x1B, 0x1D, 0x1D, 0x1D, 0x22, 0x22, 0x22, 0x1D, 0x1D, 0x1D, 0x1B,
+        0x1B, 0x1D, 0x1D, 0x20, 0x20, 0x22, 0x22, 0x25, 0x26, 0x25, 0x23,
+        0x23, 0x22, 0x23, 0x26, 0x26, 0x28, 0x28, 0x28, 0x30, 0x30, 0x2E,
+        0x2E, 0x38, 0x38, 0x3A, 0x45, 0x45, 0x53
+    };
+    private static readonly ushort[] SCALE_TABLE =
+    {
+        0x5A82, 0x5A82, 0x5A82, 0x5A82, 0x5A82, 0x5A82, 0x5A82, 0x5A82,
+        0x7D8A, 0x6A6D, 0x471C, 0x18F8, 0xE707, 0xB8E3, 0x9592, 0x8275,
+        0x7641, 0x30FB, 0xCF04, 0x89BE, 0x89BE, 0xCF04, 0x30FB, 0x7641,
+        0x6A6D, 0xE707, 0x8275, 0xB8E3, 0x471C, 0x7D8A, 0x18F8, 0x9592,
+        0x5A82, 0xA57D, 0xA57D, 0x5A82, 0x5A82, 0xA57D, 0xA57D, 0x5A82,
+        0x471C, 0x8275, 0x18F8, 0x6A6D, 0x9592, 0xE707, 0x7D8A, 0xB8E3,
+        0x30FB, 0x89BE, 0x7641, 0xCF04, 0xCF04, 0x7641, 0x89BE, 0x30FB,
+        0x18F8, 0xB8E3, 0x6A6D, 0x8275, 0x7D8A, 0x9592, 0x471C, 0xE707
+    };
+    private static readonly byte[] ZAGZIG =
+    {
+        0,  1,  8,  16, 9,  2,  3,  10, 17, 24, 32, 25, 18, 11, 4,  5,
+        12, 19, 26, 33, 40, 48, 41, 34, 27, 20, 13, 6,  7,  14, 21, 28,
+        35, 42, 49, 56, 57, 50, 43, 36, 29, 22, 15, 23, 30, 37, 44, 51,
+        58, 59, 52, 45, 38, 31, 39, 46, 53, 60, 61, 54, 47, 55, 62, 63
+    };
 
-		public short h;
-	}
+    private struct RECT
+    {
+        public short x, y, w, h;
+    }
 
-	private struct RGB
-	{
-		public byte r;
+    private struct RGB
+    {
+        public byte r, g, b, a;
+    }
 
-		public byte g;
+    public static void LoadAsset(string assetPath, string bmp)
+    {
+        using (BinaryReader reader = new BinaryReader(File.Open(assetPath, FileMode.Open)))
+        {
+            int header = reader.ReadInt32();
 
-		public byte b;
+            if (header >> 24 == 8)
+            {
+                LoadTIM(reader, bmp);
+            }
+            else if (header != 0x10)
+            {
+                reader.BaseStream.Seek(0, SeekOrigin.Begin);
+                short width = reader.ReadInt16();
+                short height = reader.ReadInt16();
+                long pos = reader.BaseStream.Position;
+                int tag = reader.ReadInt32();
+                int unk1 = 0; //r30
 
-		public byte a;
-	}
+                if (tag == 0x10)
+                {
+                    string file2 = Path.GetFileNameWithoutExtension(bmp);
+                    string newPath2 = bmp.Replace(file2, file2 + "_1");
+                    LoadTIM(reader, newPath2);
+                    pos = POS_IMG_INDICES2;
+                    unk1 |= 10;
+                }
 
-	[StructLayout(LayoutKind.Auto)]
-	[CompilerGenerated]
-	private struct _003C_003Ec__DisplayClass15_0
-	{
-		public BinaryReader reader;
-	}
+                reader.BaseStream.Seek(pos, SeekOrigin.Begin);
+                RECT rect = new RECT
+                {
+                    x = 0,
+                    y = 0,
+                    w = width,
+                    h = height
+                };
 
-	[StructLayout(LayoutKind.Auto)]
-	[CompilerGenerated]
-	private struct _003C_003Ec__DisplayClass15_1
-	{
-		public ushort[] fastRam;
+                int unk2 = (unk1 >> 2 ^ 1) & 1; //r20
+                int unk3 = unk1 & 1; //r19
+                int unk4 = unk3 + 2; //r21
+                                     //r17
+                int unk5 = rect.h + 0x0F & -16; //sp+24h
+                                                //sp+20h = rect.y + rect.h
+                int unk6 = unk4 * 16; //r16
+                unk6 = unk5 * unk6;
+                int unk7 = 0; //r23
+                int unk8 = 0; //sp+10h
+                int unk9 = 0; //r18
 
-		public short[] m_scale_table;
+                byte[] m_iq_y = new byte[64];
+                byte[] m_iq_uv = new byte[64];
 
-		public short[,] m_blocks;
+                short[] m_scale_table = new short[SCALE_TABLE.Length];
+                for (int i = 0; i < m_scale_table.Length; i++)
+                    m_scale_table[i] = (short)SCALE_TABLE[i];
 
-		public uint[] m_block_rgb;
-	}
+                int data_output_depth = 0;
+                int data_output_signed = 0;
+                int data_output_bit15 = 0;
+                Queue<ushort> m_data_in_fifo = new Queue<ushort>();
+                Queue<uint> m_data_out_fifo = new Queue<uint>();
+                short[,] m_blocks = new short[NUM_BLOCKS, 64];
+                uint[] m_block_rgb = new uint[256];
 
-	[StructLayout(LayoutKind.Auto)]
-	[CompilerGenerated]
-	private struct _003C_003Ec__DisplayClass15_2
-	{
-		public BinaryWriter writer;
-	}
+                for (int i = 0; i < 64; i++)
+                {
+                    m_iq_y[i] = QUANT_TABLE[i];
+                    m_iq_uv[i] = QUANT_TABLE[i + 64];
+                }
 
-	[StructLayout(LayoutKind.Auto)]
-	[CompilerGenerated]
-	private struct _003C_003Ec__DisplayClass15_3
-	{
-		public uint uVar1;
+                ushort[] fastRam = new ushort[214];
+                for (int i = 0; i < fastRam.Length; i += 2)
+                {
+                    int iVar1 = BYTES[i] << 10;
+                    int iVar2 = iVar1 | BYTES[i + 1];
+                    int iVar3 = iVar1 | iVar2 * -1 & 0x3FF;
+                    fastRam[i] = (ushort)iVar2;
+                    fastRam[i + 1] = (ushort)iVar3;
+                }
 
-		public uint uVar3;
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    using (BinaryWriter writer = new BinaryWriter(stream, Encoding.Default, true))
+                    {
+                        uint uVar1 = reader.ReadUInt32(); //r8
+                        uint uVar2 = reader.ReadUInt32(); //r11
+                        uint uVar3 = reader.ReadUInt32(); //r2
+                        uint uVar4 = reader.ReadUInt32(); //r3
+                        uint uVar5 = reader.ReadUInt32(); //r6
+                        int iVar6 = 0; //r9
+                        int iVar7 = 0; //r10
+                        uint uVar8 = 0; //r15
+                        uint uVar9 = 0; //r24
+                        uint uVar10 = 0; //r25
 
-		public int iVar6;
+                        uVar3 = uVar3 >> 16 | uVar3 << 16;
+                        uVar4 = uVar4 >> 16 | uVar4 << 16;
+                        writer.Write(uVar1);
+                        uVar1 = (uVar1 & 0xFFFF) << 2;
+                        int streamLength = (int)uVar1 + 4; //r13
+                        if ((uVar2 >> 16 ^ 3) == 0)
+                        {
+                            //...
+                        }
+                        else
+                        {
+                            uVar2 = (uVar2 & 0x3F) << 10;
+                            uVar1 = uVar3 >> 22 | uVar2;
+                            iVar6 = 10;
+                            Huffman();
 
-		public uint uVar4;
+                            LABEL1:
+                            uVar1 = uVar1 >> 22;
 
-		public int iVar7;
+                            if ((uVar1 ^ 511) != 0)
+                            {
+                                uVar1 = uVar1 | uVar2;
+                                iVar6 = 12;
+                                Huffman();
+                                goto LABEL1;
+                            }
+                        }
 
-		public uint uVar5;
-	}
+                        uVar1 = 0xFE00;
+                        while (writer.BaseStream.Length != streamLength)
+                            writer.Write((ushort)uVar1);
 
-	[StructLayout(LayoutKind.Auto)]
-	[CompilerGenerated]
-	private struct _003C_003Ec__DisplayClass15_4
-	{
-		public BinaryReader reader2;
-	}
+                        using (BinaryReader reader2 = new BinaryReader(stream, Encoding.Default, true))
+                        {
+                            writer.BaseStream.Seek(0, SeekOrigin.Begin);
+                            int iVar11 = unk1 & 3;
+                            uint uVar12;
 
-	[StructLayout(LayoutKind.Auto)]
-	[CompilerGenerated]
-	private struct _003C_003Ec__DisplayClass15_5
-	{
-		public int m_current_coefficient;
+                            if ((iVar11 & 1) == 0)
+                                uVar12 = reader2.ReadUInt32() | 0x8000000;
+                            else
+                                uVar12 = reader2.ReadUInt32() & 0xf7ffffff;
 
-		public int m_current_block;
+                            writer.BaseStream.Seek(0, SeekOrigin.Begin);
+                            writer.Write(uVar12);
+                            reader2.BaseStream.Seek(0, SeekOrigin.Begin);
 
-		public int m_remaining_halfwords;
+                            if ((iVar11 & 2) == 0)
+                                uVar12 = reader2.ReadUInt32() & 0xfdffffff;
+                            else
+                                uVar12 = reader2.ReadUInt32() | 0x2000000;
 
-		public ushort m_current_q_scale;
-	}
+                            writer.BaseStream.Seek(0, SeekOrigin.Begin);
+                            writer.Write(uVar12);
 
-	private static int LZCS = 0;
+                            string ext = Path.GetExtension(bmp);
+                            string newPath2 = bmp.Replace(ext, ".txt");
+                            using (BinaryWriter writer2 = new BinaryWriter(File.Open(newPath2, FileMode.Create)))
+                            {
+                                while (reader2.BaseStream.Position != reader2.BaseStream.Length)
+                                {
+                                    byte firstNibble = 0;  // a Nibble is 4 bits, half a byte, one hexadecimal character
+                                    char firstHexChar;
+                                    byte initialByte = reader2.ReadByte();  //initialize this to the byte you want to print
+                                    byte secondNibble = 0;
+                                    char secondHexChar;
 
-	private static int LZCR = 0;
 
-	private static uint FLAG = 0u;
+                                    firstNibble = (byte)((uint)initialByte >> 4);  // isolate first 4 bits
 
-	private static long POS_CLUT_RECT = 0L;
+                                    if (firstNibble < 10U)
+                                    {
+                                        firstHexChar = (char)('0' + firstNibble);
+                                    }
+                                    else
+                                    {
+                                        firstNibble -= 10;
+                                        firstHexChar = (char)('A' + firstNibble);
+                                    }
 
-	private static long POS_CLUT_COLORS = 0L;
+                                    secondNibble = (byte)((uint)initialByte & 0x0F);  // isolate last 4 bits
 
-	private static long POS_IMG_RECT = 0L;
+                                    if (secondNibble < 10U)
+                                    {
+                                        secondHexChar = (char)('0' + secondNibble);
+                                    }
+                                    else
+                                    {
+                                        secondNibble -= 10;
+                                        secondHexChar = (char)('A' + secondNibble);
+                                    }
 
-	private static long POS_IMG_INDICES = 0L;
+                                    writer2.Write(firstHexChar);
+                                    writer2.Write(secondHexChar);
+                                    writer2.Write((byte)0x20);
+                                }
+                            }
 
-	private static long POS_IMG_INDICES2 = 0L;
+                            reader2.BaseStream.Seek(0, SeekOrigin.Begin);
+                        }
 
-	private static readonly int NUM_BLOCKS = 6;
+                        void Huffman()
+                        {
+                            while (true)
+                            {
+                                while (true)
+                                {
+                                    writer.Write((ushort)uVar1);
+                                    uVar3 = uVar3 << iVar6;
+                                    uVar3 = uVar3 | uVar4 >> iVar6 * -1;
+                                    iVar7 += iVar6;
+                                    uVar4 = uVar4 << iVar6;
 
-	private static readonly byte[] BYTES = new byte[214]
-	{
-		7,
-		1,
-		6,
-		1,
-		1,
-		2,
-		5,
-		1,
-		2,
-		2,
-		9,
-		1,
-		0,
-		4,
-		8,
-		1,
-		16,
-		1,
-		5,
-		2,
-		0,
-		7,
-		2,
-		3,
-		1,
-		4,
-		15,
-		1,
-		14,
-		1,
-		4,
-		2,
-		0,
-		11,
-		8,
-		2,
-		4,
-		3,
-		0,
-		10,
-		2,
-		4,
-		7,
-		2,
-		21,
-		1,
-		20,
-		1,
-		0,
-		9,
-		19,
-		1,
-		18,
-		1,
-		1,
-		5,
-		3,
-		3,
-		0,
-		8,
-		6,
-		2,
-		17,
-		1,
-		10,
-		2,
-		9,
-		2,
-		5,
-		3,
-		3,
-		4,
-		2,
-		5,
-		1,
-		7,
-		1,
-		6,
-		0,
-		15,
-		0,
-		14,
-		0,
-		13,
-		0,
-		12,
-		26,
-		1,
-		25,
-		1,
-		24,
-		1,
-		23,
-		1,
-		22,
-		1,
-		0,
-		31,
-		0,
-		30,
-		0,
-		29,
-		0,
-		28,
-		0,
-		27,
-		0,
-		26,
-		0,
-		25,
-		0,
-		24,
-		0,
-		23,
-		0,
-		22,
-		0,
-		21,
-		0,
-		20,
-		0,
-		19,
-		0,
-		18,
-		0,
-		17,
-		0,
-		16,
-		0,
-		40,
-		0,
-		39,
-		0,
-		38,
-		0,
-		37,
-		0,
-		36,
-		0,
-		35,
-		0,
-		34,
-		0,
-		33,
-		0,
-		32,
-		1,
-		14,
-		1,
-		13,
-		1,
-		12,
-		1,
-		11,
-		1,
-		10,
-		1,
-		9,
-		1,
-		8,
-		1,
-		18,
-		1,
-		17,
-		1,
-		16,
-		1,
-		15,
-		6,
-		3,
-		16,
-		2,
-		15,
-		2,
-		14,
-		2,
-		13,
-		2,
-		12,
-		2,
-		11,
-		2,
-		31,
-		1,
-		30,
-		1,
-		29,
-		1,
-		28,
-		1,
-		27,
-		1,
-		13,
-		1,
-		0,
-		6,
-		12,
-		1,
-		11,
-		1,
-		3,
-		2,
-		1,
-		3,
-		0,
-		5,
-		10,
-		1,
-		0,
-		3,
-		4,
-		1,
-		3,
-		1
-	};
+                                    if (-1 < iVar7 - 32)
+                                    {
+                                        iVar7 -= 32;
+                                        uVar1 = uVar5 << 16;
+                                        uVar5 = uVar5 >> 16 | uVar1;
+                                        uVar3 |= -iVar7 != 0 ? uVar5 >> -iVar7 : 0;
+                                        uVar4 = uVar5 << iVar7;
 
-	private static readonly byte[] QUANT_TABLE = new byte[128]
-	{
-		2,
-		16,
-		16,
-		19,
-		16,
-		19,
-		22,
-		22,
-		22,
-		22,
-		22,
-		22,
-		26,
-		24,
-		26,
-		27,
-		27,
-		27,
-		26,
-		26,
-		26,
-		26,
-		27,
-		27,
-		27,
-		29,
-		29,
-		29,
-		34,
-		34,
-		34,
-		29,
-		29,
-		29,
-		27,
-		27,
-		29,
-		29,
-		32,
-		32,
-		34,
-		34,
-		37,
-		38,
-		37,
-		35,
-		35,
-		34,
-		35,
-		38,
-		38,
-		40,
-		40,
-		40,
-		48,
-		48,
-		46,
-		46,
-		56,
-		56,
-		58,
-		69,
-		69,
-		83,
-		2,
-		16,
-		16,
-		19,
-		16,
-		19,
-		22,
-		22,
-		22,
-		22,
-		22,
-		22,
-		26,
-		24,
-		26,
-		27,
-		27,
-		27,
-		26,
-		26,
-		26,
-		26,
-		27,
-		27,
-		27,
-		29,
-		29,
-		29,
-		34,
-		34,
-		34,
-		29,
-		29,
-		29,
-		27,
-		27,
-		29,
-		29,
-		32,
-		32,
-		34,
-		34,
-		37,
-		38,
-		37,
-		35,
-		35,
-		34,
-		35,
-		38,
-		38,
-		40,
-		40,
-		40,
-		48,
-		48,
-		46,
-		46,
-		56,
-		56,
-		58,
-		69,
-		69,
-		83
-	};
+                                        if (reader.BaseStream.Position != reader.BaseStream.Length)
+                                            uVar5 = reader.ReadUInt32();
+                                        else
+                                            uVar5 = 0;
+                                    }
 
-	private static readonly ushort[] SCALE_TABLE = new ushort[64]
-	{
-		23170,
-		23170,
-		23170,
-		23170,
-		23170,
-		23170,
-		23170,
-		23170,
-		32138,
-		27245,
-		18204,
-		6392,
-		59143,
-		47331,
-		38290,
-		33397,
-		30273,
-		12539,
-		52996,
-		35262,
-		35262,
-		52996,
-		12539,
-		30273,
-		27245,
-		59143,
-		33397,
-		47331,
-		18204,
-		32138,
-		6392,
-		38290,
-		23170,
-		42365,
-		42365,
-		23170,
-		23170,
-		42365,
-		42365,
-		23170,
-		18204,
-		33397,
-		6392,
-		27245,
-		38290,
-		59143,
-		32138,
-		47331,
-		12539,
-		35262,
-		30273,
-		52996,
-		52996,
-		30273,
-		35262,
-		12539,
-		6392,
-		47331,
-		27245,
-		33397,
-		32138,
-		38290,
-		18204,
-		59143
-	};
+                                    if ((int)uVar3 < 0) break;
 
-	private static readonly byte[] ZAGZIG = new byte[64]
-	{
-		0,
-		1,
-		8,
-		16,
-		9,
-		2,
-		3,
-		10,
-		17,
-		24,
-		32,
-		25,
-		18,
-		11,
-		4,
-		5,
-		12,
-		19,
-		26,
-		33,
-		40,
-		48,
-		41,
-		34,
-		27,
-		20,
-		13,
-		6,
-		7,
-		14,
-		21,
-		28,
-		35,
-		42,
-		49,
-		56,
-		57,
-		50,
-		43,
-		36,
-		29,
-		22,
-		15,
-		23,
-		30,
-		37,
-		44,
-		51,
-		58,
-		59,
-		52,
-		45,
-		38,
-		31,
-		39,
-		46,
-		53,
-		60,
-		61,
-		54,
-		47,
-		55,
-		62,
-		63
-	};
+                                    if ((int)(uVar3 << 1) < 0)
+                                    {
+                                        if ((int)(uVar3 << 2) < 0)
+                                        {
+                                            iVar6 = 4;
+                                            uVar1 = 1025;
 
-	public static void LoadAsset(string assetPath, string bmp)
-	{
-		_003C_003Ec__DisplayClass15_0 _003C_003Ec__DisplayClass15_ = default(_003C_003Ec__DisplayClass15_0);
-		_003C_003Ec__DisplayClass15_.reader = new BinaryReader(File.Open(assetPath, FileMode.Open));
-		try
-		{
-			int num = _003C_003Ec__DisplayClass15_.reader.ReadInt32();
-			if (num >> 24 == 8)
-			{
-				LoadTIM(_003C_003Ec__DisplayClass15_.reader, bmp);
-			}
-			else if (num != 16)
-			{
-				_003C_003Ec__DisplayClass15_.reader.BaseStream.Seek(0L, SeekOrigin.Begin);
-				short num2 = _003C_003Ec__DisplayClass15_.reader.ReadInt16();
-				short num3 = _003C_003Ec__DisplayClass15_.reader.ReadInt16();
-				long offset = _003C_003Ec__DisplayClass15_.reader.BaseStream.Position;
-				int num4 = _003C_003Ec__DisplayClass15_.reader.ReadInt32();
-				int num5 = 0;
-				if (num4 == 16)
-				{
-					string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(bmp);
-					string path = bmp.Replace(fileNameWithoutExtension, fileNameWithoutExtension + "_1");
-					LoadTIM(_003C_003Ec__DisplayClass15_.reader, path);
-					offset = POS_IMG_INDICES2;
-					num5 |= 0xA;
-				}
-				_003C_003Ec__DisplayClass15_.reader.BaseStream.Seek(offset, SeekOrigin.Begin);
-				RECT rECT = default(RECT);
-				rECT.x = 0;
-				rECT.y = 0;
-				rECT.w = num2;
-				rECT.h = num3;
-				RECT rECT2 = rECT;
-				int num6 = num5 & 1;
-				int num7 = num6 + 2;
-				int num8 = (rECT2.h + 15) & -16;
-				int num9 = num7 * 16;
-				num9 = num8 * num9;
-				int num10 = 0;
-				int num11 = 0;
-				byte[] array = new byte[64];
-				byte[] array2 = new byte[64];
-				_003C_003Ec__DisplayClass15_1 _003C_003Ec__DisplayClass15_2 = default(_003C_003Ec__DisplayClass15_1);
-				_003C_003Ec__DisplayClass15_2.m_scale_table = new short[SCALE_TABLE.Length];
-				for (int i = 0; i < _003C_003Ec__DisplayClass15_2.m_scale_table.Length; i++)
-				{
-					_003C_003Ec__DisplayClass15_2.m_scale_table[i] = (short)SCALE_TABLE[i];
-				}
-				int num12 = 0;
-				int num13 = 0;
-				new Queue<ushort>();
-				Queue<uint> queue = new Queue<uint>();
-				_003C_003Ec__DisplayClass15_2.m_blocks = new short[NUM_BLOCKS, 64];
-				_003C_003Ec__DisplayClass15_2.m_block_rgb = new uint[256];
-				for (int j = 0; j < 64; j++)
-				{
-					array[j] = QUANT_TABLE[j];
-					array2[j] = QUANT_TABLE[j + 64];
-				}
-				_003C_003Ec__DisplayClass15_2.fastRam = new ushort[214];
-				for (int k = 0; k < _003C_003Ec__DisplayClass15_2.fastRam.Length; k += 2)
-				{
-					int num14 = BYTES[k] << 10;
-					int num15 = num14 | BYTES[k + 1];
-					int num16 = num14 | ((num15 * -1) & 0x3FF);
-					_003C_003Ec__DisplayClass15_2.fastRam[k] = (ushort)num15;
-					_003C_003Ec__DisplayClass15_2.fastRam[k + 1] = (ushort)num16;
-				}
-				using (MemoryStream memoryStream = new MemoryStream())
-				{
-					_003C_003Ec__DisplayClass15_2 _003C_003Ec__DisplayClass15_3 = default(_003C_003Ec__DisplayClass15_2);
-					_003C_003Ec__DisplayClass15_3.writer = new BinaryWriter(memoryStream, Encoding.Default, leaveOpen: true);
-					try
-					{
-						_003C_003Ec__DisplayClass15_3 _003C_003Ec__DisplayClass15_4 = default(_003C_003Ec__DisplayClass15_3);
-						_003C_003Ec__DisplayClass15_4.uVar1 = _003C_003Ec__DisplayClass15_.reader.ReadUInt32();
-						uint num17 = _003C_003Ec__DisplayClass15_.reader.ReadUInt32();
-						_003C_003Ec__DisplayClass15_4.uVar3 = _003C_003Ec__DisplayClass15_.reader.ReadUInt32();
-						_003C_003Ec__DisplayClass15_4.uVar4 = _003C_003Ec__DisplayClass15_.reader.ReadUInt32();
-						_003C_003Ec__DisplayClass15_4.uVar5 = _003C_003Ec__DisplayClass15_.reader.ReadUInt32();
-						_003C_003Ec__DisplayClass15_4.iVar6 = 0;
-						_003C_003Ec__DisplayClass15_4.iVar7 = 0;
-						_003C_003Ec__DisplayClass15_4.uVar3 = ((_003C_003Ec__DisplayClass15_4.uVar3 >> 16) | (_003C_003Ec__DisplayClass15_4.uVar3 << 16));
-						_003C_003Ec__DisplayClass15_4.uVar4 = ((_003C_003Ec__DisplayClass15_4.uVar4 >> 16) | (_003C_003Ec__DisplayClass15_4.uVar4 << 16));
-						_003C_003Ec__DisplayClass15_3.writer.Write(_003C_003Ec__DisplayClass15_4.uVar1);
-						_003C_003Ec__DisplayClass15_4.uVar1 = (_003C_003Ec__DisplayClass15_4.uVar1 & 0xFFFF) << 2;
-						int num18 = (int)(_003C_003Ec__DisplayClass15_4.uVar1 + 4);
-						if (((num17 >> 16) ^ 3) != 0)
-						{
-							num17 = (num17 & 0x3F) << 10;
-							_003C_003Ec__DisplayClass15_4.uVar1 = ((_003C_003Ec__DisplayClass15_4.uVar3 >> 22) | num17);
-							_003C_003Ec__DisplayClass15_4.iVar6 = 10;
-							_003CLoadAsset_003Eg__Huffman_007C15_0(ref _003C_003Ec__DisplayClass15_, ref _003C_003Ec__DisplayClass15_2, ref _003C_003Ec__DisplayClass15_3, ref _003C_003Ec__DisplayClass15_4);
-							while (true)
-							{
-								_003C_003Ec__DisplayClass15_4.uVar1 >>= 22;
-								if ((_003C_003Ec__DisplayClass15_4.uVar1 ^ 0x1FF) == 0)
-								{
-									break;
-								}
-								_003C_003Ec__DisplayClass15_4.uVar1 |= num17;
-								_003C_003Ec__DisplayClass15_4.iVar6 = 12;
-								_003CLoadAsset_003Eg__Huffman_007C15_0(ref _003C_003Ec__DisplayClass15_, ref _003C_003Ec__DisplayClass15_2, ref _003C_003Ec__DisplayClass15_3, ref _003C_003Ec__DisplayClass15_4);
-							}
-						}
-						_003C_003Ec__DisplayClass15_4.uVar1 = 65024u;
-						while (_003C_003Ec__DisplayClass15_3.writer.BaseStream.Length != num18)
-						{
-							_003C_003Ec__DisplayClass15_3.writer.Write((ushort)_003C_003Ec__DisplayClass15_4.uVar1);
-						}
-						using (BinaryReader binaryReader = new BinaryReader(memoryStream, Encoding.Default, leaveOpen: true))
-						{
-							_003C_003Ec__DisplayClass15_3.writer.BaseStream.Seek(0L, SeekOrigin.Begin);
-							int num19 = num5 & 3;
-							uint value = (uint)(((num19 & 1) != 0) ? ((int)binaryReader.ReadUInt32() & -134217729) : ((int)(binaryReader.ReadUInt32() | 0x8000000)));
-							_003C_003Ec__DisplayClass15_3.writer.BaseStream.Seek(0L, SeekOrigin.Begin);
-							_003C_003Ec__DisplayClass15_3.writer.Write(value);
-							binaryReader.BaseStream.Seek(0L, SeekOrigin.Begin);
-							value = (uint)(((num19 & 2) != 0) ? ((int)(binaryReader.ReadUInt32() | 0x2000000)) : ((int)binaryReader.ReadUInt32() & -33554433));
-							_003C_003Ec__DisplayClass15_3.writer.BaseStream.Seek(0L, SeekOrigin.Begin);
-							_003C_003Ec__DisplayClass15_3.writer.Write(value);
-							string extension = Path.GetExtension(bmp);
-							using (BinaryWriter binaryWriter = new BinaryWriter(File.Open(bmp.Replace(extension, ".txt"), FileMode.Create)))
-							{
-								while (binaryReader.BaseStream.Position != binaryReader.BaseStream.Length)
-								{
-									byte b = 0;
-									byte num20 = binaryReader.ReadByte();
-									byte b2 = 0;
-									b = (byte)((uint)num20 >> 4);
-									char ch;
-									if ((uint)b < 10u)
-									{
-										ch = (char)(48 + b);
-									}
-									else
-									{
-										b = (byte)(b - 10);
-										ch = (char)(65 + b);
-									}
-									b2 = (byte)(num20 & 0xF);
-									char ch2;
-									if ((uint)b2 < 10u)
-									{
-										ch2 = (char)(48 + b2);
-									}
-									else
-									{
-										b2 = (byte)(b2 - 10);
-										ch2 = (char)(65 + b2);
-									}
-									binaryWriter.Write(ch);
-									binaryWriter.Write(ch2);
-									binaryWriter.Write((byte)32);
-								}
-							}
-							binaryReader.BaseStream.Seek(0L, SeekOrigin.Begin);
-						}
-					}
-					finally
-					{
-						if (_003C_003Ec__DisplayClass15_3.writer != null)
-						{
-							((IDisposable)_003C_003Ec__DisplayClass15_3.writer).Dispose();
-						}
-					}
-					if (num6 == 0)
-					{
-						num11 = rECT2.x;
-					}
-					else
-					{
-						int num21 = (rECT2.x << 16 >> 16) + (int)((uint)(rECT2.x << 16) >> 31) >> 1;
-						num11 = (num21 << 1) + num21;
-					}
-					short num22 = (short)(num7 << 3);
-					if (num6 == 0)
-					{
-						num6 = num11 + rECT2.w;
-					}
-					else
-					{
-						int num23 = (rECT2.w << 16 >> 16) + (int)((uint)(rECT2.w << 16) >> 31) >> 1;
-						num6 = (num23 << 1) + num23;
-					}
-					num7 = (num7 << 3) * num8 + (int)((uint)((num7 << 3) * num8) >> 31);
-					_003C_003Ec__DisplayClass15_4 _003C_003Ec__DisplayClass15_5 = default(_003C_003Ec__DisplayClass15_4);
-					_003C_003Ec__DisplayClass15_5.reader2 = new BinaryReader(memoryStream, Encoding.Default, leaveOpen: true);
-					try
-					{
-						int number = _003C_003Ec__DisplayClass15_5.reader2.ReadInt32();
-						num12 = BitExtracted(number, 2, 27);
-						BitExtracted(number, 1, 26);
-						num13 = BitExtracted(number, 1, 25);
-						_003C_003Ec__DisplayClass15_5 _003C_003Ec__DisplayClass15_6 = default(_003C_003Ec__DisplayClass15_5);
-						_003C_003Ec__DisplayClass15_6.m_remaining_halfwords = BitExtracted(number, 16, 0) * 2;
-						_003C_003Ec__DisplayClass15_6.m_current_block = 0;
-						_003C_003Ec__DisplayClass15_6.m_current_coefficient = 64;
-						_003C_003Ec__DisplayClass15_6.m_current_q_scale = 0;
-						while (_003C_003Ec__DisplayClass15_6.m_remaining_halfwords > 0)
-						{
-							bool flag = false;
-							while (_003C_003Ec__DisplayClass15_6.m_current_block < NUM_BLOCKS)
-							{
-								if (!_003CLoadAsset_003Eg__rl_decode_block_007C15_1(_003C_003Ec__DisplayClass15_2.m_blocks, (_003C_003Ec__DisplayClass15_6.m_current_block >= 2) ? array : array2, ref _003C_003Ec__DisplayClass15_5, ref _003C_003Ec__DisplayClass15_6))
-								{
-									flag = true;
-									break;
-								}
-								_003CLoadAsset_003Eg__IDCT_007C15_2(_003C_003Ec__DisplayClass15_2.m_blocks, ref _003C_003Ec__DisplayClass15_2, ref _003C_003Ec__DisplayClass15_6);
-								int current_block = _003C_003Ec__DisplayClass15_6.m_current_block;
-								_003C_003Ec__DisplayClass15_6.m_current_block = current_block + 1;
-							}
-							if (flag)
-							{
-								break;
-							}
-							_003C_003Ec__DisplayClass15_6.m_current_block = 0;
-							_003C_003Ec__DisplayClass15_6.m_current_coefficient = 64;
-							_003C_003Ec__DisplayClass15_6.m_current_q_scale = 0;
-							_003CLoadAsset_003Eg__yuv_to_rgb_007C15_3(0, 0, _003C_003Ec__DisplayClass15_2.m_blocks, 0, 1, 2, ref _003C_003Ec__DisplayClass15_2);
-							_003CLoadAsset_003Eg__yuv_to_rgb_007C15_3(8, 0, _003C_003Ec__DisplayClass15_2.m_blocks, 0, 1, 3, ref _003C_003Ec__DisplayClass15_2);
-							_003CLoadAsset_003Eg__yuv_to_rgb_007C15_3(0, 8, _003C_003Ec__DisplayClass15_2.m_blocks, 0, 1, 4, ref _003C_003Ec__DisplayClass15_2);
-							_003CLoadAsset_003Eg__yuv_to_rgb_007C15_3(8, 8, _003C_003Ec__DisplayClass15_2.m_blocks, 0, 1, 5, ref _003C_003Ec__DisplayClass15_2);
-							switch (num12)
-							{
-							case 0:
-								for (int m = 0; m < 64; m += 8)
-								{
-									uint num40 = _003C_003Ec__DisplayClass15_2.m_block_rgb[m] >> 4;
-									num40 |= _003C_003Ec__DisplayClass15_2.m_block_rgb[m + 1] >> 4 << 4;
-									num40 |= _003C_003Ec__DisplayClass15_2.m_block_rgb[m + 2] >> 4 << 8;
-									num40 |= _003C_003Ec__DisplayClass15_2.m_block_rgb[m + 3] >> 4 << 12;
-									num40 |= _003C_003Ec__DisplayClass15_2.m_block_rgb[m + 4] >> 4 << 16;
-									num40 |= _003C_003Ec__DisplayClass15_2.m_block_rgb[m + 5] >> 4 << 20;
-									num40 |= _003C_003Ec__DisplayClass15_2.m_block_rgb[m + 6] >> 4 << 24;
-									num40 |= _003C_003Ec__DisplayClass15_2.m_block_rgb[m + 7] >> 4 << 28;
-									queue.Enqueue(num40);
-								}
-								break;
-							case 1:
-								for (int l = 0; l < 64; l += 4)
-								{
-									uint num35 = _003C_003Ec__DisplayClass15_2.m_block_rgb[l];
-									num35 |= _003C_003Ec__DisplayClass15_2.m_block_rgb[l + 1] << 8;
-									num35 |= _003C_003Ec__DisplayClass15_2.m_block_rgb[l + 2] << 16;
-									num35 |= _003C_003Ec__DisplayClass15_2.m_block_rgb[l + 3] << 24;
-									queue.Enqueue(num35);
-								}
-								break;
-							case 2:
-							{
-								int num36 = 0;
-								int num37 = 0;
-								uint num38 = 0u;
-								while (num36 < _003C_003Ec__DisplayClass15_2.m_block_rgb.Length)
-								{
-									switch (num37)
-									{
-									case 0:
-										num38 = _003C_003Ec__DisplayClass15_2.m_block_rgb[num36++];
-										num37 = 1;
-										break;
-									case 1:
-										num38 |= (_003C_003Ec__DisplayClass15_2.m_block_rgb[num36] & 0xFF) << 24;
-										queue.Enqueue(num38);
-										num38 = _003C_003Ec__DisplayClass15_2.m_block_rgb[num36] >> 8;
-										num36++;
-										num37 = 2;
-										break;
-									case 2:
-										num38 |= _003C_003Ec__DisplayClass15_2.m_block_rgb[num36] << 16;
-										queue.Enqueue(num38);
-										num38 = _003C_003Ec__DisplayClass15_2.m_block_rgb[num36] >> 16;
-										num36++;
-										num37 = 3;
-										break;
-									case 3:
-										num38 |= _003C_003Ec__DisplayClass15_2.m_block_rgb[num36] << 8;
-										queue.Enqueue(num38);
-										num36++;
-										num37 = 0;
-										break;
-									}
-								}
-								break;
-							}
-							case 3:
-							{
-								ushort num24 = (ushort)num13;
-								int num25 = 0;
-								while (num25 < _003C_003Ec__DisplayClass15_2.m_block_rgb.Length)
-								{
-									uint num27 = _003C_003Ec__DisplayClass15_2.m_block_rgb[num25++];
-									ushort num28 = (ushort)((num27 >> 3) & 0x1F);
-									ushort num29 = (ushort)((num27 >> 11) & 0x1F);
-									ushort num30 = (ushort)((num27 >> 19) & 0x1F);
-									ushort num31 = (ushort)(num28 | (num29 << 5) | (num30 << 10) | (num24 << 15));
-									uint num33 = _003C_003Ec__DisplayClass15_2.m_block_rgb[num25++];
-									num28 = (ushort)((num33 >> 3) & 0x1F);
-									num29 = (ushort)((num33 >> 11) & 0x1F);
-									num30 = (ushort)((num33 >> 19) & 0x1F);
-									ushort num34 = (ushort)(num28 | (num29 << 5) | (num30 << 10) | (num24 << 15));
-									queue.Enqueue((uint)(num31 | (num34 << 16)));
-								}
-								break;
-							}
-							}
-						}
-					}
-					finally
-					{
-						if (_003C_003Ec__DisplayClass15_5.reader2 != null)
-						{
-							((IDisposable)_003C_003Ec__DisplayClass15_5.reader2).Dispose();
-						}
-					}
-				}
-				RGB[,] array3 = new RGB[num2 / 16, 16 * num3];
-				for (int n = 0; n < num2 / 16; n++)
-				{
-					ushort num41 = 31744;
-					ushort num42 = 992;
-					ushort num43 = 31;
-					if (num12 == 3)
-					{
-						int num44 = 0;
-						while (num44 < 16 * num3)
-						{
-							uint num45 = queue.Dequeue();
-							ushort[] array4 = new ushort[2]
-							{
-								(ushort)(num45 & 0xFFFF),
-								(ushort)(num45 >> 16)
-							};
-							int num46 = 0;
-							while (num46 < array4.Length)
-							{
-								byte b3 = (byte)((array4[num46] & num41) >> 10);
-								byte b4 = (byte)((array4[num46] & num42) >> 5);
-								byte num47 = (byte)(array4[num46] & num43);
-								byte a = (byte)((array4[num46] >> 15 == 1) ? 128 : 255);
-								byte r = (byte)(b3 << 3);
-								byte g = (byte)(b4 << 3);
-								byte b5 = (byte)(num47 << 3);
-								array3[n, num44].r = r;
-								array3[n, num44].g = g;
-								array3[n, num44].b = b5;
-								array3[n, num44].a = a;
-								num46++;
-								num44++;
-							}
-						}
-					}
-				}
-				string fileNameWithoutExtension2 = Path.GetFileNameWithoutExtension(bmp);
-				using (BinaryWriter binaryWriter2 = new BinaryWriter(File.Open(bmp.Replace(fileNameWithoutExtension2, fileNameWithoutExtension2 + "_2"), FileMode.Create)))
-				{
-					binaryWriter2.Write((short)19778);
-					binaryWriter2.Write(num2 * num3 * 4 + 56);
-					binaryWriter2.Write((short)0);
-					binaryWriter2.Write((short)0);
-					binaryWriter2.Write(54);
-					binaryWriter2.Write(40);
-					binaryWriter2.Write((int)num2);
-					binaryWriter2.Write((int)num3);
-					binaryWriter2.Write(2097153);
-					binaryWriter2.Write(0L);
-					binaryWriter2.Write(2834);
-					binaryWriter2.Write(2834);
-					binaryWriter2.Write(0L);
-					List<RGB> list = new List<RGB>();
-					RGB item = default(RGB);
-					for (int num48 = 0; num48 < num3; num48++)
-					{
-						for (int num49 = 0; num49 < num2 / 16; num49++)
-						{
-							for (int num50 = 0; num50 < 16; num50++)
-							{
-								item.r = array3[num49, num50 + num48 * 16].r;
-								item.g = array3[num49, num50 + num48 * 16].g;
-								item.b = array3[num49, num50 + num48 * 16].b;
-								item.a = array3[num49, num50 + num48 * 16].a;
-								list.Add(item);
-							}
-						}
-					}
-					int num51 = 0;
-					int num52 = list.Count - num2;
-					while (num51 < list.Count)
-					{
-						for (int num53 = 0; num53 < num2; num53++)
-						{
-							binaryWriter2.Write(list[num52 + num53].r);
-							binaryWriter2.Write(list[num52 + num53].g);
-							binaryWriter2.Write(list[num52 + num53].b);
-							binaryWriter2.Write(list[num52 + num53].a);
-						}
-						num51 += num2;
-						num52 -= num2;
-					}
-					binaryWriter2.Write((short)0);
-				}
-			}
-			else
-			{
-				LoadTIM(_003C_003Ec__DisplayClass15_.reader, bmp);
-			}
-		}
-		finally
-		{
-			if (_003C_003Ec__DisplayClass15_.reader != null)
-			{
-				((IDisposable)_003C_003Ec__DisplayClass15_.reader).Dispose();
-			}
-		}
-	}
+                                            if ((int)(uVar3 << 3) < 0)
+                                                uVar1 = 2047;
+                                        }
+                                        else
+                                        {
+                                            iVar6 = 5;
 
-	public static void LoadTIM(BinaryReader reader, string path)
-	{
-		short num = 0;
-		short num2 = 0;
-		short num3 = 0;
-		short num4 = 0;
-		ushort[] array = new ushort[16];
-		InitGlobals(reader);
-		if (FLAG == 18)
-		{
-			FLAG = 18u;
-		}
-		if (POS_CLUT_RECT != 0L)
-		{
-			if ((FLAG & 0x20) == 0)
-			{
-				reader.BaseStream.Seek(POS_CLUT_RECT + 4, SeekOrigin.Begin);
-				num = reader.ReadInt16();
-				num2 = reader.ReadInt16();
-			}
-			else
-			{
-				num = 16;
-				if (16 < reader.ReadInt16())
-				{
-					num = 256;
-				}
-			}
-			array = new ushort[num2 * num];
-			reader.BaseStream.Seek(POS_CLUT_COLORS, SeekOrigin.Begin);
-			for (int i = 0; i < array.Length; i++)
-			{
-				array[i] = reader.ReadUInt16();
-			}
-		}
-		reader.BaseStream.Seek(POS_IMG_RECT + 4, SeekOrigin.Begin);
-		num3 = reader.ReadInt16();
-		num4 = reader.ReadInt16();
-		byte[] array2;
-		if ((FLAG & 0x10) == 0)
-		{
-			array2 = new byte[num3 * num4 * 2];
-			for (int j = 0; j < array2.Length; j++)
-			{
-				array2[j] = reader.ReadByte();
-			}
-		}
-		else
-		{
-			reader.BaseStream.Seek(POS_IMG_INDICES, SeekOrigin.Begin);
-			RECT rECT = default(RECT);
-			rECT.x = 0;
-			rECT.y = 0;
-			rECT.w = num3;
-			rECT.h = num4;
-			RECT rect = rECT;
-			array2 = Decompressor(reader, rect).ToArray();
-		}
-		using (BinaryWriter binaryWriter = new BinaryWriter(File.Open(path, FileMode.Create)))
-		{
-			if (FLAG == 18)
-			{
-				binaryWriter.Write((short)19778);
-				binaryWriter.Write(num3 * num4 * 4 + 56);
-				binaryWriter.Write((short)0);
-				binaryWriter.Write((short)0);
-				binaryWriter.Write(54);
-				binaryWriter.Write(40);
-				binaryWriter.Write((int)num3);
-				binaryWriter.Write((int)num4);
-				binaryWriter.Write(2097153);
-				binaryWriter.Write(0L);
-				binaryWriter.Write(2834);
-				binaryWriter.Write(2834);
-				binaryWriter.Write(0L);
-				array = new ushort[num3 * num4];
-				for (int k = 0; k < array2.Length; k += 2)
-				{
-					array[k / 2] = (ushort)((array2[k + 1] << 8) | array2[k]);
-				}
-				ushort num5 = 31744;
-				ushort num6 = 992;
-				ushort num7 = 31;
-				RGB[] array3 = new RGB[num3 * num4];
-				for (int l = 0; l < array3.Length; l++)
-				{
-					byte b = (byte)((array[l] & num5) >> 10);
-					byte b2 = (byte)((array[l] & num6) >> 5);
-					byte num8 = (byte)(array[l] & num7);
-					byte b3 = (byte)(b << 3);
-					byte b4 = (byte)(b2 << 3);
-					byte b5 = (byte)(num8 << 3);
-					byte b6 = byte.MaxValue;
-					b6 = (byte)((array[l] >> 15 != 0) ? ((b3 != 0 || b4 != 0 || b5 != 0) ? 127 : 127) : ((b3 != 0 || b4 != 0 || b5 != 0) ? byte.MaxValue : 0));
-					array3[l].r = b3;
-					array3[l].g = b4;
-					array3[l].b = b5;
-					array3[l].a = b6;
-					binaryWriter.Write(array3[l].r);
-					binaryWriter.Write(array3[l].g);
-					binaryWriter.Write(array3[l].b);
-					binaryWriter.Write(array3[l].a);
-				}
-				binaryWriter.Write((short)0);
-			}
-			else if ((FLAG & 1) == 0)
-			{
-				binaryWriter.Write((short)19778);
-				binaryWriter.Write(num3 * num4 * 16 + 56);
-				binaryWriter.Write((short)0);
-				binaryWriter.Write((short)0);
-				binaryWriter.Write(54);
-				binaryWriter.Write(40);
-				binaryWriter.Write(num3 * 4);
-				binaryWriter.Write((int)num4);
-				binaryWriter.Write(2097153);
-				binaryWriter.Write(0L);
-				binaryWriter.Write(2834);
-				binaryWriter.Write(2834);
-				binaryWriter.Write(0L);
-				ushort num9 = 31744;
-				ushort num10 = 992;
-				ushort num11 = 31;
-				RGB[] array4 = new RGB[num3 * num4 * 4];
-				for (int m = 0; m < array4.Length; m++)
-				{
-					int num12 = (m % 2 == 0) ? (array2[m / 2] & 0xF) : (array2[m / 2] >> 4);
-					byte b7 = (byte)((array[num12] & num9) >> 10);
-					byte b8 = (byte)((array[num12] & num10) >> 5);
-					byte num13 = (byte)(array[num12] & num11);
-					byte b9 = (byte)(b7 << 3);
-					byte b10 = (byte)(b8 << 3);
-					byte b11 = (byte)(num13 << 3);
-					byte b12 = byte.MaxValue;
-					b12 = (byte)((array[num12] >> 15 != 0) ? ((b9 != 0 || b10 != 0 || b11 != 0) ? 127 : 127) : ((b9 != 0 || b10 != 0 || b11 != 0) ? byte.MaxValue : 0));
-					array4[m].r = b9;
-					array4[m].g = b10;
-					array4[m].b = b11;
-					array4[m].a = b12;
-				}
-				int num14 = num3 * 4;
-				int num15 = 0;
-				int num16 = array4.Length - num14;
-				while (num15 < array4.Length)
-				{
-					for (int n = 0; n < num14; n++)
-					{
-						binaryWriter.Write(array4[num16 + n].r);
-						binaryWriter.Write(array4[num16 + n].g);
-						binaryWriter.Write(array4[num16 + n].b);
-						binaryWriter.Write(array4[num16 + n].a);
-					}
-					num15 += num14;
-					num16 -= num14;
-				}
-				binaryWriter.Write((short)0);
-			}
-			else
-			{
-				binaryWriter.Write((short)19778);
-				binaryWriter.Write(num3 * num4 * 16 + 56);
-				binaryWriter.Write((short)0);
-				binaryWriter.Write((short)0);
-				binaryWriter.Write(54);
-				binaryWriter.Write(40);
-				binaryWriter.Write(num3 * 2);
-				binaryWriter.Write((int)num4);
-				binaryWriter.Write(2097153);
-				binaryWriter.Write(0L);
-				binaryWriter.Write(2834);
-				binaryWriter.Write(2834);
-				binaryWriter.Write(0L);
-				ushort num17 = 31744;
-				ushort num18 = 992;
-				ushort num19 = 31;
-				RGB[] array5 = new RGB[num3 * num4 * 2];
-				for (int num20 = 0; num20 < array5.Length; num20++)
-				{
-					int num21 = array2[num20];
-					byte b13 = (byte)((array[num21] & num17) >> 10);
-					byte b14 = (byte)((array[num21] & num18) >> 5);
-					byte num22 = (byte)(array[num21] & num19);
-					byte b15 = (byte)(b13 << 3);
-					byte b16 = (byte)(b14 << 3);
-					byte b17 = (byte)(num22 << 3);
-					byte b18 = byte.MaxValue;
-					b18 = (byte)((array[num21] >> 15 != 0) ? ((b15 != 0 || b16 != 0 || b17 != 0) ? 127 : 127) : ((b15 != 0 || b16 != 0 || b17 != 0) ? byte.MaxValue : 0));
-					array5[num20].r = b15;
-					array5[num20].g = b16;
-					array5[num20].b = b17;
-					array5[num20].a = b18;
-				}
-				int num23 = num3 * 2;
-				int num24 = 0;
-				int num25 = array5.Length - num23;
-				while (num24 < array5.Length)
-				{
-					for (int num26 = 0; num26 < num23; num26++)
-					{
-						binaryWriter.Write(array5[num25 + num26].r);
-						binaryWriter.Write(array5[num25 + num26].g);
-						binaryWriter.Write(array5[num25 + num26].b);
-						binaryWriter.Write(array5[num25 + num26].a);
-					}
-					num24 += num23;
-					num25 -= num23;
-				}
-				binaryWriter.Write((short)0);
-			}
-		}
-	}
+                                            if ((int)(uVar3 << 3) < 0)
+                                            {
+                                                uVar1 = 2049;
 
-	private static void InitGlobals(BinaryReader reader)
-	{
-		if (((FLAG = reader.ReadUInt32()) & 8) == 0)
-		{
-			POS_CLUT_COLORS = 0L;
-			POS_CLUT_RECT = 0L;
-		}
-		else
-		{
-			POS_CLUT_RECT = reader.BaseStream.Position + 4;
-			POS_CLUT_COLORS = reader.BaseStream.Position + 12;
-			int num = reader.ReadInt32() - 4;
-			reader.BaseStream.Seek(num, SeekOrigin.Current);
-		}
-		POS_IMG_RECT = reader.BaseStream.Position + 4;
-		POS_IMG_INDICES = reader.BaseStream.Position + 12;
-		int num2 = reader.ReadInt32();
-		POS_IMG_INDICES2 = ((reader.BaseStream.Position - 12 + num2 + 11) & -4);
-	}
+                                                if ((int)(uVar3 << 4) < 0)
+                                                    uVar1 = 3071;
+                                            }
+                                            else
+                                            {
+                                                uVar1 = 2;
 
-	private static List<byte> Decompressor(BinaryReader reader, RECT rect)
-	{
-		long position = reader.BaseStream.Position;
-		byte[] array = new byte[2848];
-		int num = 0;
-		int num2 = 0;
-		uint num3 = 256u;
-		short num4 = rect.y;
-		short h = rect.h;
-		List<byte> list = new List<byte>();
-		int num5 = rect.w * 2;
-		do
-		{
-			int num6 = num2 + (rect.y + rect.h - num4) * num5;
-			int num7 = 2048;
-			if (num6 < 2048)
-			{
-				num7 = num6;
-			}
-			int num8 = 400 + num;
-			do
-			{
-				if ((num3 & 0x100) != 0)
-				{
-					num3 = (uint)((reader.ReadByte() << 24) | 1);
-				}
-				if ((int)num3 < 0)
-				{
-					byte b = reader.ReadByte();
-					num++;
-					array[num8] = b;
-					num8++;
-				}
-				else
-				{
-					byte num9 = reader.ReadByte();
-					uint num10 = reader.ReadByte();
-					num10 <<= 8;
-					uint num11 = num9 | num10;
-					uint num12 = num11 >> 5;
-					uint num13 = num11 & 0x1F;
-					if (num < (int)num12 && 2048 < (int)(num12 + num13 + 2))
-					{
-						int num14 = (int)(num13 + 1);
-						while (num14 != -1)
-						{
-							num13 = (num12 & 0x7FF);
-							num12++;
-							num++;
-							num14--;
-							byte b2 = array[num8] = array[400 + num13];
-							num8++;
-						}
-					}
-					else
-					{
-						int num15 = (int)(num13 + 1);
-						while (num15 != -1)
-						{
-							byte b3 = array[400 + num12];
-							num12++;
-							num++;
-							num15--;
-							array[num8] = b3;
-							num8++;
-						}
-					}
-				}
-				num3 <<= 1;
-			}
-			while (num < num7);
-			int num16 = (num7 - num2) / num5;
-			h = (short)num16;
-			if (((num16 << 16 >> 16) & 1) != 0 && (num5 & 2) != 0 && num4 + num16 < rect.y + rect.h)
-			{
-				h = (short)(num16 - 1);
-			}
-			for (int i = 0; i < num5 * h; i++)
-			{
-				list.Add(array[400 + num2 + i]);
-			}
-			num4 = (short)(h + num4);
-			num2 += (h << 16 >> 16) * num5;
-			InitBuffer(array, 400 + num2 - 2048, 400 + num2, num - num2);
-			num2 -= 2048;
-			num -= 2048;
-		}
-		while (num4 < rect.y + rect.h);
-		return list;
-	}
+                                                if ((int)(uVar3 << 4) < 0)
+                                                    uVar1 = 1022;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if ((int)(uVar3 << 2) < 0)
+                                        {
+                                            if ((uVar3 << 3) >> 30 == 0)
+                                            {
+                                                uVar1 = (uint)(short)fastRam[192 + (uVar3 >> 22 & 30) / 2];
+                                                iVar6 = 9;
+                                            }
+                                            else
+                                            {
+                                                uVar1 = (uint)(short)fastRam[206 + (uVar3 >> 25 & 14) / 2];
+                                                iVar6 = 6;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            LZCS = (int)uVar3;
+                                            LZCR = Utilities.LeadingZeros(LZCS);
+                                            iVar6 = LZCR;
 
-	private static int InitBuffer(byte[] buffer, int begin, int end, int previousLength)
-	{
-		int result = begin;
-		if (previousLength != 0)
-		{
-			while ((end & 3) != 0)
-			{
-				buffer[begin++] = buffer[end++];
-				previousLength--;
-				if (previousLength == 0)
-				{
-					return result;
-				}
-			}
-			int num3 = begin & 3;
-			previousLength -= 16;
-			if (num3 == 0)
-			{
-				while (-1 < previousLength)
-				{
-					int num4 = 0;
-					while (num4 < 16)
-					{
-						buffer[begin++] = buffer[end++];
-						num4++;
-						previousLength--;
-					}
-				}
-				previousLength += 12;
-				while (-1 < previousLength)
-				{
-					int num7 = 0;
-					while (num7 < 4)
-					{
-						buffer[begin++] = buffer[end++];
-						num7++;
-						previousLength--;
-					}
-				}
-				previousLength += 3;
-				if (-1 < previousLength)
-				{
-					end += previousLength;
-					begin += previousLength;
-					if (end % 4 == 0)
-					{
-						buffer[begin] = buffer[end];
-					}
-					else if (end % 4 == 2)
-					{
-						buffer[begin] = buffer[end];
-						buffer[begin - 1] = buffer[end - 1];
-						buffer[begin - 2] = buffer[end - 2];
-					}
-					else if (end % 4 == 1)
-					{
-						buffer[begin] = buffer[end];
-						buffer[begin - 1] = buffer[end - 1];
-					}
-					else if (end % 4 == 3)
-					{
-						buffer[begin] = buffer[end];
-						buffer[begin - 1] = buffer[end - 1];
-						buffer[begin - 2] = buffer[end - 2];
-						buffer[begin - 3] = buffer[end - 3];
-					}
-					return result;
-				}
-			}
-			else
-			{
-				while (-1 < previousLength)
-				{
-					int num10 = 0;
-					while (num10 < 16)
-					{
-						buffer[begin++] = buffer[end++];
-						num10++;
-						previousLength--;
-					}
-				}
-				previousLength += 12;
-				while (-1 < previousLength)
-				{
-					int num13 = 0;
-					while (num13 < 4)
-					{
-						buffer[begin++] = buffer[end++];
-						num13++;
-						previousLength--;
-					}
-				}
-				for (previousLength += 4; previousLength != 0; previousLength--)
-				{
-					buffer[begin++] = buffer[end++];
-				}
-			}
-		}
-		return result;
-	}
+                                            if (uVar3 >> 26 == 1)
+                                            {
+                                                uVar1 = uVar3 >> 10 & 0xFFFF;
+                                                iVar6 = 22;
+                                            }
+                                            else
+                                            {
+                                                uint uVar = uVar3 << iVar6;
 
-	private static int BitExtracted(int number, int k, int p)
-	{
-		return ((1 << k) - 1) & (number >> p);
-	}
+                                                if ((int)((uVar3 >> 26) - 1) < 0)
+                                                {
+                                                    if (iVar6 - 6 < 1)
+                                                    {
+                                                        uVar = uVar >> 26 & 30;
+                                                        uVar1 = (uint)(short)fastRam[16 + uVar / 2];
+                                                        iVar6 = 11;
+                                                    }
+                                                    else
+                                                    {
+                                                        uVar1 = (uint)iVar6 - 6 << 6;
+                                                        uVar = (uVar >> 25 & 62) + uVar1;
+                                                        uVar1 = (uint)(short)fastRam[uVar / 2];
+                                                        iVar6 += 6;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    uVar1 = (uint)(iVar6 - 3 << 4);
+                                                    uVar = (uVar >> 27 & 14) + uVar1;
+                                                    uVar1 = (uint)(short)fastRam[uVar / 2];
+                                                    iVar6 += 4;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
 
-	private static int SignedNBits(int value, int NBITS)
-	{
-		int num = 32 - NBITS;
-		return value << num >> num;
-	}
+                                if (-1 < (int)(uVar3 << 1)) break;
 
-	[CompilerGenerated]
-	private static void _003CLoadAsset_003Eg__Huffman_007C15_0(ref _003C_003Ec__DisplayClass15_0 P_0, ref _003C_003Ec__DisplayClass15_1 P_1, ref _003C_003Ec__DisplayClass15_2 P_2, ref _003C_003Ec__DisplayClass15_3 P_3)
-	{
-		while (true)
-		{
-			P_2.writer.Write((ushort)P_3.uVar1);
-			P_3.uVar3 <<= P_3.iVar6;
-			P_3.uVar3 |= P_3.uVar4 >> P_3.iVar6 * -1;
-			P_3.iVar7 += P_3.iVar6;
-			P_3.uVar4 <<= P_3.iVar6;
-			if (-1 < P_3.iVar7 - 32)
-			{
-				P_3.iVar7 -= 32;
-				P_3.uVar1 = P_3.uVar5 << 16;
-				P_3.uVar5 = ((P_3.uVar5 >> 16) | P_3.uVar1);
-				P_3.uVar3 |= ((-P_3.iVar7 != 0) ? (P_3.uVar5 >> -P_3.iVar7) : 0);
-				P_3.uVar4 = P_3.uVar5 << P_3.iVar7;
-				if (P_0.reader.BaseStream.Position != P_0.reader.BaseStream.Length)
-				{
-					P_3.uVar5 = P_0.reader.ReadUInt32();
-				}
-				else
-				{
-					P_3.uVar5 = 0u;
-				}
-			}
-			if ((int)P_3.uVar3 >= 0)
-			{
-				if ((int)(P_3.uVar3 << 1) < 0)
-				{
-					if ((int)(P_3.uVar3 << 2) < 0)
-					{
-						P_3.iVar6 = 4;
-						P_3.uVar1 = 1025u;
-						if ((int)(P_3.uVar3 << 3) < 0)
-						{
-							P_3.uVar1 = 2047u;
-						}
-						continue;
-					}
-					P_3.iVar6 = 5;
-					if ((int)(P_3.uVar3 << 3) < 0)
-					{
-						P_3.uVar1 = 2049u;
-						if ((int)(P_3.uVar3 << 4) < 0)
-						{
-							P_3.uVar1 = 3071u;
-						}
-					}
-					else
-					{
-						P_3.uVar1 = 2u;
-						if ((int)(P_3.uVar3 << 4) < 0)
-						{
-							P_3.uVar1 = 1022u;
-						}
-					}
-					continue;
-				}
-				if ((int)(P_3.uVar3 << 2) < 0)
-				{
-					if (P_3.uVar3 << 3 >> 30 == 0)
-					{
-						P_3.uVar1 = (uint)(short)P_1.fastRam[192 + ((P_3.uVar3 >> 22) & 0x1E) / 2u];
-						P_3.iVar6 = 9;
-					}
-					else
-					{
-						P_3.uVar1 = (uint)(short)P_1.fastRam[206 + ((P_3.uVar3 >> 25) & 0xE) / 2u];
-						P_3.iVar6 = 6;
-					}
-					continue;
-				}
-				LZCS = (int)P_3.uVar3;
-				LZCR = Utilities.LeadingZeros(LZCS);
-				P_3.iVar6 = LZCR;
-				if (P_3.uVar3 >> 26 == 1)
-				{
-					P_3.uVar1 = ((P_3.uVar3 >> 10) & 0xFFFF);
-					P_3.iVar6 = 22;
-					continue;
-				}
-				uint num = P_3.uVar3 << P_3.iVar6;
-				if ((int)((P_3.uVar3 >> 26) - 1) < 0)
-				{
-					if (P_3.iVar6 - 6 < 1)
-					{
-						num = ((num >> 26) & 0x1E);
-						P_3.uVar1 = (uint)(short)P_1.fastRam[16 + num / 2u];
-						P_3.iVar6 = 11;
-					}
-					else
-					{
-						P_3.uVar1 = (uint)(P_3.iVar6 - 6 << 6);
-						num = ((num >> 25) & 0x3E) + P_3.uVar1;
-						P_3.uVar1 = (uint)(short)P_1.fastRam[num / 2u];
-						P_3.iVar6 += 6;
-					}
-				}
-				else
-				{
-					P_3.uVar1 = (uint)(P_3.iVar6 - 3 << 4);
-					num = ((num >> 27) & 0xE) + P_3.uVar1;
-					P_3.uVar1 = (uint)(short)P_1.fastRam[num / 2u];
-					P_3.iVar6 += 4;
-				}
-			}
-			else
-			{
-				if (-1 < (int)(P_3.uVar3 << 1))
-				{
-					break;
-				}
-				P_3.iVar6 = 3;
-				P_3.uVar1 = 1u;
-				if ((int)(P_3.uVar3 << 2) < 0)
-				{
-					P_3.uVar1 = 1023u;
-				}
-			}
-		}
-		P_2.writer.Write((ushort)65024);
-		P_3.uVar1 = P_3.uVar3 << 2;
-	}
+                                iVar6 = 3;
+                                uVar1 = 1;
 
-	[CompilerGenerated]
-	private static bool _003CLoadAsset_003Eg__rl_decode_block_007C15_1(short[,] blk, byte[] qt, ref _003C_003Ec__DisplayClass15_4 P_2, ref _003C_003Ec__DisplayClass15_5 P_3)
-	{
-		if (P_3.m_current_coefficient == 64)
-		{
-			for (int i = 0; i < 64; i++)
-			{
-				blk[P_3.m_current_block, i] = 0;
-			}
-			ushort num;
-			do
-			{
-				if (P_3.m_remaining_halfwords == 0)
-				{
-					return false;
-				}
-				num = P_2.reader2.ReadUInt16();
-				P_3.m_remaining_halfwords--;
-			}
-			while (num == 65024);
-			P_3.m_current_coefficient = 0;
-			P_3.m_current_q_scale = (ushort)((num >> 10) & 0x3F);
-			int val = SignedNBits(num & 0x3FF, 10) * qt[P_3.m_current_coefficient];
-			if (P_3.m_current_q_scale == 0)
-			{
-				val = SignedNBits(num & 0x3FF, 10) * 2;
-			}
-			val = val.Clamp(-1024, 1023);
-			if (P_3.m_current_q_scale > 0)
-			{
-				blk[P_3.m_current_block, ZAGZIG[P_3.m_current_coefficient]] = (short)val;
-			}
-			else if (P_3.m_current_q_scale == 0)
-			{
-				blk[P_3.m_current_block, P_3.m_current_coefficient] = (short)val;
-			}
-		}
-		while (P_3.m_remaining_halfwords > 0)
-		{
-			ushort num2 = P_2.reader2.ReadUInt16();
-			P_3.m_remaining_halfwords--;
-			P_3.m_current_coefficient += ((num2 >> 10) & 0x3F) + 1;
-			if (P_3.m_current_coefficient >= 64)
-			{
-				P_3.m_current_coefficient = 64;
-				return true;
-			}
-			int val2 = (SignedNBits(num2 & 0x3FF, 10) * qt[P_3.m_current_coefficient] * P_3.m_current_q_scale + 4) / 8;
-			if (P_3.m_current_q_scale == 0)
-			{
-				val2 = SignedNBits(num2 & 0x3FF, 10) * 2;
-			}
-			val2 = val2.Clamp(-1024, 1023);
-			if (P_3.m_current_q_scale > 0)
-			{
-				blk[P_3.m_current_block, ZAGZIG[P_3.m_current_coefficient]] = (short)val2;
-			}
-			else if (P_3.m_current_q_scale == 0)
-			{
-				blk[P_3.m_current_block, P_3.m_current_coefficient] = (short)val2;
-			}
-		}
-		return false;
-	}
+                                if ((int)(uVar3 << 2) < 0)
+                                    uVar1 = 1023;
+                            }
 
-	[CompilerGenerated]
-	private static void _003CLoadAsset_003Eg__IDCT_007C15_2(short[,] blk, ref _003C_003Ec__DisplayClass15_1 P_1, ref _003C_003Ec__DisplayClass15_5 P_2)
-	{
-		long[] array = new long[64];
-		for (int i = 0; i < 8; i++)
-		{
-			for (int j = 0; j < 8; j++)
-			{
-				long num = 0L;
-				for (int k = 0; k < 8; k++)
-				{
-					num += blk[P_2.m_current_block, k * 8 + i] * P_1.m_scale_table[k * 8 + j];
-				}
-				array[i + j * 8] = num;
-			}
-		}
-		for (int l = 0; l < 8; l++)
-		{
-			for (int m = 0; m < 8; m++)
-			{
-				long num2 = 0L;
-				for (int n = 0; n < 8; n++)
-				{
-					num2 += array[n + m * 8] * P_1.m_scale_table[n * 8 + l];
-				}
-				blk[P_2.m_current_block, l + m * 8] = (short)SignedNBits((int)((num2 >> 32) + ((num2 >> 31) & 1)), 9).Clamp(-128, 127);
-			}
-		}
-	}
+                            writer.Write((ushort)0xFE00);
+                            uVar1 = uVar3 << 2;
+                            return;
+                        }
+                    }
 
-	[CompilerGenerated]
-	private static void _003CLoadAsset_003Eg__yuv_to_rgb_007C15_3(int xx, int yy, short[,] blk, int Crblk, int Cbblk, int Yblk, ref _003C_003Ec__DisplayClass15_1 P_6)
-	{
-		for (int i = 0; i < 8; i++)
-		{
-			for (int j = 0; j < 8; j++)
-			{
-				short num = P_6.m_blocks[Crblk, (j + xx) / 2 + (i + yy) / 2 * 8];
-				short num2 = P_6.m_blocks[Cbblk, (j + xx) / 2 + (i + yy) / 2 * 8];
-				short num3 = (short)(-0.3437f * (float)num2 + -0.7143f * (float)num);
-				num = (short)(1.402f * (float)num);
-				num2 = (short)(1.772f * (float)num2);
-				short num4 = P_6.m_blocks[Yblk, j + i * 8];
-				num = (short)(num4 + num).Clamp(-128, 127);
-				num3 = (short)(num4 + num3).Clamp(-128, 127);
-				num2 = (short)(num4 + num2).Clamp(-128, 127);
-				num = (short)(num + 128);
-				num3 = (short)(num3 + 128);
-				num2 = (short)(num2 + 128);
-				P_6.m_block_rgb[j + xx + (i + yy) * 16] = (uint)((ushort)num | ((ushort)num3 << 8) | ((ushort)num2 << 16));
-			}
-		}
-	}
+                    if (unk3 == 0)
+                    {
+                        unk8 = rect.x;
+                    }
+                    else
+                    {
+                        int iVar = (((rect.x << 16) >> 16) + (int)((uint)(rect.x << 16) >> 31)) >> 1;
+                        unk8 = (iVar << 1) + iVar;
+                    }
+
+                    short sVar1 = rect.y; //sp+12h
+                    short sVar2 = (short)(unk4 << 3); //sp+14h
+                    short sVar3 = (short)(rect.h - sVar2);
+
+                    if (unk3 == 0)
+                    {
+                        unk3 = unk8 + rect.w;
+                    }
+                    else
+                    {
+                        int iVar = ((rect.w << 16) >> 16) + (int)((uint)(rect.w << 16) >> 31) >> 1;
+                        unk3 = (iVar << 1) + iVar;
+                    }
+
+                    unk4 = ((unk4 << 3) * unk5) + (int)((uint)((unk4 << 3) * unk5) >> 31);
+                    unk9 = unk7 << 2;
+
+                    using (BinaryReader reader2 = new BinaryReader(stream, Encoding.Default, true))
+                    {
+                        int command = reader2.ReadInt32();
+                        data_output_depth = BitExtracted(command, 2, 27);
+                        data_output_signed = BitExtracted(command, 1, 26);
+                        data_output_bit15 = BitExtracted(command, 1, 25);
+
+                        int m_remaining_halfwords = BitExtracted(command, 16, 0) * 2;
+                        int m_current_block = 0;
+                        int m_current_coefficient = 64;
+                        ushort m_current_q_scale = 0;
+
+                        while (m_remaining_halfwords > 0)
+                        {
+                            bool mainBreak = false;
+
+                            for (; m_current_block < NUM_BLOCKS; m_current_block++)
+                            {
+                                if (!rl_decode_block(m_blocks, (m_current_block >= 2) ? m_iq_y : m_iq_uv))
+                                { mainBreak = true; break; }
+
+                                IDCT(m_blocks);
+                            }
+
+                            if (mainBreak) break;
+
+                            m_current_block = 0;
+                            m_current_coefficient = 64;
+                            m_current_q_scale = 0;
+
+                            yuv_to_rgb(0, 0, m_blocks, 0, 1, 2);
+                            yuv_to_rgb(8, 0, m_blocks, 0, 1, 3);
+                            yuv_to_rgb(0, 8, m_blocks, 0, 1, 4);
+                            yuv_to_rgb(8, 8, m_blocks, 0, 1, 5);
+
+                            #region CopyOutBlock
+                            switch (data_output_depth)
+                            {
+                                case 0:
+                                    for (int i = 0; i < 64; i += 8)
+                                    {
+                                        uint value = m_block_rgb[i] >> 4;
+                                        value |= (m_block_rgb[i + 1] >> 4) << 4;
+                                        value |= (m_block_rgb[i + 2] >> 4) << 8;
+                                        value |= (m_block_rgb[i + 3] >> 4) << 12;
+                                        value |= (m_block_rgb[i + 4] >> 4) << 16;
+                                        value |= (m_block_rgb[i + 5] >> 4) << 20;
+                                        value |= (m_block_rgb[i + 6] >> 4) << 24;
+                                        value |= (m_block_rgb[i + 7] >> 4) << 28;
+                                        m_data_out_fifo.Enqueue(value);
+                                    }
+                                    break;
+
+                                case 1:
+                                    for (int i = 0; i < 64; i += 4)
+                                    {
+                                        uint value = m_block_rgb[i];
+                                        value |= m_block_rgb[i + 1] << 8;
+                                        value |= m_block_rgb[i + 2] << 16;
+                                        value |= m_block_rgb[i + 3] << 24;
+                                        m_data_out_fifo.Enqueue(value);
+                                    }
+                                    break;
+
+                                case 2:
+                                    int index = 0;
+                                    int state = 0;
+                                    uint rgb = 0;
+
+                                    while (index < m_block_rgb.Length)
+                                    {
+                                        switch (state)
+                                        {
+                                            case 0:
+                                                rgb = m_block_rgb[index++];
+                                                state = 1;
+                                                break;
+                                            case 1:
+                                                rgb |= (m_block_rgb[index] & 0xFF) << 24;
+                                                m_data_out_fifo.Enqueue(rgb);
+                                                rgb = m_block_rgb[index] >> 8;
+                                                index++;
+                                                state = 2;
+                                                break;
+                                            case 2:
+                                                rgb |= m_block_rgb[index] << 16;
+                                                m_data_out_fifo.Enqueue(rgb);
+                                                rgb = m_block_rgb[index] >> 16;
+                                                index++;
+                                                state = 3;
+                                                break;
+                                            case 3:
+                                                rgb |= m_block_rgb[index] << 8;
+                                                m_data_out_fifo.Enqueue(rgb);
+                                                index++;
+                                                state = 0;
+                                                break;
+                                        }
+                                    }
+                                    break;
+
+                                case 3:
+                                    ushort a = (ushort)data_output_bit15;
+                                    for (int i = 0; i < m_block_rgb.Length;)
+                                    {
+                                        uint color = m_block_rgb[i++];
+                                        ushort r = (ushort)((color >> 3) & 0x1Fu);
+                                        ushort g = (ushort)((color >> 11) & 0x1Fu);
+                                        ushort b = (ushort)((color >> 19) & 0x1Fu);
+                                        ushort color15a = (ushort)(r | (g << 5) | (b << 10) | (a << 15));
+
+                                        color = m_block_rgb[i++];
+                                        r = (ushort)((color >> 3) & 0x1Fu);
+                                        g = (ushort)((color >> 11) & 0x1Fu);
+                                        b = (ushort)((color >> 19) & 0x1Fu);
+                                        ushort color15b = (ushort)(r | (g << 5) | (b << 10) | (a << 15));
+
+                                        m_data_out_fifo.Enqueue((uint)color15a | ((uint)color15b << 16));
+                                    }
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                            #endregion
+                        }
+
+                        bool rl_decode_block(short[,] blk, byte[] qt)
+                        {
+                            if (m_current_coefficient == 64)
+                            {
+                                for (int i = 0; i < 64; i++)
+                                    blk[m_current_block, i] = 0;
+
+                                ushort n;
+                                for (; ; )
+                                {
+                                    if (m_remaining_halfwords == 0)
+                                        return false;
+
+                                    n = reader2.ReadUInt16();
+                                    m_remaining_halfwords--;
+
+                                    if (n == 0xFE00)
+                                        continue;
+                                    else
+                                        break;
+                                }
+
+                                m_current_coefficient = 0;
+                                m_current_q_scale = (ushort)((n >> 10) & 0x3F);
+                                int val = SignedNBits((int)(n & 0x3FF), 10) * (int)(uint)qt[m_current_coefficient];
+
+                                if (m_current_q_scale == 0)
+                                    val = SignedNBits((int)(n & 0x3FF), 10) * 2;
+
+                                val = Utilities.Clamp(val, -0x400, 0x3FF);
+
+                                if (m_current_q_scale > 0)
+                                    blk[m_current_block, ZAGZIG[m_current_coefficient]] = (short)val;
+                                else if (m_current_q_scale == 0)
+                                    blk[m_current_block, m_current_coefficient] = (short)val;
+                            }
+
+                            while (m_remaining_halfwords > 0)
+                            {
+                                ushort n = reader2.ReadUInt16();
+                                m_remaining_halfwords--;
+
+                                m_current_coefficient += ((n >> 10) & 0x3F) + 1;
+                                if (m_current_coefficient >= 64)
+                                {
+                                    m_current_coefficient = 64;
+                                    return true;
+                                }
+
+                                int val = (SignedNBits((int)(n & 0x3FF), 10) * (int)(uint)qt[m_current_coefficient] * (int)m_current_q_scale + 4) / 8;
+
+                                if (m_current_q_scale == 0)
+                                    val = SignedNBits((int)(n & 0x3FF), 10) * 2;
+
+                                val = Utilities.Clamp(val, -0x400, 0x3FF);
+
+                                if (m_current_q_scale > 0)
+                                    blk[m_current_block, ZAGZIG[m_current_coefficient]] = (short)val;
+                                else if (m_current_q_scale == 0)
+                                    blk[m_current_block, m_current_coefficient] = (short)val;
+                            }
+
+                            return false;
+                        }
+
+                        void IDCT(short[,] blk)
+                        {
+                            long[] temp_buffer = new long[64];
+
+                            for (int x = 0; x < 8; x++)
+                            {
+                                for (int y = 0; y < 8; y++)
+                                {
+                                    long sum = 0;
+
+                                    for (int u = 0; u < 8; u++)
+                                        sum += (blk[m_current_block, u * 8 + x]) * (m_scale_table[u * 8 + y]);
+
+                                    temp_buffer[x + y * 8] = sum;
+                                }
+                            }
+
+                            for (int x = 0; x < 8; x++)
+                            {
+                                for (int y = 0; y < 8; y++)
+                                {
+                                    long sum = 0;
+
+                                    for (int u = 0; u < 8; u++)
+                                        sum += (temp_buffer[u + y * 8]) * (m_scale_table[u * 8 + x]);
+
+                                    blk[m_current_block, x + y * 8] = (short)Utilities.Clamp(SignedNBits((int)((sum >> 32) + ((sum >> 31) & 1)), 9), -128, 127);
+                                }
+                            }
+                        }
+
+                        void yuv_to_rgb(int xx, int yy, short[,] blk, int Crblk, int Cbblk, int Yblk)
+                        {
+                            for (int y = 0; y < 8; y++)
+                            {
+                                for (int x = 0; x < 8; x++)
+                                {
+                                    short R = m_blocks[Crblk, ((x + xx) / 2) + ((y + yy) / 2) * 8];
+                                    short B = m_blocks[Cbblk, ((x + xx) / 2) + ((y + yy) / 2) * 8];
+                                    short G = (short)((-0.3437f * (float)B) + (-0.7143f * (float)R));
+
+                                    R = (short)(1.402f * (float)R);
+                                    B = (short)(1.772f * (float)B);
+
+                                    short Y = m_blocks[Yblk, x + y * 8];
+                                    R = (short)Utilities.Clamp((int)Y + R, -128, 127);
+                                    G = (short)Utilities.Clamp((int)Y + G, -128, 127);
+                                    B = (short)Utilities.Clamp((int)Y + B, -128, 127);
+
+                                    R += 128;
+                                    G += 128;
+                                    B += 128;
+
+                                    m_block_rgb[(x + xx) + ((y + yy) * 16)] = (uint)(ushort)R | ((uint)(ushort)G << 8) | ((uint)(ushort)B << 16);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                RGB[,] chunks = new RGB[width / 16, 16 * height];
+
+                for (int i = 0; i < width / 16; i++)
+                {
+                    ushort redMask = 0x7C00;
+                    ushort greenMask = 0x3E0;
+                    ushort blueMask = 0x1F;
+
+                    switch (data_output_depth)
+                    {
+                        case 3:
+                            for (int j = 0; j < 16 * height;)
+                            {
+                                uint colors = m_data_out_fifo.Dequeue();
+                                ushort[] color = new ushort[2] { (ushort)(colors & 0xFFFF), (ushort)(colors >> 16) };
+
+                                for (int k = 0; k < color.Length; k++, j++)
+                                {
+                                    byte R5 = (byte)((color[k] & redMask) >> 10);
+                                    byte G5 = (byte)((color[k] & greenMask) >> 5);
+                                    byte B5 = (byte)(color[k] & blueMask);
+                                    byte A = (byte)(color[k] >> 15 == 1 ? 128 : 255);
+
+                                    byte R8 = (byte)(R5 << 3);
+                                    byte G8 = (byte)(G5 << 3);
+                                    byte B8 = (byte)(B5 << 3);
+
+                                    chunks[i, j].r = R8;
+                                    chunks[i, j].g = G8;
+                                    chunks[i, j].b = B8;
+                                    chunks[i, j].a = A;
+                                }
+                            }
+                            break;
+                    }
+                }
+
+                string file = Path.GetFileNameWithoutExtension(bmp);
+                string newPath = bmp.Replace(file, file + "_2");
+                #region Bitmap
+                using (BinaryWriter writer = new BinaryWriter(File.Open(newPath, FileMode.Create)))
+                {
+                    writer.Write((short)0x4D42); //Signature
+                    writer.Write(width * height * 4 + 56); //File Size
+                    writer.Write((short)0); //Reserved1
+                    writer.Write((short)0); //Reserved2
+                    writer.Write(54); //File Offset to Pixel Array
+                    writer.Write(40); //DIB Header Size
+                    writer.Write((int)width); //Image Width
+                    writer.Write((int)height); //Image Height
+                    writer.Write(0x00200001); //Compression
+                    writer.Write((long)0);
+                    writer.Write(2834); //X Pixels Per Meter
+                    writer.Write(2834); //Y Pixels Per Meter
+                    writer.Write((long)0);
+
+                    List<RGB> pixels = new List<RGB>();
+
+                    for (int y = 0; y < height; y++)
+                    {
+                        for (int x = 0; x < width / 16; x++)
+                        {
+                            for (int z = 0; z < 16; z++)
+                            {
+                                RGB rgb;
+                                rgb.r = chunks[x, z + (y * 16)].r;
+                                rgb.g = chunks[x, z + (y * 16)].g;
+                                rgb.b = chunks[x, z + (y * 16)].b;
+                                rgb.a = chunks[x, z + (y * 16)].a;
+
+                                pixels.Add(rgb);
+                            }
+                        }
+                    }
+
+                    for (int i = 0, j = pixels.Count - width; i < pixels.Count; i += width, j -= width)
+                    {
+                        for (int k = 0; k < width; ++k)
+                        {
+                            writer.Write(pixels[j + k].r);
+                            writer.Write(pixels[j + k].g);
+                            writer.Write(pixels[j + k].b);
+                            writer.Write(pixels[j + k].a);
+                        }
+                    }
+
+                    writer.Write((short)0);
+                }
+                #endregion
+            }
+            else
+            {
+                LoadTIM(reader, bmp);
+            }
+        }
+    }
+
+    public static void LoadTIM(BinaryReader reader, string path)
+    {
+        short clutWidth = 0;
+        short clutHeight = 0;
+        short imageWidth = 0;
+        short imageHeight = 0;
+        ushort[] colors = new ushort[16];
+        byte[] indices;
+
+        InitGlobals(reader);
+
+        if (FLAG == 0x12)
+            FLAG = 0x12;
+
+        #region CLUT
+        if (POS_CLUT_RECT != 0)
+        {
+            if ((FLAG & 0x20) == 0)
+            {
+                reader.BaseStream.Seek(POS_CLUT_RECT + 0x04, SeekOrigin.Begin);
+                clutWidth = reader.ReadInt16();
+                clutHeight = reader.ReadInt16();
+            }
+            else
+            {
+                clutWidth = 16;
+                if (16 < reader.ReadInt16())
+                    clutWidth = 256;
+            }
+
+            colors = new ushort[clutHeight * clutWidth];
+            reader.BaseStream.Seek(POS_CLUT_COLORS, SeekOrigin.Begin);
+            for (int i = 0; i < colors.Length; i++)
+                colors[i] = reader.ReadUInt16();
+        }
+
+        //_clutWidth = (byte)clutWidth;
+        goto SET_IMAGE;
+        #endregion
+
+        //_unknown1 = 0;
+        #region Image
+        SET_IMAGE:
+        //unknownReturn = 0;
+        reader.BaseStream.Seek(POS_IMG_RECT + 0x04, SeekOrigin.Begin);
+        imageWidth = reader.ReadInt16();
+        imageHeight = reader.ReadInt16();
+
+        if ((FLAG & 0x10) == 0)
+        {
+            indices = new byte[imageWidth * imageHeight * 2];
+            for (int i = 0; i < indices.Length; i++)
+                indices[i] = reader.ReadByte();
+        }
+        else
+        {
+            reader.BaseStream.Seek(POS_IMG_INDICES, SeekOrigin.Begin);
+            RECT newRect = new RECT
+            {
+                x = 0,
+                y = 0,
+                w = imageWidth,
+                h = imageHeight
+            };
+
+            indices = Decompressor(reader, newRect).ToArray();
+        }
+        #endregion
+
+        #region Bitmap
+        using (BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.Create)))
+        {
+            if (FLAG == 0x12)
+            {
+                writer.Write((short)0x4D42); //Signature
+                writer.Write(imageWidth * imageHeight * 4 + 56); //File Size
+                writer.Write((short)0); //Reserved1
+                writer.Write((short)0); //Reserved2
+                writer.Write(54); //File Offset to Pixel Array
+                writer.Write(40); //DIB Header Size
+                writer.Write((int)imageWidth); //Image Width
+                writer.Write((int)imageHeight); //Image Height
+                writer.Write(0x00200001); //Compression
+                writer.Write((long)0);
+                writer.Write(2834); //X Pixels Per Meter
+                writer.Write(2834); //Y Pixels Per Meter
+                writer.Write((long)0);
+
+                colors = new ushort[imageWidth * imageHeight];
+
+                for (int i = 0; i < indices.Length; i += 2)
+                    colors[i / 2] = (ushort)(indices[i + 1] << 8 | indices[i]);
+
+                ushort redMask = 0x7C00;
+                ushort greenMask = 0x3E0;
+                ushort blueMask = 0x1F;
+                RGB[] pixels = new RGB[imageWidth * imageHeight];
+
+                for (int i = 0; i < pixels.Length; i++)
+                {
+                    byte R5 = (byte)((colors[i] & redMask) >> 10);
+                    byte G5 = (byte)((colors[i] & greenMask) >> 5);
+                    byte B5 = (byte)(colors[i] & blueMask);
+
+                    byte R8 = (byte)(R5 << 3);
+                    byte G8 = (byte)(G5 << 3);
+                    byte B8 = (byte)(B5 << 3);
+
+                    byte A = 255;
+
+                    if (colors[i] >> 15 == 0)
+                    {
+                        if (R8 == 0 && G8 == 0 && B8 == 0)
+                            A = 0;
+                        else
+                            A = 255;
+                    }
+                    else
+                    {
+                        if (R8 == 0 && G8 == 0 && B8 == 0)
+                            A = 127;
+                        else
+                            A = 127;
+                    }
+
+                    /*pixels[i].r = A == 0 ? R8 : (byte)0;
+                    pixels[i].g = A == 0 ? G8 : (byte)0;
+                    pixels[i].b = A == 0 ? B8 : (byte)0;
+                    pixels[i].a = A;*/
+
+                    pixels[i].r = R8;
+                    pixels[i].g = G8;
+                    pixels[i].b = B8;
+                    pixels[i].a = A;
+
+                    writer.Write(pixels[i].r);
+                    writer.Write(pixels[i].g);
+                    writer.Write(pixels[i].b);
+                    writer.Write(pixels[i].a);
+                }
+
+                writer.Write((short)0);
+            }
+            else if ((FLAG & 1) == 0)
+            {
+                writer.Write((short)0x4D42); //Signature
+                writer.Write(imageWidth * imageHeight * 16 + 56); //File Size
+                writer.Write((short)0); //Reserved1
+                writer.Write((short)0); //Reserved2
+                writer.Write(54); //File Offset to Pixel Array
+                writer.Write(40); //DIB Header Size
+                writer.Write(imageWidth * 4); //Image Width
+                writer.Write((int)imageHeight); //Image Height
+                writer.Write(0x00200001); //Compression
+                writer.Write((long)0);
+                writer.Write(2834); //X Pixels Per Meter
+                writer.Write(2834); //Y Pixels Per Meter
+                writer.Write((long)0);
+
+                ushort redMask = 0x7C00;
+                ushort greenMask = 0x3E0;
+                ushort blueMask = 0x1F;
+                RGB[] pixels = new RGB[imageWidth * imageHeight * 4];
+
+                for (int i = 0; i < pixels.Length; i++)
+                {
+                    int colorIndex = i % 2 == 0 ? indices[i / 2] & 0x0F : indices[i / 2] >> 4;
+
+                    byte R5 = (byte)((colors[colorIndex] & redMask) >> 10);
+                    byte G5 = (byte)((colors[colorIndex] & greenMask) >> 5);
+                    byte B5 = (byte)(colors[colorIndex] & blueMask);
+
+                    byte R8 = (byte)(R5 << 3);
+                    byte G8 = (byte)(G5 << 3);
+                    byte B8 = (byte)(B5 << 3);
+
+                    byte A = 255;
+
+                    if (colors[colorIndex] >> 15 == 0)
+                    {
+                        if (R8 == 0 && G8 == 0 && B8 == 0)
+                            A = 0;
+                        else
+                            A = 255;
+                    }
+                    else
+                    {
+                        if (R8 == 0 && G8 == 0 && B8 == 0)
+                            A = 127;
+                        else
+                            A = 127;
+                    }
+
+                    /*pixels[i].r = A == 0 ? R8 : (byte)0;
+                    pixels[i].g = A == 0 ? G8 : (byte)0;
+                    pixels[i].b = A == 0 ? B8 : (byte)0;
+                    pixels[i].a = A;*/
+
+                    pixels[i].r = R8;
+                    pixels[i].g = G8;
+                    pixels[i].b = B8;
+                    pixels[i].a = A;
+                }
+
+                int width = imageWidth * 4;
+
+                for (int i = 0, j = pixels.Length - width; i < pixels.Length; i += width, j -= width)
+                {
+                    for (int k = 0; k < width; ++k)
+                    {
+                        writer.Write(pixels[j + k].r);
+                        writer.Write(pixels[j + k].g);
+                        writer.Write(pixels[j + k].b);
+                        writer.Write(pixels[j + k].a);
+                    }
+                }
+
+                writer.Write((short)0);
+            }
+            else
+            {
+                writer.Write((short)0x4D42); //Signature
+                writer.Write(imageWidth * imageHeight * 16 + 56); //File Size
+                writer.Write((short)0); //Reserved1
+                writer.Write((short)0); //Reserved2
+                writer.Write(54); //File Offset to Pixel Array
+                writer.Write(40); //DIB Header Size
+                writer.Write(imageWidth * 2); //Image Width
+                writer.Write((int)imageHeight); //Image Height
+                writer.Write(0x00200001); //Compression
+                writer.Write((long)0);
+                writer.Write(2834); //X Pixels Per Meter
+                writer.Write(2834); //Y Pixels Per Meter
+                writer.Write((long)0);
+
+                ushort redMask = 0x7C00;
+                ushort greenMask = 0x3E0;
+                ushort blueMask = 0x1F;
+                RGB[] pixels = new RGB[imageWidth * imageHeight * 2];
+
+                for (int i = 0; i < pixels.Length; i++)
+                {
+                    int colorIndex = indices[i];
+
+                    byte R5 = (byte)((colors[colorIndex] & redMask) >> 10);
+                    byte G5 = (byte)((colors[colorIndex] & greenMask) >> 5);
+                    byte B5 = (byte)(colors[colorIndex] & blueMask);
+
+                    byte R8 = (byte)(R5 << 3);
+                    byte G8 = (byte)(G5 << 3);
+                    byte B8 = (byte)(B5 << 3);
+
+                    byte A = 255;
+
+                    if (colors[colorIndex] >> 15 == 0)
+                    {
+                        if (R8 == 0 && G8 == 0 && B8 == 0)
+                            A = 0;
+                        else
+                            A = 255;
+                    }
+                    else
+                    {
+                        if (R8 == 0 && G8 == 0 && B8 == 0)
+                            A = 127;
+                        else
+                            A = 127;
+                    }
+
+                    /*pixels[i].r = A == 0 ? R8 : (byte)0;
+                    pixels[i].g = A == 0 ? G8 : (byte)0;
+                    pixels[i].b = A == 0 ? B8 : (byte)0;
+                    pixels[i].a = A;*/
+
+                    pixels[i].r = R8;
+                    pixels[i].g = G8;
+                    pixels[i].b = B8;
+                    pixels[i].a = A;
+                }
+
+                int width = imageWidth * 2;
+
+                for (int i = 0, j = pixels.Length - width; i < pixels.Length; i += width, j -= width)
+                {
+                    for (int k = 0; k < width; ++k)
+                    {
+                        writer.Write(pixels[j + k].r);
+                        writer.Write(pixels[j + k].g);
+                        writer.Write(pixels[j + k].b);
+                        writer.Write(pixels[j + k].a);
+                    }
+                }
+
+                writer.Write((short)0);
+            }
+        }
+        #endregion
+    }
+
+    private static void InitGlobals(BinaryReader reader)
+    {
+        uint flag = reader.ReadUInt32();
+        FLAG = flag;
+
+        if ((flag & 8) == 0)
+        {
+            POS_CLUT_COLORS = 0;
+            POS_CLUT_RECT = 0;
+        }
+        else
+        {
+            POS_CLUT_RECT = reader.BaseStream.Position + 0x04;
+            POS_CLUT_COLORS = reader.BaseStream.Position + 0x0C;
+            int IMG_OFFSET = reader.ReadInt32() - 0x04;
+            reader.BaseStream.Seek(IMG_OFFSET, SeekOrigin.Current);
+        }
+
+        POS_IMG_RECT = reader.BaseStream.Position + 0x04;
+        POS_IMG_INDICES = reader.BaseStream.Position + 0x0C;
+
+        int length = reader.ReadInt32();
+
+        POS_IMG_INDICES2 = (reader.BaseStream.Position - 0x0C + length + 0x0B) & -4;
+    }
+
+    private static List<byte> Decompressor(BinaryReader reader, RECT rect)
+    {
+        long begin = reader.BaseStream.Position;
+        byte[] pixelBuffer = new byte[2048 + 800];
+        int index1 = 0;
+        int index2 = 0;
+        uint flag = 256;
+        short chunkPosX = rect.x;
+        short chunkPosY = rect.y;
+        short chunkWidth = rect.w;
+        short chunkHeight = rect.h;
+        List<byte> decompressedData = new List<byte>();
+        int width = rect.w * 2;
+        do
+        {
+            int size = index2 + (rect.y + rect.h - chunkPosY) * width;
+            int chunk = 2048;
+            if (size < 2048)
+                chunk = size;
+            int bufferPos = 400 + index1;
+            do
+            {
+                if ((flag & 0x100) != 0)
+                {
+                    byte bVar = reader.ReadByte();
+                    flag = (uint)bVar << 0x18 | 1;
+                }
+
+                if ((int)flag < 0)
+                {
+                    byte bVar = reader.ReadByte();
+                    index1++;
+                    pixelBuffer[bufferPos] = bVar;
+                    bufferPos++;
+                }
+                else
+                {
+                    uint uVar1 = reader.ReadByte();
+                    uint uVar2 = reader.ReadByte();
+                    uVar2 = uVar2 << 8;
+                    uVar1 = uVar1 | uVar2;
+                    uint uVar3 = uVar1 >> 5;
+                    uint uVar4 = uVar1 & 0x1F;
+
+                    if ((index1 < (int)uVar3) && (2048 < (int)(uVar3 + uVar4 + 2)))
+                    {
+                        int iVar5 = (int)uVar4 + 1;
+                        while (iVar5 != -1)
+                        {
+                            uVar4 = uVar3 & 0x7FF;
+                            uVar3++;
+                            index1++;
+                            iVar5--;
+                            byte bVar = pixelBuffer[400 + uVar4];
+                            pixelBuffer[bufferPos] = bVar;
+                            bufferPos++;
+                        }
+                    }
+                    else
+                    {
+                        int iVar5 = (int)uVar4 + 1;
+                        while (iVar5 != -1)
+                        {
+                            byte bVar = pixelBuffer[400 + uVar3];
+                            uVar3++;
+                            index1++;
+                            iVar5--;
+                            pixelBuffer[bufferPos] = bVar;
+                            bufferPos++;
+                        }
+                    }
+                }
+
+                flag = flag << 1;
+            } while (index1 < chunk);
+
+            int hS = (chunk - index2) / width;
+            chunkHeight = (short)hS;
+            int hU = (hS << 0x10) >> 0x10;
+            if (((hU & 1) != 0) && ((width & 2) != 0) &&
+                (chunkPosY + hS < rect.y + rect.h))
+                chunkHeight = (short)(hS - 1);
+
+            for (int i = 0; i < width * chunkHeight; i++)
+                decompressedData.Add(pixelBuffer[400 + index2 + i]);
+            
+            chunkPosY = (short)(chunkHeight + chunkPosY);
+            index2 += ((chunkHeight << 0x10) >> 0x10) * width;
+            InitBuffer(pixelBuffer, 400 + index2 - 2048, 400 + index2, index1 - index2);
+
+            index2 -= 2048;
+            index1 -= 2048;
+        } while (chunkPosY < rect.y + rect.h);
+
+        return decompressedData;
+    }
+
+    private static int InitBuffer(byte[] buffer, int begin, int end, int previousLength)
+    {
+        int rIndex = begin;
+        if (previousLength != 0)
+        {
+            int unk1 = 0;
+            while ((end & 3) != 0)
+            {
+                buffer[begin++] = buffer[end++];
+                previousLength--;
+
+                if (previousLength == 0)
+                    return rIndex;
+            }
+
+            unk1 = begin & 3;
+            previousLength -= 16;
+            if (unk1 == 0)
+            {
+                while (-1 < previousLength)
+                    for (int i = 0; i < 16; i++, previousLength--)
+                        buffer[begin++] = buffer[end++];
+
+                previousLength += 12;
+                while (-1 < previousLength)
+                    for (int i = 0; i < 4; i++, previousLength--)
+                        buffer[begin++] = buffer[end++];
+
+                previousLength += 3;
+                if (-1 < previousLength)
+                {
+                    end += previousLength;
+                    begin += previousLength;
+
+                    if (end % 4 == 0)
+                        buffer[begin] = buffer[end];
+                    else if (end % 4 == 2)
+                    {
+                        buffer[begin] = buffer[end];
+                        buffer[begin - 1] = buffer[end - 1];
+                        buffer[begin - 2] = buffer[end - 2];
+                    }
+                    else if (end % 4 == 1)
+                    {
+                        buffer[begin] = buffer[end];
+                        buffer[begin - 1] = buffer[end - 1];
+                    }
+                    else if (end % 4 == 3)
+                    {
+                        buffer[begin] = buffer[end];
+                        buffer[begin - 1] = buffer[end - 1];
+                        buffer[begin - 2] = buffer[end - 2];
+                        buffer[begin - 3] = buffer[end - 3];
+                    }
+
+                    return rIndex;
+                }
+            }
+            else
+            {
+                while (-1 < previousLength)
+                    for (int i = 0; i < 16; i++, previousLength--)
+                        buffer[begin++] = buffer[end++];
+
+                previousLength += 12;
+                while (-1 < previousLength)
+                    for (int i = 0; i < 4; i++, previousLength--)
+                        buffer[begin++] = buffer[end++];
+
+                previousLength += 4;
+                while (previousLength != 0)
+                {
+                    buffer[begin++] = buffer[end++];
+                    previousLength--;
+                }
+            }
+        }
+
+        return rIndex;
+    }
+
+    private static int BitExtracted(int number, int k, int p)
+    {
+        return (((1 << k) - 1) & (number >> p));
+    }
+    
+    private static int SignedNBits(int value, int NBITS)
+    {
+        int shift = 8 * sizeof(int) - NBITS;
+        return (int)(((int)value << shift) >> shift);
+    }
 }

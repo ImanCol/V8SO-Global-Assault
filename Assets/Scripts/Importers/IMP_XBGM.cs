@@ -1,36 +1,52 @@
 using System.IO;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class IMP_XBGM
 {
-	public static void LoadAsset(string assetPath, string savePath)
-	{
-		using (BinaryReader binaryReader = new BinaryReader(File.Open(assetPath, FileMode.Open)))
-		{
-			LevelManager levelManager = Object.FindObjectOfType<LevelManager>();
-			Object.FindObjectOfType<VigTerrain>();
-			string str = savePath;
-			if (savePath.StartsWith(Application.dataPath))
-			{
-				str = "Assets" + savePath.Substring(Application.dataPath.Length);
-			}
-			int num = binaryReader.ReadInt32BE();
-			binaryReader.ReadInt32();
-			string path = savePath + "/XBGM" + 0.ToString().PadLeft(2, '0') + ".bmp";
-			string text = str + "/XBGM" + 0.ToString().PadLeft(2, '0') + ".bmp";
-			string text2 = str + "/XBGM" + 0.ToString().PadLeft(2, '0') + ".mat";
-			IMP_TIM.LoadTIM(binaryReader, path);
-			Material material = levelManager.DAT_DD0 = null;
-			levelManager.DAT_6398A = (short)(num << 4);
-			levelManager.DAT_63972 = (short)((num - levelManager.DAT_DD0.mainTexture.height) * 16);
-			levelManager.DAT_6397A = levelManager.DAT_63972;
-			levelManager.DAT_63982 = levelManager.DAT_63972;
-			levelManager.DAT_63992 = levelManager.DAT_6398A;
-			levelManager.DAT_6399A = levelManager.DAT_6398A;
-			if (levelManager.DAT_E48 == null)
-			{
-				levelManager.DAT_E48 = levelManager.DAT_DD0;
-			}
-		}
-	}
+    public static void LoadAsset(string assetPath, string savePath)
+    {
+        using (BinaryReader reader = new BinaryReader(File.Open(assetPath, FileMode.Open)))
+        {
+            int iVar1;
+            LevelManager levelManager = GameObject.FindObjectOfType<LevelManager>();
+            VigTerrain terrain = GameObject.FindObjectOfType<VigTerrain>();
+            string relativePath = savePath;
+
+            if (savePath.StartsWith(Application.dataPath))
+                relativePath = "Assets" + savePath.Substring(Application.dataPath.Length);
+
+            iVar1 = reader.ReadInt32BE();
+            reader.ReadInt32();
+            string bmpApsolute = savePath + "/XBGM" + 0.ToString().PadLeft(2, '0') + ".bmp";
+            string bmpRelative = relativePath + "/XBGM" + 0.ToString().PadLeft(2, '0') + ".bmp";
+            string matPath = relativePath + "/XBGM" + 0.ToString().PadLeft(2, '0') + ".mat";
+            IMP_TIM.LoadTIM(reader, bmpApsolute);
+            Material newMaterial = null;
+#if UNITY_EDITOR
+            AssetDatabase.Refresh();
+            newMaterial = new Material(AssetDatabase.LoadAssetAtPath(relativePath + "/default.mat", typeof(Material)) as Material);
+            newMaterial.mainTexture = AssetDatabase.LoadAssetAtPath(bmpRelative, typeof(Texture2D)) as Texture2D;
+            Utilities.SaveObjectToFile(newMaterial, matPath);
+#endif
+            levelManager.DAT_DD0 = newMaterial;
+            levelManager.DAT_6398A = (short)(iVar1 << 4);
+            levelManager.DAT_63972 = (short)((iVar1 - levelManager.DAT_DD0.mainTexture.height) * 16);
+            levelManager.DAT_6397A = levelManager.DAT_63972;
+            levelManager.DAT_63982 = levelManager.DAT_63972;
+            levelManager.DAT_63992 = levelManager.DAT_6398A;
+            levelManager.DAT_6399A = levelManager.DAT_6398A;
+
+            if (levelManager.DAT_E48 == null)
+                levelManager.DAT_E48 = levelManager.DAT_DD0;
+
+#if UNITY_EDITOR
+            levelManager.DAT_E58 = AssetDatabase.LoadAssetAtPath("Assets/SHELL/glow.mat", typeof(Material)) as Material;
+            EditorUtility.SetDirty(levelManager.gameObject);
+#endif
+
+        }
+    }
 }

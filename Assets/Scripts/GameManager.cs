@@ -8178,7 +8178,7 @@ public class GameManager : MonoBehaviour
                 }
                 if (obj.GetType() != typeof(Vehicle))
                 {
-                    Debug.Log("obj: " + obj.GetType() + " | Type Object: " + obj.type);
+//                    Debug.Log("obj: " + obj.GetType() + " | Type Object: " + obj.type);
                 }
                 //Debug.Log("obj: " + obj.GetType() + " | Type Object: " + obj.type + " maxHalfHealth:" + maxHalfHealth);
 

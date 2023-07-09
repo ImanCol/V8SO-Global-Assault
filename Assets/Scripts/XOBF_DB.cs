@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEditor;
 
+[Serializable]
 public class XOBF_DB : MonoBehaviour
 {
     [Serializable]
@@ -1899,6 +1900,7 @@ public class XOBF_DB : MonoBehaviour
                 }
                 else
                 {
+                    Debug.Log("Material List Index: " + list + " k: " + k);
                     vigMesh.materialIDs.Add(list[k], array[(int)renderList[list[k]]]);
                 }
             }
