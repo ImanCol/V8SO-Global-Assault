@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/DEBUG-Online.unity
     guid: 10435b57e01bea847a31ea181ca40223
-  - enabled: 1
+  - enabled: 0
     path: Assets/LEVELS/V8/DREAMLND/DREAMLND.unity
     guid: 032049b2d1a1df241b80ae628802c289
   - enabled: 0

@@ -4,6 +4,7 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using UnityEngine;
 
 public static class IMP_TIM
 {
@@ -18,7 +19,7 @@ public static class IMP_TIM
     private static long POS_IMG_INDICES2 = 0;
 
     private static readonly int NUM_BLOCKS = 6;
-    
+
     private static readonly byte[] BYTES =
     {
         0x07, 0x01, 0x06, 0x01, 0x01, 0x02, 0x05, 0x01, 0x02, 0x02, 0x09,
@@ -197,7 +198,7 @@ public static class IMP_TIM
                             iVar6 = 10;
                             Huffman();
 
-                            LABEL1:
+                        LABEL1:
                             uVar1 = uVar1 >> 22;
 
                             if ((uVar1 ^ 511) != 0)
@@ -827,11 +828,11 @@ public static class IMP_TIM
 
         //_clutWidth = (byte)clutWidth;
         goto SET_IMAGE;
-        #endregion
+    #endregion
 
-        //_unknown1 = 0;
-        #region Image
-        SET_IMAGE:
+    //_unknown1 = 0;
+    #region Image
+    SET_IMAGE:
         //unknownReturn = 0;
         reader.BaseStream.Seek(POS_IMG_RECT + 0x04, SeekOrigin.Begin);
         imageWidth = reader.ReadInt16();
@@ -839,6 +840,7 @@ public static class IMP_TIM
 
         if ((FLAG & 0x10) == 0)
         {
+            Debug.Log("imageWidth: " + imageWidth + " imageHeight: " + imageHeight);
             indices = new byte[imageWidth * imageHeight * 2];
             for (int i = 0; i < indices.Length; i++)
                 indices[i] = reader.ReadByte();
@@ -1199,7 +1201,7 @@ public static class IMP_TIM
 
             for (int i = 0; i < width * chunkHeight; i++)
                 decompressedData.Add(pixelBuffer[400 + index2 + i]);
-            
+
             chunkPosY = (short)(chunkHeight + chunkPosY);
             index2 += ((chunkHeight << 0x10) >> 0x10) * width;
             InitBuffer(pixelBuffer, 400 + index2 - 2048, 400 + index2, index1 - index2);
@@ -1296,7 +1298,7 @@ public static class IMP_TIM
     {
         return (((1 << k) - 1) & (number >> p));
     }
-    
+
     private static int SignedNBits(int value, int NBITS)
     {
         int shift = 8 * sizeof(int) - NBITS;
