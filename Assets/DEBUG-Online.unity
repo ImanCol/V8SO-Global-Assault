@@ -3249,12 +3249,17 @@ MonoBehaviour:
   drawTerrainDistanceBool0: 1
   drawTerrainDistanceBool1: 1
   drawTerrainDistanceBool2: 1
+  drawTerrainDistanceBool3: 1
+  drawTerrainDistanceBool4: 1
   drawTerrainDistanceInt0: 0
   drawTerrainDistanceInt1: 0
   drawTerrainDistanceInt2: 0
   drawTerrainDistanceInt3: 0
   drawTerrainDistanceInt4: 0
   drawTerrainDistanceInt5: 0
+  drawTerrainDistanceIntX: 0
+  drawTerrainDistanceVector0: {x: 0, y: 0, z: 0}
+  drawTerrainDistanceVector1: {x: 0, y: 0, z: 0}
   updateReflections: 1
   reflectionUpdateTime: 0
   Vehiclereflection: 0
@@ -3272,7 +3277,7 @@ MonoBehaviour:
   objectStates:
     vigObjectList: []
     objectStateElement: []
-  drawDistace: 4194304
+  drawObjectDistace: 4194304
   x: 0
   y: 0
   configContainersObject: []
@@ -31419,7 +31424,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 2.3b
+  m_Text: 2.3c
 --- !u!114 &1791082649404616564
 MonoBehaviour:
   m_ObjectHideFlags: 0

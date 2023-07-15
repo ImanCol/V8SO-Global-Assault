@@ -14,12 +14,12 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 0
-  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  m_FogMode: 3
+  m_Fog: 1
+  m_FogColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
+  m_FogMode: 1
   m_FogDensity: 0.01
-  m_LinearFogStart: 0
-  m_LinearFogEnd: 300
+  m_LinearFogStart: 400
+  m_LinearFogEnd: 1400
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
@@ -3643,6 +3643,8 @@ MonoBehaviour:
   feedbackElements: []
   trackElements: []
   uiMessagesScript: {fileID: 0}
+  positionUnitX: 0
+  positionUnitY: 0
 --- !u!114 &606782396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18482,6 +18484,88 @@ MonoBehaviour:
       _V22: 0
     padding: 0
     position: {x: 0, y: 0, z: 0}
+  terrainWorld:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  terrainVertices:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  terrainMesh: {fileID: 0}
+  newVertices: []
+  newUVs: []
+  newColors: []
+  mainT: {fileID: 0}
+  mainWidth: 0
+  mainHeight: 0
+  index: 0
+  index2: 
+  index3: 0
+  in_t0: 0
+  in_t1: 0
+  in_t2: 0
+  in_t3: 0
+  in_t4: 0
+  puVar14: 0
+  puVar15: 0
+  puVar16: 0
+  puVar17: 0
+  puVar18: 0
+  _tileData: []
+  _vertices: 
+  _tiles: 
+  _chunks: 
+  canvasSky: {fileID: 0}
+  sbParent: {fileID: 0}
+  skybox: {fileID: 0}
+  skyboxRight: {fileID: 0}
+  skyboxLeft: {fileID: 0}
+  sbTop: {fileID: 0}
+  sbTopRight: {fileID: 0}
+  sbTopLeft: {fileID: 0}
+  sbBottom: {fileID: 0}
+  sbBottomRight: {fileID: 0}
+  sbBottomLeft: {fileID: 0}
+  skyboxMat: {fileID: 0}
 --- !u!114 &1791082649404616519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20853,6 +20937,7 @@ MonoBehaviour:
     M7: 0
   DAT_A0: {x: 0, y: 0, z: 0}
   DAT_A6: 0
+  configContainersObject: []
   DAT_14C0: 0
   DAT_14C8: 0
   DAT_80_2: 0
