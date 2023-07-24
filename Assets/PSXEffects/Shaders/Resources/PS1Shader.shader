@@ -144,8 +144,6 @@ Shader "PSXEffects/PS1Shader"
 					o.uv1 = float4(v.texcoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw, 0, 0);
 				#endif
 
-					
-
 				float3 worldNormal = UnityObjectToWorldNormal(v.normal);
 				float4 worldPos2 = worldPos;
 				float3 camPos = _WorldSpaceCameraPos;
@@ -192,7 +190,6 @@ Shader "PSXEffects/PS1Shader"
 					o.diff.rgb += ShadeSH9(half4(worldNormal, 1));
 				}
 
-
 				#ifdef VERTEXLIGHT_ON
 				o.diff.rgb += Shade4PointLights(
 					unity_4LightPosX0, unity_4LightPosY0, unity_4LightPosZ0,
@@ -201,8 +198,6 @@ Shader "PSXEffects/PS1Shader"
 					unity_4LightAtten0, worldPos, worldNormal
 				);
 				#endif
-
-					
 
 				o.lightDir = lightDir;
 
@@ -227,7 +222,6 @@ Shader "PSXEffects/PS1Shader"
 
 			fixed4 frag(v2f i) : SV_Target
 			{
-
 				float2 adjUv = PerformAffineMapping(i.uv, _MainTex_ST, _AffineMapping);
 				float2 adjUV1 = PerformAffineMapping(i.uv1, unity_LightmapST, _AffineMapping);
 				//float2 snappedUVs1 = (floor(i.uv.xy * _MainTex_TexelSize.zw) + 0.5) * _MainTex_TexelSize.xy;
@@ -294,7 +288,6 @@ Shader "PSXEffects/PS1Shader"
 
 					diffuse.rgb *= albedo.rgb;
 						
-
 					// Phong specular model
 					float3 specular = i.spec;
 					if (diffuse.r > 0 && _SpecModel) {

@@ -70,12 +70,16 @@ public class StatsPanel : MonoBehaviour
     private Vehicle vehicle6;
     private Vehicle vehicle7;
     private Vehicle vehicle8;
-    public int cursor = 0;
+
+    //public int Players = 1;
+    public List<int> Players = new List<int>();
+
+    //public int cursor = 0;
+    public List<int> cursor = new List<int>();
     public int spawnVehicleID;
     GameManager gameManager;
     public List<Vehicle> vehicles = new List<Vehicle>(); //Lista de Vehiculos (Players)
     public Dropdown PlayersDropdown;
-    public int Players = 1;
     public List<Vector3Int> Spawnposition = new List<Vector3Int>();
     public Image panelOnline;
     public List<Slider2> accelPlayers;
@@ -100,47 +104,47 @@ public class StatsPanel : MonoBehaviour
         switch (PlayersDropdown.value)
         {
             case 0:
-                Players = 1;
+                Players[0] = 1;
                 PhotonNetwork.LocalPlayer.NickName = "Player 1";
                 //Spawnposition[0] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
                 break;
             case 1:
-                Players = 2;
+                Players[0] = 2;
                 PhotonNetwork.LocalPlayer.NickName = "Player 2";
                 //Spawnposition[1] = new Vector3Int(67108000, 3078144, 67108864); // posición del primer vehículo
                 break;
             case 2:
-                Players = 3;
+                Players[0] = 3;
                 PhotonNetwork.LocalPlayer.NickName = "Player 3";
                 //Spawnposition[2] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
                 break;
             case 3:
-                Players = 4;
+                Players[0] = 4;
                 PhotonNetwork.LocalPlayer.NickName = "Player 4";
                 //Spawnposition[3] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
                 break;
             case 4:
-                Players = 5;
+                Players[0] = 5;
                 PhotonNetwork.LocalPlayer.NickName = "Player 5";
                 //Spawnposition[4] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
                 break;
             case 5:
-                Players = 6;
+                Players[0] = 6;
                 PhotonNetwork.LocalPlayer.NickName = "Player 6";
                 //Spawnposition[5] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
                 break;
             case 6:
-                Players = 7;
+                Players[0] = 7;
                 PhotonNetwork.LocalPlayer.NickName = "Player 7";
                 //Spawnposition[6] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
                 break;
             case 7:
-                Players = 8;
+                Players[0] = 8;
                 PhotonNetwork.LocalPlayer.NickName = "Player 8";
                 //Spawnposition[7] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
                 break;
             case 8:
-                Players = 9;
+                Players[0] = 9;
                 PhotonNetwork.LocalPlayer.NickName = "Player 9";
                 //Spawnposition[8] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
                 break;
@@ -216,23 +220,28 @@ public class StatsPanel : MonoBehaviour
     }
 
     public int setPAD;
+    public int setSpawn;
 
     public void setPadUP()
     {
+#if DEBUG
         if (PlayersDropdown.value < 17)
         {
             PlayersDropdown.value += 1;
             Debug.Log("PRESS UP");
         }
+#endif
     }
 
     public void setPadDOWN()
     {
+#if DEBUG
         if (PlayersDropdown.value > 0)
         {
             PlayersDropdown.value -= 1;
             Debug.Log("PRESS DOWN");
         }
+#endif
     }
 
     public void setPadLEFT()
@@ -264,9 +273,10 @@ public class StatsPanel : MonoBehaviour
         return assignedPlayer;
     }
 
+    public bool isPhoton = false;
     private void Update()
     {
-        if (lobbyMainPanel.selectOptions.activeSelf)
+        if (lobbyMainPanel.selectOptions.activeSelf && isPhoton)
         {
             Debug.Log("Get Player: " + GetAssignedPlayer(PhotonNetwork.LocalPlayer));
             if (GameManager.instance.DriverPlus && pressed == true)
@@ -280,20 +290,20 @@ public class StatsPanel : MonoBehaviour
                 foreach (Player player in PhotonNetwork.PlayerList)
                 {
                     //Obtener el número de jugador asignado al jugador actual
-                    Players = GetAssignedPlayer(player);
+                    Players[0] = GetAssignedPlayer(player);
                     Debug.Log("PLAYER GET: " + player);
                     //Verificar si el jugador es diferente al jugador local
                     if (player != PhotonNetwork.LocalPlayer)
                     {
                         Debug.Log("Spawn Local...");
                         SetPlayer();
-                        SpawnVehicle(Players, cursor);
+                        SpawnVehicle(Players[0], cursor[0]);
                     }
                     else
                     {
                         Debug.Log("Spawn Normal...");
                         SetPlayer();
-                        SpawnVehicle(Players, cursor);
+                        SpawnVehicle(Players[0], cursor[0]);
                     }
                 }
             }
@@ -302,13 +312,13 @@ public class StatsPanel : MonoBehaviour
                 pressed = true;
 
                 //Obtener el número de jugador asignado al jugador local
-                Players = GetAssignedPlayer(PhotonNetwork.LocalPlayer);
+                Players[0] = GetAssignedPlayer(PhotonNetwork.LocalPlayer);
 
                 //Recorrer la lista de jugadores en la sala
                 foreach (Player player in PhotonNetwork.PlayerList)
                 {
                     // Obtener el número de jugador asignado al jugador actual
-                    Players = GetAssignedPlayer(player);
+                    Players[0] = GetAssignedPlayer(player);
                     Debug.Log("PLAYER GET: " + player + " - " + Players);
 
                     // Verificar si el jugador es diferente al jugador local
@@ -316,82 +326,89 @@ public class StatsPanel : MonoBehaviour
                     {
                         Debug.Log("Spawn Local...");
                         SetPlayer();
-                        SpawnVehicle(Players, cursor);
+                        SpawnVehicle(Players[0], cursor[0]);
                     }
                     else
                     {
                         Debug.Log("Spawn Normal...");
                         SetPlayer();
-                        SpawnVehicle(Players, cursor);
+                        SpawnVehicle(Players[0], cursor[0]);
                     }
                 }
             }
+        }
+        if (Input.GetButtonDown("P1_RIGHT") || setSpawn == 1)
+        {
+            poses[cursor[0]].gameObject.SetActive(value: false);
+            SpawnVehicle(Players[0], cursor[0]);
+            poses[cursor[0]].gameObject.SetActive(value: true);
         }
         if (Input.GetButtonDown("P1_RIGHT") || setPAD == 2)
         {
-            poses[cursor].gameObject.SetActive(value: false);
-            if (cursor < 17)
+            poses[cursor[0]].gameObject.SetActive(value: false);
+            if (cursor[0] < 17)
             {
-                cursor++;
+                cursor[0]++;
                 if (state == _STATS_TYPE.Quest)
                 {
-                    switch (cursor)
+                    switch (cursor[0])
                     {
                         case 5:
-                            cursor = 6;
+                            cursor[0] = 6;
                             break;
                         case 11:
-                            cursor = 12;
+                            cursor[0] = 12;
                             break;
                         case 17:
-                            cursor = 0;
+                            cursor[0] = 0;
                             break;
                     }
                 }
             }
             else
             {
-                cursor = 0;
+                cursor[0] = 0;
             }
-            SpawnVehicle(Players, cursor);
-            poses[cursor].gameObject.SetActive(value: true);
+            SpawnVehicle(Players[0], cursor[0]);
+            poses[cursor[0]].gameObject.SetActive(value: true);
         }
         else if (Input.GetButtonDown("P1_LEFT") || setPAD == 1)
         {
-            poses[cursor].gameObject.SetActive(value: false);
-            if (cursor > 0)
+            poses[cursor[0]].gameObject.SetActive(value: false);
+            if (cursor[0] > 0)
             {
-                cursor--;
+                cursor[0]--;
                 if (state == _STATS_TYPE.Quest)
                 {
-                    switch (cursor)
+                    switch (cursor[0])
                     {
                         case 5:
-                            cursor = 4;
+                            cursor[0] = 4;
                             break;
                         case 11:
-                            cursor = 10;
+                            cursor[0] = 10;
                             break;
                     }
                 }
             }
             else
             {
-                cursor = 17;
+                cursor[0] = 17;
                 if (state == _STATS_TYPE.Quest)
                 {
-                    cursor = 16;
+                    cursor[0] = 16;
                 }
             }
-            SpawnVehicle(Players, cursor);
-            poses[cursor].gameObject.SetActive(value: true);
+            SpawnVehicle(Players[0], cursor[0]);
+            poses[cursor[0]].gameObject.SetActive(value: true);
         }
         else if (Input.GetButtonDown("P1_CROSS") && state == _STATS_TYPE.Quest)
         {
-            questAnimators[cursor].gameObject.SetActive(value: true);
-            questAnimators[cursor].SetTrigger("Next");
+            questAnimators[cursor[0]].gameObject.SetActive(value: true);
+            questAnimators[cursor[0]].SetTrigger("Next");
         }
         setPAD = 0;
+        setSpawn = 0;
     }
 
     public List<RenderTexture> rtList = new List<RenderTexture>();
@@ -419,15 +436,15 @@ public class StatsPanel : MonoBehaviour
                     {
                         continue;
                     }
-                    if (cursor == 4)
+                    if (cursor[0] == 4)
                     {
 
-                        GameManager.instance.SetReflections(vehicle, cursor);
+                        GameManager.instance.SetReflections(vehicle, cursor[0]);
                     }
                     else
                     {
                         //Solo se ejecuta cada updateTime segundos
-                        GameManager.instance.SetReflections(vehicle, cursor);
+                        GameManager.instance.SetReflections(vehicle, cursor[0]);
                     }
                 }
             }
@@ -497,12 +514,11 @@ public class StatsPanel : MonoBehaviour
                         param = 1;
                     }
                 }
-                if (Players == 1)
+                if (Players[0] == 1)
                 {
                     GameManager.instance.FUN_1E28C(1, Menu.instance.sounds, param);
                 }
                 vehicle.flags |= 33554432u;
-
             }
             //Posicion?
             //Debug.Log("Vehicle Position : " + vehicle.vTransform.position.y);
@@ -512,6 +528,7 @@ public class StatsPanel : MonoBehaviour
             GameManager.instance.FUN_2DE18(); //Shadow?
 
             //Solo se ejecuta cada updateTime segundos
+
         }
     }
 
@@ -538,13 +555,19 @@ public class StatsPanel : MonoBehaviour
     int bg;
 
     //int PlayersID, int id, Vector3Int position
+    public void SpawnPlayer(int PlayersID)
+    {
+        Players[0] = PlayersID;
+        SetPlayer();
+        SpawnVehicle(Players[0], cursor[0]);
+    }
     public void SpawnVehicle(int PlayersID, int id)
     {
         bg = 0;
         //Debug.Log("Borras:" + vehicles[Players].name);
-        if (this.vehicles[Players] != null)
+        if (this.vehicles[Players[0]] != null)
         {
-            GameManager.instance.FUN_308C4(this.vehicles[Players]);
+            GameManager.instance.FUN_308C4(this.vehicles[Players[0]]);
         }
 
         switch (id)
@@ -553,63 +576,63 @@ public class StatsPanel : MonoBehaviour
                 if (PlayersID == 1)
                 {
                     desc.text = "Wonderwagon – a white and pink Baja buggy boasting\nhigh acceleration and avoidance, but low armor.";
-                    descDriver[Players].text = "Wonderwagon";
+                    descDriver[Players[0]].text = "Wonderwagon";
                 }
                 goto IL_00db;
             case 1:
                 if (PlayersID == 1)
                 {
                     desc.text = "Thunderbolt – an ultramarine pony car with golden trims,\nboasting high speed and acceleration, but low avoidance.";
-                    descDriver[Players].text = "Thunderbolt";
+                    descDriver[Players[0]].text = "Thunderbolt";
                 }
                 goto IL_00db;
             case 2:
                 if (PlayersID == 1)
                 {
                     desc.text = "Dakota Stunt Cycle – a red, white and blue stunt motorcycle\nwith a sidecar attachment, boasting high top speed\nand avoidance, but low armor.";
-                    descDriver[Players].text = "Dakota Stunt Cycle";
+                    descDriver[Players[0]].text = "Dakota Stunt Cycle";
                 }
                 goto IL_00db;
             case 3:
                 if (PlayersID == 1)
                 {
                     desc.text = "Samson Tow Truck – an orange tow truck with white trims,\nboasting high acceleration and average armor,\nbut low tracking avoidance.";
-                    descDriver[Players].text = "Samson Tow Truck";
+                    descDriver[Players[0]].text = "Samson Tow Truck";
                 }
                 goto IL_00db;
             case 4:
                 if (PlayersID == 1)
                 {
                     desc.text = "Livingston Truck – a yellow and brown tandem\naxle conventional truck boasting high armor,\nbut low tracking avoidance.";
-                    descDriver[Players].text = "Livingston Truck";
+                    descDriver[Players[0]].text = "Livingston Truck";
                 }
                 goto IL_00db;
             case 5:
                 if (PlayersID == 1)
                 {
                     desc.text = "Xanadu RV – a cream-colored motorhome boasting\nhigh armor, but otherwise mediocre stats.";
-                    descDriver[Players].text = "Xanadu RV";
+                    descDriver[Players[0]].text = "Xanadu RV";
                 }
                 goto IL_00db;
             case 6:
                 if (PlayersID == 1)
                 {
                     desc.text = "Palomino XIII – a golden concept car from the future,\nboasting high acceleration and top speed,\nbut low tracking avoidance.";
-                    descDriver[Players].text = "Palomino XIII";
+                    descDriver[Players[0]].text = "Palomino XIII";
                 }
                 goto IL_0376;
             case 7:
                 if (PlayersID == 1)
                 {
                     desc.text = "El Guerrero – a rusted tan utility vehicle boasting\nhigh acceleration, but low tracking avoidance.";
-                    descDriver[Players].text = "El Guerrero";
+                    descDriver[Players[0]].text = "El Guerrero";
                 }
                 goto IL_0376;
             case 8:
                 if (PlayersID == 1)
                 {
                     desc.text = "Blue Burro Bus – a white and metal grey tandem-axle\nprison bus, boasting high armor but low top speed.";
-                    descDriver[Players].text = "Blue Burro Bus";
+                    descDriver[Players[0]].text = "Blue Burro Bus";
                 }
                 goto IL_0376;
             case 9:
@@ -617,56 +640,56 @@ public class StatsPanel : MonoBehaviour
                 {
                     desc.text = "Excelsior Stretch – a white limousine boasting\naverage balanced stats, but low avoidance.";
                     //descDriver[Players].text = "Excelsior Stretch";
-                    descDriver[Players].text = "V4F 570 Delegate";
+                    descDriver[Players[0]].text = "V4F 570 Delegate";
                 }
                 goto IL_0376;
             case 10:
                 if (PlayersID == 1)
                 {
                     desc.text = "Tsunami – a futuristic red motorcycle boasting\nhigh top speed and acceleration, but low armor.";
-                    descDriver[Players].text = "Tsunami";
+                    descDriver[Players[0]].text = "Tsunami";
                 }
                 goto IL_0376;
             case 11:
                 if (PlayersID == 1)
                 {
                     desc.text = "Marathon – a blue and yellow subcompact car boasting\nhigh tracking avoidance, but low armor.";
-                    descDriver[Players].text = "Marathon";
+                    descDriver[Players[0]].text = "Marathon";
                 }
                 goto IL_0376;
             case 12:
                 if (PlayersID == 1)
                 {
                     desc.text = "Moon Trekker – a stolen white and orange moon rover\nboasting high acceleration and tracking avoidance,\nbut low top speed.";
-                    descDriver[Players].text = "Moon Trekker";
+                    descDriver[Players[0]].text = "Moon Trekker";
                 }
                 goto IL_0611;
             case 13:
                 if (PlayersID == 1)
                 {
                     desc.text = "Grubb Dual Loader – a rusted brown waste collection truck\nboasting high armor, but low top speed and tracking\navoidance.";
-                    descDriver[Players].text = "Grubb Dual Loader";
+                    descDriver[Players[0]].text = "Grubb Dual Loader";
                 }
                 goto IL_0611;
             case 14:
                 if (PlayersID == 1)
                 {
                     desc.text = "Chrono Stinger – a purple sports car boasting\nhigh acceleration and top speed, but low armor.";
-                    descDriver[Players].text = "Chrono Stinger";
+                    descDriver[Players[0]].text = "Chrono Stinger";
                 }
                 goto IL_0611;
             case 15:
                 if (PlayersID == 1)
                 {
                     desc.text = "Vertigo – a silver concept car boasting high speed\nand acceleration, but low armor.";
-                    descDriver[Players].text = "Vertigo";
+                    descDriver[Players[0]].text = "Vertigo";
                 }
                 goto IL_0611;
             case 16:
                 if (PlayersID == 1)
                 {
                     desc.text = "Goliath Halftrack – a tan open-top armored personnel carrier\nboasting high acceleration and armor, but low top speed\nand avoidance.";
-                    descDriver[Players].text = "Goliath Halftrack";
+                    descDriver[Players[0]].text = "Goliath Halftrack";
                 }
                 goto IL_0611;
             case 17:
@@ -674,7 +697,7 @@ public class StatsPanel : MonoBehaviour
                     if (PlayersID == 1)
                     {
                         desc.text = "Wapiti 4WD – a brown SUV boasting high acceleration.";
-                        descDriver[Players].text = "Wapiti 4WD";
+                        descDriver[Players[0]].text = "Wapiti 4WD";
                     }
                     goto IL_0611;
                 }
@@ -727,7 +750,7 @@ public class StatsPanel : MonoBehaviour
                     armorPlusText.color = textColors[2];
                     avoidancePlusText.color = textColors[2];
                 }
-                cameras[Players].backgroundColor = textColors[2];
+                cameras[Players[0]].backgroundColor = textColors[2];
 
                 if (panelOnline.enabled)
                 {
@@ -786,7 +809,7 @@ public class StatsPanel : MonoBehaviour
                     armorPlusText.color = textColors[1];
                     avoidancePlusText.color = textColors[1];
                 }
-                cameras[Players].backgroundColor = textColors[1];
+                cameras[Players[0]].backgroundColor = textColors[1];
 
                 //Error de Material en Menu-Elemento 1
                 LevelManager.instance.DAT_E48 = Menu.instance.reflections[1];
@@ -844,7 +867,7 @@ public class StatsPanel : MonoBehaviour
                     armorPlusText.color = textColors[0];
                     avoidancePlusText.color = textColors[0];
                 }
-                cameras[Players].backgroundColor = textColors[0];
+                cameras[Players[0]].backgroundColor = textColors[0];
 
                 //Error de Material en Menu-Elemento 0
                 LevelManager.instance.DAT_E48 = Menu.instance.reflections[0];
@@ -925,7 +948,6 @@ public class StatsPanel : MonoBehaviour
             //id += 21;
             //Debug.Log("Plus!: " + id);
             //Debug.Log("param: " + param);
-
         }
         else
         {
@@ -955,11 +977,11 @@ public class StatsPanel : MonoBehaviour
         vehicle.name = "Player " + (Players);
 
         //Asigna Layers para Renderizar en una sola camara
-        vehicle.gameObject.layer = Players + 9;
+        vehicle.gameObject.layer = Players[0] + 9;
         Renderer[] renderers = vehicle.GetComponentsInChildren<Renderer>(true);
         foreach (Renderer renderer in renderers)
         {
-            renderer.gameObject.layer = Players + 9;
+            renderer.gameObject.layer = Players[0] + 9;
         }
 
         GameManager.instance.FUN_1E628(param, GameManager.instance.DAT_C2C, id, Spawnposition[0]);
@@ -975,7 +997,7 @@ public class StatsPanel : MonoBehaviour
         }
         //vehicles.Add(vehicle);
 
-        this.vehicles[Players] = vehicle;
+        this.vehicles[Players[0]] = vehicle;
         //Agrega el vehículo creado a la lista de vehículos
     }
 
@@ -987,7 +1009,7 @@ public class StatsPanel : MonoBehaviour
         VigTransform vigTransform = default(VigTransform);
         vigTransform.rotation = Utilities.RotMatrixYXZ_gte(DAT_15DE8);
         vigTransform.position = default(Vector3Int);
-        vigTransform.position.x = Spawnposition[Players - 1].x;
+        vigTransform.position.x = Spawnposition[Players[0] - 1].x;
 
         int num2 = vigTransform.rotation.V12 * vehicle.DAT_58;
 
@@ -996,7 +1018,7 @@ public class StatsPanel : MonoBehaviour
             num2 += 1023;
         }
 
-        vigTransform.position.y = Spawnposition[Players - 1].y - ((num - dAT_E) / 2 - ((num2 >> 10) - 3143680));
+        vigTransform.position.y = Spawnposition[Players[0] - 1].y - ((num - dAT_E) / 2 - ((num2 >> 10) - 3143680));
 
         num = vigTransform.rotation.V22 * vehicle.DAT_58;
         if (num < 0)
@@ -1004,7 +1026,7 @@ public class StatsPanel : MonoBehaviour
             num += 1023;
         }
 
-        vigTransform.position.z = Spawnposition[Players - 1].z - (num >> 10);
+        vigTransform.position.z = Spawnposition[Players[0] - 1].z - (num >> 10);
 
         vigTransform.padding = 0;
 

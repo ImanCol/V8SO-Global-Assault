@@ -3240,6 +3240,7 @@ MonoBehaviour:
     y: 100
     width: 300
     height: 180
+  sliderValue: 4194304
   currentDamageIndex: 2
   currentValueDifficulty: 1
   damageText: Normal
@@ -3263,7 +3264,8 @@ MonoBehaviour:
   updateReflections: 1
   reflectionUpdateTime: 0
   Vehiclereflection: 0
-  enabledOptimization: 1
+  enabledOptimizationMesh: 1
+  enabledSerializableMesh: 0
   checkFPS: 0.5
   refreshObject: 0
   notRefreshObject: 0
@@ -3999,7 +4001,7 @@ MonoBehaviour:
   m_CaretColor: {r: 0.1960784, g: 0.1960784, b: 0.1960784, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.6588235, g: 0.8078431, b: 1, a: 0.7529412}
-  m_Text: 14697
+  m_Text: 45454
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
@@ -12346,7 +12348,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22400762, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000061035156
+      value: 0.00012207031
       objectReference: {fileID: 0}
     - target: {fileID: 22426080, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchorMax.x

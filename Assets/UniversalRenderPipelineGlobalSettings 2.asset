@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: UniversalRenderPipelineGlobalSettings 2
   m_EditorClassIdentifier: 
   k_AssetVersion: 3
-  k_AssetPreviousVersion: 1
+  m_RenderingLayerNames:
+  - Default
+  m_ValidRenderingLayers: 0
   lightLayerName0: Light Layer default
   lightLayerName1: Light Layer 1
   lightLayerName2: Light Layer 2
@@ -22,4 +24,11 @@ MonoBehaviour:
   lightLayerName5: Light Layer 5
   lightLayerName6: Light Layer 6
   lightLayerName7: Light Layer 7
+  m_StripDebugVariants: 1
+  m_StripUnusedPostProcessingVariants: 0
+  m_StripUnusedVariants: 1
+  m_StripUnusedLODCrossFadeVariants: 1
+  m_StripScreenCoordOverrideVariants: 1
   supportRuntimeDebugDisplay: 0
+  m_ShaderVariantLogLevel: 0
+  m_ExportShaderVariants: 1

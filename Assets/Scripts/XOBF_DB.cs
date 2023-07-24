@@ -117,15 +117,38 @@ public class XOBF_DB : MonoBehaviour
         atlas.wrapMode = TextureWrapMode.Clamp;
         atlas.filterMode = FilterMode.Point;
 
+        //matAtlas = new Material(Shader.Find("Universal Render Pipeline/Complex Lit"));
+        //matAtlas = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
         matAtlas = new Material(Shader.Find("PSXEffects/PS1Shader"));
+        //matAtlas.mainTexture = atlas;
         matAtlas.mainTexture = atlas;
+
+        //Activar Emission para suavisar sombras en los contornos
+        //matAtlas.SetTexture("_Emission", atlas);
+        //matAtlas.SetFloat("_EmissionAmt", 1f);
+
+        //matAtlas.SetFloat("_CullMode", 0f);
+        //Debug.Log("Render Type__cull: " + matAtlas.GetInt("_Cull"));
+        //Debug.Log("Render Type__mode: " + matAtlas.GetInt("_Blend"));
+        //Debug.Log("Render Type__surface: " + matAtlas.GetInt("_Surface"));
+        matAtlas.SetInt("_Cull", 0); //Render Face URP
+        matAtlas.SetInt("_AlphaClip", 1); //Alpha Clipping URP
+        //matAtlas.SetFloat("_Cutoff", 0f); //Alpha Cutoff URP
+        //matAtlas.SetFloat("_Cutoff", 2); //Alpha Cutoff URP
+        matAtlas.SetFloat("_Cutoff", 0); //Alpha Cutoff Unlit URP
         matAtlas.SetFloat("_ColorOnly", 0f);
         matAtlas.SetFloat("_Unlit", 1f);
+        //matAtlas.SetFloat("_Unlit", 0f); apagar Unlit para que las sombras funcionen
         matAtlas.SetFloat("_OffsetFactor", 0.5f);
         matAtlas.SetFloat("_OffsetUnits", 0.5f);
+        //matAtlas.SetFloat("_RenderMode", 0f);
         matAtlas.SetFloat("_RenderMode", 2f);
         matAtlas.SetFloat("_Cul", 1f);
         matAtlas.SetFloat("_DrawDist", 0f);
+
+        // Volver a generar los datos del material para que se reflejen los cambios en la renderización
+        //matAtlas.EnableKeyword("_EMISSION");
+        //matAtlas.DisableKeyword("_EMISSION");
 
         additive = new Material(Shader.Find("PSXEffects/PS1Additive"));
         additive.mainTexture = atlas;
@@ -893,6 +916,15 @@ public class XOBF_DB : MonoBehaviour
                         for (int j = 0; j < newTMD.faces; j++)
                         {
                             lVar9 = reader.BaseStream.Position;
+                            Debug.Log(lVar9);
+
+                            // Check if there are enough bytes remaining in the stream
+                            if (reader.BaseStream.Position + 3 >= reader.BaseStream.Length)
+                            {
+                                // Handle the case where there are not enough bytes remaining
+                                // You might throw an exception, log an error, or take appropriate action
+                                break;
+                            }
                             writer.Write(reader.ReadByte());
                             writer.Write(reader.ReadByte());
                             writer.Write(reader.ReadByte());
@@ -959,9 +991,18 @@ public class XOBF_DB : MonoBehaviour
                                     break;
                             }
 
-                            int remain = GameManager.DAT_854[bVar6 >> 2 & 15] -
-                                (int)(reader.BaseStream.Position - lVar9);
-                            writer.Write(reader.ReadBytes(remain));
+                            int remain = GameManager.DAT_854[bVar6 >> 2 & 15] - (int)(reader.BaseStream.Position - lVar9);
+                            if (remain >= 0)
+                            {
+                                writer.Write(reader.ReadBytes(remain));
+                            }
+                            else
+                            {
+                                Debug.Log("Negative...");
+                                // Handle the case where the remain value is negative
+                                // You might throw an exception, log an error, or take appropriate action
+                            }
+
                         }
                     }
 

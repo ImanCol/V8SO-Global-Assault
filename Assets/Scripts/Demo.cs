@@ -60,18 +60,130 @@ public class Demo : MonoBehaviour
         titleLobby.text = "Network Connection";
     }
 
+    public void setDriver(long userId, bool remove)
+    {
+        int count = 1;
+        int driver = 0;
+        foreach (var item in playerText)
+        {
+            if (playerText[userId] == item.Value)
+            {
+                switch (Demo.vehicleNames[(int)this.playerVehicles[userId]])
+                {
+                    case "WUNDER":
+                        driver = 0;
+                        //Spawnposition[0] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
+                        break;
+                    case "TBOLT":
+                        driver = 1;
+                        //Spawnposition[0] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
+                        break;
+                    case "STNTBIKE":
+                        driver = 2;
+                        //Spawnposition[0] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
+                        break;
+                    case "TOWTRUCK":
+                        driver = 3;
+                        //Spawnposition[0] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
+                        break;
+                    case "TRUCK":
+                        driver = 4;
+                        //Spawnposition[0] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
+                        break;
+                    case "CARAVLLE":
+                        driver = 5;
+                        //Spawnposition[0] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
+                        break;
+                    case "CORSAIR":
+                        driver = 6;
+                        //Spawnposition[0] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
+                        break;
+                    case "ELGUERRO":
+                        driver = 7;
+                        //Spawnposition[0] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
+                        break;
+                    case "BUS":
+                        driver = 8;
+                        //Spawnposition[0] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
+                        break;
+                    case "EXCELSR":
+                        driver = 9;
+                        //Spawnposition[0] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
+                        break;
+                    case "TSUNAMI":
+                        driver = 10;
+                        //Spawnposition[0] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
+                        break;
+                    case "MARATHON":
+                        driver = 11;
+                        //Spawnposition[0] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
+                        break;
+                    case "LUNAR":
+                        driver = 12;
+                        //Spawnposition[0] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
+                        break;
+                    case "GRBLDER":
+                        driver = 13;
+                        //Spawnposition[0] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
+                        break;
+                    case "STINGER":
+                        driver = 14;
+                        //Spawnposition[0] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
+                        break;
+                    case "VERTIGO":
+                        driver = 15;
+                        //Spawnposition[0] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
+                        break;
+                    case "HALFTRAK":
+                        driver = 16;
+                        //Spawnposition[0] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
+                        break;
+                    case "FRONTIER":
+                        driver = 17;
+                        //Spawnposition[0] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
+                        break;
+                }
+
+                Debug.Log("Este es: " + count);
+
+                if (!remove)
+                {
+                    statsPanel.descDriver[count + 1].text = this.playerNames[userId];
+                    statsPanel.PlayersDropdown.value = count;
+                    statsPanel.poses[statsPanel.cursor[0]].gameObject.SetActive(value: false);
+
+                    statsPanel.SpawnVehicle(statsPanel.Players[count], statsPanel.cursor[driver]);
+                    statsPanel.poses[statsPanel.cursor[0]].gameObject.SetActive(value: true);
+                }
+                else
+                {
+                    statsPanel.descDriver[count + 1].text = "";
+                    statsPanel.poses[statsPanel.cursor[0]].gameObject.SetActive(value: false);
+                    GameManager.instance.FUN_308C4(statsPanel.vehicles[count + 1]); //Remueve el Player
+                }
+                statsPanel.PlayersDropdown.value = 0;
+            }
+            count++;
+        }
+    }
     public void InstantiateText(long userId)
     {
         Text component = UnityEngine.Object.Instantiate<GameObject>(this.playerTextPrefab).GetComponent<Text>();
         component.transform.SetParent(this.playerList, false);
         this.playerText.Add(userId, component);
+
+        setDriver(userId, false);
         this.playerText[userId].text = this.playerNames[userId] + ": " + Demo.vehicleNames[(int)this.playerVehicles[userId]];
 
     }
+
+    //Asigna Descripsion del Player en Lobby
     public void UpdatePlayerStatus(long userId)
     {
         if (this.playerText[userId] != null)
         {
+
+            setDriver(userId, false);
             this.playerText[userId].text = this.playerNames[userId] + ": " + (this.playerReady[userId] ? (Demo.vehicleNames[(int)this.playerVehicles[userId]] + " - READY") : Demo.vehicleNames[(int)this.playerVehicles[userId]]);
         }
     }
@@ -113,6 +225,7 @@ public class Demo : MonoBehaviour
     }
 
     public string nametag;
+
     public void _GetLobbies(List<Lobby> lobbies)
     {
         for (int i = 0; i < lobbies.Count; i++)
@@ -243,7 +356,12 @@ public class Demo : MonoBehaviour
             __instance.DeleteLobbies();
             __instance.SetupPlaceholders();
         }
+
         Plugin.Client.JoinLobby(lobbyId, secret);
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
+        {
+            StatsPanel.instance.SpawnPlayer(1);
+        }
         return false;
         //---------//
         //discordController.lobbyManager.ConnectLobby(lobbyId, secret, delegate (Result result, ref Lobby lobby)
@@ -269,6 +387,9 @@ public class Demo : MonoBehaviour
         Debug.Log("El Usuario: " + this.playerNames[userId] + " con el ID: " + userId + " Se ha salido: " + this.playerText[userId].gameObject);
         Debug.Log(this.playerText[userId].gameObject + " - " + this.playerNames[userId] + " - " + this.playerReady[userId] + " - " + this.playerVehicles[userId]);
         UnityEngine.Object.Destroy(this.playerText[userId].gameObject);
+
+        setDriver(userId, true);
+
         this.playerText.Remove(userId);
         this.playerNames.Remove(userId);
         this.playerReady.Remove(userId);
@@ -497,6 +618,7 @@ public class Demo : MonoBehaviour
     [SerializeField]
     public DiscordController discordController;
     public static Demo instance;
+    public StatsPanel statsPanel;
     public SerializableBool<long, bool> playerReady;
     public SerializableText<long, Text> playerText;
     public SerializableString<long, string> playerNames;

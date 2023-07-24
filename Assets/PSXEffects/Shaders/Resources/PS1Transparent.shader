@@ -382,6 +382,7 @@ Shader "PSXEffects/PS1Transparent"
 		// Pass for realtime shadows
 		Pass
 		{
+			Name "ShadowCaster"
 			Tags{ "LightMode" = "ShadowCaster" }
 
 			CGPROGRAM

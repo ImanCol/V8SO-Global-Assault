@@ -1341,7 +1341,7 @@ public class GameManager : MonoBehaviour
     public int leash;
     private bool atStart;
     public int driverPlus = 0;
-    int Players;
+    public int Players;
     private Player player;
     public void SetGravity()
     {
@@ -1360,16 +1360,21 @@ public class GameManager : MonoBehaviour
     }
     public void SetPlayer(Packet _packet)
     {
-        Debug.Log("User ID: " + _packet);
         Players += 1;
-        statsPanel.SpawnVehicle(Players, 0);
+        Debug.Log("User ID: " + _packet + " - " + Players);
+        //statsPanel.PlayersDropdown.value = Players;
+        //statsPanel.poses[statsPanel.cursor[0]].gameObject.SetActive(value: false);
+        //statsPanel.SpawnVehicle(statsPanel.Players[0], statsPanel.cursor[0]);
+        //statsPanel.poses[statsPanel.cursor[0]].gameObject.SetActive(value: true);
+        //statsPanel.PlayersDropdown.value = 0;
+        //statsPanel.descDriver[statsPanel.Players[Players]].text = Demo.instance.playerText[Players].text;
     }
     public async void SetDriver()
     {
         if (SceneManager.GetActiveScene().name == "MENU-Driver")
         {
             //switch (statsPanel.cursor)
-            switch (driverDropdown.value)
+            switch (statsPanel.cursor[0])
             {
                 case 0:
                     vehicles[0] = 0;
@@ -2021,11 +2026,15 @@ public class GameManager : MonoBehaviour
             FUN_1E098(1, Menu.instance.sounds, 10, 4095);
         autoTarget = (disableAutoTarget.isOn ? true : false);
     }
+
     public void SetPLUS()
     {
-        if (SceneManager.GetActiveScene().name == "MENU-Driver")
-            FUN_1E098(1, Menu.instance.sounds, 10, 4095);
         DriverPlus = (disableDriverPlus.isOn ? true : false);
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
+        {
+            FUN_1E098(1, Menu.instance.sounds, 10, 4095);
+            statsPanel.SpawnPlayer(statsPanel.cursor[0]);
+        }
     }
 
     public void SetExperimentalDakota()
@@ -5569,7 +5578,7 @@ public class GameManager : MonoBehaviour
             style.normal.textColor = Color.yellow;
             GUI.Label(new Rect(10, 10, 200, 20), "FPS: " + currentFps.ToString("F2"), style);
             style.normal.textColor = Color.green;
-            GUI.Label(new Rect(10, 40, 200, 20), "Coun Vehicle: " + countVehicle.ToString("F2"), style);
+            GUI.Label(new Rect(10, 40, 200, 20), "Count Vehicle: " + countVehicle.ToString("F2"), style);
             style.normal.textColor = Color.magenta;
             GUI.Label(new Rect(10, 80, 200, 20), "Refresh Object True: " + refreshObject.ToString("F2"), style);
             style.normal.textColor = Color.blue;
@@ -5625,6 +5634,9 @@ public class GameManager : MonoBehaviour
 
     }
 
+    // Definir los valores mínimo y máximo del slider
+    public float sliderValue = 4194304f;
+
     private async void ConnectionWindow(int windowId)
     {
         using (new GUILayout.VerticalScope())
@@ -5633,12 +5645,24 @@ public class GameManager : MonoBehaviour
             {
                 using (new GUILayout.HorizontalScope())
                 {
-                    if (GUILayout.Button("Enabled Optimization"))
+                    if (GUILayout.Button("Enabled Optimization Mesh"))
                     {
-                        enabledOptimization = !enabledOptimization;
+                        enabledOptimizationMesh = !enabledOptimizationMesh;
                     }
                     GUILayout.FlexibleSpace();
-                    GUILayout.Toggle(enabledOptimization, "");
+                    GUILayout.Toggle(enabledOptimizationMesh, "");
+                }
+            }
+            using (new GUILayout.VerticalScope())
+            {
+                using (new GUILayout.HorizontalScope())
+                {
+                    if (GUILayout.Button("Enabled Serializable Mesh"))
+                    {
+                        enabledSerializableMesh = !enabledSerializableMesh;
+                    }
+                    GUILayout.FlexibleSpace();
+                    GUILayout.Toggle(enabledSerializableMesh, "");
                 }
             }
             using (new GUILayout.VerticalScope())
@@ -5711,6 +5735,28 @@ public class GameManager : MonoBehaviour
                     }
                     GUILayout.FlexibleSpace();
                     GUILayout.Toggle(enabledvLoD, "");
+                }
+            }
+            using (new GUILayout.VerticalScope())
+            {
+                using (new GUILayout.HorizontalScope())
+                {
+                    // Definir los valores mínimo y máximo del slider
+                    float minValue = 0f;
+                    float maxValue = 9999999f;
+
+                    // Definir el tamaño del slider (opcional)
+                    float sliderWidth = 200f;
+                    float sliderHeight = 20f;
+
+                    // Dibujar el slider horizontal con el tamaño personalizado
+                    drawObjectDistace = (int)GUILayout.HorizontalSlider(drawObjectDistace, minValue, maxValue, GUILayout.Width(sliderWidth), GUILayout.Height(sliderHeight));
+
+                    // Asegurarse de que el valor del slider esté dentro del rango permitido
+                    drawObjectDistace = (int)Mathf.Clamp(drawObjectDistace, minValue, maxValue);
+
+                    // Mostrar el valor actual del slider
+                    GUILayout.Label("Slider Value: " + drawObjectDistace.ToString());
                 }
             }
             using (new GUILayout.VerticalScope())
@@ -7332,7 +7378,6 @@ public class GameManager : MonoBehaviour
 
     //Reflejo y otros
 
-
     public int Vehiclereflection = 0;
 
     List<VigTuple> vigObjectCount;
@@ -7356,7 +7401,8 @@ public class GameManager : MonoBehaviour
     }
 
     [Header("Quiality Setting")]
-    public bool enabledOptimization = true;
+    public bool enabledOptimizationMesh = true;
+    public bool enabledSerializableMesh = true;
     public float checkFPS = 0.5f;
     public int refreshObject;
     public int notRefreshObject;
@@ -7368,9 +7414,6 @@ public class GameManager : MonoBehaviour
     public bool enabledChild2 = true;
     public bool enabledvLoD = true;
     public bool enabledConsole = true;
-
-
-
 
     [Serializable]
     public class ObjectStateDictionary : ISerializationCallbackReceiver
@@ -7438,8 +7481,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-
 #if DEBUG
     //Optimizacion
     [Serializable]
@@ -7494,7 +7535,7 @@ public class GameManager : MonoBehaviour
     {
 
         // Control de rendimiento: Verifica los FPS o consumo de recursos
-        if (enabledOptimization)
+        if (enabledOptimizationMesh)
         {
             if (ShouldReduceUpdateFrequency())
             {
@@ -7503,11 +7544,16 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        bool hasChanges = await CheckForObjectChanges(param1);
-        //bool hasChanges = true;
+        bool hasChanges = true;
 
+        if (enabledSerializableMesh)
+        {
+            hasChanges = await CheckForObjectChanges(param1);
+            StoreObjectState(param1, hasChanges);
+
+        }
+        //bool hasChanges = true;
         //Debug.Log("hasChanges: " + hasChanges);
-        StoreObjectState(param1, hasChanges);
         //Debug.Log("hasChanges: " + hasChanges);
 
         if (hasChanges)
@@ -7615,7 +7661,9 @@ public class GameManager : MonoBehaviour
                         if (param1.vMesh != null)
                         {
                             if (param1.GetType() == typeof(Observatory) && param1.gameObject.GetComponent<Observatory>() != GameManager.instance.playerObjects[0])
-                                Debug.Log("Observatory...vMesh");
+                            {
+                                //Debug.Log("Observatory...vMesh");
+                            }
                             //Debug.Log("Vehiculo...vMesh");
                             //Debug.Log("Draw Mesh...:" + param1.vMesh + " - " + param1.child2);
                             if (enabledMesh)
@@ -7626,7 +7674,9 @@ public class GameManager : MonoBehaviour
                         if (param1.child2 != null)
                         {
                             if (param1.GetType() == typeof(Observatory) && param1.gameObject.GetComponent<Observatory>() != GameManager.instance.playerObjects[0])
-                                Debug.Log("Observatory...child2");
+                            {
+                                //Debug.Log("Observatory...child2");
+                            }
                             //Debug.Log("Vehiculo...child2");
                             if (enabledChild2)
                                 FUN_2D778(param1.child2, vigTransform); // Llantas Dakota y Carroceria de otros
@@ -7665,7 +7715,9 @@ public class GameManager : MonoBehaviour
             else if (param1.vLOD != null)
             {
                 if (param1.GetType() == typeof(Observatory) && param1.gameObject.GetComponent<Observatory>() != GameManager.instance.playerObjects[0])
-                    Debug.Log("Observatory...vLOD");
+                {
+                    //Debug.Log("Observatory...vLOD");
+                }
                 if (enabledvLoD)
                 {
                     vigTransform.rotation = param1.FUN_2D884(vigTransform);
@@ -8178,7 +8230,7 @@ public class GameManager : MonoBehaviour
                 }
                 if (obj.GetType() != typeof(Vehicle))
                 {
-//                    Debug.Log("obj: " + obj.GetType() + " | Type Object: " + obj.type);
+                    //                    Debug.Log("obj: " + obj.GetType() + " | Type Object: " + obj.type);
                 }
                 //Debug.Log("obj: " + obj.GetType() + " | Type Object: " + obj.type + " maxHalfHealth:" + maxHalfHealth);
 
