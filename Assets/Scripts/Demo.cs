@@ -142,6 +142,7 @@ public class Demo : MonoBehaviour
                         driver = 17;
                         //Spawnposition[0] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
                         break;
+
                 }
 
                 Debug.Log("Este es: " + count);
@@ -172,7 +173,11 @@ public class Demo : MonoBehaviour
         component.transform.SetParent(this.playerList, false);
         this.playerText.Add(userId, component);
 
-        setDriver(userId, false);
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
+        {
+            setDriver(userId, false);
+        }
+
         this.playerText[userId].text = this.playerNames[userId] + ": " + Demo.vehicleNames[(int)this.playerVehicles[userId]];
 
     }
@@ -183,7 +188,11 @@ public class Demo : MonoBehaviour
         if (this.playerText[userId] != null)
         {
 
-            setDriver(userId, false);
+            if (SceneManager.GetActiveScene().name == "MENU-Driver")
+            {
+                setDriver(userId, false);
+            }
+
             this.playerText[userId].text = this.playerNames[userId] + ": " + (this.playerReady[userId] ? (Demo.vehicleNames[(int)this.playerVehicles[userId]] + " - READY") : Demo.vehicleNames[(int)this.playerVehicles[userId]]);
         }
     }
@@ -275,6 +284,8 @@ public class Demo : MonoBehaviour
             {
                 Debug.Log("Debug Ready");
                 this.readyLabel.gameObject.SetActive(true);
+                if (SceneManager.GetActiveScene().name == "MENU-Driver")
+                    this.readyLabel.gameObject.SetActive(false);
             });
             component.onClick.AddListener(delegate ()
             {
@@ -329,7 +340,7 @@ public class Demo : MonoBehaviour
     }
 
     //public void JoinLobby(long lobbyId, string secret)
-    public static bool JoinLobby(Demo __instance, long lobbyId, string secret)
+    public bool JoinLobby(Demo __instance, long lobbyId, string secret)
     {
         Debug.Log("Lobby ID: " + lobbyId + " secret: " + secret);
 
@@ -340,6 +351,7 @@ public class Demo : MonoBehaviour
             __instance.loadTextOnline.gameObject.SetActive(false);
             __instance.join.gameObject.SetActive(false);
             __instance.controlPanel.gameObject.SetActive(true);
+
             __instance.modeLabel.gameObject.SetActive(false);
             __instance.stageLabel.gameObject.SetActive(false);
             __instance.damageLabel.gameObject.SetActive(false);
@@ -353,14 +365,34 @@ public class Demo : MonoBehaviour
             __instance.damageText.gameObject.SetActive(true);
             __instance.livesText.gameObject.SetActive(true);
             __instance.lobbyScrollView.gameObject.SetActive(false);
+
+            if (SceneManager.GetActiveScene().name == "MENU-Driver")
+            {
+                __instance.loadButtonOnline.gameObject.SetActive(false);
+                __instance.playerLabel.gameObject.SetActive(false);
+                __instance.listLabel.gameObject.SetActive(false);
+                __instance.BoardBanner.gameObject.SetActive(false);
+                __instance.Slider.gameObject.SetActive(true);
+                __instance.selectDriver.gameObject.SetActive(true);
+                __instance.statsObject.gameObject.SetActive(false);
+                __instance.accelObject.gameObject.SetActive(false);
+                __instance.speedObject.gameObject.SetActive(false);
+                __instance.armorObject.gameObject.SetActive(false);
+                __instance.avoidObject.gameObject.SetActive(false);
+                __instance.readyLabel.gameObject.SetActive(false);
+                __instance.notReadyLabel.gameObject.SetActive(false);
+            }
+
             __instance.DeleteLobbies();
             __instance.SetupPlaceholders();
+
         }
 
         Plugin.Client.JoinLobby(lobbyId, secret);
+        Debug.Log("Me Uni al Lobby");
         if (SceneManager.GetActiveScene().name == "MENU-Driver")
         {
-            StatsPanel.instance.SpawnPlayer(1);
+            statsPanel.SpawnPlayer(1);
         }
         return false;
         //---------//
@@ -388,7 +420,10 @@ public class Demo : MonoBehaviour
         Debug.Log(this.playerText[userId].gameObject + " - " + this.playerNames[userId] + " - " + this.playerReady[userId] + " - " + this.playerVehicles[userId]);
         UnityEngine.Object.Destroy(this.playerText[userId].gameObject);
 
-        setDriver(userId, true);
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
+        {
+            setDriver(userId, true);
+        }
 
         this.playerText.Remove(userId);
         this.playerNames.Remove(userId);
@@ -638,6 +673,8 @@ public class Demo : MonoBehaviour
     public RectTransform Space5;
     public RectTransform componentPanel;
     public RectTransform controlPanel;
+    public RectTransform playerLabel;
+    public RectTransform listLabel;
     public RectTransform modeLabel;
     public RectTransform stageLabel;
     public RectTransform damageLabel;
@@ -648,13 +685,21 @@ public class Demo : MonoBehaviour
     public RectTransform notReadyLabel;
     public RectTransform lobbyScrollView;
     public InputField lobbyInput;
+    public GameObject statsObject;
     public InputField accelInput;
+    public GameObject accelObject;
     public InputField speedInput;
+    public GameObject speedObject;
     public InputField armorInput;
+    public GameObject armorObject;
     public InputField avoidInput;
+    public GameObject avoidObject;
     public GameObject playerTextPrefab;
     public GameObject lobbyButtonPrefab;
 
+    [Header("MENUDRIVER")]
+    public GameObject selectDriver;
+    public GameManager gameManager;
 
     [Header("Lobby Create")]
     public RectTransform join;
@@ -666,6 +711,10 @@ public class Demo : MonoBehaviour
     public Button backButton;
     public Button loadButtonOnline;
     public TextMeshProUGUI loadTextOnline;
+
+    public GameObject BoardBanner;
+    public GameObject Slider;
+
 
     public static string[] vehicleNames = new string[]
     {

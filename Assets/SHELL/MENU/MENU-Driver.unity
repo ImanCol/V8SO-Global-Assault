@@ -17590,7 +17590,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 960, y: 50}
+  m_AnchoredPosition: {x: 960, y: 35}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &582199140
@@ -21738,6 +21738,7 @@ MonoBehaviour:
   Players: 0100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f000000100000001100000012000000
   cursor: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f0000001000000011000000
   spawnVehicleID: 0
+  gameManager: {fileID: 1610865959}
   vehicles: []
   PlayersDropdown: {fileID: 2110534509}
   Spawnposition:
@@ -22108,6 +22109,8 @@ MonoBehaviour:
   Space5: {fileID: 1676881598}
   componentPanel: {fileID: 1544152650}
   controlPanel: {fileID: 1791082651250110142}
+  playerLabel: {fileID: 1791082651250110064}
+  listLabel: {fileID: 1791082651250110028}
   modeLabel: {fileID: 1671521379}
   stageLabel: {fileID: 374169729}
   damageLabel: {fileID: 1791082651250110169}
@@ -22118,12 +22121,19 @@ MonoBehaviour:
   notReadyLabel: {fileID: 1570264549}
   lobbyScrollView: {fileID: 1791082651250110014}
   lobbyInput: {fileID: 1577075140}
+  statsObject: {fileID: 1791082647508790625}
   accelInput: {fileID: 1791082649404616449}
+  accelObject: {fileID: 1791082647508790635}
   speedInput: {fileID: 1791082649404616475}
+  speedObject: {fileID: 1791082647508790604}
   armorInput: {fileID: 1791082649404616606}
+  armorObject: {fileID: 1791082647508790641}
   avoidInput: {fileID: 1791082649404616459}
+  avoidObject: {fileID: 1791082647508790609}
   playerTextPrefab: {fileID: 1791082647508790627, guid: e24aac9ce54e4bb99853d9ed02d86e98, type: 3}
   lobbyButtonPrefab: {fileID: 1791082647508790628, guid: fb874e69198e429ab4db480bd4dc7f83, type: 3}
+  selectDriver: {fileID: 111483752}
+  gameManager: {fileID: 1610865959}
   join: {fileID: 113143546}
   titleLobby: {fileID: 1222762432}
   usernameInputField: {fileID: 457470272}
@@ -22133,6 +22143,8 @@ MonoBehaviour:
   backButton: {fileID: 582199140}
   loadButtonOnline: {fileID: 1064048603}
   loadTextOnline: {fileID: 298426560}
+  BoardBanner: {fileID: 284205379}
+  Slider: {fileID: 1608085982}
 --- !u!114 &727416447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50617,7 +50629,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 2
+        m_CallState: 0
       - m_Target: {fileID: 1570264548}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -50773,7 +50785,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 2
+        m_CallState: 0
       - m_Target: {fileID: 727416439}
         m_TargetAssemblyTypeName: StatsPanel, Assembly-CSharp
         m_MethodName: SpawnPlayer
@@ -50785,7 +50797,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 2
+        m_CallState: 0
       - m_Target: {fileID: 1064048601}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive

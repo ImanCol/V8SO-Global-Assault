@@ -132,7 +132,7 @@ Debug.Log("Paso...");
             Plugin.ShowConnectionWindow = false;
             MemberId = msg.SenderConnection.RemoteHailMessage.ReadInt32();
             Logger.Log($"MemberId: {MemberId}");
-            Demo.JoinLobby(Demo.instance, 0L, null);
+            Demo.instance.JoinLobby(Demo.instance, 0L, null);
 
         }
         private void StatusChanged(NetIncomingMessage msg)
@@ -158,7 +158,7 @@ Debug.Log("Paso...");
                         Plugin.ShowConnectionWindow = false;
                         MemberId = msg.SenderConnection.RemoteHailMessage.ReadInt32();
                         Logger.Log($"MemberId: {MemberId}");
-                        Demo.JoinLobby(Demo.instance, 0L, null);
+                        Demo.instance.JoinLobby(Demo.instance, 0L, null);
                         break;
                     case NetConnectionStatus.Disconnected:
 

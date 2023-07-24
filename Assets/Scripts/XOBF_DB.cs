@@ -662,7 +662,7 @@ public class XOBF_DB : MonoBehaviour
             child.physics1.Y = child.screen.y;
             child.physics1.M6 = param2.DAT_00[(i >> 1) + 2];
             //Fallo en la Matriz al modificar vehiculos
-            Debug.Log("pym7: " + param2.DAT_00[(i >> 1)]);
+            //Debug.Log("pym7: " + param2.DAT_00[(i >> 1)]);
             if (param2.DAT_00[(i >> 1)] != 64)
                 child.physics1.M7 = param2.DAT_00[(i >> 1) + 4];
             else
@@ -1941,7 +1941,7 @@ public class XOBF_DB : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Material List Index: " + list + " k: " + k);
+                    //Debug.Log("Material List Index: " + list + " k: " + k);
                     vigMesh.materialIDs.Add(list[k], array[(int)renderList[list[k]]]);
                 }
             }

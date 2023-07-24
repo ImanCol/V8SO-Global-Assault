@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
@@ -395,7 +395,7 @@ public class Vehicle : VigObject
         weapons = new VigObject[3];
         DAT_B6 = new short[3];
     }
-
+    
     protected override void Start()
     {
         Debug.Log("Iniciando Vehicle...");
@@ -403,7 +403,7 @@ public class Vehicle : VigObject
     }
 
     public string namePlayer = " ";
-    private bool setGameTag = true;
+    bool setGameTag = true;
     //private bool setGameTagLocal = true;
 
     protected override void Update()

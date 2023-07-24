@@ -77,7 +77,7 @@ public class StatsPanel : MonoBehaviour
     //public int cursor = 0;
     public List<int> cursor = new List<int>();
     public int spawnVehicleID;
-    GameManager gameManager;
+    public GameManager gameManager;
     public List<Vehicle> vehicles = new List<Vehicle>(); //Lista de Vehiculos (Players)
     public Dropdown PlayersDropdown;
     public List<Vector3Int> Spawnposition = new List<Vector3Int>();
@@ -149,6 +149,7 @@ public class StatsPanel : MonoBehaviour
                 //Spawnposition[8] = new Vector3Int(67108864, 3078144, 67108864); // posición del primer vehículo
                 break;
         }
+        //gameManager.SetDriver();
     }
 
     //Testing
@@ -246,12 +247,14 @@ public class StatsPanel : MonoBehaviour
 
     public void setPadLEFT()
     {
-        setPAD = 1;
+        if (lobbyMainPanel.selectOptions.activeSelf)
+            setPAD = 1;
     }
 
     public void setPadRIGHT()
     {
-        setPAD = 2;
+        if (lobbyMainPanel.selectOptions.activeSelf)
+            setPAD = 2;
     }
 
     bool pressed = false;
@@ -337,13 +340,13 @@ public class StatsPanel : MonoBehaviour
                 }
             }
         }
-        if (Input.GetButtonDown("P1_RIGHT") || setSpawn == 1)
+        if (setSpawn == 1)
         {
             poses[cursor[0]].gameObject.SetActive(value: false);
             SpawnVehicle(Players[0], cursor[0]);
             poses[cursor[0]].gameObject.SetActive(value: true);
         }
-        if (Input.GetButtonDown("P1_RIGHT") || setPAD == 2)
+        if (lobbyMainPanel.selectOptions.activeSelf && Input.GetButtonDown("P1_RIGHT") || setPAD == 2)
         {
             poses[cursor[0]].gameObject.SetActive(value: false);
             if (cursor[0] < 17)
@@ -371,8 +374,9 @@ public class StatsPanel : MonoBehaviour
             }
             SpawnVehicle(Players[0], cursor[0]);
             poses[cursor[0]].gameObject.SetActive(value: true);
+            gameManager.SetDriver();
         }
-        else if (Input.GetButtonDown("P1_LEFT") || setPAD == 1)
+        else if (lobbyMainPanel.selectOptions.activeSelf && Input.GetButtonDown("P1_LEFT") || setPAD == 1)
         {
             poses[cursor[0]].gameObject.SetActive(value: false);
             if (cursor[0] > 0)
@@ -401,6 +405,7 @@ public class StatsPanel : MonoBehaviour
             }
             SpawnVehicle(Players[0], cursor[0]);
             poses[cursor[0]].gameObject.SetActive(value: true);
+            gameManager.SetDriver();
         }
         else if (Input.GetButtonDown("P1_CROSS") && state == _STATS_TYPE.Quest)
         {
@@ -560,6 +565,7 @@ public class StatsPanel : MonoBehaviour
         Players[0] = PlayersID;
         SetPlayer();
         SpawnVehicle(Players[0], cursor[0]);
+        gameManager.SetDriver();
     }
     public void SpawnVehicle(int PlayersID, int id)
     {

@@ -10,6 +10,7 @@ public class ControlsMenu : Menu
 
     private void Update()
     {
+#if DEBUG
         if (Input.GetButtonDown("P1_DOWN"))
         {
             if (PlayersDropdown.value > 0)
@@ -26,5 +27,6 @@ public class ControlsMenu : Menu
                 Debug.Log("PRESS UP");
             }
         }
+#endif
     }
 }

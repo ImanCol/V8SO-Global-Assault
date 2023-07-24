@@ -1563,7 +1563,7 @@ public class GameManager : MonoBehaviour
                     {
 
                     });
-            Demo.instance.readyLabel.gameObject.SetActive(value: true);
+            Demo.instance.readyLabel.gameObject.SetActive(value: false);
             Demo.instance.notReadyLabel.gameObject.SetActive(value: false);
             Demo.instance.SetupPlaceholders();
         }
@@ -1947,6 +1947,7 @@ public class GameManager : MonoBehaviour
                     });
         await Task.Yield(); // Esperar un frame
     }
+    
     public void SetDrawPlayer()
     {
         if (SceneManager.GetActiveScene().name == "MENU-Driver")
