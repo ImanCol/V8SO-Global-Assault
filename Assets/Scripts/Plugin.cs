@@ -28,7 +28,6 @@ namespace V2UnityDiscordIntercept
 
         public static bool saveLogger = false;
 
-
         private float secondsToShowWindow = -1;
         private Rect errorWindowRect = new Rect(200, 200, 800, 400);
         private Vector2 errorWindowScrollPos = Vector2.zero;

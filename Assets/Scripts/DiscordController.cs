@@ -746,7 +746,11 @@ public class DiscordController : MonoBehaviour
                 new DiscordController.PacketHandler(ClientHandle.Pause)
             },
             {
-                44,
+                45,
+                new DiscordController.PacketHandler(ClientHandle.waitLoad)
+            },
+            {
+                46,
                 new DiscordController.PacketHandler(ClientHandle.waitLoad)
             }
         };

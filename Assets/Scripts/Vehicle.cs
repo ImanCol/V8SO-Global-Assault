@@ -418,27 +418,27 @@ public class Vehicle : VigObject
             {
                 if (valueVehicle == this)
                 {
-                    Debug.Log("Same Vehicle");
-                    Debug.Log("GameTag Set...");
+                    //Debug.Log("Same Vehicle");
+                    //Debug.Log("GameTag Set...");
                     gameTag = UIManager.instance.InstantiateGameTag();
                     gameTag.text = Demo.instance.playerNames[valueVehicle.userId];
                     gameTag.gameObject.layer = 8;
                     namePlayer = gameTag.text;
-                    Debug.Log("Pass...");
-                    Debug.Log("Vehiculo object: " + valueVehicle);
-                    Debug.Log("Vehiculo object local: " + this);
-                    Debug.Log("userId de Vehiculo: " + valueVehicle.userId);
-                    Debug.Log("userId de Vehiculo local: " + this.userId);
-                    Debug.Log("Tipo de Vehiculo: " + valueVehicle.vehicle);
-                    Debug.Log("Tipo de Vehiculo local: " + this.vehicle);
-                    Debug.Log("GameTag: " + valueVehicle.gameTag.text);
-                    Debug.Log("GameTag local: " + gameTag.text);
+                    //Debug.Log("Pass...");
+                    //Debug.Log("Vehiculo object: " + valueVehicle);
+                    //Debug.Log("Vehiculo object local: " + this);
+                    //Debug.Log("userId de Vehiculo: " + valueVehicle.userId);
+                    //Debug.Log("userId de Vehiculo local: " + this.userId);
+                    //Debug.Log("Tipo de Vehiculo: " + valueVehicle.vehicle);
+                    //Debug.Log("Tipo de Vehiculo local: " + this.vehicle);
+                    //Debug.Log("GameTag: " + valueVehicle.gameTag.text);
+                    //Debug.Log("GameTag local: " + gameTag.text);
                 }
             }
             if (GameManager.instance.playerObjects[0] == this)
             {
                 gameTag = UIManager.instance.gameTagPlayer;
-                Debug.Log("Este vehiculo es de..." + GameManager.instance.playerObjects[0].gameTag.text);
+                //Debug.Log("Este vehiculo es de..." + GameManager.instance.playerObjects[0].gameTag.text);
             }
         }
 
@@ -6702,10 +6702,10 @@ public class Vehicle : VigObject
         if (0 < id || _GAME_MODE.Unk1 < GameManager.instance.gameMode || GameManager.instance.gameMode == _GAME_MODE.Versus)
         {
             GameManager.instance.EnemyKill++;
-            if (GameManager.instance.EnemyKill == 1 && GameManager.instance.difficultyMode == 2)
+            if (GameManager.instance.EnemyKill == 70 && GameManager.instance.difficultyMode == 2)
             {
                 FUN_38398();
-                Debug.Log("Approaching HOOOOOOOOOOOT!");
+                //Debug.Log("Approaching HOOOOOOOOOOOT!");
                 IEnumerator routine = UIManager.instance.Printf("Approaching Hotrod!");
                 UIManager.instance.StopAllCoroutines();
                 UIManager.instance.StartCoroutine(routine);

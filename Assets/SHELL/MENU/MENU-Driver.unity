@@ -7777,8 +7777,8 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 220565649}
   m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
+  m_Alpha: 0
+  m_Interactable: 0
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
 --- !u!1 &222852721
@@ -24527,11 +24527,14 @@ MonoBehaviour:
     width: 300
     height: 180
   sliderValue: 4194304
+  touchMessage: 
+  currentValueLives: 1
   currentDamageIndex: 2
   currentValueDifficulty: 1
   damageText: Normal
   mapText: Arizona
   difficultyInt: 0
+  modeIndex: 10
   isWait: 0
   drawTerrainDistanceBool0: 1
   drawTerrainDistanceBool1: 1
@@ -52768,11 +52771,14 @@ MonoBehaviour:
     width: 300
     height: 180
   sliderValue: 4194304
-  currentDamageIndex: 2
-  currentValueDifficulty: 1
-  damageText: Normal
-  mapText: Arizona
-  difficultyInt: 0
+  touchMessage: 
+  currentValueLives: 1
+  currentDamageIndex: 0
+  currentValueDifficulty: 0
+  damageText: Low
+  mapText: Arizona - MeteorCrater
+  difficultyInt: 86
+  modeIndex: 10
   isWait: 0
   drawTerrainDistanceBool0: 1
   drawTerrainDistanceBool1: 1
@@ -90252,10 +90258,10 @@ RectTransform:
   m_Father: {fileID: 1544152650}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 409.5, y: 411.46}
+  m_SizeDelta: {x: 409.5, y: 360}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &1791082651250110143
 RectTransform:

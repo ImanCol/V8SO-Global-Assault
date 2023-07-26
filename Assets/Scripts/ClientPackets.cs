@@ -43,5 +43,6 @@ public enum ClientPackets
 	dropWeapon2,
 	paused,
 	none,
-	waitLoad
+	waitLoad,
+	hotrods
 }

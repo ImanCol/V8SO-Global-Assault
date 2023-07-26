@@ -22,368 +22,339 @@ public class IMP_OBJ
             EditorUtility.SetDirty(levelManager);
 #endif
         }
-
         return true;
     }
 
     //FUN_34F8 (LOAD.DLL)
-    public static void LoadOBJ(byte[] obj)
+    public static VigObject LoadOBJ(byte[] obj)
     {
-        MemoryStream stream = new MemoryStream(obj);
-
-        using (BinaryReader reader = new BinaryReader(stream, Encoding.Default, true))
+        using (BinaryReader binaryReader = new BinaryReader(new MemoryStream(obj), Encoding.Default, leaveOpen: true))
         {
-            string identifier = new string(reader.ReadChars(4));
-            VigObject oVar3 = null;
-
-            if (identifier == "OBJ ")
+            string a = new string(binaryReader.ReadChars(4));
+            VigObject vigObject = null;
+            if (a == "OBJ " && binaryReader.BaseStream.Position != binaryReader.BaseStream.Length)
             {
-                if (reader.BaseStream.Position != reader.BaseStream.Length)
+                while (binaryReader.BaseStream.Length - binaryReader.BaseStream.Position >= 8)
                 {
-                    do
+                    binaryReader.BaseStream.Seek(binaryReader.BaseStream.Position % 2, SeekOrigin.Current);
+                    string a2 = new string(binaryReader.ReadChars(4));
+                    int size = binaryReader.ReadInt32BE();
+                    if (a2 == "HEAD")
                     {
-                        if (reader.BaseStream.Length - reader.BaseStream.Position < 8)
-                            break;
-
-                        reader.BaseStream.Seek(reader.BaseStream.Position % 2, SeekOrigin.Current);
-
-                        string header = new string(reader.ReadChars(4));
-                        int chunkSize = reader.ReadInt32BE();
-
-                        if (header == "HEAD")
-                            oVar3 = LoadHEAD(reader, chunkSize);
-                        else
-                        {
-                            if (header == "BSPI" && oVar3 != null)
-                                LoadBSPI(oVar3, reader);
-                            else if (header == "LGHT" && oVar3 != null)
-                                LoadLGHT(oVar3, reader);
-                            else if (header == "STRN" && oVar3 != null)
-                                LoadSTRN(oVar3, reader);
-                        }
-                    } while (reader.BaseStream.Position != reader.BaseStream.Length);
+                        vigObject = LoadHEAD(binaryReader, size);
+                    }
+                    else if (a2 == "BSPI" && vigObject != null)
+                    {
+                        LoadBSPI(vigObject, binaryReader);
+                    }
+                    else if (a2 == "LGHT" && vigObject != null)
+                    {
+                        LoadLGHT(vigObject, binaryReader);
+                    }
+                    else if (a2 == "STRN" && vigObject != null)
+                    {
+                        LoadSTRN(vigObject, binaryReader);
+                    }
+                    if (binaryReader.BaseStream.Position == binaryReader.BaseStream.Length)
+                    {
+                        break;
+                    }
                 }
             }
+            return vigObject;
         }
     }
 
     //FUN_2CF0 (LOAD.DLL)
     private static VigObject LoadHEAD(BinaryReader reader, int size)
     {
-        byte bVar1;
-        short sVar2;
-        short sVar3;
-        short sVar4;
-        short sVar5;
-        ushort uVar6;
-        uint uVar7;
-        uint uVar8;
-        int iVar9;
-        Type pcVar10;
-        int iVar11;
-        VigObject ppcVar12;
-        VigObject piVar15;
-        int ppiVar16;
-        uint pcVar17;
-        VigObject oVar18;
-        bool bVar19;
-        int local_30;
-        Vector3Int local_88;
-        Vector3Int local_78;
-        string auStack112;
         LevelManager levelManager = GameManager.instance.levelManager;
-        GameObject obj;
-
-        long begin = reader.BaseStream.Position;
-        local_30 = reader.ReadByte();
-        uVar7 = reader.ReadByte();
-        sVar2 = reader.ReadInt16BE();
-        uVar8 = reader.ReadUInt32BE();
-        pcVar17 = uVar8 & 0xfffc67fe;
-        local_88 = new Vector3Int();
-        local_88.x = reader.ReadInt32BE();
-        iVar9 = reader.ReadInt32BE();
-        local_88.y = iVar9 - 0x100000;
-        local_88.z = reader.ReadInt32BE();
-        local_78 = new Vector3Int();
-        sVar3 = reader.ReadInt16BE();
-        local_78.x = sVar3;
-        sVar4 = reader.ReadInt16BE();
-        local_78.y = sVar4;
-        local_78.z = reader.ReadInt16BE();
-        sVar5 = reader.ReadInt16BE();
-        iVar9 = sVar5 + 42;
-        sVar3 = reader.ReadInt16BE();
-        uVar6 = (ushort)reader.ReadInt32BE();
-        auStack112 = new string(reader.ReadChars((int)(size - (reader.BaseStream.Position - begin))));
-        pcVar10 = Utilities.FUN_14E1C(0, auStack112);
-
-        if (pcVar10 is null)
+        long position = reader.BaseStream.Position;
+        int num = (int)reader.ReadByte();
+        uint num2 = (uint)reader.ReadByte();
+        short num3 = reader.ReadInt16BE();
+        uint num4 = reader.ReadUInt32BE();
+        uint num5 = num4 & 4294731774U;
+        Vector3Int vector3Int = default(Vector3Int);
+        vector3Int.x = reader.ReadInt32BE();
+        int num6 = reader.ReadInt32BE();
+        vector3Int.y = num6 - 1048576;
+        vector3Int.z = reader.ReadInt32BE();
+        Vector3Int vector3Int2 = default(Vector3Int);
+        short num7 = reader.ReadInt16BE();
+        vector3Int2.x = (int)num7;
+        short num8 = reader.ReadInt16BE();
+        vector3Int2.y = (int)num8;
+        vector3Int2.z = (int)reader.ReadInt16BE();
+        num6 = (int)(reader.ReadInt16BE() + 42);
+        num7 = reader.ReadInt16BE();
+        ushort num9 = (ushort)reader.ReadInt32BE();
+        string text = new string(reader.ReadChars((int)((long)size - (reader.BaseStream.Position - position))));
+        Type type = Utilities.FUN_14E1C(0, text);
+        if (type == null)
         {
             if (Utilities.levelTypes == null)
-                pcVar10 = null;
-            else
-                pcVar10 = Utilities.FUN_14DAC(Utilities.levelTypes[0], auStack112); //improvised
-
-            if (pcVar10 == null)
-                pcVar10 = typeof(Destructible);
-        }
-
-        if ((uVar8 & 2) != 0 && uVar7 != 5)
-        {
-            if (GameManager.instance.gameMode < _GAME_MODE.Versus)
             {
-                pcVar17 = uVar8 & 0xfffc67fc;
-                goto LAB_2E74;
+                type = null;
             }
-
-            return null;
+            else
+            {
+                Debug.Log("Type: Antes " + type);
+                type = Utilities.FUN_14DAC(Utilities.levelTypes[0], text); //improvised
+                //type = Utilities.FUN_14DAC(Utilities.levelTypes[GameManager.instance.map - 1], text);
+                Debug.Log("Type: Despues " + type);
+            }
+            if (type == null)
+            {
+                type = typeof(Destructible);
+            }
         }
-
-    LAB_2E74:
-        if ((pcVar17 & 4) != 0 && levelManager.xobfList[iVar9].animations.Length > 0)
+        if ((num4 & 2U) != 0U && num2 != 5U)
         {
-            iVar11 = (int)GameManager.FUN_2AC5C();
-            MemoryStream stream = new MemoryStream(levelManager.xobfList[iVar9].animations);
-
-            BinaryReader reader2 = new BinaryReader(stream, Encoding.Default, true);
-            GameManager.instance.timer = (ushort)-(iVar11 * reader2.ReadInt32() >> 15);
-        }
-
-        if (6 < uVar7)
-            return null;
-
-        bVar1 = (byte)uVar7;
-        ppcVar12 = null; //not in the original code
-
-        switch (uVar7)
-        {
-            case 0:
-                ppcVar12 = Utilities.FUN_31D30(pcVar10, levelManager.xobfList[iVar9], sVar3,
-                                                (pcVar17 & 4) << 1);
-                if (ppcVar12 == null)
-                    return null;
-
-                ppcVar12.gameObject.name = auStack112;
-                Utilities.ParentChildren(ppcVar12, ppcVar12);
-
-                ppcVar12.flags = pcVar17;
-                ppcVar12.type = bVar1;
-                ppcVar12.id = sVar2;
-                ppcVar12.tags = (sbyte)local_30;
-                ppcVar12.screen = local_88;
-                ppcVar12.vr = local_78;
-                ppcVar12.maxFullHealth = uVar6;
-                ppcVar12.maxHalfHealth = uVar6;
-                bVar1 = (byte)GameManager.FUN_2AC5C();
-                ppcVar12.DAT_19 = bVar1;
-                ppcVar12.ApplyTransformation();
-                ppcVar12.FUN_2D1DC();
-                ppcVar12.FUN_2C958();
-
-                if (!pcVar10.IsSubclassOf(typeof(VigObject)))
-                    iVar9 = 0;
-                else
-                    iVar9 = (int)ppcVar12.UpdateW(1, 0);
-
-                if (-1 < iVar9)
-                {
-                    if ((ppcVar12.flags & 8) != 0 && ppcVar12.vShadow == null)
-                        ppcVar12.FUN_4C98C();
-
-                    if ((ppcVar12.flags & 4) != 0)
-                        GameManager.instance.FUN_30080(GameManager.instance.DAT_10A8, ppcVar12);
-
-                    if ((ppcVar12.flags & 0x80) != 0)
-                        GameManager.instance.FUN_30080(GameManager.instance.DAT_1088, ppcVar12);
-
-                    ppcVar12.FUN_2EC7C();
-                    GameManager.instance.FUN_30080(GameManager.instance.interObjs, ppcVar12);
-                    return ppcVar12;
-                }
-
-                break;
-            case 4:
-                pcVar17 &= 0xffff;
-                goto case 2;
-            case 2:
-            case 3:
-                ppcVar12 = Utilities.FUN_31D30(pcVar10, levelManager.xobfList[iVar9], sVar3, (pcVar17 & 4) << 1);
-
-                if (ppcVar12 == null)
-                    return null;
-
-                ppcVar12.gameObject.name = auStack112;
-                Utilities.ParentChildren(ppcVar12, ppcVar12);
-
-                ppcVar12.flags = pcVar17;
-                ppcVar12.type = bVar1;
-                ppcVar12.id = sVar2;
-                ppcVar12.tags = (sbyte)local_30;
-                ppcVar12.screen = local_88;
-                ppcVar12.vr = local_78;
-                oVar18 = ppcVar12.child2;
-                ppcVar12.maxFullHealth = uVar6;
-                ppcVar12.maxHalfHealth = uVar6;
-
-                while (oVar18 != null)
-                {
-                    oVar18.maxFullHealth = uVar6;
-                    oVar18.maxHalfHealth = uVar6;
-                    oVar18 = oVar18.child;
-                }
-
-                bVar1 = (byte)GameManager.FUN_2AC5C();
-                ppcVar12.DAT_19 = bVar1;
-                ppcVar12.FUN_2C958();
-                bVar19 = ppcVar12.FUN_3066C();
-
-                if (bVar19)
-                    return ppcVar12;
-
+            if (GameManager.instance.gameMode >= _GAME_MODE.Versus && GameManager.instance.gameMode < _GAME_MODE.Versus2)
+            {
                 return null;
-            case 5:
-                obj = new GameObject(auStack112);
-                ppcVar12 = obj.AddComponent(pcVar10) as VigObject;
-                ppcVar12.DAT_1A = sVar3;
-                ppcVar12.flags = pcVar17;
-                ppcVar12.type = bVar1;
-                ppcVar12.id = sVar2;
-                ppcVar12.tags = (sbyte)local_30;
-                ppcVar12.vData = levelManager.xobfList[iVar9];
-                ppcVar12.screen = local_88;
-                ppcVar12.vr = local_78;
-                ppcVar12.maxFullHealth = uVar6;
-                ppcVar12.maxHalfHealth = uVar6;
-                bVar1 = (byte)GameManager.FUN_2AC5C();
-                ppcVar12.DAT_19 = bVar1;
-                ppcVar12.ApplyTransformation();
-
-                if (!pcVar10.IsSubclassOf(typeof(VigObject)))
-                    iVar9 = 0;
-                else
-                    iVar9 = (int)ppcVar12.UpdateW(1, 1);
-
-                if (-1 < iVar9)
+            }
+            num5 = num4 & 4294731772U;
+        }
+        if ((num5 & 4U) != 0U && levelManager.xobfList[num6].animations.Length != 0)
+        {
+            int num10 = (int)GameManager.FUN_2AC5C();
+            BinaryReader binaryReader = new BinaryReader(new MemoryStream(levelManager.xobfList[num6].animations), Encoding.Default, true);
+            GameManager.instance.timer = (ushort)(-(ushort)(num10 * binaryReader.ReadInt32() >> 15));
+        }
+        if (6U < num2)
+        {
+            return null;
+        }
+        byte b = (byte)num2;
+        VigObject vigObject = null;
+        switch (num2)
+        {
+            case 0U:
+                vigObject = Utilities.FUN_31D30(type, levelManager.xobfList[num6], num7, (num5 & 4U) << 1);
+                if (vigObject == null)
                 {
-                    ppiVar16 = 0;
-
-                    if (GameManager.instance.DAT_1078.Count > 0)
+                    return null;
+                }
+                vigObject.gameObject.name = text;
+                Utilities.ParentChildren(vigObject, vigObject);
+                vigObject.flags = num5;
+                vigObject.type = b;
+                vigObject.id = num3;
+                vigObject.tags = (sbyte)num;
+                vigObject.screen = vector3Int;
+                vigObject.vr = vector3Int2;
+                vigObject.maxFullHealth = num9;
+                vigObject.maxHalfHealth = num9;
+                b = (byte)GameManager.FUN_2AC5C();
+                vigObject.DAT_19 = b;
+                vigObject.ApplyTransformation();
+                vigObject.FUN_2D1DC();
+                vigObject.FUN_2C958();
+                if (GameManager.instance.gameMode >= _GAME_MODE.Versus2)
+                {
+                    if (!type.IsSubclassOf(typeof(VigObject)))
                     {
-                        do
+                        GameManager.instance.networkObjs.Add(vigObject);
+                    }
+                    else if (type == typeof(Destructible))
+                    {
+                        GameManager.instance.networkObjs.Add(vigObject);
+                    }
+                }
+                if (!type.IsSubclassOf(typeof(VigObject)))
+                {
+                    num6 = 0;
+                }
+                else
+                {
+                    num6 = (int)vigObject.UpdateW(1, 0);
+                }
+                if (-1 < num6)
+                {
+                    if ((vigObject.flags & 8U) != 0U && vigObject.vShadow == null)
+                    {
+                        vigObject.FUN_4C98C();
+                    }
+                    if ((vigObject.flags & 4U) != 0U)
+                    {
+                        GameManager.instance.FUN_30080(GameManager.instance.DAT_10A8, vigObject);
+                    }
+                    if ((vigObject.flags & 128U) != 0U)
+                    {
+                        GameManager.instance.FUN_30080(GameManager.instance.DAT_1088, vigObject);
+                    }
+                    vigObject.FUN_2EC7C();
+                    GameManager.instance.FUN_30080(GameManager.instance.interObjs, vigObject);
+                    return vigObject;
+                }
+                goto IL_691;
+            case 1U:
+                return vigObject;
+            case 2U:
+            case 3U:
+                break;
+            case 4U:
+                num5 &= 65535U;
+                break;
+            case 5U:
+                vigObject = new GameObject(text).AddComponent(type) as VigObject;
+                vigObject.DAT_1A = num7;
+                vigObject.flags = num5;
+                vigObject.type = b;
+                vigObject.id = num3;
+                vigObject.tags = (sbyte)num;
+                vigObject.vData = levelManager.xobfList[num6];
+                vigObject.screen = vector3Int;
+                vigObject.vr = vector3Int2;
+                vigObject.maxFullHealth = num9;
+                vigObject.maxHalfHealth = num9;
+                b = (byte)GameManager.FUN_2AC5C();
+                vigObject.DAT_19 = b;
+                vigObject.ApplyTransformation();
+                if (!type.IsSubclassOf(typeof(VigObject)))
+                {
+                    num6 = 0;
+                }
+                else
+                {
+                    num6 = (int)vigObject.UpdateW(1, 1);
+                }
+                if (-1 < num6)
+                {
+                    List<VigTuple> dat_ = GameManager.instance.DAT_1078;
+                    VigTuple vigTuple = null;
+                    int num11 = 0;
+                    if (dat_ != null)
+                    {
+                        for (int i = 0; i < dat_.Count; i++)
                         {
-                            if (sVar2 <= GameManager.instance.DAT_1078[ppiVar16].vObject.id)
-                                break;
-
-                            ppiVar16++;
-                        } while (ppiVar16 < GameManager.instance.DAT_1078.Count);
-
-                        if (ppiVar16 < GameManager.instance.DAT_1078.Count)
-                        {
-                            piVar15 = GameManager.instance.DAT_1078[ppiVar16].vObject;
-
-                            if (sVar2 == piVar15.id)
+                            vigTuple = dat_[i];
+                            if (num3 <= vigTuple.vObject.id)
                             {
-                                oVar18 = piVar15.child;
-
-                                while (oVar18 != null)
+                                break;
+                            }
+                            num11 = i + 1;
+                        }
+                        if (num11 != dat_.Count)
+                        {
+                            VigObject vigObject2 = vigTuple.vObject;
+                            if (num3 == vigObject2.id)
+                            {
+                                VigObject vigObject3 = vigObject2.child;
+                                while (vigObject3 != null)
                                 {
-                                    piVar15 = piVar15.child;
-                                    oVar18 = piVar15.child;
+                                    vigObject2 = vigObject2.child;
+                                    vigObject3 = vigObject2.child;
                                 }
-
-                                piVar15.child = ppcVar12;
-                                ppcVar12.parent = piVar15;
-                                ppcVar12.transform.parent = piVar15.transform;
-                                return ppcVar12;
+                                vigObject2.child = vigObject;
+                                vigObject.parent = vigObject2;
+                                return vigObject;
                             }
                         }
                     }
-
-                    GameManager.instance.DAT_1078.Add(new VigTuple(ppcVar12, 0));
-                    return ppcVar12;
+                    GameManager.instance.DAT_1078.Insert(num11, new VigTuple(vigObject, 0U));
+                    return vigObject;
                 }
-
-                break;
-            case 6:
-                obj = new GameObject(auStack112);
-                ppcVar12 = obj.AddComponent<VigObject>();
-                ppcVar12.flags = pcVar17;
-                ppcVar12.type = bVar1;
-                ppcVar12.id = sVar2;
-                ppcVar12.tags = (sbyte)local_30;
-                ppcVar12.screen = local_88;
-                ppcVar12.vr = local_78;
-                bVar1 = (byte)GameManager.FUN_2AC5C();
-                ppcVar12.DAT_19 = bVar1;
-                ppcVar12.ApplyTransformation();
-                GameManager.instance.FUN_30080(LevelManager.instance.levelObjs, ppcVar12);
-                goto case 1;
-            case 1:
-                return ppcVar12;
+                goto IL_691;
+            case 6U:
+                vigObject = new GameObject(text).AddComponent<VigObject>();
+                vigObject.flags = num5;
+                vigObject.type = b;
+                vigObject.id = num3;
+                vigObject.tags = (sbyte)num;
+                vigObject.screen = vector3Int;
+                vigObject.vr = vector3Int2;
+                b = (byte)GameManager.FUN_2AC5C();
+                vigObject.DAT_19 = b;
+                vigObject.ApplyTransformation();
+                GameManager.instance.FUN_30080(LevelManager.instance.levelObjs, vigObject);
+                return vigObject;
+            default:
+                goto IL_691;
         }
-
-        ppcVar12 = null;
-        return ppcVar12;
+        vigObject = Utilities.FUN_31D30(type, levelManager.xobfList[num6], num7, (num5 & 4U) << 1);
+        if (vigObject == null)
+        {
+            return null;
+        }
+        vigObject.gameObject.name = text;
+        Utilities.ParentChildren(vigObject, vigObject);
+        vigObject.flags = num5;
+        vigObject.type = b;
+        vigObject.id = num3;
+        vigObject.tags = (sbyte)num;
+        vigObject.screen = vector3Int;
+        vigObject.vr = vector3Int2;
+        VigObject vigObject4 = vigObject.child2;
+        vigObject.maxFullHealth = num9;
+        vigObject.maxHalfHealth = num9;
+        while (vigObject4 != null)
+        {
+            vigObject4.maxFullHealth = num9;
+            vigObject4.maxHalfHealth = num9;
+            vigObject4 = vigObject4.child;
+        }
+        b = (byte)GameManager.FUN_2AC5C();
+        vigObject.DAT_19 = b;
+        vigObject.FUN_2C958();
+        if (vigObject.FUN_3066C())
+        {
+            return vigObject;
+        }
+        return null;
+    IL_691:
+        return null;
     }
 
     private static void LoadBSPI(VigObject param1, BinaryReader reader)
     {
-        VigTuple tVar1;
-        uint uVar2;
-
-        tVar1 = GameManager.instance.FUN_30134(GameManager.instance.interObjs, param1);
-        uVar2 = reader.ReadUInt32BE();
-        tVar1.flag = uVar2 | 0x80000000;
+        VigTuple vigTuple = GameManager.instance.FUN_30134(GameManager.instance.interObjs, param1);
+        uint num = reader.ReadUInt32BE();
+        vigTuple.flag = (uint)((int)num | int.MinValue);
     }
 
     private static void LoadLGHT(VigObject param1, BinaryReader reader)
     {
-        short sVar1;
-        int iVar2;
-
-        iVar2 = reader.ReadInt32BE();
-        param1.physics1.X = iVar2;
-        iVar2 = reader.ReadInt32BE();
-        param1.physics1.Y = iVar2;
-        iVar2 = reader.ReadInt32BE();
-        param1.physics1.Z = iVar2;
-        sVar1 = reader.ReadInt16BE();
-        param1.physics1.M6 = sVar1;
-        sVar1 = reader.ReadInt16BE();
-        param1.physics1.M7 = sVar1;
-        sVar1 = reader.ReadInt16BE();
-        param1.physics2.M0 = sVar1;
+        int x = reader.ReadInt32BE();
+        param1.physics1.X = x;
+        x = reader.ReadInt32BE();
+        param1.physics1.Y = x;
+        x = reader.ReadInt32BE();
+        param1.physics1.Z = x;
+        short m = reader.ReadInt16BE();
+        param1.physics1.M6 = m;
+        m = reader.ReadInt16BE();
+        param1.physics1.M7 = m;
+        m = reader.ReadInt16BE();
+        param1.physics2.M0 = m;
     }
+
 
     private static void LoadSTRN(VigObject param1, BinaryReader reader)
     {
-        ushort uVar1;
-        ushort uVar2;
-        VigObject oVar3;
-
-        uVar1 = (ushort)reader.ReadInt32BE();
-
+        ushort num = (ushort)reader.ReadInt32BE();
+        ushort maxFullHealth;
         if (reader.BaseStream.Length < 5)
         {
-            param1.maxHalfHealth = uVar1;
-            uVar2 = uVar1;
+            param1.maxHalfHealth = num;
+            maxFullHealth = num;
         }
         else
         {
-            uVar2 = (ushort)reader.ReadInt32BE();
-            param1.maxHalfHealth = uVar1;
+            maxFullHealth = (ushort)reader.ReadInt32BE();
+            param1.maxHalfHealth = num;
         }
-
-        param1.maxFullHealth = uVar2;
-        oVar3 = param1.child2;
-
-        while (oVar3 != null)
+        param1.maxFullHealth = maxFullHealth;
+        VigObject vigObject = param1.child2;
+        while (vigObject != null)
         {
-            if (oVar3.maxHalfHealth == 0)
-                oVar3.maxHalfHealth = uVar1;
-
-            oVar3 = oVar3.child;
+            if (vigObject.maxHalfHealth == 0)
+            {
+                vigObject.maxHalfHealth = num;
+            }
+            vigObject = vigObject.child;
         }
     }
 }

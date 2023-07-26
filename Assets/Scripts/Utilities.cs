@@ -7,6 +7,7 @@ using System.Collections.Concurrent;
 using UnityEngine;
 using Unity.Burst;
 using System.Threading.Tasks;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -43,7 +44,7 @@ public static class Utilities
     };
 
     public static string[] DAT_310 = new string[18]
-    {
+     {
         "Wonderwagon",
         "Thunderbolt",
         "Dakota Stunt Cycle",
@@ -62,9 +63,9 @@ public static class Utilities
         "Vertigo",
         "Goliath Halftrack",
         "Wapiti 4WD"
-    };
+     };
 
-    public static KeyValuePair<string, Type>[][] levelTypes =
+    public static KeyValuePair<string, Type>[][] levelTypes = new KeyValuePair<string, Type>[][]
     {
         new KeyValuePair<string, Type>[]
         {
@@ -78,6 +79,7 @@ public static class Utilities
             new KeyValuePair<string, Type>("DonutShop", typeof(DonutShop)),
             new KeyValuePair<string, Type>("Projectionbooth", typeof(ProjectionBooth)),
             new KeyValuePair<string, Type>("Wall", typeof(Wall)),
+
             new KeyValuePair<string, Type>("Gondola", typeof(Gondola)),
             new KeyValuePair<string, Type>("DragStick", typeof(DragStick)),
             new KeyValuePair<string, Type>("GondPole", typeof(GondPole)),
@@ -92,6 +94,7 @@ public static class Utilities
             new KeyValuePair<string, Type>("StartSign", typeof(StartSign)),
             new KeyValuePair<string, Type>("FinishSign", typeof(FinishSign)),
             new KeyValuePair<string, Type>("Scoreboard", typeof(Scoreboard)),
+
             new KeyValuePair<string, Type>("TestThruster", typeof(TestThruster)),
             new KeyValuePair<string, Type>("NASA", typeof(NASA)),
             new KeyValuePair<string, Type>("LaunchVehicle", typeof(LaunchVehicle)),
@@ -101,6 +104,7 @@ public static class Utilities
             new KeyValuePair<string, Type>("Sharky", typeof(Sharky)),
             new KeyValuePair<string, Type>("LaunchEntry", typeof(LaunchEntry)),
             new KeyValuePair<string, Type>("Gantry", typeof(Gantry)),
+
             new KeyValuePair<string, Type>("Bridge_1", typeof(Bridge)),
             new KeyValuePair<string, Type>("Cage", typeof(Cage)),
             new KeyValuePair<string, Type>("LockWheel", typeof(LockWheel)),
@@ -111,6 +115,7 @@ public static class Utilities
             new KeyValuePair<string, Type>("Tomb_3", typeof(Tomb)),
             new KeyValuePair<string, Type>("Mansion", typeof(Mansion)),
             new KeyValuePair<string, Type>("Mausoleum", typeof(Mausoleum)),
+
             new KeyValuePair<string, Type>("TransferBooth", typeof(TransferBooth)),
             new KeyValuePair<string, Type>("Transformer", typeof(Transformer)),
             new KeyValuePair<string, Type>("NSwitch", typeof(NSwitch)),
@@ -120,6 +125,7 @@ public static class Utilities
             new KeyValuePair<string, Type>("Bridge_L", typeof(BridgeL)),
             new KeyValuePair<string, Type>("Reactor", typeof(Reactor)),
             new KeyValuePair<string, Type>("ContBuilding", typeof(ContBuilding)),
+
             new KeyValuePair<string, Type>("Tunnel", typeof(Tunnel)),
             new KeyValuePair<string, Type>("SheetMetalDrum", typeof(SheetMetalDrum)),
             new KeyValuePair<string, Type>("MoltenSteel", typeof(MoltenSteel)),
@@ -133,6 +139,7 @@ public static class Utilities
             new KeyValuePair<string, Type>("RailSwitch", typeof(RailSwitch)),
             new KeyValuePair<string, Type>("BridgeS", typeof(BridgeS)),
             new KeyValuePair<string, Type>("BridgeL", typeof(BridgeS)),
+
             new KeyValuePair<string, Type>("PipeEnd", typeof(Pipe)),
             new KeyValuePair<string, Type>("Glacier_Small", typeof(GlacierSmall)),
             new KeyValuePair<string, Type>("Glacier", typeof(Glacier)),
@@ -140,6 +147,7 @@ public static class Utilities
             new KeyValuePair<string, Type>("SiloRamp", typeof(SiloRamp)),
             new KeyValuePair<string, Type>("SiloCatwalk", typeof(Catwalk)),
             new KeyValuePair<string, Type>("Orca", typeof(Orca)),
+
             new KeyValuePair<string, Type>("CraneSmall", typeof(CraneSmall)),
             new KeyValuePair<string, Type>("Buoy", typeof(Buoy)),
             new KeyValuePair<string, Type>("weighSign", typeof(WeighSign)),
@@ -150,6 +158,7 @@ public static class Utilities
             new KeyValuePair<string, Type>("CargoTruck", typeof(CargoTruck)),
             new KeyValuePair<string, Type>("CraneLarge", typeof(CraneLarge)),
             new KeyValuePair<string, Type>("Container_1", typeof(Container)),
+
             new KeyValuePair<string, Type>("OilRig", typeof(Rig)),
             new KeyValuePair<string, Type>("pipe_end_1", typeof(Pipe2)),
             new KeyValuePair<string, Type>("OilPump_1", typeof(Pump)),
@@ -157,11 +166,13 @@ public static class Utilities
             new KeyValuePair<string, Type>("pipe-gateGATE_1", typeof(Pipe4)),
             new KeyValuePair<string, Type>("JTreeS_1", typeof(Destructible2)),
             new KeyValuePair<string, Type>("JTreeT_1", typeof(Destructible2)),
+
             new KeyValuePair<string, Type>("hanger_1", typeof(Hanger)),
             new KeyValuePair<string, Type>("control_tower_1", typeof(ControlTower)),
             new KeyValuePair<string, Type>("hanger_1_Door1", typeof(HangerDoor)),
             new KeyValuePair<string, Type>("Crane_1", typeof(Crane2)),
             new KeyValuePair<string, Type>("b17_1", typeof(B17)),
+
             new KeyValuePair<string, Type>("Shack_1", typeof(Shack)),
             new KeyValuePair<string, Type>("TBridge_1", typeof(Bridge2)),
             new KeyValuePair<string, Type>("M1_warehouse_1", typeof(Warehouse2)),
@@ -177,6 +188,7 @@ public static class Utilities
             new KeyValuePair<string, Type>("dustDevil", typeof(Tornado2)),
             new KeyValuePair<string, Type>("tumbleweed_1", typeof(Tumble)),
             new KeyValuePair<string, Type>("M1gaslight_1", typeof(Destructible2)),
+
             new KeyValuePair<string, Type>("smPole_1", typeof(Destructible2)),
             new KeyValuePair<string, Type>("Rain", typeof(Rain)),
             new KeyValuePair<string, Type>("SplashS_R", typeof(Splash)),
@@ -190,6 +202,7 @@ public static class Utilities
             new KeyValuePair<string, Type>("PipeOut_1", typeof(Pipe5)),
             new KeyValuePair<string, Type>("barracade-lg_1", typeof(Barracade)),
             new KeyValuePair<string, Type>("Catwalk_1", typeof(Catwalk2)),
+
             new KeyValuePair<string, Type>("SplashS_R", typeof(Splash2)),
             new KeyValuePair<string, Type>("Windmill_1", typeof(Windmill)),
             new KeyValuePair<string, Type>("silo_1", typeof(Silo)),
@@ -198,6 +211,7 @@ public static class Utilities
             new KeyValuePair<string, Type>("crop_duster", typeof(CropDuster)),
             new KeyValuePair<string, Type>("tree_1", typeof(Destructible2)),
             new KeyValuePair<string, Type>("tree2_1", typeof(Destructible2)),
+
             new KeyValuePair<string, Type>("palm1_1", typeof(Palm)),
             new KeyValuePair<string, Type>("SplashS_R", typeof(Splash3)),
             new KeyValuePair<string, Type>("BurgerS_1", typeof(BurgerS)),
@@ -208,10 +222,12 @@ public static class Utilities
             new KeyValuePair<string, Type>("pelicana_1", typeof(Pelicana)),
             new KeyValuePair<string, Type>("saharan_1", typeof(Pelicana)),
             new KeyValuePair<string, Type>("parking_gate", typeof(ParkingGate)),
+
             new KeyValuePair<string, Type>("boulder_L", typeof(Boulder)),
             new KeyValuePair<string, Type>("BeamUp", typeof(Beamup)),
             new KeyValuePair<string, Type>("cement_barrier_1", typeof(Barrier)),
             new KeyValuePair<string, Type>("bridge_1", typeof(Bridge3)),
+
             new KeyValuePair<string, Type>("gondola_1", typeof(Gondola2)),
             new KeyValuePair<string, Type>("liftpole_1", typeof(Liftpole)),
             new KeyValuePair<string, Type>("liftstation_1", typeof(Liftstation)),
@@ -223,6 +239,7 @@ public static class Utilities
             new KeyValuePair<string, Type>("pine3_1", typeof(Pine)),
             new KeyValuePair<string, Type>("pine1_1", typeof(Destructible2)),
             new KeyValuePair<string, Type>("pine2_1", typeof(Destructible2)),
+
             new KeyValuePair<string, Type>("radar_1", typeof(Radar)),
             new KeyValuePair<string, Type>("fence_left", typeof(Fence2)),
             new KeyValuePair<string, Type>("fence_right", typeof(Fence2)),
@@ -233,6 +250,7 @@ public static class Utilities
             new KeyValuePair<string, Type>("hq_3", typeof(HQ3)),
             new KeyValuePair<string, Type>("aurora_1", typeof(Aurora)),
             new KeyValuePair<string, Type>("catwalk_1", typeof(Catwalk3)),
+
             new KeyValuePair<string, Type>("protoSaucer", typeof(Saucer2)),
             new KeyValuePair<string, Type>("M2_elevator_1", typeof(Elevator)),
             new KeyValuePair<string, Type>("M2_Conveyor", typeof(Conveyor)),
@@ -241,8 +259,238 @@ public static class Utilities
         }
     };
 
-    public static Type[] vehicleSpecials = new Type[18]
+    /*
+        public static KeyValuePair<string, Type>[][] levelTypes = new KeyValuePair<string, Type>[18][]
     {
+        new KeyValuePair<string, Type>[10]
+        {
+            new KeyValuePair<string, Type>("Police", typeof(Police)),
+            new KeyValuePair<string, Type>("Sign_SpeedLimit", typeof(SpeedLimit)),
+            new KeyValuePair<string, Type>("Ant", typeof(Ant)),
+            new KeyValuePair<string, Type>("Observatory", typeof(Observatory)),
+            new KeyValuePair<string, Type>("MineEntry", typeof(MineEntry)),
+            new KeyValuePair<string, Type>("Billboard", typeof(Billboard)),
+            new KeyValuePair<string, Type>("ServiceStation", typeof(ServiceStation)),
+            new KeyValuePair<string, Type>("DonutShop", typeof(DonutShop)),
+            new KeyValuePair<string, Type>("Projectionbooth", typeof(ProjectionBooth)),
+            new KeyValuePair<string, Type>("Wall", typeof(Wall))
+        },
+        new KeyValuePair<string, Type>[14]
+        {
+            new KeyValuePair<string, Type>("Gondola", typeof(Gondola)),
+            new KeyValuePair<string, Type>("DragStick", typeof(DragStick)),
+            new KeyValuePair<string, Type>("GondPole", typeof(GondPole)),
+            new KeyValuePair<string, Type>("GondStation", typeof(GondStation)),
+            new KeyValuePair<string, Type>("LiftGate", typeof(LiftGate)),
+            new KeyValuePair<string, Type>("LiftStation", typeof(LiftStation)),
+            new KeyValuePair<string, Type>("Hotel", typeof(Hotel)),
+            new KeyValuePair<string, Type>("SkiJump", typeof(SkiJump)),
+            new KeyValuePair<string, Type>("BobsledGate", typeof(Bobsled)),
+            new KeyValuePair<string, Type>("SlalomG_2", typeof(Slalom)),
+            new KeyValuePair<string, Type>("SlalomG_1", typeof(Slalom2)),
+            new KeyValuePair<string, Type>("StartSign", typeof(StartSign)),
+            new KeyValuePair<string, Type>("FinishSign", typeof(FinishSign)),
+            new KeyValuePair<string, Type>("Scoreboard", typeof(Scoreboard))
+        },
+        new KeyValuePair<string, Type>[9]
+        {
+            new KeyValuePair<string, Type>("TestThruster", typeof(TestThruster)),
+            new KeyValuePair<string, Type>("NASA", typeof(NASA)),
+            new KeyValuePair<string, Type>("LaunchVehicle", typeof(LaunchVehicle)),
+            new KeyValuePair<string, Type>("WindTunnel", typeof(WindTunnel)),
+            new KeyValuePair<string, Type>("GuardTower", typeof(GuardTower)),
+            new KeyValuePair<string, Type>("Fence", typeof(Fence)),
+            new KeyValuePair<string, Type>("Sharky", typeof(Sharky)),
+            new KeyValuePair<string, Type>("LaunchEntry", typeof(LaunchEntry)),
+            new KeyValuePair<string, Type>("Gantry", typeof(Gantry))
+        },
+        new KeyValuePair<string, Type>[10]
+        {
+            new KeyValuePair<string, Type>("Bridge_1", typeof(Bridge)),
+            new KeyValuePair<string, Type>("Cage", typeof(Cage)),
+            new KeyValuePair<string, Type>("LockWheel", typeof(LockWheel)),
+            new KeyValuePair<string, Type>("LockDam", typeof(LockDam)),
+            new KeyValuePair<string, Type>("GATOR_I", typeof(Aligator)),
+            new KeyValuePair<string, Type>("Tomb_1", typeof(Tomb)),
+            new KeyValuePair<string, Type>("Tomb_2", typeof(Tomb)),
+            new KeyValuePair<string, Type>("Tomb_3", typeof(Tomb)),
+            new KeyValuePair<string, Type>("Mansion", typeof(Mansion)),
+            new KeyValuePair<string, Type>("Mausoleum", typeof(Mausoleum))
+        },
+        new KeyValuePair<string, Type>[9]
+        {
+            new KeyValuePair<string, Type>("TransferBooth", typeof(TransferBooth)),
+            new KeyValuePair<string, Type>("Transformer", typeof(Transformer)),
+            new KeyValuePair<string, Type>("NSwitch", typeof(NSwitch)),
+            new KeyValuePair<string, Type>("TurbineShock", typeof(TurbineShock)),
+            new KeyValuePair<string, Type>("Turbine", typeof(Turbine)),
+            new KeyValuePair<string, Type>("ForkLift", typeof(ForkLift)),
+            new KeyValuePair<string, Type>("Bridge_L", typeof(BridgeL)),
+            new KeyValuePair<string, Type>("Reactor", typeof(Reactor)),
+            new KeyValuePair<string, Type>("ContBuilding", typeof(ContBuilding))
+        },
+        new KeyValuePair<string, Type>[13]
+        {
+            new KeyValuePair<string, Type>("Tunnel", typeof(Tunnel)),
+            new KeyValuePair<string, Type>("SheetMetalDrum", typeof(SheetMetalDrum)),
+            new KeyValuePair<string, Type>("MoltenSteel", typeof(MoltenSteel)),
+            new KeyValuePair<string, Type>("Furnace3", typeof(Furnace)),
+            new KeyValuePair<string, Type>("IngPlant_LCap", typeof(IngPlant)),
+            new KeyValuePair<string, Type>("Cauldron", typeof(Cauldron)),
+            new KeyValuePair<string, Type>("Crane", typeof(Crane)),
+            new KeyValuePair<string, Type>("Train_Engine", typeof(TrainEngine)),
+            new KeyValuePair<string, Type>("Train_Hopper", typeof(TrainHopper)),
+            new KeyValuePair<string, Type>("Train_Boxcar", typeof(TrainBoxcar)),
+            new KeyValuePair<string, Type>("RailSwitch", typeof(RailSwitch)),
+            new KeyValuePair<string, Type>("BridgeS", typeof(BridgeS)),
+            new KeyValuePair<string, Type>("BridgeL", typeof(BridgeS))
+        },
+        new KeyValuePair<string, Type>[7]
+        {
+            new KeyValuePair<string, Type>("PipeEnd", typeof(Pipe)),
+            new KeyValuePair<string, Type>("Glacier_Small", typeof(GlacierSmall)),
+            new KeyValuePair<string, Type>("Glacier", typeof(Glacier)),
+            new KeyValuePair<string, Type>("OilPlatform", typeof(OilPlatform)),
+            new KeyValuePair<string, Type>("SiloRamp", typeof(SiloRamp)),
+            new KeyValuePair<string, Type>("SiloCatwalk", typeof(Catwalk)),
+            new KeyValuePair<string, Type>("Orca", typeof(Orca))
+        },
+        new KeyValuePair<string, Type>[10]
+        {
+            new KeyValuePair<string, Type>("CraneSmall", typeof(CraneSmall)),
+            new KeyValuePair<string, Type>("Buoy", typeof(Buoy)),
+            new KeyValuePair<string, Type>("weighSign", typeof(WeighSign)),
+            new KeyValuePair<string, Type>("Warehouse_1", typeof(Warehouse)),
+            new KeyValuePair<string, Type>("Lighthouse", typeof(Lighthouse)),
+            new KeyValuePair<string, Type>("DrawBridge", typeof(DrawBridge)),
+            new KeyValuePair<string, Type>("Barge", typeof(Barge)),
+            new KeyValuePair<string, Type>("CargoTruck", typeof(CargoTruck)),
+            new KeyValuePair<string, Type>("CraneLarge", typeof(CraneLarge)),
+            new KeyValuePair<string, Type>("Container_1", typeof(Container))
+        },
+        new KeyValuePair<string, Type>[7]
+        {
+            new KeyValuePair<string, Type>("OilRig", typeof(Rig)),
+            new KeyValuePair<string, Type>("pipe_end_1", typeof(Pipe2)),
+            new KeyValuePair<string, Type>("OilPump_1", typeof(Pump)),
+            new KeyValuePair<string, Type>("sphere_1", typeof(Sphere)),
+            new KeyValuePair<string, Type>("pipe-gateGATE_1", typeof(Pipe4)),
+            new KeyValuePair<string, Type>("JTreeS_1", typeof(Destructible2)),
+            new KeyValuePair<string, Type>("JTreeT_1", typeof(Destructible2))
+        },
+        new KeyValuePair<string, Type>[5]
+        {
+            new KeyValuePair<string, Type>("hanger_1", typeof(Hanger)),
+            new KeyValuePair<string, Type>("control_tower_1", typeof(ControlTower)),
+            new KeyValuePair<string, Type>("hanger_1_Door1", typeof(HangerDoor)),
+            new KeyValuePair<string, Type>("Crane_1", typeof(Crane2)),
+            new KeyValuePair<string, Type>("b17_1", typeof(B17))
+        },
+        new KeyValuePair<string, Type>[15]
+        {
+            new KeyValuePair<string, Type>("Shack_1", typeof(Shack)),
+            new KeyValuePair<string, Type>("TBridge_1", typeof(Bridge2)),
+            new KeyValuePair<string, Type>("M1_warehouse_1", typeof(Warehouse2)),
+            new KeyValuePair<string, Type>("bonfire_1", typeof(Bonfire)),
+            new KeyValuePair<string, Type>("Gallow_1", typeof(Gallow)),
+            new KeyValuePair<string, Type>("M1_cactus_1", typeof(Destructible2)),
+            new KeyValuePair<string, Type>("M1_cactus2_1", typeof(Destructible2)),
+            new KeyValuePair<string, Type>("hotel_1", typeof(Gallow)),
+            new KeyValuePair<string, Type>("M1depot_1", typeof(Gallow)),
+            new KeyValuePair<string, Type>("M1train_engine_1", typeof(TrainEngine2)),
+            new KeyValuePair<string, Type>("M1train_coalcar_1", typeof(Coalcar)),
+            new KeyValuePair<string, Type>("M1train_flatbed_1", typeof(Flatbed)),
+            new KeyValuePair<string, Type>("dustDevil", typeof(Tornado2)),
+            new KeyValuePair<string, Type>("tumbleweed_1", typeof(Tumble)),
+            new KeyValuePair<string, Type>("M1gaslight_1", typeof(Destructible2))
+        },
+        new KeyValuePair<string, Type>[13]
+        {
+            new KeyValuePair<string, Type>("smPole_1", typeof(Destructible2)),
+            new KeyValuePair<string, Type>("Rain", typeof(Rain)),
+            new KeyValuePair<string, Type>("SplashS_R", typeof(Splash)),
+            new KeyValuePair<string, Type>("parking_meter_1", typeof(ParkingMeter)),
+            new KeyValuePair<string, Type>("ArchTransf", typeof(Transformer2)),
+            new KeyValuePair<string, Type>("transformer_1", typeof(Transformer3)),
+            new KeyValuePair<string, Type>("tranformer_casing_1", typeof(Transformer3)),
+            new KeyValuePair<string, Type>("PowePlant_L", typeof(PowerPlant)),
+            new KeyValuePair<string, Type>("PowePlant_R", typeof(PowerPlant)),
+            new KeyValuePair<string, Type>("Dam_Lever", typeof(Lever)),
+            new KeyValuePair<string, Type>("PipeOut_1", typeof(Pipe5)),
+            new KeyValuePair<string, Type>("barracade-lg_1", typeof(Barracade)),
+            new KeyValuePair<string, Type>("Catwalk_1", typeof(Catwalk2))
+        },
+        new KeyValuePair<string, Type>[8]
+        {
+            new KeyValuePair<string, Type>("SplashS_R", typeof(Splash2)),
+            new KeyValuePair<string, Type>("Windmill_1", typeof(Windmill)),
+            new KeyValuePair<string, Type>("silo_1", typeof(Silo)),
+            new KeyValuePair<string, Type>("WWave", typeof(Wave)),
+            new KeyValuePair<string, Type>("pump_1", typeof(Pump3)),
+            new KeyValuePair<string, Type>("crop_duster", typeof(CropDuster)),
+            new KeyValuePair<string, Type>("tree_1", typeof(Destructible2)),
+            new KeyValuePair<string, Type>("tree2_1", typeof(Destructible2))
+        },
+        new KeyValuePair<string, Type>[10]
+        {
+            new KeyValuePair<string, Type>("palm1_1", typeof(Palm)),
+            new KeyValuePair<string, Type>("SplashS_R", typeof(Splash3)),
+            new KeyValuePair<string, Type>("BurgerS_1", typeof(BurgerS)),
+            new KeyValuePair<string, Type>("Burger_sign_1", typeof(BurgerSign)),
+            new KeyValuePair<string, Type>("manhole_1", typeof(Manhole)),
+            new KeyValuePair<string, Type>("blimp_1", typeof(Blimp)),
+            new KeyValuePair<string, Type>("water_1", typeof(Water3)),
+            new KeyValuePair<string, Type>("pelicana_1", typeof(Pelicana)),
+            new KeyValuePair<string, Type>("saharan_1", typeof(Pelicana)),
+            new KeyValuePair<string, Type>("parking_gate", typeof(ParkingGate))
+        },
+        new KeyValuePair<string, Type>[4]
+        {
+            new KeyValuePair<string, Type>("boulder_L", typeof(Boulder)),
+            new KeyValuePair<string, Type>("BeamUp", typeof(Beamup)),
+            new KeyValuePair<string, Type>("cement_barrier_1", typeof(Barrier)),
+            new KeyValuePair<string, Type>("bridge_1", typeof(Bridge3))
+        },
+        new KeyValuePair<string, Type>[11]
+        {
+            new KeyValuePair<string, Type>("gondola_1", typeof(Gondola2)),
+            new KeyValuePair<string, Type>("liftpole_1", typeof(Liftpole)),
+            new KeyValuePair<string, Type>("liftstation_1", typeof(Liftstation)),
+            new KeyValuePair<string, Type>("SnowFlake", typeof(Snow)),
+            new KeyValuePair<string, Type>("snow_mach_1", typeof(SnowMach)),
+            new KeyValuePair<string, Type>("stairs_1", typeof(Stairs)),
+            new KeyValuePair<string, Type>("Ball_1", typeof(Ball)),
+            new KeyValuePair<string, Type>("Ball_2", typeof(Ball)),
+            new KeyValuePair<string, Type>("pine3_1", typeof(Pine)),
+            new KeyValuePair<string, Type>("pine1_1", typeof(Destructible2)),
+            new KeyValuePair<string, Type>("pine2_1", typeof(Destructible2))
+        },
+        new KeyValuePair<string, Type>[10]
+        {
+            new KeyValuePair<string, Type>("radar_1", typeof(Radar)),
+            new KeyValuePair<string, Type>("fence_left", typeof(Fence2)),
+            new KeyValuePair<string, Type>("fence_right", typeof(Fence2)),
+            new KeyValuePair<string, Type>("turret_1", typeof(Turret)),
+            new KeyValuePair<string, Type>("MSilo", typeof(Silo2)),
+            new KeyValuePair<string, Type>("hq_1", typeof(HQ)),
+            new KeyValuePair<string, Type>("hq_2", typeof(HQ2)),
+            new KeyValuePair<string, Type>("hq_3", typeof(HQ3)),
+            new KeyValuePair<string, Type>("aurora_1", typeof(Aurora)),
+            new KeyValuePair<string, Type>("catwalk_1", typeof(Catwalk3))
+        },
+        new KeyValuePair<string, Type>[5]
+        {
+            new KeyValuePair<string, Type>("protoSaucer", typeof(Saucer2)),
+            new KeyValuePair<string, Type>("M2_elevator_1", typeof(Elevator)),
+            new KeyValuePair<string, Type>("M2_Conveyor", typeof(Conveyor)),
+            new KeyValuePair<string, Type>("factory_1", typeof(Factory)),
+            new KeyValuePair<string, Type>("factory_door", typeof(FactoryDoor))
+        }
+    };
+    */
+
+    public static Type[] vehicleSpecials = new Type[18]
+     {
         typeof(Tantrum),
         typeof(Revolver),
         typeof(GloryRockets),
@@ -261,7 +509,7 @@ public static class Utilities
         typeof(StarPower),
         typeof(HellGate),
         typeof(Bird)
-    };
+     };
 
     public static Dictionary<Type, _SPECIAL_INIT> specialInits = new Dictionary<Type, _SPECIAL_INIT>
     {
@@ -633,7 +881,6 @@ public static class Utilities
         8,
         8
     };
-
 
 
     public static short[] DAT_65C90 = new short[]
@@ -1332,10 +1579,6 @@ public static class Utilities
 
 
 
-
-
-
-
     public static uint FUN_14A54()
     {
         return (uint)(DateTime.Now.Millisecond | (DAT_10390 << 16));
@@ -1979,7 +2222,7 @@ public static class Utilities
         else
         {
             vector3Int2 = new Vector3Int(-sv.y, sv.x, 0);
-            vector3Int2 = VectorNormal(vector3Int2);
+            vector3Int2 = Utilities.VectorNormal(vector3Int2);
         }
         Coprocessor.rotationMatrix.rt11 = (short)vector3Int2.x;
         Coprocessor.rotationMatrix.rt12 = (short)(vector3Int2.x >> 16);
@@ -1989,18 +2232,19 @@ public static class Utilities
         Coprocessor.accumulator.ir1 = (short)vector3Int.x;
         Coprocessor.accumulator.ir2 = (short)vector3Int.y;
         Coprocessor.accumulator.ir3 = (short)vector3Int.z;
-        Coprocessor.ExecuteOP(12, lm: false);
-        Matrix3x3 result = default(Matrix3x3);
-        result.V00 = (short)vector3Int2.x;
-        result.V10 = (short)vector3Int2.y;
-        result.V20 = (short)vector3Int2.z;
-        result.V01 = (short)vector3Int.x;
-        result.V11 = (short)vector3Int.y;
-        result.V21 = (short)vector3Int.z;
-        result.V02 = (short)Coprocessor.mathsAccumulator.mac1;
-        result.V12 = (short)Coprocessor.mathsAccumulator.mac2;
-        result.V22 = (short)Coprocessor.mathsAccumulator.mac3;
-        return result;
+        Coprocessor.ExecuteOP(12, false);
+        return new Matrix3x3
+        {
+            V00 = (short)vector3Int2.x,
+            V10 = (short)vector3Int2.y,
+            V20 = (short)vector3Int2.z,
+            V01 = (short)vector3Int.x,
+            V11 = (short)vector3Int.y,
+            V21 = (short)vector3Int.z,
+            V02 = (short)Coprocessor.mathsAccumulator.mac1,
+            V12 = (short)Coprocessor.mathsAccumulator.mac2,
+            V22 = (short)Coprocessor.mathsAccumulator.mac3
+        };
     }
 
     public static Matrix3x3 FUN_2A724(Vector3Int sv)
@@ -2008,44 +2252,44 @@ public static class Utilities
         short num = (short)sv.x;
         short num2 = (short)sv.y;
         short num3 = (short)sv.z;
-        Vector3Int n = default(Vector3Int);
-        n.x = sv.z;
-        if (n.x == 0)
+        Vector3Int vector3Int = default(Vector3Int);
+        vector3Int.x = sv.z;
+        if (vector3Int.x == 0)
         {
             if (sv.x == 0)
             {
-                n.x = 4096;
-                n.y = 0;
-                n.z = 0;
-                goto IL_008d;
+                vector3Int.x = 4096;
+                vector3Int.y = 0;
+                vector3Int.z = 0;
+                goto IL_8D;
             }
-            n.x = sv.z;
+            vector3Int.x = sv.z;
         }
-        n.y = 0;
-        n.z = -sv.x;
-        n = VectorNormal(n);
-        goto IL_008d;
-    IL_008d:
+        vector3Int.y = 0;
+        vector3Int.z = -sv.x;
+        vector3Int = Utilities.VectorNormal(vector3Int);
+    IL_8D:
         Coprocessor.rotationMatrix.rt11 = num;
         Coprocessor.rotationMatrix.rt12 = (short)(num >> 16);
         Coprocessor.rotationMatrix.rt22 = num2;
         Coprocessor.rotationMatrix.rt23 = (short)(num2 >> 16);
         Coprocessor.rotationMatrix.rt33 = num3;
-        Coprocessor.accumulator.ir3 = (short)n.z;
-        Coprocessor.accumulator.ir1 = (short)n.x;
-        Coprocessor.accumulator.ir2 = (short)n.y;
-        Coprocessor.ExecuteOP(12, lm: false);
-        Matrix3x3 result = default(Matrix3x3);
-        result.V00 = (short)n.x;
-        result.V10 = (short)n.y;
-        result.V20 = (short)n.z;
-        result.V02 = num;
-        result.V12 = num2;
-        result.V22 = num3;
-        result.V01 = (short)Coprocessor.mathsAccumulator.mac1;
-        result.V11 = (short)Coprocessor.mathsAccumulator.mac2;
-        result.V21 = (short)Coprocessor.mathsAccumulator.mac3;
-        return result;
+        Coprocessor.accumulator.ir3 = (short)vector3Int.z;
+        Coprocessor.accumulator.ir1 = (short)vector3Int.x;
+        Coprocessor.accumulator.ir2 = (short)vector3Int.y;
+        Coprocessor.ExecuteOP(12, false);
+        return new Matrix3x3
+        {
+            V00 = (short)vector3Int.x,
+            V10 = (short)vector3Int.y,
+            V20 = (short)vector3Int.z,
+            V02 = num,
+            V12 = num2,
+            V22 = num3,
+            V01 = (short)Coprocessor.mathsAccumulator.mac1,
+            V11 = (short)Coprocessor.mathsAccumulator.mac2,
+            V21 = (short)Coprocessor.mathsAccumulator.mac3
+        };
     }
 
     public static void FUN_2A85C(ref Matrix3x3 m33, Vector3Int v1, Vector3Int v2)
@@ -2254,7 +2498,6 @@ public static class Utilities
         Coprocessor.ExecuteMVMVA(_MVMVA_MULTIPLY_MATRIX.Rotation, _MVMVA_MULTIPLY_VECTOR.V0, _MVMVA_TRANSLATION_VECTOR.TR, 12, lm: false);
         return new Vector3Int(Coprocessor.mathsAccumulator.mac1, Coprocessor.mathsAccumulator.mac2, Coprocessor.mathsAccumulator.mac3);
     }
-
     public static Vector3Int FUN_23F7C(Vector3Int v3)
     {
         Coprocessor.accumulator.ir1 = (short)(v3.x >> 15);
@@ -2901,6 +3144,7 @@ public static class Utilities
         return obj;
     }
 
+
     public static int LeadingZeros(int x)
     {
         if ((x & 2147483648u) != 0L)
@@ -2941,101 +3185,123 @@ public static class Utilities
         return 0L;
     }
 
-    public static long Ratan2(long y, long x)
+    public static int Ratan2(int y, int x)
     {
-        bool bVar1;
-        bool bVar2;
-        int iVar3;
-        long lVar4;
-
-        bVar1 = x < 0;
-
-        if (bVar1)
+        bool flag = x < 0;
+        if (flag)
+        {
             x = -x;
-
-        bVar2 = y < 0;
-
-        if (bVar2)
+        }
+        bool flag2 = y < 0;
+        if (flag2)
+        {
             y = -y;
-
+        }
+        int result = 0;
+        int num = 0;
         if (x != 0 || y != 0)
         {
             if (y < x)
             {
-                iVar3 = (int)(x >> 10);
-
-                if (((uint)y & 0x7fe00000) == 0)
+                result = x >> 10;
+                if (((long)y & 2145386496L) == 0L)
                 {
-                    iVar3 = (int)(y << 10);
-
-                    if (x == 0)
-                        return 0; //trap(0x1c00)
-
-                    if (x == -1 && ((uint)y & 0x3fffff) == 0x200000)
-                        return 0; //trap(0x1800)
-
-                    lVar4 = RATAN_OBJ_B4(iVar3 / (int)x);
-                    return lVar4;
+                    switch (x)
+                    {
+                        case 0:
+                            return 0;
+                        case -1:
+                            if (((long)y & 4194303L) == 2097152)
+                            {
+                                return 0;
+                            }
+                            break;
+                    }
+                    y = (y << 10) / x;
+                    num = DAT_69C90[(y << 1) / 2];
+                    if (flag)
+                    {
+                        num = 2048 - num;
+                    }
+                    if (flag2)
+                    {
+                        num = -num;
+                    }
+                    return num;
                 }
-
-                if (iVar3 == 0)
-                    return 0; //trap(0x1c00)
-
-                if (iVar3 == -1 && (uint)y == 0x80000000)
-                    return 0; //trap(0x1800)
-
-                lVar4 = RATAN_OBJ_B4((int)y / iVar3);
-                return lVar4;
+                switch (result)
+                {
+                    case 0:
+                        return 0;
+                    case -1:
+                        if (y == int.MinValue)
+                        {
+                            return 0;
+                        }
+                        break;
+                }
+                y /= result;
+                num = DAT_69C90[(y << 1) / 2];
+                if (flag)
+                {
+                    num = 2048 - num;
+                }
+                if (flag2)
+                {
+                    num = -num;
+                }
+                return num;
             }
-
-            iVar3 = (int)(y >> 10);
-
-            if (((uint)x & 0x7fe00000) != 0)
+            result = y >> 10;
+            if (((long)x & 2145386496L) != 0L)
             {
-                if (iVar3 == 0)
-                    return 0; //trap(0x1c00)
-
-                if (iVar3 == -1 && ((uint)x == 0x80000000))
-                    return 0; //trap(0x1800)
-
-                lVar4 = RATAN_OBJ_13C((int)x / iVar3);
-                return lVar4;
+                switch (result)
+                {
+                    case 0:
+                        return 0;
+                    case -1:
+                        if (x == int.MinValue)
+                        {
+                            return 0;
+                        }
+                        break;
+                }
+                y = x / result;
+                num = 1024 - DAT_69C90[(y << 1) / 2];
+                if (flag)
+                {
+                    num = 2048 - num;
+                }
+                if (flag2)
+                {
+                    num = -num;
+                }
+                return num;
             }
-
-            iVar3 = (int)(x << 10);
-
-            if (y == 0)
-                return 0; //trap(0x1c00)
-
-            if (y == -1 && ((uint)iVar3 == 0x80000000))
-                return 0; //trap(0x1800)
-
-            lVar4 = RATAN_OBJ_13C(iVar3 / (int)y);
-            return lVar4;
+            switch (y)
+            {
+                case 0:
+                    return 0;
+                case -1:
+                    if (x << 10 == int.MinValue)
+                    {
+                        return 0;
+                    }
+                    break;
+            }
+            y = (x << 10) / y;
+            num = 1024 - DAT_69C90[(y << 1) / 2];
+            if (flag)
+            {
+                num = 2048 - num;
+            }
+            if (flag2)
+            {
+                num = -num;
+            }
+            return num;
         }
-
-        return 0;
-
-        long RATAN_OBJ_B4(int in_v0)
-        {
-            return RATAN_OBJ_150(DAT_69C90[in_v0]);
-        }
-
-        long RATAN_OBJ_13C(int in_v0)
-        {
-            return RATAN_OBJ_150(0x400 - DAT_69C90[in_v0]);
-        }
-
-        long RATAN_OBJ_150(long in_v1)
-        {
-            if (bVar1)
-                in_v1 = 0x800 - in_v1;
-
-            if (bVar2)
-                in_v1 = -in_v1;
-
-            return in_v1;
-        }
+        return result;
     }
 
     public static long Divdi3(int param1, int param2, int param3, int param4)
@@ -3703,12 +3969,8 @@ public static class Utilities
         Coprocessor.vector0.vx0 = (short)v0.x;
         Coprocessor.vector0.vy0 = (short)v0.y;
         Coprocessor.vector0.vz0 = (short)v0.z;
-        Coprocessor.ExecuteMVMVA(_MVMVA_MULTIPLY_MATRIX.Rotation, _MVMVA_MULTIPLY_VECTOR.V0, _MVMVA_TRANSLATION_VECTOR.None, 12, false);
-
-        return new Vector3Int
-            (Coprocessor.accumulator.ir1,
-             Coprocessor.accumulator.ir2,
-             Coprocessor.accumulator.ir3);
+        Coprocessor.ExecuteMVMVA(_MVMVA_MULTIPLY_MATRIX.Rotation, _MVMVA_MULTIPLY_VECTOR.V0, _MVMVA_TRANSLATION_VECTOR.None, 12, lm: false);
+        return new Vector3Int(Coprocessor.accumulator.ir1, Coprocessor.accumulator.ir2, Coprocessor.accumulator.ir3);
     }
 
     public static void SetRotMatrix(Matrix3x3 m)
@@ -3723,6 +3985,7 @@ public static class Utilities
         Coprocessor.rotationMatrix.rt32 = m.V21;
         Coprocessor.rotationMatrix.rt33 = m.V22;
     }
+
     public static void SetRotMatrix2(Matrix3x3 m)
     {
         Coprocessor2.rotationMatrix.rt11 = m.V00;
@@ -3813,7 +4076,6 @@ public static class Utilities
         Coprocessor3.lightColorMatrix.lb2 = m.V21;
         Coprocessor3.lightColorMatrix.lb3 = m.V22;
     }
-
     public static void SetDQA(int param1)
     {
         Coprocessor.depthQueingA = (short)param1;
@@ -4258,9 +4520,15 @@ public static class Utilities
 
     public static T Clamp<T>(this T val, T min, T max) where T : IComparable<T>
     {
-        if (val.CompareTo(min) < 0) return min;
-        else if (val.CompareTo(max) > 0) return max;
-        else return val;
+        if (val.CompareTo(min) < 0)
+        {
+            return min;
+        }
+        if (val.CompareTo(max) > 0)
+        {
+            return max;
+        }
+        return val;
     }
 
     public static void SetGlobalScale(this Transform transform, Vector3 globalScale)
@@ -4411,8 +4679,12 @@ public static class Utilities
 
     public static void SaveObjectToFile(UnityEngine.Object obj, string filename)
     {
+#if UNITY_EDITOR
+        AssetDatabase.CreateAsset(obj, filename);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+#endif
     }
-
     public static Vector2 Rotate(this Vector2 v, float degrees)
     {
         float num = Mathf.Sin(degrees * (MathF.PI / 180f));

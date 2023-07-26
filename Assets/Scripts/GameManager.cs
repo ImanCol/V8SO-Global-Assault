@@ -97,6 +97,7 @@ public struct VehicleData
     public byte[] DAT_2C;
 }
 
+[Serializable]
 public enum _GAME_MODE
 {
     Quest,
@@ -118,6 +119,7 @@ public enum _GAME_MODE
 
 }
 
+[Serializable]
 public enum _SCREEN_MODE
 {
     Whole,
@@ -125,6 +127,8 @@ public enum _SCREEN_MODE
     Vertical,
     Unknown
 }
+
+[Serializable]
 public enum _DITHERING
 {
     None,
@@ -486,9 +490,9 @@ public class GameManager : MonoBehaviour
         new Color32(0, 128, 0, 8)
     };
 
-
+    [SerializeField]
     public static VehicleData[] vehicleConfigs = new VehicleData[]
-    {
+        {
         new VehicleData
         {
             DAT_00 = new short[] { 16, 12, 48, 152, 64, 128 },
@@ -903,7 +907,7 @@ public class GameManager : MonoBehaviour
             DAT_2A = 10240,
             DAT_2C = new byte[] { 187, 116, 79, 95 }
         }
-    };
+        };
 
     public static Color32[] DAT_1f800000 = new Color32[32];
 
@@ -1228,7 +1232,11 @@ public class GameManager : MonoBehaviour
     public int DAT_20;
     public int DAT_24;
     public int DAT_28;
+
+    [SerializeField]
     public _SCREEN_MODE screenMode;
+
+    [SerializeField]
     public _GAME_MODE gameMode;
     public bool gameEnded;
     public bool DAT_36;
@@ -1237,6 +1245,8 @@ public class GameManager : MonoBehaviour
     public int map;
     public Material targetHUD;
     public Material targetTextPrefab;
+
+    [SerializeField]
     public _DITHERING ditheringMethod;
     public bool drawPlayer;
     public bool drawObjects;
@@ -1266,6 +1276,7 @@ public class GameManager : MonoBehaviour
     public Dropdown onlineDmgDropdown;
     public Dropdown livesDropdown;
     public Dropdown gravityDropdown;
+    public Dropdown grapichDropdown;
     public Toggle drawPlayerToggle;
     public Toggle drawObjectsToggle;
     public Toggle drawTerrainToggle;
@@ -1354,7 +1365,21 @@ public class GameManager : MonoBehaviour
                 gravityFactor = 11520;
                 break;
             case 2:
-                gravityFactor = 23040;
+                gravityFactor = 20040;
+                break;
+        }
+    }
+    public void SetGraphic()
+    {
+        switch (grapichDropdown.value)
+        {
+            case 0:
+                enabledvLoD = true;
+                drawObjectDistace = 4194304;
+                break;
+            case 1:
+                enabledvLoD = false;
+                drawObjectDistace = 9999999;
                 break;
         }
     }
@@ -1485,20 +1510,10 @@ public class GameManager : MonoBehaviour
                     vehicles[0] = 38;
                     break;
             }
-            //driverDropdown.value = vehicles[0];
-            if (online)
-                await ClientSend.NotReady(0L).ContinueWith(Task =>
-                    {
-
-                    });
-            Demo.instance.readyLabel.gameObject.SetActive(value: true);
-            Demo.instance.notReadyLabel.gameObject.SetActive(value: false);
-            Demo.instance.SetupPlaceholders();
-            await Task.Yield(); // Esperar un frame
         }
         else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
         {
-            //            Demo.instance.componentPanel.Find("Vehicle/Dakota").gameObject.SetActive(false);
+            //Demo.instance.componentPanel.Find("Vehicle/Dakota").gameObject.SetActive(false);
             switch (driverDropdown.value)
             {
                 case 0:
@@ -1558,15 +1573,19 @@ public class GameManager : MonoBehaviour
                     vehicles[0] = 17;
                     break;
             }
-            if (online)
-                await ClientSend.NotReady(0L).ContinueWith(Task =>
-                    {
-
-                    });
-            Demo.instance.readyLabel.gameObject.SetActive(value: false);
-            Demo.instance.notReadyLabel.gameObject.SetActive(value: false);
-            Demo.instance.SetupPlaceholders();
         }
+        //driverDropdown.value = vehicles[0];
+        if (online)
+            await ClientSend.NotReady(0L).ContinueWith(Task =>
+                {
+
+                });
+        if (SceneManager.GetActiveScene().name == "MENU-Driver")
+            Demo.instance.readyLabel.gameObject.SetActive(value: false);
+        else
+            Demo.instance.readyLabel.gameObject.SetActive(value: true);
+        Demo.instance.notReadyLabel.gameObject.SetActive(value: false);
+        Demo.instance.SetupPlaceholders();
         await Task.Yield(); // Esperar un frame
     }
 
@@ -1723,21 +1742,31 @@ public class GameManager : MonoBehaviour
         }
         else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
         {
-            switch (gameModeDropdown.value)
+            if (!online)
             {
-                case 0:
-                    gameMode = _GAME_MODE.Arcade;
-                    spawnsRect.gameObject.SetActive(value: true);
-                    break;
-                case 1:
-                    gameMode = _GAME_MODE.Survival;
-                    spawnsRect.gameObject.SetActive(value: false);
-                    DAT_1030[0] = 1;
-                    DAT_1030[1] = 0;
-                    DAT_1030[2] = 0;
-                    DAT_1030[3] = 0;
-                    break;
+                gameMode = (_GAME_MODE)gameModeDropdown.value;
+                //spawnsRect.gameObject.SetActive(value: true);
+                DAT_1030[0] = 1;
+                DAT_1030[1] = 1;
+                DAT_1030[2] = 1;
+                DAT_1030[3] = 1;
             }
+            else
+                switch (gameModeDropdown.value)
+                {
+                    case 0:
+                        gameMode = _GAME_MODE.Arcade;
+                        spawnsRect.gameObject.SetActive(value: true);
+                        break;
+                    case 1:
+                        gameMode = _GAME_MODE.Survival;
+                        spawnsRect.gameObject.SetActive(value: false);
+                        DAT_1030[0] = 1;
+                        DAT_1030[1] = 0;
+                        DAT_1030[2] = 0;
+                        DAT_1030[3] = 0;
+                        break;
+                }
         }
     }
 
@@ -1844,34 +1873,35 @@ public class GameManager : MonoBehaviour
         {
             switch (currentDamageIndex)
             {
-                case 1:
+                case 0:
                     damageText = "Low";
                     break;
-                case 2:
+                case 1:
                     damageText = "Normal";
                     break;
-                case 3:
+                case 2:
                     damageText = "High";
                     break;
             }
-            selectOptions.transform.Find("Damages/Text (TMP)").GetComponent<TextMeshProUGUI>().text = damageText;
-            if (online)
-                await ClientSend.Damage(0L).ContinueWith(Task =>
-                    {
 
-                    });
+            selectOptions.transform.Find("Damages/Text (TMP)").GetComponent<TextMeshProUGUI>().text = damageText;
+            int value = currentDamageIndex;
+            damageMode[0] = (sbyte)value;
+            damageMode[1] = (sbyte)value;
+
         }
         else if (SceneManager.GetActiveScene().name == "DEBUG-Online")
         {
             int value = damageDropdown.value;
             damageMode[0] = (sbyte)value;
             damageMode[1] = (sbyte)value;
-            if (online)
-                await ClientSend.Damage(0L).ContinueWith(Task =>
-                    {
 
-                    });
         }
+        if (online)
+            await ClientSend.Damage(0L).ContinueWith(Task =>
+                {
+
+                });
         await Task.Yield(); // Esperar un frame
     }
 
@@ -1881,13 +1911,13 @@ public class GameManager : MonoBehaviour
         {
             switch (currentValueDifficulty)
             {
-                case 1:
+                case 0:
                     difficultyInt = 86;
                     break;
-                case 2:
+                case 1:
                     difficultyInt = 89;
                     break;
-                case 3:
+                case 2:
                     difficultyInt = 92;
                     break;
             }
@@ -1919,13 +1949,13 @@ public class GameManager : MonoBehaviour
         {
             switch (currentDamageIndex)
             {
-                case 1:
+                case 0:
                     damageText = "Low";
                     break;
-                case 2:
+                case 1:
                     damageText = "Normal";
                     break;
-                case 3:
+                case 2:
                     damageText = "High";
                     break;
             }
@@ -1947,7 +1977,7 @@ public class GameManager : MonoBehaviour
                     });
         await Task.Yield(); // Esperar un frame
     }
-    
+
     public void SetDrawPlayer()
     {
         if (SceneManager.GetActiveScene().name == "MENU-Driver")
@@ -5930,14 +5960,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    string touchMessage;
-    int currentValueLives = 1;
-    public int currentDamageIndex = 2;
-    public int currentValueDifficulty = 1;
-    public string damageText = "Normal";
+    [Header("MENUDRIVER")]
+    public string touchMessage;
+    public int currentValueLives = 1;
+    public int currentDamageIndex = 0;
+    public int currentValueDifficulty = 0;
+    public string damageText = "LOW";
     public string mapText = "Arizona - MeteorCrater";
-    public int difficultyInt;
-    int modeIndex;
+    public int difficultyInt = 86;
+    public int modeIndex = 10;
 
     //List<Sprite> Maps = StatsPanel.instance.maps;
 
@@ -5983,8 +6014,8 @@ public class GameManager : MonoBehaviour
             {
                 FUN_1E098(1, Menu.instance.sounds, 0, 4095);
                 modeIndex--;
-                if (modeIndex < 10) modeIndex = Enum.GetNames(typeof(_GAME_MODE)).Length - 1;
-                touchMessage = "Mode Left: " + gameMode;
+                //if (modeIndex < 10) modeIndex = Enum.GetNames(typeof(_GAME_MODE)).Length - 1;
+                //touchMessage = "Mode Left: " + gameMode;
             }
             else
             {
@@ -5998,7 +6029,7 @@ public class GameManager : MonoBehaviour
             {
                 FUN_1E098(1, Menu.instance.sounds, 0, 4095);
                 modeIndex++;
-                if (modeIndex >= Enum.GetNames(typeof(_GAME_MODE)).Length) modeIndex = 10;
+                //if (modeIndex >= Enum.GetNames(typeof(_GAME_MODE)).Length) modeIndex = 10;
                 //touchMessage = "Mode Right: " + gameMode;
             }
             else
@@ -6011,17 +6042,7 @@ public class GameManager : MonoBehaviour
             if (currentValueLives > 1)
             {
                 FUN_1E098(1, Menu.instance.sounds, 0, 4095);
-                currentValueLives -= 1;
-                sbyte b = playerSpawns = (sbyte)currentValueLives;
-                for (int i = 0; i < networkMembers.Count; i++)
-                {
-                    DAT_1030[i] = b;
-                }
-                //touchMessage = "Damages Left: " + currentValueLives;
-                await ClientSend.Lives(playerSpawns, 0L).ContinueWith(Task =>
-                    {
-
-                    });
+                currentValueLives--;
             }
             else
             {
@@ -6033,18 +6054,7 @@ public class GameManager : MonoBehaviour
             if (currentValueLives < 3)
             {
                 FUN_1E098(1, Menu.instance.sounds, 0, 4095);
-                currentValueLives += 1;
-                sbyte b = playerSpawns = (sbyte)currentValueLives;
-                for (int i = 0; i < networkMembers.Count; i++)
-                {
-                    DAT_1030[i] = b;
-                }
-                //touchMessage = "Damages Left: " + currentValueLives;
-                await ClientSend.Lives(playerSpawns, 0L).ContinueWith(Task =>
-                    {
-
-                    });
-
+                currentValueLives++;
             }
             else
             {
@@ -6053,17 +6063,10 @@ public class GameManager : MonoBehaviour
         }
         else if (setTouch == 7)
         {
-            if (currentDamageIndex > 1)
+            if (currentDamageIndex > 0)
             {
                 FUN_1E098(1, Menu.instance.sounds, 0, 4095);
-                currentDamageIndex -= 1;
-                damageMode[0] = (sbyte)currentDamageIndex;
-                damageMode[1] = (sbyte)currentDamageIndex;
-                await ClientSend.Damage(0L).ContinueWith(Task =>
-                    {
-
-                    });
-                //touchMessage = "Damages Left: " + currentDamageIndex;
+                currentDamageIndex--;
             }
             else
             {
@@ -6072,17 +6075,10 @@ public class GameManager : MonoBehaviour
         }
         else if (setTouch == 8)
         {
-            if (currentDamageIndex < 3)
+            if (currentDamageIndex < 2)
             {
                 FUN_1E098(1, Menu.instance.sounds, 0, 4095);
-                currentDamageIndex += 1;
-                damageMode[0] = (sbyte)currentDamageIndex;
-                damageMode[1] = (sbyte)currentDamageIndex;
-                await ClientSend.Damage(0L).ContinueWith(Task =>
-                    {
-
-                    });
-                //touchMessage = "Damages Right: " + currentDamageIndex;
+                currentDamageIndex++;
             }
             else
             {
@@ -6091,11 +6087,10 @@ public class GameManager : MonoBehaviour
         }
         else if (setTouch == 9)
         {
-            if (currentValueDifficulty > 1)
+            if (currentValueDifficulty > 0)
             {
                 FUN_1E098(1, Menu.instance.sounds, 0, 4095);
-                currentValueDifficulty -= 1;
-                //touchMessage = "Difficulty Right: " + currentValueDifficulty;
+                currentValueDifficulty--;
             }
             else
             {
@@ -6104,11 +6099,10 @@ public class GameManager : MonoBehaviour
         }
         else if (setTouch == 10)
         {
-            if (currentValueDifficulty < 3)
+            if (currentValueDifficulty < 2)
             {
                 FUN_1E098(1, Menu.instance.sounds, 0, 4095);
-                currentValueDifficulty += 1;
-                //touchMessage = "Difficulty Right: " + currentValueDifficulty;
+                currentValueDifficulty++;
             }
             else
             {
@@ -6117,8 +6111,11 @@ public class GameManager : MonoBehaviour
         }
 
         SetMultiplayerMode();
-        SetOnlineDamage();
-        //SetDamage();
+        if (modeIndex == 10)
+            SetOnlineDamage();
+        else
+            SetDamage();
+
         SetStage();
         SetDifficulty();
         SetLives();
@@ -6126,6 +6123,7 @@ public class GameManager : MonoBehaviour
         setTouch = 0;
 
         //Debug.Log("Touch: " + touchMessage);
+        Debug.Log("currentDamageIndex: " + currentDamageIndex);
 
         //Debug.Log(ReInput.mapping.GetActionId("Mode-Touch LEFT"));
         //Debug.Log(ReInput.players.GetPlayer(0).GetButtonDown("Mode-Touch LEFT"));

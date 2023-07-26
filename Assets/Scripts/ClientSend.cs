@@ -579,5 +579,13 @@ public class ClientSend : MonoBehaviour
             await SendTCPData(packet, 0L);
         }
     }
-
+    
+    //Es Hotrods
+    public async Task whitRods()
+    {
+        using (Packet packet = new Packet(46))
+        {
+            await SendTCPData(packet, 0L);
+        }
+    }
 }
