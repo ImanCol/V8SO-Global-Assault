@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/DEBUG-Online.unity
     guid: 10435b57e01bea847a31ea181ca40223
   - enabled: 0
@@ -23,7 +23,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/SHELL/MENU/DEBUG2.unity
     guid: f487d6f372fd1ff4eb7ce1bd8ffcdd8e
-  - enabled: 1
+  - enabled: 0
     path: Assets/SHELL/MENU/MENU-Driver.unity
     guid: 618315963a797a242a9d2c816e4acb0b
   - enabled: 0

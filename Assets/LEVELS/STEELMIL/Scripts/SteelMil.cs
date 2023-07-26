@@ -1,269 +1,309 @@
-using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SteelMil : VigObject
 {
-	private static short[] ids = new short[1]
-	{
-		301
-	};
+    protected override void Start()
+    {
+        base.Start();
+    }
 
-	public static SteelMil instance;
+    protected override void Update()
+    {
+        base.Update();
+    }
 
-	public int DAT_4600;
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
 
-	public int DAT_4614;
+        GameManager.instance.FUN_17F34(0x16800, 0x5830000);
+    }
 
-	public byte[] DAT_4618 = new byte[20];
+    public static SteelMil instance;
+    public int DAT_4600; //0x4600 (STEELMIL.DLL)
+    public int DAT_4614; //0x4614 (STEELMIL.DLL)
+    public byte[] DAT_4618 = new byte[20]; //0x4618 (STEELMIL.DLL)
+    
+    //FUN_628 (STEELMIL.DLL)
+    public override uint UpdateW(int arg1, int arg2)
+    {
+        VigObject oVar2;
+        uint uVar6;
+        VigObject oVar6;
 
-	protected override void Start()
-	{
-		base.Start();
-	}
+        switch (arg1)
+        {
+            case 1:
+                GameManager.instance.offsetFactor = 2.5f;
+                GameManager.instance.offsetStart = 0;
+                GameManager.instance.angleOffset = 0.4f;
+                Color32 color = LevelManager.instance.DAT_DE0;
+                color.a = 0x80;
+                UIManager.instance.underwater.color = color;
+                FUN_34FC();
+                oVar6 = GameManager.instance.FUN_30250(GameManager.instance.DAT_1078, 0x100);
+                oVar2 = GameManager.instance.FUN_4AC1C(0xfe000000, oVar6);
+                GameManager.instance.DAT_1038 = oVar2 != null ? 1 : 0;
+                DAT_4600 = 0;
+                goto case 2;
+            case 2:
+                GameManager.instance.FUN_34B34();
+                GameManager.instance.FUN_30CB0(this, 240);
+                uVar6 = 0;
+                break;
+            case 17:
+                GameManager.instance.FUN_17EB8();
+                uVar6 = 0;
+                break;
+            default:
+                uVar6 = 0;
+                break;
+        }
 
-	protected override void Update()
-	{
-		base.Update();
-	}
+        return uVar6;
+    }
 
-	private void Awake()
-	{
-		if (instance == null)
-		{
-			instance = this;
-		}
-		GameManager.instance.FUN_17F34(92160, 92471296);
-	}
+    public override uint UpdateW(VigObject arg1, int arg2, int arg3)
+    {
+        sbyte sVar1;
+        int iVar2;
+        TileData tVar2;
+        VigObject oVar2;
+        VigCamera cVar2;
+        VigObject oVar3;
+        Spark puVar4;
+        VigObject oVar5;
+        int iVar6;
+        ConfigContainer ccVar6;
+        VigCollider cVar6;
+        Vehicle vVar7;
+        VigCamera cVar8;
+        Vector3Int local_18;
 
-	public override uint UpdateW(int arg1, int arg2)
-	{
-		if (arg1 != 1)
-		{
-			switch (arg1)
-			{
-			case 2:
-				break;
-			case 17:
-				GameManager.instance.FUN_17EB8();
-				return 0u;
-			default:
-				return 0u;
-			}
-		}
-		else
-		{
-			GameManager.instance.offsetFactor = 2.5f;
-			GameManager.instance.offsetStart = 0f;
-			GameManager.instance.angleOffset = 0.4f;
-			GameManager.instance.aspectRatioScale = 240f;
-			Color32 dAT_DE = LevelManager.instance.DAT_DE0;
-			dAT_DE.a = 128;
-			UIManager.instance.underwater.color = dAT_DE;
-			FUN_34FC();
-			VigObject param = GameManager.instance.FUN_30250(GameManager.instance.DAT_1078, 256);
-			VigObject x = GameManager.instance.FUN_4AC1C(4261412864u, param);
-			GameManager.instance.DAT_1038 = ((x != null) ? 1 : 0);
-			DAT_4600 = 0;
-			LevelManager.instance.FUN_359FC(65063955, 92026473, 0u);
-		}
-		GameManager.instance.FUN_34B34();
-		GameManager.instance.FUN_30CB0(this, 240);
-		return 0u;
-	}
+        switch (arg2)
+        {
+            case 18:
+                if (arg3 != 0 && arg1.type == 8)
+                {
+                    tVar2 = GameManager.instance.terrain.GetTileByPosition((uint)arg1.vTransform.position.x, (uint)arg1.vTransform.position.z);
 
-	public override uint UpdateW(VigObject arg1, int arg2, int arg3)
-	{
-		switch (arg2)
-		{
-		case 18:
-			if (arg3 != 0 && arg1.type == 8 && GameManager.instance.terrain.GetTileByPosition((uint)arg1.vTransform.position.x, (uint)arg1.vTransform.position.z).DAT_10[3] == 1)
-			{
-				Spark spark = new GameObject().AddComponent<Spark>();
-				VigObject vigObject2 = LevelManager.instance.xobfList[19].ini.FUN_2C17C(153, typeof(VigObject), 8u);
-				Utilities.ParentChildren(vigObject2, vigObject2);
-				VigObject vigObject = LevelManager.instance.xobfList[19].ini.FUN_2C17C(51, typeof(VigObject), 8u);
-				Utilities.ParentChildren(vigObject, vigObject);
-				VigObject vigObject3 = GameManager.instance.FUN_320DC(arg1.vTransform.position, 0);
-				vigObject.vTransform = GameManager.FUN_2A39C();
-				vigObject2.vTransform = GameManager.FUN_2A39C();
-				vigObject2.flags = 16u;
-				Utilities.FUN_2CC9C(spark, vigObject2);
-				vigObject2.transform.parent = spark.transform;
-				Utilities.FUN_2CC9C(spark, vigObject);
-				vigObject.transform.parent = spark.transform;
-				spark.flags = 132u;
-				spark.type = 3;
-				spark.screen = arg1.vTransform.position;
-				VigCollider vCollider = new VigCollider(vigObject2.vCollider.reader.GetBuffer());
-				spark.physics1.M6 = 4096;
-				spark.vCollider = vCollider;
-				Utilities.FUN_2A168(out Vector3Int vout, arg1.vTransform.position, vigObject3.vTransform.position);
-				int num = vout.x * 3051;
-				if (num < 0)
-				{
-					num += 4095;
-				}
-				spark.physics1.X = num >> 12;
-				spark.physics1.Y = 0;
-				num = vout.z * 3051;
-				if (num < 0)
-				{
-					num += 4095;
-				}
-				spark.physics1.Z = num >> 12;
-				spark.FUN_3066C();
-				sbyte param3 = spark.DAT_18 = (sbyte)GameManager.instance.FUN_1DD9C();
-				GameManager.instance.FUN_1E580(param3, LevelManager.instance.xobfList[42].sndList, 0, arg1.vTransform.position, param5: true);
-				return 0u;
-			}
-			GameManager.instance.FUN_327CC(arg1);
-			return 0u;
-		case 19:
-		{
-			int num = (int)GameManager.FUN_2AC5C();
-			VigObject vigObject = GameManager.instance.FUN_318D0((num * 3 >> 15) + 40);
-			ConfigContainer param = vigObject.FUN_2C5F4(32768);
-			arg1.vTransform = GameManager.instance.FUN_2CEAC(vigObject, param);
-			arg1.screen = arg1.vTransform.position;
-			num = arg1.vTransform.rotation.V02 * 7629;
-			arg1.flags |= 32u;
-			if (num < 0)
-			{
-				num += 31;
-			}
-			arg1.physics1.X = num >> 5;
-			num = arg1.vTransform.rotation.V12 * 7629;
-			if (num < 0)
-			{
-				num += 31;
-			}
-			arg1.physics1.Y = num >> 5;
-			num = arg1.vTransform.rotation.V22 * 7629;
-			if (num < 0)
-			{
-				num += 31;
-			}
-			arg1.physics1.Z = num >> 5;
-			arg1.physics2.X = 0;
-			arg1.physics2.Y = 0;
-			arg1.physics2.Z = 0;
-			int param2 = GameManager.instance.FUN_1DD9C();
-			GameManager.instance.FUN_1E580(param2, GameManager.instance.DAT_C2C, 37, arg1.vTransform.position);
-			Vehicle vehicle = (Vehicle)arg1;
-			VigCamera vCamera = vehicle.vCamera;
-			if (vCamera != null)
-			{
-				vigObject = GameManager.instance.FUN_30250(GameManager.instance.DAT_1078, vigObject.id + 472);
-				vigObject.tags = 90;
-				vigObject.maxHalfHealth = 256;
-				GameManager.instance.FUN_30CB0(vCamera, vigObject.tags);
-				vCamera.screen = vigObject.screen;
-				VigCamera vigCamera = vehicle.vCamera = LevelManager.instance.FUN_4B984(vehicle, vigObject);
-				LevelManager.instance.defaultCamera.transform.SetParent(vigCamera.transform, worldPositionStays: false);
-				vigCamera.FUN_30B78();
-			}
-			vehicle.state = _VEHICLE_TYPE.MilTunnel;
-			GameManager.instance.FUN_30CB0(vehicle, 30);
-			return uint.MaxValue;
-		}
-		default:
-			return 0u;
-		}
-	}
+                    if (tVar2.DAT_10[3] == 1)
+                    {
+                        GameObject obj = new GameObject();
+                        puVar4 = obj.AddComponent<Spark>();
+                        oVar2 = LevelManager.instance.xobfList[19].ini.FUN_2C17C(153, typeof(VigObject), 8);
+                        Utilities.ParentChildren(oVar2, oVar2);
+                        oVar3 = LevelManager.instance.xobfList[19].ini.FUN_2C17C(51, typeof(VigObject), 8);
+                        Utilities.ParentChildren(oVar3, oVar3);
+                        oVar5 = GameManager.instance.FUN_320DC(arg1.vTransform.position, 0);
+                        oVar3.vTransform = GameManager.FUN_2A39C();
+                        oVar2.vTransform = GameManager.FUN_2A39C();
+                        oVar2.flags = 0x10;
+                        Utilities.FUN_2CC9C(puVar4, oVar2);
+                        oVar2.transform.parent = puVar4.transform;
+                        Utilities.FUN_2CC9C(puVar4, oVar3);
+                        oVar3.transform.parent = puVar4.transform;
+                        puVar4.flags = 0x84;
+                        puVar4.type = 3;
+                        puVar4.screen = arg1.vTransform.position;
+                        cVar6 = new VigCollider(oVar2.vCollider.reader.GetBuffer());
+                        puVar4.physics1.M6 = 0x1000;
+                        puVar4.vCollider = cVar6;
+                        Utilities.FUN_2A168(out local_18, arg1.vTransform.position, oVar5.vTransform.position); //originally - oVar5.screen
+                        iVar2 = local_18.x * 3051;
 
-	public override uint UpdateW(int arg1, VigObject arg2)
-	{
-		if (arg1 == 25 && arg2.type == 3 && ids.Contains(arg2.id))
-		{
-			((Pickup)arg2).cannotReach = true;
-		}
-		return 0u;
-	}
+                        if (iVar2 < 0)
+                            iVar2 += 4095;
 
-	private static void FUN_34FC()
-	{
-		int num = 0;
-		if (0 >= LevelManager.instance.DAT_1184)
-		{
-			return;
-		}
-		do
-		{
-			JUNC_DB jUNC_DB = LevelManager.instance.juncList[num];
-			if (jUNC_DB.DAT_18 != null && (jUNC_DB.DAT_10 & 0x40) != 0)
-			{
-				int num2 = (jUNC_DB.DAT_16 & 0xFFF) * 2;
-				int num3 = -Utilities.DAT_65C90[num2];
-				num2 = Utilities.DAT_65C90[num2 + 1];
-				int num4 = jUNC_DB.DAT_11 - 1;
-				if (-1 < num4)
-				{
-					do
-					{
-						RSEG_DB rSEG_DB = jUNC_DB.DAT_1C[num4];
-						int num5 = (jUNC_DB == rSEG_DB.DAT_00[1]) ? 1 : 0;
-						long num6 = (long)num2 * (long)rSEG_DB.DAT_10[num5];
-						long num7 = (long)num3 * (long)rSEG_DB.DAT_14[num5];
-						uint num8 = (uint)num7;
-						uint num9 = (uint)((int)num6 + (int)num8);
-						int num10 = (int)((ulong)num6 >> 32) + (int)((ulong)num7 >> 32) + ((num9 < num8) ? 1 : 0);
-						if (FUN_45C0(num9, num10, 0u, 0) < 1)
-						{
-							num9 += 4095;
-							num10 += ((num9 < 4095) ? 1 : 0);
-						}
-						num9 = (uint)((int)(num9 >> 12) | (num10 << 20));
-						long num11 = (long)num2 * (long)(int)num9;
-						num8 = (uint)num11;
-						num10 = (int)((ulong)num11 >> 32);
-						if (FUN_45C0(num8, num10, 0u, 0) < 1)
-						{
-							num8 += 4095;
-							num10 += ((num8 < 4095) ? 1 : 0);
-						}
-						long num12 = (long)num3 * (long)(int)num9;
-						num9 = (uint)num12;
-						int num13 = (int)((ulong)num12 >> 32);
-						rSEG_DB.DAT_10[num5] = ((int)(num8 >> 12) | (num10 << 20));
-						if (FUN_45C0(num9, num13, 0u, 0) < 1)
-						{
-							num9 += 4095;
-							num13 += ((num9 < 4095) ? 1 : 0);
-						}
-						rSEG_DB.DAT_14[num5] = ((int)(num9 >> 12) | (num13 << 20));
-						rSEG_DB.FUN_50EFC();
-						num4--;
-					}
-					while (-1 < num4);
-				}
-			}
-			num++;
-		}
-		while (num < LevelManager.instance.DAT_1184);
-	}
+                        puVar4.physics1.X = iVar2 >> 12;
+                        puVar4.physics1.Y = 0;
+                        iVar2 = local_18.z * 3051;
 
-	private static int FUN_45C0(uint param1, int param2, uint param3, int param4)
-	{
-		int result = 0;
-		if (param4 <= param2)
-		{
-			result = 2;
-			if (param2 <= param4)
-			{
-				if (param1 < param3)
-				{
-					result = 0;
-				}
-				else
-				{
-					result = 2;
-					if (param1 <= param3)
-					{
-						result = 1;
-					}
-				}
-			}
-		}
-		return result;
-	}
+                        if (iVar2 < 0)
+                            iVar2 += 4095;
+
+                        puVar4.physics1.Z = iVar2 >> 12;
+                        puVar4.FUN_3066C();
+                        sVar1 = (sbyte)GameManager.instance.FUN_1DD9C();
+                        puVar4.DAT_18 = sVar1;
+                        GameManager.instance.FUN_1E580(sVar1, LevelManager.instance.xobfList[42].sndList, 0, arg1.vTransform.position, true);
+                        return 0;
+                    }
+                }
+
+                GameManager.instance.FUN_327CC(arg1);
+                return 0;
+            case 19:
+                iVar2 = (int)GameManager.FUN_2AC5C();
+                oVar3 = GameManager.instance.FUN_318D0((iVar2 * 3 >> 15) + 40);
+                ccVar6 = oVar3.FUN_2C5F4(0x8000);
+                arg1.vTransform = GameManager.instance.FUN_2CEAC(oVar3, ccVar6);
+                arg1.screen = arg1.vTransform.position;
+                iVar2 = arg1.vTransform.rotation.V02 * 7629;
+                arg1.flags |= 0x20;
+
+                if (iVar2 < 0)
+                    iVar2 += 31;
+
+                arg1.physics1.X = iVar2 >> 5;
+                iVar2 = arg1.vTransform.rotation.V12 * 7629;
+
+                if (iVar2 < 0)
+                    iVar2 += 31;
+
+                arg1.physics1.Y = iVar2 >> 5;
+                iVar2 = arg1.vTransform.rotation.V22 * 7629;
+
+                if (iVar2 < 0)
+                    iVar2 += 31;
+
+                arg1.physics1.Z = iVar2 >> 5;
+                arg1.physics2.X = 0;
+                arg1.physics2.Y = 0;
+                arg1.physics2.Z = 0;
+                iVar6 = GameManager.instance.FUN_1DD9C();
+                GameManager.instance.FUN_1E580(iVar6, GameManager.instance.DAT_C2C, 37, arg1.vTransform.position);
+                vVar7 = (Vehicle)arg1;
+                cVar2 = vVar7.vCamera;
+
+                if (cVar2 != null)
+                {
+                    oVar3 = GameManager.instance.FUN_30250(GameManager.instance.DAT_1078, oVar3.id + 472);
+                    oVar3.tags = 90;
+                    oVar3.maxHalfHealth = 0x100;
+                    GameManager.instance.FUN_30CB0(cVar2, oVar3.tags);
+                    cVar2.screen = oVar3.screen;
+                    cVar8 = LevelManager.instance.FUN_4B984(vVar7, oVar3);
+                    vVar7.vCamera = cVar8;
+                    LevelManager.instance.defaultCamera.transform.SetParent(cVar8.transform, false);
+                    cVar8.FUN_30B78();
+                }
+
+                vVar7.state = _VEHICLE_TYPE.MilTunnel;
+                GameManager.instance.FUN_30CB0(vVar7, 30);
+                return 0xffffffff;
+        }
+
+        return 0;
+    }
+
+    private static void FUN_34FC()
+    {
+        long lVar1;
+        long lVar2;
+        int iVar3;
+        int iVar4;
+        int iVar5;
+        uint uVar6;
+        int iVar7;
+        int iVar8;
+        RSEG_DB rVar9;
+        int iVar10;
+        int iVar11;
+        JUNC_DB jVar12;
+        int iVar13;
+        uint uVar14;
+        int local_30;
+
+        local_30 = 0;
+
+        if (0 < LevelManager.instance.DAT_1184)
+        {
+            do
+            {
+                jVar12 = LevelManager.instance.juncList[local_30];
+
+                if (jVar12.DAT_18 != null && (jVar12.DAT_10 & 0x40) != 0)
+                {
+                    iVar4 = (jVar12.DAT_16 & 0xfff) * 2;
+                    iVar3 = -Utilities.DAT_65C90[iVar4];
+                    iVar4 = Utilities.DAT_65C90[iVar4 + 1];
+                    iVar10 = jVar12.DAT_11 - 1;
+
+                    if (-1 < iVar10)
+                    {
+                        do
+                        {
+                            rVar9 = jVar12.DAT_1C[iVar10];
+                            iVar8 = jVar12 == rVar9.DAT_00[1] ? 1 : 0;
+                            lVar1 = (long)iVar4 * rVar9.DAT_10[iVar8];
+                            lVar2 = (long)iVar3 * rVar9.DAT_14[iVar8];
+                            uVar14 = (uint)lVar2;
+                            uVar6 = (uint)lVar1 + uVar14;
+                            iVar7 = (int)((ulong)lVar1 >> 32) + (int)((ulong)lVar2 >> 32) + (uVar6 < uVar14 ? 1 : 0);
+                            iVar5 = FUN_45C0(uVar6, iVar7, 0, 0);
+
+                            if (iVar5 < 1)
+                            {
+                                uVar6 += 4095;
+                                iVar7 += (uVar6 < 4095 ? 1 : 0);
+                            }
+
+                            uVar6 = uVar6 >> 12 | (uint)iVar7 << 20;
+                            lVar1 = (long)iVar4 * (long)(int)uVar6;
+                            uVar14 = (uint)lVar1;
+                            iVar7 = (int)((ulong)lVar1 >> 32);
+                            iVar5 = FUN_45C0(uVar14, iVar7, 0, 0);
+
+                            if (iVar5 < 1)
+                            {
+                                uVar14 += 4095;
+                                iVar7 += (uVar14 < 4095 ? 1 : 0);
+                            }
+
+                            lVar1 = (long)iVar3 * (long)(int)uVar6;
+                            uVar6 = (uint)lVar1;
+                            iVar13 = (int)((ulong)lVar1 >> 32);
+                            rVar9.DAT_10[iVar8] = (int)(uVar14 >> 12 | (uint)iVar7 << 20);
+                            iVar5 = FUN_45C0(uVar6, iVar13, 0, 0);
+
+                            if (iVar5 < 1)
+                            {
+                                uVar6 += 4095;
+                                iVar13 += (uVar6 < 4095 ? 1 : 0);
+                            }
+
+                            rVar9.DAT_14[iVar8] = (int)(uVar6 >> 12 | (uint)iVar13 << 20);
+                            rVar9.FUN_50EFC();
+                            iVar10--;
+                        } while (-1 < iVar10);
+                    }
+                }
+
+                local_30++;
+            } while (local_30 < LevelManager.instance.DAT_1184);
+        }
+    }
+
+    private static int FUN_45C0(uint param1, int param2, uint param3, int param4)
+    {
+        int iVar1;
+
+        iVar1 = 0;
+
+        if (param4 <= param2)
+        {
+            iVar1 = 2;
+
+            if (param2 <= param4)
+            {
+                if (param1 < param3)
+                    iVar1 = 0;
+                else
+                {
+                    iVar1 = 2;
+
+                    if (param1 <= param3)
+                        iVar1 = 1;
+                }
+            }
+        }
+
+        return iVar1;
+    }
 }

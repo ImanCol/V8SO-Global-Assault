@@ -255,7 +255,8 @@ public static class Utilities
             new KeyValuePair<string, Type>("M2_elevator_1", typeof(Elevator)),
             new KeyValuePair<string, Type>("M2_Conveyor", typeof(Conveyor)),
             new KeyValuePair<string, Type>("factory_1", typeof(Factory)),
-            new KeyValuePair<string, Type>("factory_door", typeof(FactoryDoor))
+            new KeyValuePair<string, Type>("factory_door", typeof(FactoryDoor)),
+
         }
     };
 

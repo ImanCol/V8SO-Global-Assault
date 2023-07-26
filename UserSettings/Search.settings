@@ -16,6 +16,9 @@ scopes = {
 	"last_search.CC326D59" = "fbx"
 	"OpenInspectorPreview.CC326D59" = "0"
 	"currentGroup.CC326D59" = "all"
+	"last_search.D92EEDCB" = "Brimstone"
+	"OpenInspectorPreview.D92EEDCB" = "0"
+	"currentGroup.D92EEDCB" = "all"
 }
 providers = {
 	expression = {
@@ -70,6 +73,7 @@ providers = {
 	}
 }
 recentSearches = [
+	"Brimstone"
 	"VSync"
 	"occlusion"
 	"fbx"

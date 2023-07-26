@@ -14,45 +14,40 @@ public class Brimstone : VigObject
 
     public override uint OnCollision(HitDetection hit)
     {
-        VigObject self = hit.self;
-        Color32 param2;
-        uint param;
-        if (!(self.GetType() == typeof(OilSlick2)))
+        uint uVar2;
+        Color32 cVar2;
+        bool bVar4;
+        VigObject oVar4;
+        Vehicle vVar4;
+
+        if (hit.object2.type == 3)
+            return 0;
+
+        oVar4 = hit.self;
+
+        if (oVar4.type == 2)
         {
-            if (hit.object2.type == 3)
-            {
-                return 0u;
-            }
-            if (self.type == 8 && self.GetType() == typeof(Bullet))
-            {
-                return 0u;
-            }
-            if (self.type == 2)
-            {
-                Vehicle vehicle = (Vehicle)self;
-                vehicle.FUN_3A064(-200, vTransform.position, param3: true);
-                param = (uint)GameManager.instance.FUN_1DD9C();
-                GameManager.instance.FUN_1E628((int)param, GameManager.instance.DAT_C2C, 63, vTransform.position);
-                if (LevelManager.instance.FUN_39AF8(vehicle))
-                {
-                    LevelManager.instance.FUN_4DE54(vTransform.position, 35);
-                    param2 = new Color32(128, 128, 0, 8);
-                    goto IL_013e;
-                }
-                goto IL_0155;
-            }
+            vVar4 = (Vehicle)oVar4;
+            vVar4.FUN_3A064(-200, vTransform.position, true);
+            uVar2 = (uint)GameManager.instance.FUN_1DD9C();
+            GameManager.instance.FUN_1E628((int)uVar2, GameManager.instance.DAT_C2C, 63, vTransform.position);
+            bVar4 = LevelManager.instance.FUN_39AF8(vVar4);
+            if (!bVar4) goto LAB_48598;
+            LevelManager.instance.FUN_4DE54(vTransform.position, 35);
+            cVar2 = new Color32(0x80, 0x80, 0x00, 8);
         }
-        LevelManager.instance.FUN_4DE54(vTransform.position, 35);
-        param = (uint)GameManager.instance.FUN_1DD9C();
-        GameManager.instance.FUN_1E580((int)param, GameManager.instance.DAT_C2C, 63, vTransform.position);
-        param2 = new Color32(128, 0, 0, 8);
-        goto IL_013e;
-    IL_0155:
+        else
+        {
+            LevelManager.instance.FUN_4DE54(vTransform.position, 35);
+            uVar2 = (uint)GameManager.instance.FUN_1DD9C();
+            GameManager.instance.FUN_1E580((int)uVar2, GameManager.instance.DAT_C2C, 63, vTransform.position);
+            cVar2 = new Color32(0x80, 0x00, 0x00, 8);
+        }
+
+        UIManager.instance.FUN_4E414(vTransform.position, cVar2);
+    LAB_48598:
         GameManager.instance.FUN_309A0(this);
-        return uint.MaxValue;
-    IL_013e:
-        UIManager.instance.FUN_4E414(vTransform.position, param2);
-        goto IL_0155;
+        return 0xffffffff;
     }
 
     public override uint UpdateW(int arg1, int arg2)
@@ -119,7 +114,7 @@ public class Brimstone : VigObject
                         return 0u;
                     }
                 }
-                LevelManager.instance.FUN_309C8(this, 1);
+                LevelManager.instance.FUN_309C8(this, 1); //Fallo aqui
                 return uint.MaxValue;
             }
             LevelManager.instance.FUN_4DE54(vTransform.position, 138);

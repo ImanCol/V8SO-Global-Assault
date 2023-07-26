@@ -3656,66 +3656,60 @@ public class GameManager : MonoBehaviour
 
     public Vehicle FUN_3208C(int param1, int param2)
     {
-        Placeholder placeholder = (Placeholder)this.FUN_30250(this.DAT_1078, param2);
+        Placeholder placeholder = (Placeholder)FUN_30250(DAT_1078, param2);
         if (placeholder == null)
         {
-            placeholder = (Placeholder)this.FUN_30250(this.DAT_1078, -1);
+            placeholder = (Placeholder)FUN_30250(DAT_1078, -1);
         }
         int num = param1 + 1;
         if (param1 < 0)
         {
             num = ~param1;
         }
-        return this.FUN_36C2C(placeholder, (int)this.vehicles[num], param1);
+        return FUN_36C2C(placeholder, vehicles[num], param1);
     }
 
+    //Busca coordenadas entre objetos que interactua hacia el quien colisiono
     public VigObject FUN_320DC(Vector3Int param1, int param2)
     {
         VigObject vigObject = null;
         VigObject vigObject2 = null;
         int num = -1;
         int num2 = -1;
-        sbyte b;
-        if (param2 < 0)
-        {
-            b = this.DAT_1128[~param2];
-        }
-        else
-        {
-            b = -1;
-        }
-        List<VigTuple> list = this.worldObjs;
+        sbyte b = (sbyte)((param2 >= 0) ? (-1) : DAT_1128[~param2]);
+        List<VigTuple> list = worldObjs;
         for (int i = 0; i < list.Count; i++)
         {
             VigObject vObject = list[i].vObject;
-            if (vObject.type == 2 && vObject.maxHalfHealth != 0)
+            if (vObject.type != 2 || vObject.maxHalfHealth == 0)
             {
-                int num3 = Utilities.FUN_29F6C(param1, vObject.screen);
-                int num4 = (int)vObject.id;
-                if (num4 != param2 && (0 < num4 || b != this.DAT_1128[~num4]))
+                continue;
+            }
+            int num3 = Utilities.FUN_29F6C(param1, vObject.screen);
+            int id = vObject.id;
+            if (id == param2 || (0 >= id && b == DAT_1128[~id]))
+            {
+                continue;
+            }
+            id = num3;
+            int num4 = num;
+            VigObject vigObject3 = vObject;
+            VigObject vigObject4 = vigObject;
+            if ((uint)num3 >= (uint)num2)
+            {
+                id = num2;
+                num4 = num3;
+                vigObject3 = vigObject2;
+                vigObject4 = vObject;
+                if ((uint)num3 >= (uint)num)
                 {
-                    num4 = num3;
-                    int num5 = num;
-                    VigObject vigObject3 = vObject;
-                    VigObject vigObject4 = vigObject;
-                    if (num3 >= num2)
-                    {
-                        num4 = num2;
-                        num5 = num3;
-                        vigObject3 = vigObject2;
-                        vigObject4 = vObject;
-                        if (num3 >= num)
-                        {
-                            goto IL_AE;
-                        }
-                    }
-                    num2 = num4;
-                    num = num5;
-                    vigObject2 = vigObject3;
-                    vigObject = vigObject4;
+                    continue;
                 }
             }
-        IL_AE:;
+            num2 = id;
+            num = num4;
+            vigObject2 = vigObject3;
+            vigObject = vigObject4;
         }
         if (vigObject2 == null)
         {
@@ -3727,144 +3721,138 @@ public class GameManager : MonoBehaviour
     public void FUN_327CC(VigObject param1)
     {
         short id = param1.id;
-        if (param1.parent == null && param1.type == 0)
+        if (!(param1.parent == null) || param1.type != 0)
         {
-            List<VigTuple> list = this.worldObjs;
-            for (int i = 0; i < list.Count; i++)
+            return;
+        }
+        List<VigTuple> list = worldObjs;
+        for (int i = 0; i < list.Count; i++)
+        {
+            VigTuple vigTuple = list[i];
+            if (vigTuple.vObject.id == id && vigTuple.vObject.type == 3)
             {
-                VigTuple vigTuple = list[i];
-                if (vigTuple.vObject.id == id && vigTuple.vObject.type == 3)
+                FUN_3094C(new Tuple<List<VigTuple>, VigTuple>(list, vigTuple));
+            }
+        }
+        VigTuple vigTuple2 = FUN_301DC(DAT_1078, id);
+        uint num;
+        if (vigTuple2 == null)
+        {
+            if (120 < param1.maxHalfHealth)
+            {
+                num = FUN_2AC5C();
+                if ((num & 3) == 0)
                 {
-                    this.FUN_3094C(new Tuple<List<VigTuple>, VigTuple>(list, vigTuple));
+                    int num2 = (int)FUN_2AC5C();
+                    int num3 = (num2 << 1) + num2;
+                    num3 = (num3 << 6) - num2;
+                    num3 = (num3 << 2) - num2;
+                    num3 = (num3 << 2) - num2;
+                    num3 >>= 15;
+                    num3 -= 1525;
+                    Vector3Int param2 = default(Vector3Int);
+                    param2.x = num3;
+                    param2.y = -4577;
+                    num2 = (int)FUN_2AC5C();
+                    num3 = (num2 << 1) + num2;
+                    num3 = (num3 << 6) - num2;
+                    num3 = (num3 << 2) - num2;
+                    num3 = (num3 << 2) - num2;
+                    num3 >>= 15;
+                    num3 = (param2.z = num3 - 1525);
+                    LevelManager.instance.FUN_4AAC0(4269277184u, param1.screen, param2);
                 }
             }
-            VigTuple vigTuple2 = this.FUN_301DC(this.DAT_1078, (int)id);
-            if (vigTuple2 == null)
+            return;
+        }
+        num = vigTuple2.vObject.flags;
+        if ((num & 2) == 0)
+        {
+            if ((num & 0x200) != 0)
             {
-                if (120 < param1.maxHalfHealth)
-                {
-                    uint num = GameManager.FUN_2AC5C();
-                    if ((num & 3U) == 0U)
-                    {
-                        int num2 = (int)GameManager.FUN_2AC5C();
-                        int num3 = (num2 << 1) + num2;
-                        num3 = (num3 << 6) - num2;
-                        num3 = (num3 << 2) - num2;
-                        num3 = (num3 << 2) - num2;
-                        num3 >>= 15;
-                        num3 -= 1525;
-                        Vector3Int vector3Int = default(Vector3Int);
-                        vector3Int.x = num3;
-                        vector3Int.y = -4577;
-                        num2 = (int)GameManager.FUN_2AC5C();
-                        num3 = (num2 << 1) + num2;
-                        num3 = (num3 << 6) - num2;
-                        num3 = (num3 << 2) - num2;
-                        num3 = (num3 << 2) - num2;
-                        num3 >>= 15;
-                        num3 -= 1525;
-                        vector3Int.z = num3;
-                        LevelManager.instance.FUN_4AAC0(4269277184U, param1.screen, vector3Int);
-                        return;
-                    }
-                }
+                return;
             }
-            else
+        }
+        else
+        {
+            VigObject vigObject = FUN_4AC1C(4294705152u, vigTuple2.vObject);
+            if (vigObject != null)
             {
-                uint num = vigTuple2.vObject.flags;
-                if ((num & 2U) == 0U)
+                vigObject.flags &= 4278190077u;
+                num = vigTuple2.vObject.flags;
+                if ((num & 0x200) == 0)
                 {
-                    if ((num & 512U) != 0U)
-                    {
-                        return;
-                    }
-                }
-                else
-                {
-                    VigObject vigObject = this.FUN_4AC1C(4294705152U, vigTuple2.vObject);
-                    if (vigObject != null)
-                    {
-                        vigObject.flags &= 4278190077U;
-                        num = vigTuple2.vObject.flags;
-                        if ((num & 512U) == 0U)
-                        {
-                            vigTuple2.vObject.flags = (num & 4294967293U) | 512U;
-                            return;
-                        }
-                    }
-                }
-                if (vigTuple2.vObject.GetType() == typeof(Placeholder))
-                {
+                    vigTuple2.vObject.flags = (uint)(((int)num & -3) | 0x200);
                     return;
                 }
-                if (this.gameMode < _GAME_MODE.Versus2 || DiscordController.IsOwner())
-                {
-                    this.FUN_3094C(new Tuple<List<VigTuple>, VigTuple>(this.DAT_1078, vigTuple2));
-                }
             }
+        }
+        if (!(vigTuple2.vObject.GetType() == typeof(Placeholder)) && (gameMode < _GAME_MODE.Versus2 || DiscordController.IsOwner()))
+        {
+            FUN_3094C(new Tuple<List<VigTuple>, VigTuple>(DAT_1078, vigTuple2));
         }
     }
 
     public VigTuple FUN_335FC(VigObject param1)
     {
-        VigTuple vigTuple = new VigTuple(param1, 0U);
-        this.DAT_1098.Add(vigTuple);
+        VigTuple vigTuple = new VigTuple(param1, 0u);
+        DAT_1098.Add(vigTuple);
         return vigTuple;
     }
 
     public void FUN_33728(SunLensFlare param1, Vector3Int param2)
     {
-        param1.vTransform.position = Utilities.ApplyMatrixSV(this.DAT_F00.rotation, param1.vr);
-        param1.vTransform.position.x = param1.vTransform.position.x << 6;
-        param1.vTransform.position.y = param1.vTransform.position.y << 6;
-        param1.vTransform.position.z = param1.vTransform.position.z << 6;
+        param1.vTransform.position = Utilities.ApplyMatrixSV(DAT_F00.rotation, param1.vr);
+        param1.vTransform.position.x <<= 6;
+        param1.vTransform.position.y <<= 6;
+        param1.vTransform.position.z <<= 6;
         param1.vMesh.FUN_21F70(param1.vTransform);
     }
 
     public VigObject FUN_34120(List<VigTuple> param1, uint param2, Vector3Int param3)
     {
         uint num = uint.MaxValue;
-        VigObject vigObject = null;
+        VigObject result = null;
         for (int i = 0; i < param1.Count; i++)
         {
             VigObject vObject = param1[i].vObject;
-            if (31 < vObject.id && (vObject.flags & 16384U) != 0U && (vObject.flags & param2) != 0U && !((Pickup)vObject).cannotReach)
+            if (31 < vObject.id && (vObject.flags & 0x4000) != 0 && (vObject.flags & param2) != 0 && !((Pickup)vObject).cannotReach)
             {
                 uint num2 = (uint)Utilities.FUN_29F6C(param3, vObject.screen);
                 if (num2 < num)
                 {
                     num = num2;
-                    vigObject = vObject;
+                    result = vObject;
                 }
             }
         }
-        return vigObject;
+        return result;
     }
 
     public VigObject FUN_34120_2(List<VigTuple> param1, uint param2, Vector3Int param3)
     {
         uint num = uint.MaxValue;
-        VigObject vigObject = null;
+        VigObject result = null;
         for (int i = 0; i < param1.Count; i++)
         {
             VigObject vObject = param1[i].vObject;
-            if (31 < vObject.id && (vObject.flags & param2) != 0U)
+            if (31 < vObject.id && (vObject.flags & param2) != 0)
             {
                 uint num2 = (uint)Utilities.FUN_29F6C(param3, vObject.screen);
                 if (num2 < num)
                 {
                     num = num2;
-                    vigObject = vObject;
+                    result = vObject;
                 }
             }
         }
-        return vigObject;
+        return result;
     }
 
     public VigObject FUN_34120_3(List<VigTuple> param1, List<ushort> param2, Vector3Int param3)
     {
         uint num = uint.MaxValue;
-        VigObject vigObject = null;
+        VigObject result = null;
         for (int i = 0; i < param1.Count; i++)
         {
             VigObject vObject = param1[i].vObject;
@@ -3874,101 +3862,81 @@ public class GameManager : MonoBehaviour
                 if (num2 < num)
                 {
                     num = num2;
-                    vigObject = vObject;
+                    result = vObject;
                 }
             }
         }
-        return vigObject;
+        return result;
     }
 
     private void FUN_347A8(uint param1)
     {
-        uint num = (uint)((short)this.levelManager.DAT_C18[1] * 2);
-        uint num2 = (uint)this.DAT_1038;
-        if (num2 < num)
+        uint num = (uint)((short)levelManager.DAT_C18[1] * 2);
+        uint dAT_ = (uint)DAT_1038;
+        if (dAT_ >= num)
         {
-            do
-            {
-                int num3 = (int)GameManager.FUN_2AC5C();
-                int num4 = this.FUN_30428(this.DAT_1078, param1);
-                num4 = num3 * num4;
-                VigObject vigObject = this.FUN_30498(this.DAT_1078, param1, num4 >> 15);
-                vigObject = this.FUN_4AC6C(param1, vigObject);
-                if (vigObject == null)
-                {
-                    break;
-                }
-                num = (uint)((short)this.levelManager.DAT_C18[1] * 2);
-                int num5 = this.DAT_1038 + 1;
-                this.DAT_1038 = num5;
-                num2 = (uint)num5;
-            }
-            while (num2 < num);
+            return;
         }
+        do
+        {
+            uint num2 = FUN_2AC5C();
+            int num3 = FUN_30428(DAT_1078, param1);
+            num3 = (int)num2 * num3;
+            VigObject param2 = FUN_30498(DAT_1078, param1, num3 >> 15);
+            param2 = FUN_4AC6C(param1, param2);
+            if (!(param2 == null))
+            {
+                num = (uint)((short)levelManager.DAT_C18[1] * 2);
+                continue;
+            }
+            break;
+        }
+        while ((uint)(++DAT_1038) < num);
     }
 
     private void FUN_349A0()
     {
         int num = 0;
         int num2 = 4;
-        if (this.gameMode > _GAME_MODE.Versus2)
+        if (gameMode > _GAME_MODE.Versus2)
         {
             num2 = 6;
         }
-        while (this.difficultyMode != 0 || this.spawns != 30 || this.EnemyKill > 30)
+        while ((difficultyMode != 0 || spawns != 30 || EnemyKill > 30) && (difficultyMode != 1 || spawns != 70 || EnemyKill > 70) && (spawns != 70 || EnemyKill >= 70) && (gameMode <= _GAME_MODE.Versus2 || DiscordController.IsOwner()))
         {
-            if (this.difficultyMode == 1 && this.spawns == 70 && this.EnemyKill <= 70)
+            if (-1 < (sbyte)vehicles[2 + num] && DAT_1030[num] != 0)
             {
-                return;
-            }
-            if (this.spawns == 70 && this.EnemyKill < 70)
-            {
-                return;
-            }
-            if (this.gameMode > _GAME_MODE.Versus2 && !DiscordController.IsOwner())
-            {
-                return;
-            }
-            if (-1 < (sbyte)this.vehicles[2 + num] && this.DAT_1030[num] != 0)
-            {
-                VigObject vigObject = this.FUN_302D4(this.worldObjs, 2U, num + 1);
-                if (vigObject == null)
+                VigObject x = FUN_302D4(worldObjs, 2u, num + 1);
+                if (x == null)
                 {
-                    if (this.gameMode == _GAME_MODE.Survival || this.gameMode == _GAME_MODE.Survival2)
+                    if (gameMode == _GAME_MODE.Survival || gameMode == _GAME_MODE.Survival2)
                     {
-                        for (int i = 0; i < this.vehicles.Length - 2; i++)
+                        for (int i = 0; i < vehicles.Length - 2; i++)
                         {
-                            if ((int)this.vehicles[i + 2] == this.survival[this.currentSpawn])
+                            if (vehicles[i + 2] == survival[currentSpawn])
                             {
-                                this.currentSpawn++;
-                                if (this.currentSpawn >= this.survival.Count)
+                                currentSpawn++;
+                                if (currentSpawn >= survival.Count)
                                 {
-                                    this.currentSpawn = 0;
+                                    currentSpawn = 0;
                                 }
                                 i = -1;
                             }
                         }
-                        this.vehicles[2 + num] = (byte)this.survival[this.currentSpawn];
+                        vehicles[2 + num] = (byte)survival[currentSpawn];
                     }
-                    if (this.gameMode < _GAME_MODE.Coop2)
-                    {
-                        vigObject = this.FUN_3208C(num + 1);
-                    }
-                    else
-                    {
-                        vigObject = this.FUN_3208C(num + 1, num % 4 + 1);
-                    }
-                    if (vigObject != null)
+                    x = ((gameMode >= _GAME_MODE.Coop2) ? FUN_3208C(num + 1, num % 4 + 1) : FUN_3208C(num + 1));
+                    if (x != null)
                     {
                         int num3 = 0;
-                        vigObject.tags = 1;
-                        vigObject.flags &= 33554431U;
-                        for (; ; )
+                        x.tags = 1;
+                        x.flags &= 33554431u;
+                        while (true)
                         {
-                            int num4 = (int)GameManager.FUN_2AC5C();
-                            if ((vigObject.flags & GameManager.DAT_63A6C[(int)((uint)((uint)num4 << 2) >> 15)]) == 0U)
+                            int num4 = (int)FUN_2AC5C();
+                            if ((x.flags & DAT_63A6C[(uint)(num4 << 2) >> 15]) == 0)
                             {
-                                vigObject.flags |= GameManager.DAT_63A6C[(int)((uint)((uint)num4 << 2) >> 15)];
+                                x.flags |= DAT_63A6C[(uint)(num4 << 2) >> 15];
                                 num3++;
                                 if (num3 >= 3)
                                 {
@@ -3976,30 +3944,28 @@ public class GameManager : MonoBehaviour
                                 }
                             }
                         }
-                        uint flags = vigObject.flags;
-                        vigObject.FUN_3066C();
-                        num3 = (int)(vigObject.vTransform.rotation.V02 * 4577);
+                        uint flags = x.flags;
+                        x.FUN_3066C();
+                        num3 = x.vTransform.rotation.V02 * 4577;
                         if (num3 < 0)
                         {
                             num3 += 31;
                         }
-                        vigObject.physics1.X = num3 >> 5;
-                        vigObject.physics1.Y = 0;
-                        num3 = (int)(vigObject.vTransform.rotation.V22 * 4577);
+                        x.physics1.X = num3 >> 5;
+                        x.physics1.Y = 0;
+                        num3 = x.vTransform.rotation.V22 * 4577;
                         if (num3 < 0)
                         {
                             num3 += 31;
                         }
-                        vigObject.physics1.Z = num3 >> 5;
-                        sbyte[] dat_ = this.DAT_1030;
-                        int num5 = num;
-                        dat_[num5] -= 1;
-                        this.spawns++;
-                        if (this.gameMode > _GAME_MODE.Versus2)
+                        x.physics1.Z = num3 >> 5;
+                        DAT_1030[num]--;
+                        spawns++;
+                        if (gameMode > _GAME_MODE.Versus2)
                         {
-                            this.networkEnemies.Add((Vehicle)vigObject);
-                            this.enemiesDictionary[vigObject.id] = (Vehicle)vigObject;
-                            ClientSend.SpawnAI(vigObject.id, (byte)((Vehicle)vigObject).vehicle, flags);
+                            networkEnemies.Add((Vehicle)x);
+                            enemiesDictionary[x.id] = (Vehicle)x;
+                            ClientSend.SpawnAI(x.id, (byte)((Vehicle)x).vehicle, flags);
                         }
                     }
                 }
@@ -4007,7 +3973,7 @@ public class GameManager : MonoBehaviour
             num++;
             if (num >= num2)
             {
-                return;
+                break;
             }
         }
     }
@@ -4023,7 +3989,7 @@ public class GameManager : MonoBehaviour
         if ((DAT_40 & 0x1000) == 0)
         {
             num4 = 1;
-            if (this.difficultyMode != 0)
+            if (difficultyMode != 0)
             {
                 num4 = 2;
             }
@@ -4048,7 +4014,7 @@ public class GameManager : MonoBehaviour
         }
         if (gameMode == _GAME_MODE.Survival || gameMode == _GAME_MODE.Survival2)
         {
-            num4 += this.EnemyKill / 25;
+            num4 += EnemyKill / 25;
         }
         List<VigTuple> list = worldObjs;
         for (int i = 0; i < list.Count; i++)
@@ -4314,7 +4280,7 @@ public class GameManager : MonoBehaviour
         }
         if (gameMode == _GAME_MODE.Survival)
         {
-            int num15 = (this.EnemyKill > 80) ? this.EnemyKill : (this.EnemyKill % 70);
+            int num15 = (EnemyKill > 80) ? EnemyKill : (EnemyKill % 70);
             int num16 = num15 * 2;
             int j = num16;
             if (num16 < 0)
@@ -4355,7 +4321,7 @@ public class GameManager : MonoBehaviour
         }
         if (gameMode == _GAME_MODE.Survival2 && DiscordController.IsOwner())
         {
-            int num15 = (this.EnemyKill > 80) ? this.EnemyKill : (this.EnemyKill % 70);
+            int num15 = (EnemyKill > 80) ? EnemyKill : (EnemyKill % 70);
             int num16 = num15 * 2;
             int j = num16;
             if (num16 < 0)
@@ -4481,7 +4447,6 @@ public class GameManager : MonoBehaviour
                 playerObjects[0] = FUN_3208C(-1, ~DiscordController.GetMemberId());
                 playerObjects[0].FUN_3066C();
                 LevelManager.instance.FUN_3D94(playerObjects[0]);
-                Debug.Log("Spawn Vehicle...");
                 ClientSend.Spawn();
             }
             return;
@@ -4517,16 +4482,16 @@ public class GameManager : MonoBehaviour
         }
         if ((gameMode == _GAME_MODE.Survival || gameMode == _GAME_MODE.Survival2) && DAT_C74 == 0)
         {
-            if (this.difficultyMode == 0)
+            if (difficultyMode == 0)
             {
-                if (this.EnemyKill == 30)
+                if (EnemyKill == 30)
                 {
                     playerObjects[0].vCamera.flags |= 33554432u;
                     DAT_C74 = 1;
                     UIManager.instance.GoodJob();
                 }
             }
-            else if (this.difficultyMode == 1 && this.EnemyKill == 70)
+            else if (difficultyMode == 1 && EnemyKill == 70)
             {
                 playerObjects[0].vCamera.flags |= 33554432u;
                 DAT_C74 = 1;
@@ -4536,15 +4501,15 @@ public class GameManager : MonoBehaviour
         _GAME_MODE gameMode3 = gameMode;
     }
 
-    private global::Navigation FUN_35A6C(global::Navigation param1, global::Navigation param2)
+    private Navigation FUN_35A6C(Navigation param1, Navigation param2)
     {
-        global::Navigation navigation = param1;
-        global::Navigation navigation2 = null;
+        Navigation navigation = param1;
+        Navigation navigation2 = null;
         if (param1 != null)
         {
             do
             {
-                global::Navigation navigation3 = navigation;
+                Navigation navigation3 = navigation;
                 navigation = navigation3;
                 if (param2.DAT_14 <= navigation3.DAT_14)
                 {
@@ -4564,66 +4529,64 @@ public class GameManager : MonoBehaviour
         return param1;
     }
 
-    private void FUN_35AC0(global::Navigation param1)
+    private void FUN_35AC0(Navigation param1)
     {
         if (param1 != null)
         {
             do
             {
-                int num = param1.aimpIndex + (int)param1.DAT_10;
-                ushort[] aimpData = this.levelManager.aimpData;
-                int num2 = num + 1;
-                aimpData[num2] &= 40959;
+                int num = param1.aimpIndex + param1.DAT_10;
+                levelManager.aimpData[num + 1] &= 40959;
                 param1 = param1.next;
             }
             while (param1 != null);
         }
     }
 
-    private global::Navigation FUN_35B00(int param1, int param2)
+    private Navigation FUN_35B00(int param1, int param2)
     {
-        global::Navigation dat_ = this.DAT_1138;
-        if (this.DAT_1138 != null)
+        Navigation dAT_ = DAT_1138;
+        if (DAT_1138 != null)
         {
-            this.DAT_1138 = this.DAT_1138.next;
+            DAT_1138 = DAT_1138.next;
         }
-        uint num = 11U;
-        if (dat_ != null)
+        uint num = 11u;
+        if (dAT_ != null)
         {
-            uint num2 = (uint)((uint)param1 << 21);
+            uint num2 = (uint)(param1 << 21);
             int num3 = param2 << 21;
             int num4 = 0;
             uint num5;
             ushort num6;
-            for (; ; )
+            while (true)
             {
-                num -= 1U;
+                num--;
                 num5 = num2 >> 31;
                 if (num3 < 0)
                 {
-                    num5 |= 2U;
+                    num5 |= 2;
                 }
-                num6 = this.levelManager.aimpData[num4 + (int)num5 + 1];
+                num6 = levelManager.aimpData[num4 + (int)num5 + 1];
                 if (num6 == 0)
                 {
                     break;
                 }
                 num2 <<= 1;
-                if ((num6 & 32768) != 0)
+                if ((num6 & 0x8000) != 0)
                 {
                     break;
                 }
                 num3 <<= 1;
-                num4 += (int)(num6 * 5);
+                num4 += num6 * 5;
             }
             num6 = (ushort)(-1 << (int)num);
-            dat_.aimpIndex = num4;
-            dat_.DAT_10 = (byte)num5;
-            dat_.DAT_11 = (byte)num;
-            dat_.DAT_0C = (ushort)(param1 & (int)num6);
-            dat_.DAT_0E = (ushort)(param2 & (int)num6);
+            dAT_.aimpIndex = num4;
+            dAT_.DAT_10 = (byte)num5;
+            dAT_.DAT_11 = (byte)num;
+            dAT_.DAT_0C = (ushort)(param1 & num6);
+            dAT_.DAT_0E = (ushort)(param2 & num6);
         }
-        return dat_;
+        return dAT_;
     }
 
     private Navigation FUN_35BAC(Navigation param1, uint param2, uint param3)
@@ -4685,86 +4648,86 @@ public class GameManager : MonoBehaviour
         return dAT_;
     }
 
-    private global::Navigation FUN_35CBC(global::Navigation param1)
+    private Navigation FUN_35CBC(Navigation param1)
     {
-        global::Navigation navigation = null;
-        ushort num = this.levelManager.aimpData[param1.aimpIndex + (int)param1.DAT_10 + 1];
+        Navigation navigation = null;
+        ushort num = levelManager.aimpData[param1.aimpIndex + param1.DAT_10 + 1];
         ushort num2 = 3840;
         if (num != 0)
         {
             num2 = num;
         }
-        int num3 = (int)param1.DAT_0E + (1 << (int)param1.DAT_11);
-        if ((num2 & 256) != 0)
+        int num3 = param1.DAT_0E + (1 << (int)param1.DAT_11);
+        if ((num2 & 0x100) != 0)
         {
-            for (global::Navigation navigation2 = this.FUN_35BAC(param1, (uint)(param1.DAT_0C - 1), (uint)param1.DAT_0E); navigation2 != null; navigation2 = this.FUN_35BAC(navigation2, (uint)(param1.DAT_0C - 1), (uint)navigation2.DAT_0E + (1U << (int)navigation2.DAT_11)))
+            for (Navigation navigation2 = FUN_35BAC(param1, (uint)(param1.DAT_0C - 1), param1.DAT_0E); navigation2 != null; navigation2 = FUN_35BAC(navigation2, (uint)(param1.DAT_0C - 1), (uint)(navigation2.DAT_0E + (1 << (int)navigation2.DAT_11))))
             {
-                if (this.levelManager.aimpData[navigation2.aimpIndex + (int)navigation2.DAT_10 + 1] != 0)
+                if (levelManager.aimpData[navigation2.aimpIndex + navigation2.DAT_10 + 1] != 0)
                 {
                     navigation2.next = navigation;
                     navigation = navigation2;
                 }
-                if (num3 <= (int)navigation2.DAT_0E + (1 << (int)navigation2.DAT_11))
+                if (num3 <= navigation2.DAT_0E + (1 << (int)navigation2.DAT_11))
                 {
                     break;
                 }
             }
         }
-        if ((num2 & 512) != 0)
+        if ((num2 & 0x200) != 0)
         {
-            for (global::Navigation navigation2 = this.FUN_35BAC(param1, (uint)param1.DAT_0C + (1U << (int)param1.DAT_11), (uint)param1.DAT_0E); navigation2 != null; navigation2 = this.FUN_35BAC(navigation2, (uint)navigation2.DAT_0C, (uint)navigation2.DAT_0E + (1U << (int)navigation2.DAT_11)))
+            for (Navigation navigation2 = FUN_35BAC(param1, (uint)(param1.DAT_0C + (1 << (param1.DAT_11 & 0x1F))), param1.DAT_0E); navigation2 != null; navigation2 = FUN_35BAC(navigation2, navigation2.DAT_0C, (uint)(navigation2.DAT_0E + (1 << (int)navigation2.DAT_11))))
             {
-                if (this.levelManager.aimpData[navigation2.aimpIndex + (int)navigation2.DAT_10 + 1] != 0)
+                if (levelManager.aimpData[navigation2.aimpIndex + navigation2.DAT_10 + 1] != 0)
                 {
                     navigation2.next = navigation;
                     navigation = navigation2;
                 }
-                if (num3 <= (int)navigation2.DAT_0E + (1 << (int)navigation2.DAT_11))
+                if (num3 <= navigation2.DAT_0E + (1 << (int)navigation2.DAT_11))
                 {
                     break;
                 }
             }
         }
-        num3 = (int)param1.DAT_0C + (1 << (int)param1.DAT_11);
-        if ((num2 & 2048) != 0)
+        num3 = param1.DAT_0C + (1 << (int)param1.DAT_11);
+        if ((num2 & 0x800) != 0)
         {
             int num4;
-            for (global::Navigation navigation2 = this.FUN_35BAC(param1, (uint)param1.DAT_0C, (uint)(param1.DAT_0E - 1)); navigation2 != null; navigation2 = this.FUN_35BAC(navigation2, (uint)num4, (uint)(param1.DAT_0E - 1)))
+            for (Navigation navigation2 = FUN_35BAC(param1, param1.DAT_0C, (uint)(param1.DAT_0E - 1)); navigation2 != null; navigation2 = FUN_35BAC(navigation2, (uint)num4, (uint)(param1.DAT_0E - 1)))
             {
-                if (this.levelManager.aimpData[navigation2.aimpIndex + (int)navigation2.DAT_10 + 1] != 0)
+                if (levelManager.aimpData[navigation2.aimpIndex + navigation2.DAT_10 + 1] != 0)
                 {
                     navigation2.next = navigation;
                     navigation = navigation2;
                 }
-                num4 = (int)navigation2.DAT_0C + (1 << (int)navigation2.DAT_11);
+                num4 = navigation2.DAT_0C + (1 << (int)navigation2.DAT_11);
                 if (num3 <= num4)
                 {
                     break;
                 }
             }
         }
-        if ((num2 & 1024) != 0)
+        if ((num2 & 0x400) != 0)
         {
             int num4;
-            for (global::Navigation navigation2 = this.FUN_35BAC(param1, (uint)param1.DAT_0C, (uint)param1.DAT_0E + (1U << (int)param1.DAT_11)); navigation2 != null; navigation2 = this.FUN_35BAC(navigation2, (uint)num4, (uint)navigation2.DAT_0E))
+            for (Navigation navigation2 = FUN_35BAC(param1, param1.DAT_0C, (uint)(param1.DAT_0E + (1 << (param1.DAT_11 & 0x1F)))); navigation2 != null; navigation2 = FUN_35BAC(navigation2, (uint)num4, navigation2.DAT_0E))
             {
-                if (this.levelManager.aimpData[navigation2.aimpIndex + (int)navigation2.DAT_10 + 1] != 0)
+                if (levelManager.aimpData[navigation2.aimpIndex + navigation2.DAT_10 + 1] != 0)
                 {
                     navigation2.next = navigation;
                     navigation = navigation2;
                 }
-                num4 = (int)navigation2.DAT_0C + (1 << (int)navigation2.DAT_11);
+                num4 = navigation2.DAT_0C + (1 << (int)navigation2.DAT_11);
                 if (num3 <= num4)
                 {
                     break;
                 }
             }
         }
-        if ((num2 & 4096) != 0)
+        if ((num2 & 0x1000) != 0)
         {
-            num3 = param1.aimpIndex + 5 + (int)param1.DAT_10;
-            global::Navigation navigation2 = this.FUN_35BAC(param1, (uint)(param1.DAT_0C + (ushort)((sbyte)this.levelManager.aimpData[num3 + 1])), (uint)(param1.DAT_0E + (ushort)((sbyte)(this.levelManager.aimpData[num3 + 1] >> 8))));
-            if (navigation2 != null && this.levelManager.aimpData[navigation2.aimpIndex + (int)navigation2.DAT_10 + 1] != 0)
+            num3 = param1.aimpIndex + 5 + param1.DAT_10;
+            Navigation navigation2 = FUN_35BAC(param1, (uint)(param1.DAT_0C + (sbyte)levelManager.aimpData[num3 + 1]), (uint)(param1.DAT_0E + (sbyte)(levelManager.aimpData[num3 + 1] >> 8)));
+            if (navigation2 != null && levelManager.aimpData[navigation2.aimpIndex + navigation2.DAT_10 + 1] != 0)
             {
                 navigation2.next = navigation;
                 navigation = navigation2;
@@ -4773,17 +4736,17 @@ public class GameManager : MonoBehaviour
         return navigation;
     }
 
-    public int FUN_35FF0(global::Navigation param1, short param2, short param3)
+    public int FUN_35FF0(Navigation param1, short param2, short param3)
     {
-        int num = (1 << (int)param1.DAT_11) / 2;
-        int num2 = (int)param1.DAT_0C + num - (int)param2;
-        num = (int)param1.DAT_0E + num - (int)param3;
-        return (int)Utilities.SquareRoot((long)(num2 * num2 + num * num)) << 7;
+        int num = (1 << (param1.DAT_11 & 0x1F)) / 2;
+        int num2 = param1.DAT_0C + num - param2;
+        num = param1.DAT_0E + num - param3;
+        return (int)Utilities.SquareRoot(num2 * num2 + num * num) << 7;
     }
 
     public short[] FUN_36060(Vector3Int param1, Vector3Int param2, uint param3, uint param4)
     {
-        return this.FUN_36084(param1, param2, param3, param4);
+        return FUN_36084(param1, param2, param3, param4);
     }
 
     private short[] FUN_36084(Vector3Int param1, Vector3Int param2, uint param3, uint param4)
@@ -4791,184 +4754,182 @@ public class GameManager : MonoBehaviour
         int num = (int)Utilities.FUN_14A54();
         int num2 = num;
         int num3 = 1022;
-        this.DAT_1138 = this.levelManager.ainav;
-        global::Navigation navigation = this.levelManager.ainav;
-        global::Navigation navigation2;
+        DAT_1138 = levelManager.ainav;
+        Navigation navigation = levelManager.ainav;
+        Navigation navigation2;
         do
         {
-            navigation2 = new global::Navigation();
-            navigation.next = navigation2;
+            navigation2 = (navigation.next = new Navigation());
             num3--;
             navigation = navigation2;
         }
         while (-1 < num3);
         navigation2.next = null;
-        global::Navigation navigation3 = this.FUN_35B00(param2.x >> 16, param2.z >> 16);
+        Navigation navigation3 = FUN_35B00(param2.x >> 16, param2.z >> 16);
         navigation = navigation3;
-        if (this.levelManager.aimpData[navigation3.aimpIndex + (int)navigation3.DAT_10 + 1] == 0)
+        if (levelManager.aimpData[navigation3.aimpIndex + navigation3.DAT_10 + 1] == 0)
         {
-            navigation = this.FUN_35CBC(navigation3);
+            navigation = FUN_35CBC(navigation3);
             if (navigation == null)
             {
                 return null;
             }
-            navigation3.next = this.DAT_1138;
-            this.DAT_1138 = navigation3;
+            navigation3.next = DAT_1138;
+            DAT_1138 = navigation3;
         }
-        global::Navigation navigation4 = this.FUN_35B00(param1.x >> 16, param1.z >> 16);
+        Navigation navigation4 = FUN_35B00(param1.x >> 16, param1.z >> 16);
         navigation3 = navigation4;
-        if (this.levelManager.aimpData[navigation4.aimpIndex + (int)navigation4.DAT_10 + 1] == 0)
+        if (levelManager.aimpData[navigation4.aimpIndex + navigation4.DAT_10 + 1] == 0)
         {
-            navigation3 = this.FUN_35CBC(navigation4);
+            navigation3 = FUN_35CBC(navigation4);
             if (navigation3 == null)
             {
                 return null;
             }
-            navigation4.next = this.DAT_1138;
-            this.DAT_1138 = navigation4;
+            navigation4.next = DAT_1138;
+            DAT_1138 = navigation4;
         }
         navigation3.DAT_18 = 0;
-        int num4 = this.FUN_35FF0(navigation2, (short)navigation.DAT_0C, (short)navigation.DAT_0E);
-        navigation3.DAT_14 = num4;
+        int num4 = navigation3.DAT_14 = FUN_35FF0(navigation2, (short)navigation.DAT_0C, (short)navigation.DAT_0E);
         navigation3.next = null;
         navigation3.DAT_04 = null;
         navigation2 = null;
         while (navigation3 != null)
         {
             bool flag;
-            if ((param4 & 2U) == 0U)
+            if ((param4 & 2) == 0)
             {
                 num3 = (int)Utilities.FUN_14A54();
-                num2 += UnityEngine.Random.Range(this.aiMin, this.aiMax);
-                flag = num2 > 1000;
+                num2 += UnityEngine.Random.Range(aiMin, aiMax);
+                flag = (num2 > 1000);
                 flag = false;
             }
             else
             {
-                param3 -= 1U;
-                flag = param3 == 0U;
+                param3--;
+                flag = (param3 == 0);
             }
-            if (flag && (param4 & 1U) != 0U)
+            if (flag && (param4 & 1) != 0)
             {
                 break;
             }
             navigation4 = navigation3.next;
             if (flag || (navigation3.aimpIndex == navigation.aimpIndex && navigation3.DAT_10 == navigation.DAT_10))
             {
-                num = navigation3.aimpIndex + (int)navigation3.DAT_10;
-                ushort[] aimpData = this.levelManager.aimpData;
-                int num5 = num + 1;
-                aimpData[num5] &= 40959;
-                global::Navigation navigation5 = navigation3.DAT_04;
+                num = navigation3.aimpIndex + navigation3.DAT_10;
+                levelManager.aimpData[num + 1] &= 40959;
+                Navigation dAT_ = navigation3.DAT_04;
                 num3 = 0;
-                while (navigation5 != null)
+                while (dAT_ != null)
                 {
-                    navigation5 = navigation5.DAT_04;
+                    dAT_ = dAT_.DAT_04;
                     num3++;
                 }
                 num3 -= ((num3 != 0) ? 1 : 0);
                 short[] array = new short[(num3 + 2) * 2];
-                int num6 = num3 * 2;
-                array[num6 + 3] = 0;
-                array[num6 + 2] = 0;
-                array[num6] = (short)(param2.x >> 16);
+                int num5 = num3 * 2;
+                array[num5 + 3] = 0;
+                array[num5 + 2] = 0;
+                array[num5] = (short)(param2.x >> 16);
                 num3--;
-                array[num6 + 1] = (short)(param2.z >> 16);
+                array[num5 + 1] = (short)(param2.z >> 16);
                 if (num3 != -1)
                 {
-                    int num7 = num3 * 2;
+                    int num6 = num3 * 2;
                     do
                     {
                         navigation3 = navigation3.DAT_04;
-                        array[num7] = (short)((int)navigation3.DAT_0C + (1 << (int)navigation3.DAT_11) / 2);
+                        array[num6] = (short)(navigation3.DAT_0C + (1 << (navigation3.DAT_11 & 0x1F)) / 2);
                         num3--;
-                        array[num7 + 1] = (short)((int)navigation3.DAT_0E + (1 << (int)navigation3.DAT_11) / 2);
-                        num7 -= 2;
+                        array[num6 + 1] = (short)(navigation3.DAT_0E + (1 << (navigation3.DAT_11 & 0x1F)) / 2);
+                        num6 -= 2;
                     }
                     while (num3 != -1);
                 }
-                this.FUN_35AC0(navigation4);
-                this.FUN_35AC0(navigation2);
+                FUN_35AC0(navigation4);
+                FUN_35AC0(navigation2);
                 return array;
             }
-            global::Navigation navigation6 = this.FUN_35CBC(navigation3);
-            for (global::Navigation navigation7 = navigation6; navigation7 != null; navigation7 = navigation6)
+            Navigation navigation5 = FUN_35CBC(navigation3);
+            for (Navigation navigation6 = navigation5; navigation6 != null; navigation6 = navigation5)
             {
-                navigation6 = navigation7.next;
-                navigation7.DAT_18 = navigation3.DAT_18 + ((int)((byte)this.levelManager.aimpData[navigation7.aimpIndex + (int)navigation7.DAT_10 + 1]) << (int)navigation7.DAT_11);
-                num3 = navigation7.aimpIndex + (int)navigation7.DAT_10;
-                ushort num8 = this.levelManager.aimpData[num3 + 1];
-                global::Navigation navigation8 = null;
-                if ((num8 & 16384) != 0)
+                navigation5 = navigation6.next;
+                navigation6.DAT_18 = navigation3.DAT_18 + ((byte)levelManager.aimpData[navigation6.aimpIndex + navigation6.DAT_10 + 1] << (int)navigation6.DAT_11);
+                num3 = navigation6.aimpIndex + navigation6.DAT_10;
+                ushort num7 = levelManager.aimpData[num3 + 1];
+                Navigation navigation7 = null;
+                if ((num7 & 0x4000) != 0)
                 {
-                    global::Navigation navigation9 = navigation4;
-                    if ((num8 & 8192) != 0)
+                    Navigation navigation8 = navigation4;
+                    if ((num7 & 0x2000) != 0)
                     {
-                        navigation9 = navigation2;
+                        navigation8 = navigation2;
                     }
-                    if (navigation7.aimpIndex != navigation9.aimpIndex || navigation7.DAT_10 != navigation9.DAT_10)
+                    if (navigation6.aimpIndex != navigation8.aimpIndex || navigation6.DAT_10 != navigation8.DAT_10)
                     {
                         do
                         {
-                            navigation8 = navigation9;
-                            navigation9 = navigation8.next;
+                            navigation7 = navigation8;
+                            navigation8 = navigation7.next;
                         }
-                        while (navigation7.aimpIndex != navigation9.aimpIndex || navigation7.DAT_10 != navigation9.DAT_10);
+                        while (navigation6.aimpIndex != navigation8.aimpIndex || navigation6.DAT_10 != navigation8.DAT_10);
                     }
-                    navigation7.next = this.DAT_1138;
-                    int dat_ = navigation9.DAT_18;
-                    num3 = navigation7.DAT_18;
-                    this.DAT_1138 = navigation7;
-                    if (0 < dat_ - num3)
+                    navigation6.next = DAT_1138;
+                    int dAT_2 = navigation8.DAT_18;
+                    num3 = navigation6.DAT_18;
+                    DAT_1138 = navigation6;
+                    if (0 < dAT_2 - num3)
                     {
-                        if (navigation8 == null)
+                        if (navigation7 == null)
                         {
-                            if ((num8 & 8192) == 0)
+                            if ((num7 & 0x2000) == 0)
                             {
-                                navigation4 = navigation9.next;
+                                navigation4 = navigation8.next;
                             }
                             else
                             {
-                                navigation2 = navigation9.next;
+                                navigation2 = navigation8.next;
                             }
                         }
                         else
                         {
-                            navigation8.next = navigation9.next;
+                            navigation7.next = navigation8.next;
                         }
-                        this.levelManager.aimpData[navigation9.aimpIndex + (int)navigation9.DAT_10 + 1] = (ushort)(num8 & 57343);
-                        num4 = navigation7.DAT_18;
-                        navigation9.DAT_04 = navigation3;
-                        navigation9.DAT_18 = num4;
-                        navigation9.DAT_14 -= dat_ - num3;
-                        navigation4 = this.FUN_35A6C(navigation4, navigation9);
+                        levelManager.aimpData[navigation8.aimpIndex + navigation8.DAT_10 + 1] = (ushort)(num7 & 0xDFFF);
+                        num4 = navigation6.DAT_18;
+                        navigation8.DAT_04 = navigation3;
+                        navigation8.DAT_18 = num4;
+                        navigation8.DAT_14 -= dAT_2 - num3;
+                        navigation4 = FUN_35A6C(navigation4, navigation8);
                     }
                 }
                 else
                 {
-                    this.levelManager.aimpData[num3 + 1] = (ushort)(num8 | 16384);
-                    num3 = this.FUN_35FF0(navigation7, (short)navigation.DAT_0C, (short)navigation.DAT_0E);
-                    navigation7.DAT_04 = navigation3;
-                    navigation7.DAT_14 = navigation7.DAT_18 + num3;
-                    navigation4 = this.FUN_35A6C(navigation4, navigation7);
+                    levelManager.aimpData[num3 + 1] = (ushort)(num7 | 0x4000);
+                    num3 = FUN_35FF0(navigation6, (short)navigation.DAT_0C, (short)navigation.DAT_0E);
+                    navigation6.DAT_04 = navigation3;
+                    navigation6.DAT_14 = navigation6.DAT_18 + num3;
+                    navigation4 = FUN_35A6C(navigation4, navigation6);
                 }
             }
             navigation3.next = navigation2;
-            num3 = navigation3.aimpIndex + (int)navigation3.DAT_10;
-            ushort[] aimpData2 = this.levelManager.aimpData;
-            int num9 = num3 + 1;
-            aimpData2[num9] |= 24576;
+            num3 = navigation3.aimpIndex + navigation3.DAT_10;
+            levelManager.aimpData[num3 + 1] |= 24576;
             navigation2 = navigation3;
             navigation3 = navigation4;
         }
-        this.FUN_35AC0(navigation3);
-        this.FUN_35AC0(navigation2);
+        FUN_35AC0(navigation3);
+        FUN_35AC0(navigation2);
         return null;
     }
 
     public bool FUN_36558(int param1, int param2)
     {
-        return 99 < this.vehicleStats[param2].accel && 99 < this.vehicleStats[param2].speed && 99 < this.vehicleStats[param2].armor && 99 < this.vehicleStats[param2].avoidance;
+        if (99 < vehicleStats[param2].accel && 99 < vehicleStats[param2].speed && 99 < vehicleStats[param2].armor)
+        {
+            return 99 < vehicleStats[param2].avoidance;
+        }
+        return false;
     }
 
     public string gameTagPlayerLocal;
@@ -5085,84 +5046,70 @@ public class GameManager : MonoBehaviour
 
     public void FUN_3827C(Vehicle param1, VigTransform param2)
     {
-        if (!isWait)
+        Vehicle vehicle = (Vehicle)param1.target;
+        if (vehicle != null)
         {
-            return;
+            VigObject vigObject = param1.weapons[param1.weaponSlot];
+            Vector3Int param3 = vehicle.screen;
+            short dAT_C;
+            int dAT_;
+            VigMesh param4;
+            if (vehicle.jammer == 0)
+            {
+                int num = 0;
+                param3 = vehicle.vTransform.position;
+                if (vigObject != null)
+                {
+                    num = (((vigObject.flags & 0x4000) != 0) ? 1 : 0);
+                }
+                dAT_C = param1.DAT_C6;
+                dAT_ = vehicle.DAT_58;
+                param4 = DAT_1150[num];
+            }
+            else
+            {
+                dAT_C = param1.DAT_C6;
+                dAT_ = vehicle.DAT_58;
+                param4 = DAT_1150[2];
+            }
+            //Reticula otros Jugadores
+            FUN_380D8(param3, dAT_, param4, param2, dAT_C);
+            GameTagPlayer(param3, dAT_, param4, param2, dAT_C, vehicle);
         }
-        Vehicle vehicle = null;
-        if (!paused)
+        if (param1.jammer != 0 || (DAT_40 & 0x200000) != 0 || enableReticle)
         {
-            //Verifica si hay objetivos
-            if ((Vehicle)param1.target != null) //Sigue dando error al comenzar
-            {
-                vehicle = (Vehicle)param1.target;
-                VigObject vigObject = param1.weapons[param1.weaponSlot];
-                Vector3Int param3 = vehicle.screen;
-                short dAT_C;
-                int dAT_;
-                VigMesh param4;
-                if (vehicle.jammer == 0)
-                {
-                    int num = 0;
-                    param3 = vehicle.vTransform.position;
-                    if (vigObject != null)
-                    {
-                        num = (((vigObject.flags & 0x4000) != 0) ? 1 : 0);
-                    }
-                    dAT_C = param1.DAT_C6;
-                    dAT_ = vehicle.DAT_58;
-                    param4 = DAT_1150[num];
-                }
-                else
-                {
-                    dAT_C = param1.DAT_C6;
-                    dAT_ = vehicle.DAT_58;
-                    param4 = DAT_1150[2];
-                }
-                //Reticula otros Jugadores
-                FUN_380D8(param3, dAT_, param4, param2, dAT_C);
-
-                GameTagPlayer(param3, dAT_, param4, param2, dAT_C, vehicle);
-            }
-            if (param1.jammer != 0 || (DAT_40 & 0x200000) != 0 || enableReticle)
-            {
-                //reticula Jugador
-                FUN_380D8(param1.screen, param1.DAT_58, DAT_1150[3], param2, 256);
-                GameTagPlayer(param1.screen, param1.DAT_58, DAT_1150[3], param2, 256, vehicle);
-            }
+            //reticula Jugador
+            FUN_380D8(param1.screen, param1.DAT_58, DAT_1150[3], param2, 256);
+            GameTagPlayer(param1.screen, param1.DAT_58, DAT_1150[3], param2, 256, vehicle);
         }
     }
 
     public uint FUN_4A970(uint param1, uint param2)
     {
-        int num;
-        if (this.gameMode == _GAME_MODE.Versus2)
-        {
-            num = 2;
-        }
-        else
-        {
-            num = (int)this.difficultyMode;
-        }
+        int num = (gameMode != _GAME_MODE.Versus2) ? difficultyMode : 2;
         int num2 = ~num + 3;
-        while (num2 != -1)
+        while (true)
         {
+            if (num2 == -1)
+            {
+                return param2;
+            }
             do
             {
-                param2 = GameManager.FUN_2AC5C() * 18U >> 15;
+                param2 = FUN_2AC5C() * 18 >> 15;
             }
-            while (GameManager.DAT_63FA4[(int)param2] < 0 || ((ulong)param1 & (ulong)(262144L << (int)(param2 & 31U & 31U))) == 0UL);
-            if (param2 == 13U)
+            while (DAT_63FA4[param2] < 0 || (param1 & (262144 << (int)param2)) == 0L);
+            if (param2 == 13)
             {
-                return 13U;
+                break;
             }
             num2--;
-            if (4294967295U < param1)
+            if (-1 < (int)param1)
             {
                 return param2;
             }
         }
-        return param2;
+        return 13u;
     }
 
     public short meshHelp = 0;
@@ -5246,12 +5193,12 @@ public class GameManager : MonoBehaviour
     public VigObject FUN_4AC1C(uint param1, VigObject param2)
     {
         VigObject vigObject;
-        if (this.gameMode < _GAME_MODE.Versus2 || DiscordController.IsOwner())
+        if (gameMode < _GAME_MODE.Versus2 || DiscordController.IsOwner())
         {
-            vigObject = this.FUN_4AB18(param1, param2);
+            vigObject = FUN_4AB18(param1, param2);
             if (vigObject != null)
             {
-                param2.flags |= 32768U;
+                param2.flags |= 32768u;
                 vigObject.FUN_3066C();
             }
         }
@@ -5275,17 +5222,17 @@ public class GameManager : MonoBehaviour
             }
             while (vigObject != null);
         }
-        int num2 = (int)GameManager.FUN_2AC5C();
+        int num2 = (int)FUN_2AC5C();
         num2 = num2 * num >> 15;
         VigObject vigObject2 = param2;
         for (num2--; num2 != -1; num2--)
         {
             vigObject2 = vigObject2.child;
         }
-        vigObject = this.FUN_4AB18(param1, vigObject2);
+        vigObject = FUN_4AB18(param1, vigObject2);
         if (vigObject != null)
         {
-            param2.flags |= 32768U;
+            param2.flags |= 32768u;
             vigObject.FUN_3066C();
         }
         return vigObject;
@@ -5298,7 +5245,7 @@ public class GameManager : MonoBehaviour
         cam.transform.parent = gameObject.transform;
         vigCamera.target = param1;
         vigCamera.maxHalfHealth = param2;
-        vigCamera.flags |= 16777216U;
+        vigCamera.flags |= 16777216u;
         vigCamera.FUN_4B898();
         return vigCamera;
     }
@@ -5307,7 +5254,7 @@ public class GameManager : MonoBehaviour
     {
         if (param1 != null)
         {
-            this.FUN_1FEB8(param1.vMesh);
+            FUN_1FEB8(param1.vMesh);
             UnityEngine.Object.Destroy(param1.gameObject);
         }
     }
@@ -5321,8 +5268,8 @@ public class GameManager : MonoBehaviour
         {
             do
             {
-                vigObject2 = param2.ini.FUN_2C17C(param3, param4, 8U);
-                vigObject2.vTransform = GameManager.FUN_2A39C();
+                vigObject2 = param2.ini.FUN_2C17C(param3, param4, 8u);
+                vigObject2.vTransform = FUN_2A39C();
                 vigObject2.child = vigObject;
                 num++;
                 vigObject2.LDAT_78 = param1;
@@ -5348,16 +5295,16 @@ public class GameManager : MonoBehaviour
 
     public void FUN_50B38()
     {
-        List<Junction> roadList = this.levelManager.roadList;
+        List<Junction> roadList = levelManager.roadList;
         for (int i = 0; i < roadList.Count; i++)
         {
-            if (this.FUN_2E22C_2(roadList[i].pos, roadList[i].DAT_18))
+            if (FUN_2E22C_2(roadList[i].pos, roadList[i].DAT_18))
             {
-                Vector3Int vector3Int = Utilities.FUN_24148_2(this.DAT_F00, roadList[i].pos);
-                if (vector3Int.z < 2097152)
+                Vector3Int param = Utilities.FUN_24148_2(DAT_F00, roadList[i].pos);
+                if (param.z < 2097152)
                 {
                     roadList[i].vTransform.position = roadList[i].pos;
-                    roadList[i].FUN_4F804(vector3Int);
+                    roadList[i].FUN_4F804(param);
                 }
                 else
                 {
@@ -5369,26 +5316,27 @@ public class GameManager : MonoBehaviour
                 roadList[i].ClearRoadData();
             }
         }
-        if (0 < this.levelManager.DAT_1184)
+        if (0 >= levelManager.DAT_1184)
         {
-            for (int j = 0; j < this.levelManager.DAT_1184; j++)
+            return;
+        }
+        for (int j = 0; j < levelManager.DAT_1184; j++)
+        {
+            if (levelManager.juncList[j].DAT_18 != null)
             {
-                if (this.levelManager.juncList[j].DAT_18 != null)
-                {
-                    this.FUN_507DC(this.levelManager.juncList[j]);
-                }
+                FUN_507DC(levelManager.juncList[j]);
             }
         }
     }
 
     public short[] FUN_51ED4(Vector3Int param1, Vector3Int param2, uint param3, uint param4)
     {
-        if (this.DAT_D0C != 0)
+        if (DAT_D0C != 0)
         {
             param3 >>= 11;
-            param4 |= 2U;
+            param4 |= 2;
         }
-        return this.FUN_36060(param1, param2, param3, param4);
+        return FUN_36060(param1, param2, param3, param4);
     }
 
     private void Awake()
@@ -7480,52 +7428,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-#if DEBUG
-    //Optimizacion
-    [Serializable]
-    public class SerializeObject<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
-    {
-        [SerializeField]
-        private List<TKey> vigObjectList = new List<TKey>();
-
-        [SerializeField]
-        private List<TValue> objectStateElement = new List<TValue>();
-
-        public void OnBeforeSerialize()
-        {
-            vigObjectList.Clear();
-            objectStateElement.Clear();
-
-            foreach (var pair in this)
-            {
-                vigObjectList.Add(pair.Key);
-                objectStateElement.Add(pair.Value);
-            }
-        }
-
-        public void OnAfterDeserialize()
-        {
-            this.Clear();
-
-            if (vigObjectList.Count != objectStateElement.Count)
-            {
-                Debug.LogError("Error al deserializar el diccionario. La cantidad de claves y valores no coincide.");
-                return;
-            }
-
-            for (int i = 0; i < vigObjectList.Count; i++)
-            {
-                this[vigObjectList[i]] = objectStateElement[i];
-            }
-        }
-    }
-
-    [SerializeField]
-    private SerializeObject<VigObject, ObjectState> objectStates = new SerializeObject<VigObject, ObjectState>();
-    // Clase auxiliar para almacenar el estado de los objetos
-#else
     private Dictionary<VigObject, ObjectState> objectStates = new Dictionary<VigObject, ObjectState>();
-#endif
     int countVehicle = 0;
 
     public int drawObjectDistace = 4194304; //default: 4194304
@@ -7801,7 +7704,6 @@ public class GameManager : MonoBehaviour
         // Código para actualizar los reflejos aquí
     }
 
-    [Serializable]
     public class ObjectState
     {
         public bool ishasChanges;

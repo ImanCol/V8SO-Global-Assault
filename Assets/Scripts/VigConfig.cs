@@ -1,402 +1,666 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using Unity.Burst;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class ConfigContainer
+{
+    public ushort flag; //0x00
+    public short colliderID; //0x02
+    public Vector3Int v3_1; //0x04
+    public Vector3Int v3_2; //0x10
+    public ushort objID; //0x16
+    public ushort previous; //0x18
+    public ushort next; //0x1A
+}
 
-[BurstCompile]
 public class VigConfig : MonoBehaviour
 {
     public int dataID;
-
     public List<ConfigContainer> configContainers;
-
-    public uint pointerUnk1;
-
+    public uint pointerUnk1; //0x08
     public VigObject[] obj;
-
-    public int currentID;
+    public int currentID = 0;
 
     [HideInInspector]
     public XOBF_DB xobf;
 
     public VigObject FUN_2C17C(ushort param1, Type param2, uint param3)
     {
-        //Debug.Log("Detectando colision... ushort:" + param1 + " - Type:" + param2 + " - uint:" + param3);
-        //Debug.Log("configContainer... ushort:" + param1 + " - Type:" + param2 + " - uint:" + param3);
-        Debug.Log("ConfigContainers Index:" + param1);
-        ConfigContainer configContainer = configContainers[param1]; //error en Cansoncity con el Agua
-        VigObject vigObject;
-        if ((short)configContainer.flag < 0 || (255 < (short)configContainer.objID && (param3 & 0x20) != 0))
+        VigObject oVar1;
+        int iVar2;
+        VigObject oVar3;
+        byte[] aVar3;
+        BufferedBinaryReader brVar4;
+        ConfigContainer psVar5;
+
+        psVar5 = configContainers[param1];
+
+        if ((short)psVar5.flag < 0 || (255 < (short)psVar5.objID && (param3 & 0x20) != 0))
         {
-            vigObject = (((param3 & 1) != 0 && (short)configContainer.previous != -1) ? FUN_2C17C(configContainer.previous, typeof(VigObject), param3) : null);
+            if ((param3 & 1) == 0 || (short)psVar5.previous == -1)
+                oVar1 = null;
+            else
+                oVar1 = FUN_2C17C(psVar5.previous, typeof(VigObject), param3);
         }
         else
         {
-            vigObject = FUN_2BF44(configContainer, param2);
-            vigObject.DAT_1A = (short)param1;
-            vigObject.id = (short)configContainer.objID;
+            oVar1 = FUN_2BF44(psVar5, param2);
+            oVar1.DAT_1A = (short)param1;
+            oVar1.id = (short)psVar5.objID;
+
             if ((param3 & 8) == 0)
-            {
-                vigObject.vAnim = null;
-            }
+                oVar1.vAnim = null;
             else
             {
-                byte[] animations = xobf.animations;
-                BufferedBinaryReader bufferedBinaryReader = null;
-                if (animations.Length != 0)
+                aVar3 = xobf.animations;
+                brVar4 = null;
+
+                if (aVar3.Length > 0)
                 {
-                    bufferedBinaryReader = new BufferedBinaryReader(animations);
-                    int num = bufferedBinaryReader.ReadInt32(param1 * 4 + 4);
-                    if (num != 0)
-                    {
-                        bufferedBinaryReader.Seek(num, SeekOrigin.Begin);
-                    }
+                    brVar4 = new BufferedBinaryReader(aVar3);
+                    iVar2 = brVar4.ReadInt32(param1 * 4 + 4);
+
+                    if (iVar2 != 0)
+                        brVar4.Seek(iVar2, SeekOrigin.Begin);
                     else
-                    {
-                        bufferedBinaryReader = null;
-                    }
+                        brVar4 = null;
                 }
-                vigObject.vAnim = bufferedBinaryReader;
+
+                oVar1.vAnim = brVar4;
             }
-            vigObject.DAT_4A = GameManager.instance.timer;
-            if ((param3 & 1) != 0 && (short)configContainer.previous != -1)
+
+            oVar1.DAT_4A = GameManager.instance.timer;
+
+            if ((param3 & 1) != 0 && (short)psVar5.previous != -1)
             {
-                VigObject vigObject2 = vigObject.child = FUN_2C17C(configContainer.previous, typeof(VigObject), param3);
-                if (vigObject2 != null)
+                oVar3 = FUN_2C17C(psVar5.previous, typeof(VigObject), param3);
+                oVar1.child = oVar3;
+
+                if (oVar3 != null)
                 {
-                    vigObject2.parent = vigObject;
-                    vigObject.child.ApplyTransformation();
+                    oVar3.parent = oVar1;
+                    oVar1.child.ApplyTransformation();
                 }
             }
-            if ((param3 & 2) == 0 && (short)configContainer.next != -1)
+
+            if ((param3 & 2) == 0 && (short)psVar5.next != -1)
             {
-                VigObject vigObject2 = vigObject.child2 = FUN_2C17C(configContainer.next, typeof(VigObject), param3 | 0x21);
-                if (vigObject2 != null)
+                oVar3 = FUN_2C17C(psVar5.next, typeof(VigObject), param3 | 33);
+                oVar1.child2 = oVar3;
+
+                if (oVar3 != null)
                 {
-                    vigObject2.parent = vigObject;
-                    vigObject.child2.ApplyTransformation();
+                    oVar3.parent = oVar1;
+                    oVar1.child2.ApplyTransformation();
                 }
             }
         }
-        return vigObject;
+
+        return oVar1;
     }
 
     public VigObject FUN_2C17C(ushort param1, Type param2, uint param3, Type param4)
     {
-        ConfigContainer configContainer = configContainers[param1];
-        VigObject vigObject;
-        if ((short)configContainer.flag < 0 || (255 < (short)configContainer.objID && (param3 & 0x20) != 0))
+        VigObject oVar1;
+        int iVar2;
+        VigObject oVar3;
+        byte[] aVar3;
+        BufferedBinaryReader brVar4;
+        ConfigContainer psVar5;
+
+        psVar5 = configContainers[param1];
+
+        if ((short)psVar5.flag < 0 || (255 < (short)psVar5.objID && (param3 & 0x20) != 0))
         {
-            vigObject = (((param3 & 1) != 0 && (short)configContainer.previous != -1) ? FUN_2C17C(configContainer.previous, typeof(VigObject), param3) : null);
+            if ((param3 & 1) == 0 || (short)psVar5.previous == -1)
+                oVar1 = null;
+            else
+                oVar1 = FUN_2C17C(psVar5.previous, typeof(VigObject), param3);
         }
         else
         {
-            vigObject = FUN_2BF44(configContainer, param2);
-            vigObject.DAT_1A = (short)param1;
-            vigObject.id = (short)configContainer.objID;
+            oVar1 = FUN_2BF44(psVar5, param2);
+            oVar1.DAT_1A = (short)param1;
+            oVar1.id = (short)psVar5.objID;
+
             if ((param3 & 8) == 0)
-            {
-                vigObject.vAnim = null;
-            }
+                oVar1.vAnim = null;
             else
             {
-                byte[] animations = xobf.animations;
-                BufferedBinaryReader bufferedBinaryReader = null;
-                if (animations.Length != 0)
+                aVar3 = xobf.animations;
+                brVar4 = null;
+
+                if (aVar3.Length > 0)
                 {
-                    bufferedBinaryReader = new BufferedBinaryReader(animations);
-                    int num = bufferedBinaryReader.ReadInt32(param1 * 4 + 4);
-                    if (num != 0)
-                    {
-                        bufferedBinaryReader.Seek(num, SeekOrigin.Begin);
-                    }
+                    brVar4 = new BufferedBinaryReader(aVar3);
+                    iVar2 = brVar4.ReadInt32(param1 * 4 + 4);
+
+                    if (iVar2 != 0)
+                        brVar4.Seek(iVar2, SeekOrigin.Begin);
                     else
-                    {
-                        bufferedBinaryReader = null;
-                    }
+                        brVar4 = null;
                 }
-                vigObject.vAnim = bufferedBinaryReader;
+
+                oVar1.vAnim = brVar4;
             }
-            vigObject.DAT_4A = GameManager.instance.timer;
-            if ((param3 & 1) != 0 && (short)configContainer.previous != -1)
+
+            oVar1.DAT_4A = GameManager.instance.timer;
+
+            if ((param3 & 1) != 0 && (short)psVar5.previous != -1)
             {
-                VigObject vigObject2 = vigObject.child = FUN_2C17C(configContainer.previous, param4, param3);
-                if (vigObject2 != null)
+                oVar3 = FUN_2C17C(psVar5.previous, param4, param3);
+                oVar1.child = oVar3;
+
+                if (oVar3 != null)
                 {
-                    vigObject2.parent = vigObject;
-                    vigObject.child.ApplyTransformation();
+                    oVar3.parent = oVar1;
+                    oVar1.child.ApplyTransformation();
                 }
             }
-            if ((param3 & 2) == 0 && (short)configContainer.next != -1)
+
+            if ((param3 & 2) == 0 && (short)psVar5.next != -1)
             {
-                VigObject vigObject2 = vigObject.child2 = FUN_2C17C(configContainer.next, param4, param3 | 0x21);
-                if (vigObject2 != null)
+                oVar3 = FUN_2C17C(psVar5.next, param4, param3 | 33);
+                oVar1.child2 = oVar3;
+
+                if (oVar3 != null)
                 {
-                    vigObject2.parent = vigObject;
-                    vigObject.child2.ApplyTransformation();
+                    oVar3.parent = oVar1;
+                    oVar1.child2.ApplyTransformation();
                 }
             }
         }
-        return vigObject;
+
+        return oVar1;
     }
 
     public VigObject FUN_2C17C_2(ushort param1, Type param2, uint param3)
     {
-        ConfigContainer configContainer = configContainers[param1];
-        VigObject vigObject;
-        if ((short)configContainer.flag < 0 || (255 < (short)configContainer.objID && (param3 & 0x20) != 0))
+        VigObject oVar1;
+        int iVar2;
+        VigObject oVar3;
+        byte[] aVar3;
+        BufferedBinaryReader brVar4;
+        ConfigContainer psVar5;
+
+        psVar5 = configContainers[param1];
+
+        if ((short)psVar5.flag < 0 || (255 < (short)psVar5.objID && (param3 & 0x20) != 0))
         {
-            vigObject = (((param3 & 1) != 0 && (short)configContainer.previous != -1) ? FUN_2C17C_2(configContainer.previous, typeof(Body), param3) : null);
+            if ((param3 & 1) == 0 || (short)psVar5.previous == -1)
+                oVar1 = null;
+            else
+                oVar1 = FUN_2C17C_2(psVar5.previous, typeof(Body), param3);
         }
         else
         {
-            vigObject = FUN_2BF44(configContainer, param2);
-            vigObject.DAT_1A = (short)param1;
-            vigObject.id = (short)configContainer.objID;
+            oVar1 = FUN_2BF44(psVar5, param2);
+            oVar1.DAT_1A = (short)param1;
+            oVar1.id = (short)psVar5.objID;
+
             if ((param3 & 8) == 0)
-            {
-                vigObject.vAnim = null;
-            }
+                oVar1.vAnim = null;
             else
             {
-                byte[] animations = xobf.animations;
-                BufferedBinaryReader bufferedBinaryReader = null;
-                if (animations.Length != 0)
+                aVar3 = xobf.animations;
+                brVar4 = null;
+
+                if (aVar3.Length > 0)
                 {
-                    bufferedBinaryReader = new BufferedBinaryReader(animations);
-                    int num = bufferedBinaryReader.ReadInt32(param1 * 4 + 4);
-                    if (num != 0)
-                    {
-                        bufferedBinaryReader.Seek(num, SeekOrigin.Begin);
-                    }
+                    brVar4 = new BufferedBinaryReader(aVar3);
+                    iVar2 = brVar4.ReadInt32(param1 * 4 + 4);
+
+                    if (iVar2 != 0)
+                        brVar4.Seek(iVar2, SeekOrigin.Begin);
                     else
-                    {
-                        bufferedBinaryReader = null;
-                    }
+                        brVar4 = null;
                 }
-                vigObject.vAnim = bufferedBinaryReader;
+
+                oVar1.vAnim = brVar4;
             }
-            vigObject.DAT_4A = GameManager.instance.timer;
-            if ((param3 & 1) != 0 && (short)configContainer.previous != -1)
+
+            oVar1.DAT_4A = GameManager.instance.timer;
+
+            if ((param3 & 1) != 0 && (short)psVar5.previous != -1)
             {
-                VigObject vigObject2 = vigObject.child = FUN_2C17C_2(configContainer.previous, typeof(Body), param3);
-                if (vigObject2 != null)
+                oVar3 = FUN_2C17C_2(psVar5.previous, typeof(Body), param3);
+                oVar1.child = oVar3;
+
+                if (oVar3 != null)
                 {
-                    vigObject2.parent = vigObject;
-                    vigObject.child.ApplyTransformation();
+                    oVar3.parent = oVar1;
+                    oVar1.child.ApplyTransformation();
                 }
             }
-            if ((param3 & 2) == 0 && (short)configContainer.next != -1)
+
+            if ((param3 & 2) == 0 && (short)psVar5.next != -1)
             {
-                VigObject vigObject2 = vigObject.child2 = FUN_2C17C_2(configContainer.next, typeof(Body), param3 | 0x21);
-                if (vigObject2 != null)
+                oVar3 = FUN_2C17C_2(psVar5.next, typeof(Body), param3 | 33);
+                oVar1.child2 = oVar3;
+
+                if (oVar3 != null)
                 {
-                    vigObject2.parent = vigObject;
-                    vigObject.child2.ApplyTransformation();
+                    oVar3.parent = oVar1;
+                    oVar1.child2.ApplyTransformation();
                 }
             }
         }
-        return vigObject;
+
+        return oVar1;
     }
 
     public VigObject FUN_2C17C_3(ushort param1, Type param2, uint param3)
     {
-        ConfigContainer configContainer = configContainers[param1];
-        VigObject vigObject;
-        if ((short)configContainer.flag < 0 || (255 < (short)configContainer.objID && (param3 & 0x20) != 0))
+        VigObject oVar1;
+        int iVar2;
+        VigObject oVar3;
+        byte[] aVar3;
+        BufferedBinaryReader brVar4;
+        ConfigContainer psVar5;
+
+        psVar5 = configContainers[param1];
+
+        if ((short)psVar5.flag < 0 || (255 < (short)psVar5.objID && (param3 & 0x20) != 0))
         {
-            vigObject = (((param3 & 1) != 0 && (short)configContainer.previous != -1) ? FUN_2C17C(configContainer.previous, param2, param3) : null);
+            if ((param3 & 1) == 0 || (short)psVar5.previous == -1)
+                oVar1 = null;
+            else
+                oVar1 = FUN_2C17C(psVar5.previous, param2, param3);
         }
         else
         {
-            vigObject = FUN_2BF44(configContainer, param2);
-            vigObject.DAT_1A = (short)param1;
-            vigObject.id = (short)configContainer.objID;
+            oVar1 = FUN_2BF44(psVar5, param2);
+            oVar1.DAT_1A = (short)param1;
+            oVar1.id = (short)psVar5.objID;
+
             if ((param3 & 8) == 0)
-            {
-                vigObject.vAnim = null;
-            }
+                oVar1.vAnim = null;
             else
             {
-                byte[] animations = xobf.animations;
-                BufferedBinaryReader bufferedBinaryReader = null;
-                if (animations.Length != 0)
+                aVar3 = xobf.animations;
+                brVar4 = null;
+
+                if (aVar3.Length > 0)
                 {
-                    bufferedBinaryReader = new BufferedBinaryReader(animations);
-                    int num = bufferedBinaryReader.ReadInt32(param1 * 4 + 4);
-                    if (num != 0)
-                    {
-                        bufferedBinaryReader.Seek(num, SeekOrigin.Begin);
-                    }
+                    brVar4 = new BufferedBinaryReader(aVar3);
+                    iVar2 = brVar4.ReadInt32(param1 * 4 + 4);
+
+                    if (iVar2 != 0)
+                        brVar4.Seek(iVar2, SeekOrigin.Begin);
                     else
-                    {
-                        bufferedBinaryReader = null;
-                    }
+                        brVar4 = null;
                 }
-                vigObject.vAnim = bufferedBinaryReader;
+
+                oVar1.vAnim = brVar4;
             }
-            vigObject.DAT_4A = GameManager.instance.timer;
-            if ((param3 & 1) != 0 && (short)configContainer.previous != -1)
+
+            oVar1.DAT_4A = GameManager.instance.timer;
+
+            if ((param3 & 1) != 0 && (short)psVar5.previous != -1)
             {
-                VigObject vigObject2 = vigObject.child = FUN_2C17C(configContainer.previous, typeof(VigObject), param3);
-                if (vigObject2 != null)
+                oVar3 = FUN_2C17C(psVar5.previous, typeof(VigObject), param3);
+                oVar1.child = oVar3;
+
+                if (oVar3 != null)
                 {
-                    vigObject2.parent = vigObject;
-                    vigObject.child.ApplyTransformation();
+                    oVar3.parent = oVar1;
+                    oVar1.child.ApplyTransformation();
                 }
             }
-            if ((param3 & 2) == 0 && (short)configContainer.next != -1)
+
+            if ((param3 & 2) == 0 && (short)psVar5.next != -1)
             {
-                VigObject vigObject2 = vigObject.child2 = FUN_2C17C(configContainer.next, typeof(VigObject), param3 | 0x21);
-                if (vigObject2 != null)
+                oVar3 = FUN_2C17C(psVar5.next, typeof(VigObject), param3 | 33);
+                oVar1.child2 = oVar3;
+
+                if (oVar3 != null)
                 {
-                    vigObject2.parent = vigObject;
-                    vigObject.child2.ApplyTransformation();
+                    oVar3.parent = oVar1;
+                    oVar1.child2.ApplyTransformation();
                 }
             }
         }
-        return vigObject;
+
+        return oVar1;
     }
 
     public VigObject FUN_2C17C(ushort param1, Type param2, uint param3, Dictionary<int, Type> param4)
     {
-        ConfigContainer configContainer = configContainers[param1];
-        VigObject vigObject;
-        if ((short)configContainer.flag < 0 || (255 < (short)configContainer.objID && (param3 & 0x20) != 0))
+        VigObject oVar1;
+        int iVar2;
+        VigObject oVar3;
+        byte[] aVar3;
+        BufferedBinaryReader brVar4;
+        ConfigContainer psVar5;
+
+        psVar5 = configContainers[param1];
+
+        if ((short)psVar5.flag < 0 || (255 < (short)psVar5.objID && (param3 & 0x20) != 0))
         {
-            vigObject = (((param3 & 1) != 0 && (short)configContainer.previous != -1) ? ((!param4.ContainsKey(configContainer.previous)) ? FUN_2C17C(configContainer.previous, typeof(VigObject), param3, param4) : FUN_2C17C(configContainer.previous, param4[configContainer.previous], param3, param4)) : null);
+            if ((param3 & 1) == 0 || (short)psVar5.previous == -1)
+                oVar1 = null;
+            else
+            {
+                if (param4.ContainsKey(psVar5.previous))
+                    oVar1 = FUN_2C17C(psVar5.previous, param4[psVar5.previous], param3, param4);
+                else
+                    oVar1 = FUN_2C17C(psVar5.previous, typeof(VigObject), param3, param4);
+            }
         }
         else
         {
-            vigObject = FUN_2BF44(configContainer, param2);
-            vigObject.DAT_1A = (short)param1;
-            vigObject.id = (short)configContainer.objID;
+            oVar1 = FUN_2BF44(psVar5, param2);
+            oVar1.DAT_1A = (short)param1;
+            oVar1.id = (short)psVar5.objID;
+
             if ((param3 & 8) == 0)
-            {
-                vigObject.vAnim = null;
-            }
+                oVar1.vAnim = null;
             else
             {
-                byte[] animations = xobf.animations;
-                BufferedBinaryReader bufferedBinaryReader = null;
-                if (animations.Length != 0)
+                aVar3 = xobf.animations;
+                brVar4 = null;
+
+                if (aVar3.Length > 0)
                 {
-                    bufferedBinaryReader = new BufferedBinaryReader(animations);
-                    int num = bufferedBinaryReader.ReadInt32(param1 * 4 + 4);
-                    if (num != 0)
-                    {
-                        bufferedBinaryReader.Seek(num, SeekOrigin.Begin);
-                    }
+                    brVar4 = new BufferedBinaryReader(aVar3);
+                    iVar2 = brVar4.ReadInt32(param1 * 4 + 4);
+
+                    if (iVar2 != 0)
+                        brVar4.Seek(iVar2, SeekOrigin.Begin);
                     else
-                    {
-                        bufferedBinaryReader = null;
-                    }
+                        brVar4 = null;
                 }
-                vigObject.vAnim = bufferedBinaryReader;
+
+                oVar1.vAnim = brVar4;
             }
-            vigObject.DAT_4A = GameManager.instance.timer;
-            if ((param3 & 1) != 0 && (short)configContainer.previous != -1)
+
+            oVar1.DAT_4A = GameManager.instance.timer;
+
+            if ((param3 & 1) != 0 && (short)psVar5.previous != -1)
             {
-                VigObject vigObject2 = vigObject.child = ((!param4.ContainsKey(configContainer.previous)) ? FUN_2C17C(configContainer.previous, typeof(VigObject), param3, param4) : FUN_2C17C(configContainer.previous, param4[configContainer.previous], param3, param4));
-                if (vigObject2 != null)
+                if (param4.ContainsKey(psVar5.previous))
+                    oVar3 = FUN_2C17C(psVar5.previous, param4[psVar5.previous], param3, param4);
+                else
+                    oVar3 = FUN_2C17C(psVar5.previous, typeof(VigObject), param3, param4);
+
+                oVar1.child = oVar3;
+
+                if (oVar3 != null)
                 {
-                    vigObject2.parent = vigObject;
-                    vigObject.child.ApplyTransformation();
+                    oVar3.parent = oVar1;
+                    oVar1.child.ApplyTransformation();
                 }
             }
-            if ((param3 & 2) == 0 && (short)configContainer.next != -1)
+
+            if ((param3 & 2) == 0 && (short)psVar5.next != -1)
             {
-                VigObject vigObject2 = vigObject.child2 = ((!param4.ContainsKey(configContainer.next)) ? FUN_2C17C(configContainer.next, typeof(VigObject), param3 | 0x21, param4) : FUN_2C17C(configContainer.next, param4[configContainer.next], param3 | 0x21, param4));
-                if (vigObject2 != null)
+                if (param4.ContainsKey(psVar5.next))
+                    oVar3 = FUN_2C17C(psVar5.next, param4[psVar5.next], param3 | 33, param4);
+                else
+                    oVar3 = FUN_2C17C(psVar5.next, typeof(VigObject), param3 | 33, param4);
+
+                oVar1.child2 = oVar3;
+
+                if (oVar3 != null)
                 {
-                    vigObject2.parent = vigObject;
-                    vigObject.child2.ApplyTransformation();
+                    oVar3.parent = oVar1;
+                    oVar1.child2.ApplyTransformation();
                 }
             }
         }
-        return vigObject;
+
+        return oVar1;
     }
 
     public VigObject FUN_2C17C(ushort param1, Dictionary<int, Type> param2, uint param3)
     {
-        ConfigContainer configContainer = configContainers[param1];
-        VigObject vigObject;
-        if ((short)configContainer.flag < 0 || (255 < (short)configContainer.objID && (param3 & 0x20) != 0))
+        VigObject oVar1;
+        int iVar2;
+        VigObject oVar3;
+        byte[] aVar3;
+        BufferedBinaryReader brVar4;
+        ConfigContainer psVar5;
+
+        psVar5 = configContainers[param1];
+
+        if ((short)psVar5.flag < 0 || (255 < (short)psVar5.objID && (param3 & 0x20) != 0))
         {
-            vigObject = (((param3 & 1) != 0 && (short)configContainer.previous != -1) ? FUN_2C17C(configContainer.previous, param2, param3) : null);
+            if ((param3 & 1) == 0 || (short)psVar5.previous == -1)
+                oVar1 = null;
+            else
+                oVar1 = FUN_2C17C(psVar5.previous, param2, param3);
         }
         else
         {
-            vigObject = ((!param2.ContainsKey(param1)) ? FUN_2BF44(configContainer, typeof(VigObject)) : FUN_2BF44(configContainer, param2[param1]));
-            vigObject.DAT_1A = (short)param1;
-            vigObject.id = (short)configContainer.objID;
+            if (param2.ContainsKey(param1))
+                oVar1 = FUN_2BF44(psVar5, param2[param1]);
+            else
+                oVar1 = FUN_2BF44(psVar5, typeof(VigObject));
+
+            oVar1.DAT_1A = (short)param1;
+            oVar1.id = (short)psVar5.objID;
+
             if ((param3 & 8) == 0)
-            {
-                vigObject.vAnim = null;
-            }
+                oVar1.vAnim = null;
             else
             {
-                byte[] animations = xobf.animations;
-                BufferedBinaryReader bufferedBinaryReader = null;
-                if (animations.Length != 0)
+                aVar3 = xobf.animations;
+                brVar4 = null;
+
+                if (aVar3.Length > 0)
                 {
-                    bufferedBinaryReader = new BufferedBinaryReader(animations);
-                    int num = bufferedBinaryReader.ReadInt32(param1 * 4 + 4);
-                    if (num != 0)
-                    {
-                        bufferedBinaryReader.Seek(num, SeekOrigin.Begin);
-                    }
+                    brVar4 = new BufferedBinaryReader(aVar3);
+                    iVar2 = brVar4.ReadInt32(param1 * 4 + 4);
+
+                    if (iVar2 != 0)
+                        brVar4.Seek(iVar2, SeekOrigin.Begin);
                     else
-                    {
-                        bufferedBinaryReader = null;
-                    }
+                        brVar4 = null;
                 }
-                vigObject.vAnim = bufferedBinaryReader;
+
+                oVar1.vAnim = brVar4;
             }
-            vigObject.DAT_4A = GameManager.instance.timer;
-            if ((param3 & 1) != 0 && (short)configContainer.previous != -1)
+
+            oVar1.DAT_4A = GameManager.instance.timer;
+
+            if ((param3 & 1) != 0 && (short)psVar5.previous != -1)
             {
-                VigObject vigObject2 = vigObject.child = FUN_2C17C(configContainer.previous, param2, param3);
-                if (vigObject2 != null)
+                oVar3 = FUN_2C17C(psVar5.previous, param2, param3);
+                oVar1.child = oVar3;
+
+                if (oVar3 != null)
                 {
-                    vigObject2.parent = vigObject;
-                    vigObject.child.ApplyTransformation();
+                    oVar3.parent = oVar1;
+                    oVar1.child.ApplyTransformation();
                 }
             }
-            if ((param3 & 2) == 0 && (short)configContainer.next != -1)
+
+            if ((param3 & 2) == 0 && (short)psVar5.next != -1)
             {
-                VigObject vigObject2 = vigObject.child2 = FUN_2C17C(configContainer.next, param2, param3 | 0x21);
-                if (vigObject2 != null)
+                oVar3 = FUN_2C17C(psVar5.next, param2, param3 | 33);
+                oVar1.child2 = oVar3;
+
+                if (oVar3 != null)
                 {
-                    vigObject2.parent = vigObject;
-                    vigObject.child2.ApplyTransformation();
+                    oVar3.parent = oVar1;
+                    oVar1.child2.ApplyTransformation();
                 }
             }
         }
-        return vigObject;
+
+        return oVar1;
     }
 
     public ConfigContainer FUN_2C534(ushort param1, ushort param2)
     {
-        if (param1 != ushort.MaxValue)
+        uint uVar1;
+        ConfigContainer psVar2;
+
+        if (param1 != 0xffff)
         {
-            uint num = param1;
+            uVar1 = param1;
+
             do
             {
-                ConfigContainer configContainer = configContainers[(int)num];
-                if (configContainer.flag == param2)
-                {
-                    return configContainer;
-                }
-                num = configContainer.previous;
-            }
-            while (num != 65535);
+                psVar2 = configContainers[(int)uVar1];
+
+                if (psVar2.flag == param2)
+                    return psVar2;
+
+                uVar1 = psVar2.previous;
+            } while (uVar1 != 0xffff);
         }
+
         return null;
     }
 
+    public ConfigContainer FUN_2C590(int int1, int int2)
+    {
+        int1 &= 0xFFFF;
+        int configIndex = (int1 << 3) - int1 << 2;
+        return FUN_2C534(configContainers[configIndex / 0x1C].next, int2 & 0xFFFF);
+    }
+
+    public ConfigContainer FUN_2C6D0(ConfigContainer container, int int2)
+    {
+        return FUN_2C638(container.next, int2 & 0xFFFF);
+    }
+
+    public ConfigContainer FUN_2C5CC(ConfigContainer container, int int2)
+    {
+        return FUN_2C534(container.next, int2 & 0xFFFF);
+    }
+
+    public int FUN_2C73C(ConfigContainer container)
+    {
+        int offset = configContainers.IndexOf(container) * 0x1C;
+        //int offset = List.IndexOf(configContainers, container) * 0x1C;
+        int iVar1 = (offset << 3) + offset; //r2
+        int iVar2 = iVar1 << 6; //r3
+        iVar1 = iVar1 + iVar2 << 3;
+        iVar1 += offset;
+        iVar2 = iVar1 << 15;
+        iVar1 = iVar1 + iVar2 << 3;
+        iVar1 += offset;
+        return -iVar1 >> 2;
+    }
+
+    public ConfigContainer FUN_2C638(int int1, int int2)
+    {
+        int2 &= 0xFFFF;
+
+        if (int1 != 0xffff)
+        {
+            int iVar1;
+
+            do
+            {
+                iVar1 = int1 & 0xFFFF;
+                int configIndex = (iVar1 << 3) - iVar1 << 2;
+                configIndex = configIndex / 0x1C;
+
+                if (configContainers[configIndex].objID == int2)
+                    return configContainers[configIndex];
+
+                int1 = configContainers[configIndex].previous;
+            } while (int1 != 0xffff);
+        }
+
+        return null;
+    }
+
+    private ConfigContainer FUN_2C534(int int1, int int2)
+    {
+        int2 &= 0xFFFF;
+
+        if (int1 != 0xffff)
+        {
+            int iVar1;
+
+            do
+            {
+                iVar1 = int1 & 0xFFFF;
+                int configIndex = (iVar1 << 3) - iVar1 << 2;
+                configIndex = configIndex / 0x1C;
+
+                if ((ushort)configContainers[configIndex].flag == int2)
+                    return configContainers[configIndex];
+
+                int1 = configContainers[configIndex].previous;
+            } while (int1 != 0xffff);
+        }
+
+        return null;
+    }
+
+    /*private VigObject FUN_2BF44(ConfigContainer container, Type component)
+    {
+        obj[currentID].flags = (uint)((configContainers[container].flag & 0x800) != 0 ? 1 : 0) << 4;
+        obj[currentID].vr = configContainers[container].v3_2;
+        obj[currentID].screen = configContainers[container].v3_1;
+        obj[currentID].vData = this;
+
+        if ((configContainers[container].flag & 0x7FF) < 0x7FF)
+        {
+            //apply 3d model; not necessery since it's been applied from the inspector
+        }
+
+        if (-1 < configContainers[container].colliderID)
+        {
+            //apply collider; not necessery since it's been applied from the inspector
+        }
+
+        return obj[currentID];
+    }*/
+
+    public VigObject FUN_2BF44(ConfigContainer container, Type component)
+    {
+        ushort uVar2;
+        VigObject oVar3;
+        VigMesh mVar4;
+
+        GameObject obj = new GameObject();
+        oVar3 = obj.AddComponent(component) as VigObject;
+        uVar2 = container.flag;
+        oVar3.flags = (uint)((uVar2 & 0x800) != 0 ? 1 : 0) << 4;
+        oVar3.vr = container.v3_2;
+        oVar3.screen = container.v3_1;
+        oVar3.vData = xobf;
+
+        if ((uVar2 & 0x7ff) < 0x7ff)
+        {
+            mVar4 = xobf.FUN_1FD18(obj, (uint)(uVar2 & 0x7ff), true);
+            oVar3.vMesh = mVar4;
+        }
+
+        if (-1 < container.colliderID)
+        {
+            VigCollider vCollider = xobf.cbbList[container.colliderID];
+            oVar3.vCollider = new VigCollider(vCollider.buffer);
+        }
+
+        return oVar3;
+    }
+
+    private void Awake()
+    {
+
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
     public int GetContainerIndex(int start, int id)
     {
         int num = 0;
@@ -416,105 +680,4 @@ public class VigConfig : MonoBehaviour
         return -1;
     }
 
-    public ConfigContainer FUN_2C590(int int1, int int2)
-    {
-        int1 &= 0xFFFF;
-        int num = (int1 << 3) - int1 << 2;
-        return FUN_2C534(configContainers[num / 28].next, int2 & 0xFFFF);
-    }
-
-    public ConfigContainer FUN_2C6D0(ConfigContainer container, int int2)
-    {
-        return FUN_2C638(container.next, int2 & 0xFFFF);
-    }
-
-    public ConfigContainer FUN_2C5CC(ConfigContainer container, int int2)
-    {
-        return FUN_2C534(container.next, int2 & 0xFFFF);
-    }
-
-    public int FUN_2C73C(ConfigContainer container)
-    {
-        int num = configContainers.IndexOf(container) * 28;
-        int num2 = (num << 3) + num;
-        int num3 = num2 << 6;
-        int num4 = (num2 + num3 << 3) + num;
-        num3 = num4 << 15;
-        return -((num4 + num3 << 3) + num) >> 2;
-    }
-
-    public ConfigContainer FUN_2C638(int int1, int int2)
-    {
-        int2 &= 0xFFFF;
-        if (int1 != 65535)
-        {
-            do
-            {
-                int num = int1 & 0xFFFF;
-                int num2 = (num << 3) - num << 2;
-                num2 /= 28;
-                if (configContainers[num2].objID == int2)
-                {
-                    return configContainers[num2];
-                }
-                int1 = configContainers[num2].previous;
-            }
-            while (int1 != 65535);
-        }
-        return null;
-    }
-
-    private ConfigContainer FUN_2C534(int int1, int int2)
-    {
-        int2 &= 0xFFFF;
-        if (int1 != 65535)
-        {
-            do
-            {
-                int num = int1 & 0xFFFF;
-                int num2 = (num << 3) - num << 2;
-                num2 /= 28;
-                if (configContainers[num2].flag == int2)
-                {
-                    return configContainers[num2];
-                }
-                int1 = configContainers[num2].previous;
-            }
-            while (int1 != 65535);
-        }
-        return null;
-    }
-
-    public VigObject FUN_2BF44(ConfigContainer container, Type component)
-    {
-        GameObject gameObject = new GameObject();
-        VigObject vigObject = gameObject.AddComponent(component) as VigObject;
-        ushort flag = container.flag;
-        vigObject.flags = (uint)((((flag & 0x800) != 0) ? 1 : 0) << 4);
-        vigObject.vr = container.v3_2;
-        vigObject.screen = container.v3_1;
-        vigObject.vData = xobf;
-        if ((flag & 0x7FF) < 2047)
-        {
-            VigMesh vigMesh = vigObject.vMesh = xobf.FUN_1FD18(gameObject, (uint)(flag & 0x7FF), init: true);
-        }
-        if (-1 < container.colliderID)
-        {
-            VigCollider vigCollider = xobf.cbbList[container.colliderID];
-            vigObject.vCollider = new VigCollider(vigCollider.buffer);
-        }
-        return vigObject;
-    }
-
-    private void Awake()
-    {
-    }
-
-    private void Start()
-    {
-    }
-
-    private void Update()
-    {
-    }
 }
