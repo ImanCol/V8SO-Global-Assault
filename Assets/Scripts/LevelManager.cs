@@ -473,9 +473,7 @@ public class LevelManager : MonoBehaviour
 
     public void FUN_309C8(VigObject param1, int param2)
     {
-
         Debug.Log("param1.GetType()..." + param1.GetType());
-
         level.UpdateW(param1, 18, param2);
         GameManager.instance.FUN_309A0(param1);
     }

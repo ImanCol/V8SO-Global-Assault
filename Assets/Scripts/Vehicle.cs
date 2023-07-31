@@ -395,7 +395,7 @@ public class Vehicle : VigObject
         weapons = new VigObject[3];
         DAT_B6 = new short[3];
     }
-    
+
     protected override void Start()
     {
         Debug.Log("Iniciando Vehicle...");
@@ -8107,7 +8107,8 @@ public class Vehicle : VigObject
                     {
                         if (GameManager.instance.gameMode >= _GAME_MODE.Versus2)
                         {
-                            ClientSend.Combo((ushort)num3, 7);
+                            //Envia combos al servidor
+                            ClientSend.Combo((ushort)num3, 7); //No se vehiculos envia
                         }
                         vigObject.UpdateW(0, this);
                         param2 = GameManager.instance.FUN_1DD9C();
@@ -8145,7 +8146,7 @@ public class Vehicle : VigObject
                         {
                             if (GameManager.instance.gameMode >= _GAME_MODE.Versus2)
                             {
-                                ClientSend.Combo((ushort)num3, vigObject.tags);
+                                ClientSend.Combo((ushort)num3, vigObject.tags); //Envia combos del Host
                             }
                             param2 = GameManager.instance.FUN_1DD9C();
                             int param3 = 47;
@@ -8172,16 +8173,21 @@ public class Vehicle : VigObject
                 while (num4 < 3);
             }
         }
+
         param = 4u;
+
         if ((num & 2) != 0)
         {
             param = 12u;
         }
+
         VigObject vigObject4 = mgun;
+
         if (vigObject4.GetType().IsSubclassOf(typeof(VigObject)))
         {
             vigObject4.UpdateW((int)param, this);
         }
+
         if (DAT_C6 < 256)
         {
             DAT_C6 += 8;
@@ -8191,10 +8197,12 @@ public class Vehicle : VigObject
     public void FUN_3A5FC(int param1)
     {
         VigObject vigObject = weapons[weaponSlot];
+
         if (!(vigObject != null))
         {
             return;
         }
+
         if (param1 == 0 || vigObject.maxHalfHealth == 0 || vigObject.id != 0)
         {
             if (vigObject.GetType().IsSubclassOf(typeof(VigObject)))
@@ -8203,15 +8211,18 @@ public class Vehicle : VigObject
             }
             return;
         }
+
         short num = (short)(vigObject.GetType().IsSubclassOf(typeof(VigObject)) ? ((short)vigObject.UpdateW(12, this)) : 0);
+
         if (GameManager.instance.gameMode >= _GAME_MODE.Versus2 && id == -1)
         {
-            ClientSend.Weapon(vigObject.tags);
+            ClientSend.Weapon(vigObject.tags); //Envia 
         }
         else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && DiscordController.IsOwner() && id > 0)
         {
             ClientSend.WeaponAI(id, vigObject.tags);
         }
+
         if (vigObject.maxHalfHealth != 0)
         {
             if (0 < id && (vigObject.flags & 0x4000000) == 0)
@@ -8220,17 +8231,22 @@ public class Vehicle : VigObject
                 int num3 = (int)GameManager.FUN_2AC5C();
                 num = (short)(num + num2 + (num3 * num2 >> 15));
             }
+
             vigObject.id = num;
+
             if (GameManager.instance.gameMode == _GAME_MODE.Versus2 && id > 0)
             {
+                //Debug.Log("1/2 ID WEAPON 0");
                 vigObject.id = 0;
             }
 
             //RapidFire? = Remove !DiscordController.IsOwner() 
             else if (GameManager.instance.gameMode > _GAME_MODE.Versus2 && !DiscordController.IsOwner() && (id > 0 || id == -2))
             {
-                vigObject.id = 0;
+                //Debug.Log("2/2 ID WEAPON 0");
+                //vigObject.id = 0; //Remove Rapid fare IA Survivol
             }
+            //Debug.Log("ID WEAPON :" + vigObject.id + " " + !DiscordController.IsOwner());
         }
     }
 

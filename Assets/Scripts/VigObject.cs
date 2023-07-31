@@ -485,13 +485,11 @@ public struct VigTransform
     public Vector3Int position;
 }
 
-
 [BurstCompile]
 [Serializable]
 public class VigObject : MonoBehaviour
 {
     //private float forceModifier = 1f; // Valor predeterminado en caso de que no se establezca otro valor
-
     public uint flags;
 
     public byte type;
@@ -572,8 +570,6 @@ public class VigObject : MonoBehaviour
     public Vector3Int DAT_A0;
 
     public short DAT_A6;
-
-
     protected virtual void Start()
     {
     }

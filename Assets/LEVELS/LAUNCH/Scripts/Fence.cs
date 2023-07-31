@@ -116,7 +116,6 @@ public class Fence : Destructible
         }
         else
             FUN_32CF0(hit);
-
         return 0;
     }
 
@@ -144,10 +143,8 @@ public class Fence : Destructible
             case 9:
                 if (arg2 == 0 && DAT_19 != 0)
                     FUN_33A28(0x8f80);
-
                 break;
         }
-
         return 0;
     }
 }

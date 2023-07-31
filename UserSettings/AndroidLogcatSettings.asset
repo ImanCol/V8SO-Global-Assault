@@ -1,9 +1,9 @@
 {
-    "m_SelectedDeviceId": "127.0.0.1:21503",
+    "m_SelectedDeviceId": "127.0.0.1:21513",
     "m_SelectedPackage": {
-        "deviceId": "127.0.0.1:21503",
+        "deviceId": "127.0.0.1:21513",
         "name": "com.OtakTeamProductions.Vigilante8GlobbalOffense",
-        "processId": 3487,
+        "processId": 9070,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -24,6 +24,36 @@
             "deviceId": "127.0.0.1:21503",
             "name": "com.OtakTeamProductions.Vigilante8GlobbalOffense",
             "processId": 3487,
+            "exited": false
+        },
+        {
+            "deviceId": "127.0.0.1:21513",
+            "name": "com.OtakTeamProductions.Vigilante8GlobbalOffense",
+            "processId": 9196,
+            "exited": false
+        },
+        {
+            "deviceId": "127.0.0.1:21513",
+            "name": "com.OtakTeamProductions.Vigilante8GlobbalOffense",
+            "processId": 3863,
+            "exited": false
+        },
+        {
+            "deviceId": "127.0.0.1:21513",
+            "name": "com.OtakTeamProductions.Vigilante8GlobbalOffense",
+            "processId": 7525,
+            "exited": false
+        },
+        {
+            "deviceId": "127.0.0.1:21513",
+            "name": "com.OtakTeamProductions.Vigilante8GlobbalOffense",
+            "processId": 8452,
+            "exited": false
+        },
+        {
+            "deviceId": "127.0.0.1:21513",
+            "name": "com.OtakTeamProductions.Vigilante8GlobbalOffense",
+            "processId": 9070,
             "exited": false
         }
     ],

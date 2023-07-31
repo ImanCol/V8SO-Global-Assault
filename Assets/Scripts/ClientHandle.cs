@@ -497,7 +497,6 @@ public class ClientHandle : MonoBehaviour
         GameManager.instance.networkMembers[userId].FUN_38DA8_2();
     }
 
-
     //Vehicle Player Combo Destroyed!
     public static void Totaled(Packet _packet, long userId)
     {

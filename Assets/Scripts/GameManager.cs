@@ -2437,12 +2437,23 @@ public class GameManager : MonoBehaviour
         Water.instance.FUN_16664(vector3Int, (int)num); //Dibuja y asigna posicion
     }
 
+    public bool enabledRandonMesh = true;
 
-
-    public void FUN_1C134()
+    public async Task FUN_1C134Async()
     {
+          // Control de rendimiento: Verifica los FPS o consumo de recursos
+        if (enabledOptimizationMesh)
+        {
+            if (ShouldReduceUpdateFrequency())
+            {
+                await Task.Yield();
+                return;
+            }
+        }
+
         this.terrain.ClearTerrainData();
-        this.FUN_1C158();
+        if (enabledRandonMesh)
+            this.FUN_1C158();
     }
     public void FUN_1DC0C(bool param1, int param2, bool param3 = false)
     {
@@ -3124,14 +3135,15 @@ public class GameManager : MonoBehaviour
     //IMPORTANTE! Dibuja los objetos en el escenario. Actualiza Reflejos? OPTIMIZAR REFLEJOS!
     public async void FUN_30B24(List<VigTuple> param1)
     {
-        vigObjectCount = param1;
-        if (setDraw)
-            for (int i = 0; i < param1.Count; i++)
-            {
 
-                this.FUN_2D9E0(param1[i].vObject);
-                //await Task.Delay(TimeSpan.FromSeconds(reflectionUpdateTime));
-            }
+        if (setDraw)
+            vigObjectCount = param1;
+        for (int i = 0; i < param1.Count; i++)
+        {
+
+            this.FUN_2D9E0(param1[i].vObject);
+            //await Task.Delay(TimeSpan.FromSeconds(reflectionUpdateTime));
+        }
         await Task.Yield();
         //await Task.Delay(TimeSpan.FromSeconds(reflectionUpdateTime));
     }
@@ -3530,41 +3542,65 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void FUN_31678()
+    public async void FUN_31678()
     {
+        // Control de rendimiento: Verifica los FPS o consumo de recursos
+        if (enabledOptimizationMesh)
+        {
+            if (ShouldReduceUpdateFrequency())
+            {
+                await Task.Yield();
+                return;
+            }
+        }
+
         if (this.drawTerrain)
         {
-            this.FUN_1C134();
+            await this.FUN_1C134Async();
         }
+
         this.FUN_2DE18();
+
         if (this.drawRoads)
         {
             this.FUN_50B38();
         }
+
         JobHandle.ScheduleBatchedJobs();
+
         if (this.drawPlayer)
         {
             this.FUN_30B24(this.worldObjs);
             this.FUN_30B24(this.interObjs);
         }
+
         if (this.drawObjects)
         {
             this.FUN_3150C();
         }
+
         this.terrainHandle.Complete();
+
         this.nativeArray.Dispose();
+
         this.terrain.CreateTerrainMesh();
+
         Junction.junctionHandle.Complete();
+
         for (int i = 0; i < GameManager.updateJunc.Count; i++)
         {
             GameManager.updateJunc[i].CreateRoadData();
         }
+
         GameManager.updateJunc.Clear();
+
         if (this.drawTerrain)
         {
             this.terrain.FUN_1C910();
         }
+
         LevelManager.instance.level.UpdateW(17, 0);
+
         if (this.DAT_1124 != null)
         {
             this.FUN_33728(this.DAT_1124, LevelManager.instance.DAT_10F8);
@@ -5624,151 +5660,226 @@ public class GameManager : MonoBehaviour
             {
                 using (new GUILayout.HorizontalScope())
                 {
-                    if (GUILayout.Button("Enabled Optimization Mesh"))
+                    if (GUILayout.Button("Enabled Draw Randon"))
                     {
-                        enabledOptimizationMesh = !enabledOptimizationMesh;
+                        enabledRandonMesh = !enabledRandonMesh;
                     }
                     GUILayout.FlexibleSpace();
-                    GUILayout.Toggle(enabledOptimizationMesh, "");
+                    GUILayout.Toggle(enabledRandonMesh, "");
                 }
             }
             using (new GUILayout.VerticalScope())
             {
-                using (new GUILayout.HorizontalScope())
+                using (new GUILayout.VerticalScope())
                 {
-                    if (GUILayout.Button("Enabled Serializable Mesh"))
+                    using (new GUILayout.HorizontalScope())
                     {
-                        enabledSerializableMesh = !enabledSerializableMesh;
+                        if (GUILayout.Button("Enabled Draw Terrain"))
+                        {
+                            drawTerrain = !drawTerrain;
+                        }
+                        GUILayout.FlexibleSpace();
+                        GUILayout.Toggle(drawTerrain, "");
                     }
-                    GUILayout.FlexibleSpace();
-                    GUILayout.Toggle(enabledSerializableMesh, "");
                 }
-            }
-            using (new GUILayout.VerticalScope())
-            {
-                using (new GUILayout.HorizontalScope())
+                using (new GUILayout.VerticalScope())
                 {
-                    if (GUILayout.Button("Enabled Refresh Mesh"))
+                    using (new GUILayout.HorizontalScope())
                     {
-                        enabledRefreshMesh = !enabledRefreshMesh;
+                        if (GUILayout.Button("Enabled Draw Objects"))
+                        {
+                            drawObjects = !drawObjects;
+                        }
+                        GUILayout.FlexibleSpace();
+                        GUILayout.Toggle(drawObjects, "");
                     }
-                    GUILayout.FlexibleSpace();
-                    GUILayout.Toggle(enabledRefreshMesh, "");
                 }
-            }
-            using (new GUILayout.VerticalScope())
-            {
-                using (new GUILayout.HorizontalScope())
+                using (new GUILayout.VerticalScope())
                 {
-                    if (GUILayout.Button("Experimental Quality"))
+                    using (new GUILayout.HorizontalScope())
                     {
-                        experimentalQuality = !experimentalQuality;
+                        if (GUILayout.Button("Enabled Draw Player"))
+                        {
+                            drawPlayer = !drawPlayer;
+                        }
+                        GUILayout.FlexibleSpace();
+                        GUILayout.Toggle(drawPlayer, "");
                     }
-                    GUILayout.FlexibleSpace();
-                    GUILayout.Toggle(experimentalQuality, "");
                 }
-            }
-            using (new GUILayout.VerticalScope())
-            {
-                using (new GUILayout.HorizontalScope())
+                using (new GUILayout.VerticalScope())
                 {
-                    if (GUILayout.Button("Enabled Reflection"))
+                    using (new GUILayout.HorizontalScope())
                     {
-                        enabledReflection = !enabledReflection;
+                        if (GUILayout.Button("Enabled Draw Roads"))
+                        {
+                            drawRoads = !drawRoads;
+                        }
+                        GUILayout.FlexibleSpace();
+                        GUILayout.Toggle(drawRoads, "");
                     }
-                    GUILayout.FlexibleSpace();
-                    GUILayout.Toggle(enabledReflection, "");
                 }
-            }
-            using (new GUILayout.VerticalScope())
-            {
-                using (new GUILayout.HorizontalScope())
+                using (new GUILayout.VerticalScope())
                 {
-                    if (GUILayout.Button("Enabled Mesh"))
+                    using (new GUILayout.HorizontalScope())
                     {
-                        enabledMesh = !enabledMesh;
+                        if (GUILayout.Button("Enabled Draw Mesh"))
+                        {
+                            setDraw = !setDraw;
+                        }
+                        GUILayout.FlexibleSpace();
+                        GUILayout.Toggle(setDraw, "");
                     }
-                    GUILayout.FlexibleSpace();
-                    GUILayout.Toggle(enabledMesh, "");
                 }
-            }
-            using (new GUILayout.VerticalScope())
-            {
-                using (new GUILayout.HorizontalScope())
+                using (new GUILayout.VerticalScope())
                 {
-                    if (GUILayout.Button("Enabled child"))
+                    using (new GUILayout.HorizontalScope())
                     {
-                        enabledChild2 = !enabledChild2;
+                        if (GUILayout.Button("Enabled Optimization Mesh"))
+                        {
+                            enabledOptimizationMesh = !enabledOptimizationMesh;
+                        }
+                        GUILayout.FlexibleSpace();
+                        GUILayout.Toggle(enabledOptimizationMesh, "");
                     }
-                    GUILayout.FlexibleSpace();
-                    GUILayout.Toggle(enabledChild2, "");
                 }
-            }
-            using (new GUILayout.VerticalScope())
-            {
-                using (new GUILayout.HorizontalScope())
+                using (new GUILayout.VerticalScope())
                 {
-                    if (GUILayout.Button("Enabled vLoD"))
+                    using (new GUILayout.HorizontalScope())
                     {
-                        enabledvLoD = !enabledvLoD;
+                        if (GUILayout.Button("Enabled Serializable Mesh"))
+                        {
+                            enabledSerializableMesh = !enabledSerializableMesh;
+                        }
+                        GUILayout.FlexibleSpace();
+                        GUILayout.Toggle(enabledSerializableMesh, "");
                     }
-                    GUILayout.FlexibleSpace();
-                    GUILayout.Toggle(enabledvLoD, "");
                 }
-            }
-            using (new GUILayout.VerticalScope())
-            {
-                using (new GUILayout.HorizontalScope())
+                using (new GUILayout.VerticalScope())
                 {
-                    // Definir los valores mínimo y máximo del slider
-                    float minValue = 0f;
-                    float maxValue = 9999999f;
+                    using (new GUILayout.HorizontalScope())
+                    {
+                        if (GUILayout.Button("Enabled Refresh Mesh"))
+                        {
+                            enabledRefreshMesh = !enabledRefreshMesh;
+                        }
+                        GUILayout.FlexibleSpace();
+                        GUILayout.Toggle(enabledRefreshMesh, "");
+                    }
+                }
+                using (new GUILayout.VerticalScope())
+                {
+                    using (new GUILayout.HorizontalScope())
+                    {
+                        if (GUILayout.Button("Experimental Quality"))
+                        {
+                            experimentalQuality = !experimentalQuality;
+                        }
+                        GUILayout.FlexibleSpace();
+                        GUILayout.Toggle(experimentalQuality, "");
+                    }
+                }
+                using (new GUILayout.VerticalScope())
+                {
+                    using (new GUILayout.HorizontalScope())
+                    {
+                        if (GUILayout.Button("Enabled Reflection"))
+                        {
+                            enabledReflection = !enabledReflection;
+                        }
+                        GUILayout.FlexibleSpace();
+                        GUILayout.Toggle(enabledReflection, "");
+                    }
+                }
+                using (new GUILayout.VerticalScope())
+                {
+                    using (new GUILayout.HorizontalScope())
+                    {
+                        if (GUILayout.Button("Enabled Mesh"))
+                        {
+                            enabledMesh = !enabledMesh;
+                        }
+                        GUILayout.FlexibleSpace();
+                        GUILayout.Toggle(enabledMesh, "");
+                    }
+                }
+                using (new GUILayout.VerticalScope())
+                {
+                    using (new GUILayout.HorizontalScope())
+                    {
+                        if (GUILayout.Button("Enabled child"))
+                        {
+                            enabledChild2 = !enabledChild2;
+                        }
+                        GUILayout.FlexibleSpace();
+                        GUILayout.Toggle(enabledChild2, "");
+                    }
+                }
+                using (new GUILayout.VerticalScope())
+                {
+                    using (new GUILayout.HorizontalScope())
+                    {
+                        if (GUILayout.Button("Enabled vLoD"))
+                        {
+                            enabledvLoD = !enabledvLoD;
+                        }
+                        GUILayout.FlexibleSpace();
+                        GUILayout.Toggle(enabledvLoD, "");
+                    }
+                }
+                using (new GUILayout.VerticalScope())
+                {
+                    using (new GUILayout.HorizontalScope())
+                    {
+                        // Definir los valores mínimo y máximo del slider
+                        float minValue = 0f;
+                        float maxValue = 9999999f;
 
-                    // Definir el tamaño del slider (opcional)
-                    float sliderWidth = 200f;
-                    float sliderHeight = 20f;
+                        // Definir el tamaño del slider (opcional)
+                        float sliderWidth = 200f;
+                        float sliderHeight = 20f;
 
-                    // Dibujar el slider horizontal con el tamaño personalizado
-                    drawObjectDistace = (int)GUILayout.HorizontalSlider(drawObjectDistace, minValue, maxValue, GUILayout.Width(sliderWidth), GUILayout.Height(sliderHeight));
+                        // Dibujar el slider horizontal con el tamaño personalizado
+                        drawObjectDistace = (int)GUILayout.HorizontalSlider(drawObjectDistace, minValue, maxValue, GUILayout.Width(sliderWidth), GUILayout.Height(sliderHeight));
 
-                    // Asegurarse de que el valor del slider esté dentro del rango permitido
-                    drawObjectDistace = (int)Mathf.Clamp(drawObjectDistace, minValue, maxValue);
+                        // Asegurarse de que el valor del slider esté dentro del rango permitido
+                        drawObjectDistace = (int)Mathf.Clamp(drawObjectDistace, minValue, maxValue);
 
-                    // Mostrar el valor actual del slider
-                    GUILayout.Label("Slider Value: " + drawObjectDistace.ToString());
-                }
-            }
-            using (new GUILayout.VerticalScope())
-            {
-                using (new GUILayout.HorizontalScope())
-                {
-                    if (GUILayout.Button("Enabled Console"))
-                    {
-                        enabledConsole = !enabledConsole;
-                        Debug.unityLogger.logEnabled = enabledConsole;
-                        GameObject.Find("IngameDebugConsole").gameObject.GetComponent<Canvas>().enabled = enabledConsole;
+                        // Mostrar el valor actual del slider
+                        GUILayout.Label("Slider Value: " + drawObjectDistace.ToString());
                     }
-                    GUILayout.FlexibleSpace();
-                    GUILayout.Toggle(enabledConsole, "");
                 }
-                using (new GUILayout.HorizontalScope())
+                using (new GUILayout.VerticalScope())
                 {
-                    if (GUILayout.Button("Show FPS"))
+                    using (new GUILayout.HorizontalScope())
                     {
-                        showFps = !showFps;
+                        if (GUILayout.Button("Enabled Console"))
+                        {
+                            enabledConsole = !enabledConsole;
+                            Debug.unityLogger.logEnabled = enabledConsole;
+                            GameObject.Find("IngameDebugConsole").gameObject.GetComponent<Canvas>().enabled = enabledConsole;
+                        }
+                        GUILayout.FlexibleSpace();
+                        GUILayout.Toggle(enabledConsole, "");
                     }
-                    GUILayout.FlexibleSpace();
-                    GUILayout.Toggle(showFps, "");
+                    using (new GUILayout.HorizontalScope())
+                    {
+                        if (GUILayout.Button("Show FPS"))
+                        {
+                            showFps = !showFps;
+                        }
+                        GUILayout.FlexibleSpace();
+                        GUILayout.Toggle(showFps, "");
+                    }
+                }
+
+                GUILayout.FlexibleSpace();
+                if (GUILayout.Button("Spawn Enemy"))
+                {
+                    await spawnEnemy();
                 }
             }
-
-            GUILayout.FlexibleSpace();
-            if (GUILayout.Button("Spawn Enemy"))
-            {
-                await spawnEnemy();
-            }
+            GUI.DragWindow();
         }
-        GUI.DragWindow();
     }
 
     private bool EnemySpawn = false;
@@ -7348,6 +7459,7 @@ public class GameManager : MonoBehaviour
     }
 
     [Header("Quiality Setting")]
+    public bool enabledUpdateMesh = true;
     public bool enabledOptimizationMesh = true;
     public bool enabledSerializableMesh = true;
     public float checkFPS = 0.5f;
