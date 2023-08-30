@@ -3393,6 +3393,7 @@ MonoBehaviour:
   isHost: 0
   isParty: 0
   sceneLoadedDone: 0
+  enabledRandonMesh: 1
   setDraw: 1
   drawObjInt1: 1024
   drawObjInt2: 1024
@@ -3494,6 +3495,7 @@ MonoBehaviour:
   updateReflections: 1
   reflectionUpdateTime: 0
   Vehiclereflection: 0
+  enabledUpdateMesh: 1
   enabledOptimizationMesh: 1
   enabledSerializableMesh: 0
   checkFPS: 0.5
@@ -3506,9 +3508,6 @@ MonoBehaviour:
   enabledChild2: 1
   enabledvLoD: 1
   enabledConsole: 1
-  objectStates:
-    vigObjectList: []
-    objectStateElement: []
   drawObjectDistace: 4194304
   x: 0
   y: 0
@@ -4444,6 +4443,8 @@ GameObject:
   - component: {fileID: 622600171}
   - component: {fileID: 622600170}
   - component: {fileID: 622600172}
+  - component: {fileID: 622600173}
+  - component: {fileID: 622600174}
   m_Layer: 0
   m_Name: MusicManager
   m_TagString: Untagged
@@ -4655,6 +4656,54 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 622600167}
   m_Mesh: {fileID: 0}
+--- !u!114 &622600173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622600167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 334183661278554488fee3560e57f627, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainSceneName: DEBUG-Online
+--- !u!114 &622600174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622600167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe9881f96e1e92e448b5dbfa71fbd145, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasLoadScene: {fileID: 978364213}
+  Map:
+  - {fileID: 21300000, guid: 942596acd69096d43b7307a3c059d0e5, type: 3}
+  - {fileID: 21300000, guid: 26e9e071acaefe64596f506e6c3fb7a0, type: 3}
+  - {fileID: 21300000, guid: bfe33f2704be7fe408f5762043fc7040, type: 3}
+  - {fileID: 21300000, guid: 805f77bb5fb73a946b58c19655967c20, type: 3}
+  - {fileID: 21300000, guid: f4f8057cc6158ef46acf40f234e2e310, type: 3}
+  - {fileID: 21300000, guid: 5fc0efa4d7d330845a012097b5d75f48, type: 3}
+  - {fileID: 21300000, guid: 449702c82f36524469c0dbadcc2cb9a7, type: 3}
+  - {fileID: 21300000, guid: 53c5aca42c083c04bb9f2717f59f3d99, type: 3}
+  - {fileID: 21300000, guid: c5a92fb0767833b408a644218565823b, type: 3}
+  - {fileID: 21300000, guid: 3179705e0a102cd4bad141160452c24a, type: 3}
+  - {fileID: 21300000, guid: 91c61514bd051bb499964a1819fd4f4e, type: 3}
+  - {fileID: 21300000, guid: 2fa6d80cbbc8e894aaf2d99a7906cc9a, type: 3}
+  - {fileID: 21300000, guid: 1381a950ec31a1e4d8c968b5e2c10673, type: 3}
+  - {fileID: 21300000, guid: 8984238246d42184b94694a433f906f1, type: 3}
+  - {fileID: 21300000, guid: 2629ab9a2cf746f45b9980184e8a3d74, type: 3}
+  - {fileID: 21300000, guid: 3aed6c52d289fa348a8b2860a918f3ec, type: 3}
+  - {fileID: 21300000, guid: 19edf8f5b49b6014d9d1775840f48b0c, type: 3}
+  - {fileID: 21300000, guid: 991468d4d13d8574fb6b16fb1d0e28f0, type: 3}
+  setMap: {fileID: 655297811}
+  mapDescription: {fileID: 138466304}
+  loadingStatus: {fileID: 1576961171}
 --- !u!1 &655297810
 GameObject:
   m_ObjectHideFlags: 0
@@ -14350,7 +14399,6 @@ GameObject:
   - component: {fileID: 978364213}
   - component: {fileID: 978364212}
   - component: {fileID: 978364211}
-  - component: {fileID: 978364210}
   m_Layer: 5
   m_Name: CanvasLoadScene
   m_TagString: Untagged
@@ -14358,41 +14406,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &978364210
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 978364209}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe9881f96e1e92e448b5dbfa71fbd145, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canvasLoadScene: {fileID: 978364213}
-  Map:
-  - {fileID: 21300000, guid: 942596acd69096d43b7307a3c059d0e5, type: 3}
-  - {fileID: 21300000, guid: 26e9e071acaefe64596f506e6c3fb7a0, type: 3}
-  - {fileID: 21300000, guid: bfe33f2704be7fe408f5762043fc7040, type: 3}
-  - {fileID: 21300000, guid: 805f77bb5fb73a946b58c19655967c20, type: 3}
-  - {fileID: 21300000, guid: f4f8057cc6158ef46acf40f234e2e310, type: 3}
-  - {fileID: 21300000, guid: 5fc0efa4d7d330845a012097b5d75f48, type: 3}
-  - {fileID: 21300000, guid: 449702c82f36524469c0dbadcc2cb9a7, type: 3}
-  - {fileID: 21300000, guid: 53c5aca42c083c04bb9f2717f59f3d99, type: 3}
-  - {fileID: 21300000, guid: c5a92fb0767833b408a644218565823b, type: 3}
-  - {fileID: 21300000, guid: 3179705e0a102cd4bad141160452c24a, type: 3}
-  - {fileID: 21300000, guid: 91c61514bd051bb499964a1819fd4f4e, type: 3}
-  - {fileID: 21300000, guid: 2fa6d80cbbc8e894aaf2d99a7906cc9a, type: 3}
-  - {fileID: 21300000, guid: 1381a950ec31a1e4d8c968b5e2c10673, type: 3}
-  - {fileID: 21300000, guid: 8984238246d42184b94694a433f906f1, type: 3}
-  - {fileID: 21300000, guid: 2629ab9a2cf746f45b9980184e8a3d74, type: 3}
-  - {fileID: 21300000, guid: 3aed6c52d289fa348a8b2860a918f3ec, type: 3}
-  - {fileID: 21300000, guid: 19edf8f5b49b6014d9d1775840f48b0c, type: 3}
-  - {fileID: 21300000, guid: 991468d4d13d8574fb6b16fb1d0e28f0, type: 3}
-  setMap: {fileID: 655297811}
-  mapDescription: {fileID: 138466304}
-  loadingStatus: {fileID: 1576961171}
 --- !u!114 &978364211
 MonoBehaviour:
   m_ObjectHideFlags: 0

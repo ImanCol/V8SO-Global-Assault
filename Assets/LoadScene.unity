@@ -421,6 +421,7 @@ GameObject:
   - component: {fileID: 1737885555}
   - component: {fileID: 1737885554}
   - component: {fileID: 1737885558}
+  - component: {fileID: 1737885559}
   m_Layer: 5
   m_Name: CanvasLoadScene
   m_TagString: Untagged
@@ -524,6 +525,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9881f96e1e92e448b5dbfa71fbd145, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasLoadScene: {fileID: 0}
   Map:
   - {fileID: 21300000, guid: 942596acd69096d43b7307a3c059d0e5, type: 3}
   - {fileID: 21300000, guid: 26e9e071acaefe64596f506e6c3fb7a0, type: 3}
@@ -546,6 +548,19 @@ MonoBehaviour:
   setMap: {fileID: 1540367653}
   mapDescription: {fileID: 1763083517}
   loadingStatus: {fileID: 1129436239}
+--- !u!114 &1737885559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1737885553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 334183661278554488fee3560e57f627, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainSceneName: DEBUG-Online
 --- !u!1 &1763083515
 GameObject:
   m_ObjectHideFlags: 0
