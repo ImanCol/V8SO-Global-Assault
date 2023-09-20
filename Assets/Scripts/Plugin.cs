@@ -43,6 +43,10 @@ namespace V2UnityDiscordIntercept
                 instance = this;
                 player = ReInput.players.GetPlayer(0);
             }
+            else
+            {
+                player = ReInput.players.GetPlayer(0);
+            }
             //var harmony = new Harmony("c1b6540e-a6ed-4f10-89b3-8e715ee70a78");
             //harmony.PatchAll();
         }
@@ -90,9 +94,9 @@ namespace V2UnityDiscordIntercept
                     {
                         GameManager.instance.online = true;
                         Client = new VigClient();
-                        #if DEBUG
+#if DEBUG
                         Client.ConnectToLobby(ipAddress, Port);
-                        #endif
+#endif
                     }
                 }
             }

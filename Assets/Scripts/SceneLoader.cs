@@ -31,16 +31,16 @@ namespace LoadMap
         public TextMeshProUGUI loadingStatus;
         public static TextMeshProUGUI staticLoadingStatus;
 
-        private float loadingProgress = 0f;
+        private readonly float loadingProgress = 0f;
 
-        public static Task destroy()
+        public static Task Destroy()
         {
             UnityEngine.Object.DontDestroyOnLoad(instance.gameObject);
             return Task.CompletedTask;
         }
 
         [System.Obsolete]
-        public static Task getMap(int sceneIndex)
+        public static Task GetMap(int sceneIndex)
         {
             Debug.Log("Obteniendo...");
             //canvasLoadScene.gameObject.SetActive(false);
@@ -99,7 +99,7 @@ namespace LoadMap
             //Debug.Log("Get Scene: " + SceneManager.sceneCount.ToString() + " - " + SceneManager.GetActiveScene().buildIndex);
         }
 
-        public static Task setLoadingStatus(bool isHost)
+        public static Task SetLoadingStatus(bool isHost)
         {
             if (GameManager.instance)
             {

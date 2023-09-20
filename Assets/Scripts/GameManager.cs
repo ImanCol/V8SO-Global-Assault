@@ -1352,8 +1352,10 @@ public class GameManager : MonoBehaviour
     public int leash;
     private bool atStart;
     public int driverPlus = 0;
+
+    [Header("Player Controller")]
     public int Players;
-    private Player player;
+    public Player player;
     public void SetGravity()
     {
         switch (gravityDropdown.value)
@@ -2441,7 +2443,7 @@ public class GameManager : MonoBehaviour
 
     public async Task FUN_1C134Async()
     {
-          // Control de rendimiento: Verifica los FPS o consumo de recursos
+        // Control de rendimiento: Verifica los FPS o consumo de recursos
         if (enabledOptimizationMesh)
         {
             if (ShouldReduceUpdateFrequency())
@@ -5389,6 +5391,10 @@ public class GameManager : MonoBehaviour
             player = ReInput.players.GetPlayer(0);
             audioVisualizer = GameObject.Find("MusicManager").gameObject.GetComponent<AudioVisualizer>();
         }
+        else
+        {
+            player = ReInput.players.GetPlayer(0);
+        }
         this.DAT_08 = new ushort[,]
         {
             { 0, 0, 0, 801, 8448, 8515 },
@@ -5920,7 +5926,7 @@ public class GameManager : MonoBehaviour
     {
         SceneLoader.staticCanvasLoadScene.enabled = true;
         Debug.Log("Obtener mapa cargado...");
-        await SceneLoader.getMap(sceneIndex);
+        await SceneLoader.GetMap(sceneIndex);
         Debug.Log("obtenido mapa cargado...");
 
         sceneMap = sceneIndex;
@@ -5975,7 +5981,7 @@ public class GameManager : MonoBehaviour
             // Actualizar la barra de progreso en cada iteración del ciclo
             await Task.Yield(); // Esperar un frame
         }
-        await SceneLoader.setLoadingStatus(isHost);
+        await SceneLoader.SetLoadingStatus(isHost);
         await Task.Yield(); // Esperar un frame
                             // La carga de la escena se ha completado correctamente, puedes realizar cualquier otra acción necesaria aquí
     }
@@ -6199,6 +6205,7 @@ public class GameManager : MonoBehaviour
 
         if (inDebug || inMenu || SceneManager.GetActiveScene().name == "MENU-Driver" || SceneManager.GetActiveScene().name == "DEBUG-Online")
         {
+            //Debug.Log("Escape");
             if (player.GetButtonDown("Escape"))
             {
                 Application.Quit();
@@ -9110,7 +9117,7 @@ public class GameManager : MonoBehaviour
 
     static GameManager()
     {
-        Matrix3x3 matrix3x = new Matrix3x3
+        Matrix3x3 matrix3x = new()
         {
             V00 = 4096,
             V01 = 0,

@@ -591,7 +591,8 @@ public class UIManager : MonoBehaviour
         //Debug.Log("Units: " + units);
 
         unit.color = ((!(vehicle.target == obj)) ? RED : ((obj.jammer == 0 && (obj.flags & 0x8000000) == 0) ? GREEN : YELLOW));
-        Vector3 vector2 = Vector3.ClampMagnitude(vector, radius);
+        //Vector3 vector2 = Vector3.ClampMagnitude(vector, radius);
+        Vector3 vector2 = Vector3.ClampMagnitude(vector, 100);
         unit.rectTransform.anchoredPosition = new Vector2(vector2.x += positionUnitX, vector2.z += positionUnitY);
     }
 
