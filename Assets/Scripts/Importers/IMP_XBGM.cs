@@ -46,7 +46,7 @@ public class IMP_XBGM
             levelManager.DAT_E58 = AssetDatabase.LoadAssetAtPath("Assets/SHELL/glow.mat", typeof(Material)) as Material;
             EditorUtility.SetDirty(levelManager.gameObject);
 #endif
-
         }
     }
 }
+    

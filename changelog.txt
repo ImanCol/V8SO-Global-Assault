@@ -1,0 +1,33 @@
+Cambios
+
+Update Coprocessor (Dino Crisis)
+Update Types (Dino Crisis)
+Update Utilities (Dino Crisis)
+Update General Script (Dino Crisis)
+
+
+Optimizacion de objetos en escenario:
+
+Se agrego optimizacion selectiva a objetos en el escenario.
+Los objetos estaticos solo se renderizan cuando 
+hallan cambios en sus mallas
+Los objetos temporales, se actualizaran normalmente, pero pasara por funciones de rendimiento.
+Los objetos principales, como vehiculos, pasara una rigurosa 
+Los objetos secundarios, como child2, solo se actualiza si spawnean
+
+
+
+Future Feature
+MODO de juegos posibles:
+
+Aniquila a un enemigo antes del tiempo limite:
+Derrota a un enemigo cada 20 segundos. Si no cumples, la partida termina.
+
+Ultimo Vigilante, Coyote, Drifter:
+Se la ultima faccion en pie, tendras guerreros de tu misma faccion ayudandote.
+
+Obten la mayor cantidad de objetos (Maletas, Gasolina):
+Por tiempo limitado, debes ser el quien mas obtenga objetos.
+
+
+
